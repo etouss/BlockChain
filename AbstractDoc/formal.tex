@@ -1,0 +1,109 @@
+
+An attempt to give the most abstract possible definition of a blockchain.
+
+\section{BlockChain}
+
+\begin{mydef}
+	We call Validated Rules a function noted $V$:
+	$$V : (\Sigma^*)^\times \rightarrow \mathscr{P}(\Sigma^*)$$
+\end{mydef}
+
+\begin{myrem}
+	Intuitively $V$ is a function taking a list of block in input and returning the set of block which are valid.
+\end{myrem}
+
+\begin{mydef}
+	We call $(G,V)$ validated chain,where $G \in (\Sigma^*)^\times$, noted $log_{G,V}$ a function 
+	$$log_{G,V}: \mathbb{N} \rightarrow \Sigma^*$$
+	such that:
+	\begin{align*}
+	&G(0) \in V(\emptyset) \\
+	&\forall i \in \llbracket 0;|G|\rrbracket, log(i) = G(i) \\
+	&\forall i \in \mathbb{N}^+ , log(i) \in V(log_{G,V}(0),,,log_{G,V}(i-1)) 
+	\end{align*}
+\end{mydef}
+
+\begin{myrem}
+	$G$ is the list of genesis block to startup the system. $log_{G,V}$ would be an infinite chain that is valid regarding $V$.
+\end{myrem}
+
+\begin{mynota}
+	$$\forall i , log_{G,V}(i)^- = (log_{G,V}(0),,,log_{G,V}(i))$$
+	$$LOG_{G,V} = \{ f | \textit{ f is a (G,V) validated chain}\}$$
+\end{mynota}
+
+\begin{myrem}
+	We introduce $LOG_{G,V}$ which really complicated but is actually necessary to deal with fork and consensus later.
+\end{myrem}
+
+\begin{mydef}
+	A set of validated chain $LOG_{G,V}$ is said to be infinite if:
+	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N} , \forall b  \in V(log_{G,V}(i)-), V(log_{G,V}(i)-,b)\neq \emptyset $$
+\end{mydef}
+
+\begin{myrem}
+	Infinite here is used in a sense that whatever instance of a $G,V$ validated-chain we are dealing with we will always be able to complete it.
+\end{myrem}
+
+\begin{mydef}
+	A set of validated chain $LOG_{G,V}$ is said secured if :
+	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N}^+ , \forall b,b' \in \Sigma, b\neq b' \implies V(log_{G,V}(i)^-,b)\cap V(log_{G,V}(i)^-,b') = \emptyset$$
+\end{mydef}
+
+\begin{myrem}
+	Intuitively in order to be secured $V(,,b)$ should depend on $b$ as bitcoin include previous hash block. 
+\end{myrem}
+
+\begin{mydef}
+	We call  alive Set of player a tuple $(P,K_P)$ where $P$ is a set of player and $K_P$ a function:
+	$$K_P : P\times T \rightarrow \mathscr{P}(\Sigma^*)$$
+	such that: 
+	\begin{align*}
+	&\forall p \in P, \forall t,t' \in T; t\leq t' \implies K_P(p,t) \subseteq K_P(p,t') \\
+	&\exists p \in P, \forall t \in T, \exists t'>t, K_P(p,t) \subset K_P(p,t') \\
+	\end{align*}
+\end{mydef}
+
+\begin{myrem}
+	$K_p$ represent the knowledge of $p$ this knowledge should not decrease. And to be considered alive at least one player should be trying to increase is knowledge (mining).
+\end{myrem}
+
+\begin{mydef}
+	We call an alive set of validated chain a tuple $(LOG_{G,V},P,K_P)$ where $LOG_{G,V}$ is an set of infinite validated chain and $P,K_P$ an alive set of player.
+\end{mydef}
+
+\begin{myprop*}
+	Let $(LOG_{G,V},P,K_P)$ an alive set of validated chain then:
+	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N}, \exists p \in P, \exists t \in T , V(log_{G,V}(i)^-) \cap K_P(p,t) \neq \emptyset $$
+\end{myprop*}
+\begin{myrem}
+	To be honest i am not sure as we are dealing with infinite number. I may have to trick things here. I want to ensure the fact that the chain will eventually move forward.
+\end{myrem}
+
+\begin{mydef}
+	A block chain protocol is a function noted $P_{G,V}$:
+	$$P_{G,V} : (LOG_{G,V}\times \mathbb{N})  \times (LOG_{G,V}\times \mathbb{N}) \times T \rightarrow (LOG_{G,V}\times \mathbb{N}) $$
+	such that :
+		\begin{align*}
+		&\forall log_{G,V},log_{G,V}' \in LOG_{G,V}, \forall n,n' \in \mathbb{N} , \forall t \in T; P_{G,V}(log_{G,V},n,log_{G,V}',n',t) = (log_{G,V},n) \lor (log_{G,V},n')		\end{align*}
+\end{mydef}
+\begin{myrem}
+	$P_{G,V}$ can be seen as the rule in case of fork and new block. 
+\end{myrem}
+
+\begin{mydef}
+	Considering an alive set of validated chain $(LOG_{G,V},P,K_P)$ and a block chain protocol $P_{G,V}$. We denote $S_{t,p}$ where $t\in T$ and $p\in P$ the set of tuple :
+	$$ S_{t,p} = \{log_{G,V}(N)^- | log_{G,V} \in LOG_{G,V} \land log_{G,V}(N)^- \subseteq K_P(p,t)\} $$
+	
+	We call BlockChain at time $t\in T$ for user $p \in P$ noted $BC_{t,p}$ the tuple:
+	\begin{align*}
+	&BC_{t,p} \in S_{t,p} \\
+	& \forall log \in S_{t,p}, P_{G,V}((log,|log|),(BC_{t,p},|BC_{t,p}|),t) = (BC_{t,p},|BC_{t,p}|) \\
+	\end{align*}
+	
+\end{mydef}
+\begin{myrem}
+	Intuitively the blockchain for a user $p$ at a time $t$ is the best chain he fully knows regarding the protocol function and the validity at time $t$ (time-stamping).
+\end{myrem}
+
+At the end a specific block chain seems to be definable through her validation rules, a consensus protocol and each player knowledge function. Which seems to fit puzzle and rules.
