@@ -1,58 +1,44 @@
+%!TEX root = main.tex
 
 An attempt to give the most abstract possible definition of a blockchain.
 
 \section{BlockChain}
+Given a set $S$, let $\flist(S)$ and $\fset(S)$ be the sets of all finite lists and all finite sets of elements of $S$, respectively. Given $L \in \flist(S)$, we use notation $|L|$ to refer to the number of elements in $L$, and notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, |L|\}$. From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks. 
+\begin{mydef}
+A validation rule is a function $V : \flist(\B) \to \fset(\B)$
+\end{mydef}
+Intuitively $V$ is a function taking a list $L$ of block as input, and returning the set of blocks that could be added to $L$ to produce a valid blockchain.
 
 \begin{mydef}
-	We call Validated Rules a function noted $V$:
-	$$V : (\Sigma^*)^\times \rightarrow \mathscr{P}(\Sigma^*)$$
-\end{mydef}
+Let $G \in \flist(\B)$ be non-empty, and $V$ be a validation rule. Then a function $f : \{1, \ldots, n\} \rightarrow \B$ with $n \in \mathbb{N}$ is a validated chain with respect to $(G,V)$ if:
+\begin{enumerate}
+\item $|G| \leq n$ and $f(i) = G[i]$, for every $i \in \{1, \ldots, n\}$.
 
-\begin{myrem}
-	Intuitively $V$ is a function taking a list of block in input and returning the set of block which are valid.
-\end{myrem}
+\item $f(1) \in V([\ ])$ and $f(i+1) \in V([f(1), \ldots, f(i)])$, for every $i \in \{1, \ldots, i-1\}$.
+\end{enumerate}
+\end{mydef}
+Function $f$ in this definition is a valid chain according to the validation rule $V$ and the lists $G$ of genesis blocks (whose role is to provide the blocks to startup the system). Let $\LOG(G,V)$ be the set of validated chains with respect to $(G,V)$.
+
+%\begin{myrem}
+%	We introduce $LOG_{G,V}$ which really complicated but is actually necessary to deal with fork and consensus later.
+%\end{myrem}
+%
+%\begin{mydef}
+%	A set of validated chain $LOG_{G,V}$ is said to be infinite if:
+%	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N} , \forall b  \in V(log_{G,V}(i)-), V(log_{G,V}(i)-,b)\neq \emptyset $$
+%\end{mydef}
+%
+%\begin{myrem}
+%	Infinite here is used in a sense that whatever instance of a $G,V$ validated-chain we are dealing with we will always be able to complete it.
+%\end{myrem}
 
 \begin{mydef}
-	We call $(G,V)$ validated chain,where $G \in (\Sigma^*)^\times$, noted $log_{G,V}$ a function 
-	$$log_{G,V}: \mathbb{N} \rightarrow \Sigma^*$$
-	such that:
-	\begin{align*}
-	&G(0) \in V(\emptyset) \\
-	&\forall i \in \llbracket 0;|G|\rrbracket, log(i) = G(i) \\
-	&\forall i \in \mathbb{N}^+ , log(i) \in V(log_{G,V}(0),,,log_{G,V}(i-1)) 
-	\end{align*}
+Let $G \in \flist(\B)$ be non-empty, and $V$ be a validation rule. Then $\LOG(G,V)$ is safe if for every $f \in \LOG(G,V)$ such that $f : \{1, \ldots, n\} \to \B$, and every $b_1, b_2 \in \B$ such that $b_1 \neq b_2$:
+\begin{eqnarray*}
+V([f(1), \ldots, f(n), b_1]) \cap V([f(1), \ldots, f(n), b_2]) & = & \emptyset
+\end{eqnarray*}
 \end{mydef}
-
-\begin{myrem}
-	$G$ is the list of genesis block to startup the system. $log_{G,V}$ would be an infinite chain that is valid regarding $V$.
-\end{myrem}
-
-\begin{mynota}
-	$$\forall i , log_{G,V}(i)^- = (log_{G,V}(0),,,log_{G,V}(i))$$
-	$$LOG_{G,V} = \{ f | \textit{ f is a (G,V) validated chain}\}$$
-\end{mynota}
-
-\begin{myrem}
-	We introduce $LOG_{G,V}$ which really complicated but is actually necessary to deal with fork and consensus later.
-\end{myrem}
-
-\begin{mydef}
-	A set of validated chain $LOG_{G,V}$ is said to be infinite if:
-	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N} , \forall b  \in V(log_{G,V}(i)-), V(log_{G,V}(i)-,b)\neq \emptyset $$
-\end{mydef}
-
-\begin{myrem}
-	Infinite here is used in a sense that whatever instance of a $G,V$ validated-chain we are dealing with we will always be able to complete it.
-\end{myrem}
-
-\begin{mydef}
-	A set of validated chain $LOG_{G,V}$ is said secured if :
-	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N}^+ , \forall b,b' \in \Sigma, b\neq b' \implies V(log_{G,V}(i)^-,b)\cap V(log_{G,V}(i)^-,b') = \emptyset$$
-\end{mydef}
-
-\begin{myrem}
-	Intuitively in order to be secured $V(,,b)$ should depend on $b$ as bitcoin include previous hash block. 
-\end{myrem}
+Intuitively, in order to be secured $V$ should depend on the last block $b$ that is included in the blockchain.
 
 \begin{mydef}
 	We call player's knowledge a tuple $(P,K_{T})$ where $P$ is a set of player and $K_{T}$ a function:
