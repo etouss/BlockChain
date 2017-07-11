@@ -55,18 +55,61 @@ An attempt to give the most abstract possible definition of a blockchain.
 \end{myrem}
 
 \begin{mydef}
-	We call  alive Set of player a tuple $(P,K_P)$ where $P$ is a set of player and $K_P$ a function:
-	$$K_P : P\times T \rightarrow \mathscr{P}(\Sigma^*)$$
+	We call player's knowledge a tuple $(P,K_{T})$ where $P$ is a set of player and $K_{T}$ a function:
+	$$K_{T} : P\times [0;T] \times \mathbb{R}^+ \rightarrow \mathscr{P}(\Sigma^* \times ]0;1])$$
 	such that: 
 	\begin{align*}
-	&\forall p \in P, \forall t,t' \in T; t\leq t' \implies K_P(p,t) \subseteq K_P(p,t') \\
-	&\exists p \in P, \forall t \in T, \exists t'>t, K_P(p,t) \subset K_P(p,t') \\
+	&\forall p \in P,\forall t\in [ 0;T ], (b,\alpha) \in K_{T}(t,0,p) \implies \alpha = 1 \\
+	&\forall p \in P,\forall t,t'\in [ 0;T ], t' \geq t \implies K_{T}(t',0,p) \subseteq K(t,0,p)  \\
+	&\forall p \in P,\forall t\in [ 0;T ], \forall \delta \in \mathbb{R}^+, K_{T}(t,0,p) \subseteq K_{T}(t,\delta,p) \\
+	&\forall p \in P,\forall t\in [ 0;T ], \forall \delta,\delta' \in \mathbb{R}^+, \delta' \geq \delta \implies \forall (b,\alpha) \in K_{T}(p,t,\delta), \exists (b,\alpha') \in K_{T}(p,t,\delta'), \alpha'\geq \alpha\\
 	\end{align*}
 \end{mydef}
 
+\begin{mynota}
+	$\forall p \in P, \forall t\in [0;T]$ we denote $\{b | (b,1) \in K_{T}(p,t,0)\}$ : $K_{T}(p,t)$
+\end{mynota}
+
+\begin{mydef}
+	Let $T,T' \in \mathbb{R}^+$ such that $T>T'$ we say that $K'_{T'}$ extend $K_{T}$ if $\forall p, K_{T}(p,T) = K'_{T'}(p,T)$
+\end{mydef}
+
+\begin{mydef}
+	A block chain protocol is a function noted $P_{G,V}$:
+	$$P_{G,V} : (LOG_{G,V}\times \mathbb{N})  \times (LOG_{G,V}\times \mathbb{N}) \times T \rightarrow (LOG_{G,V}\times \mathbb{N}) $$
+	such that :
+		\begin{align*}
+		&\forall log_{G,V},log_{G,V}' \in LOG_{G,V}, \forall n,n' \in \mathbb{N} , \forall t \in T; P_{G,V}(log_{G,V},n,log_{G,V}',n',t) = (log_{G,V},n) \lor (log_{G,V},n')		\end{align*}
+\end{mydef}
 \begin{myrem}
-	$K_p$ represent the knowledge of $p$ this knowledge should not decrease. And to be considered alive at least one player should be trying to increase is knowledge (mining).
+	$P_{G,V}$ can be seen as the rule in case of fork and new block. 
+	Have to be improve to impose that there is no cycle (an order ?)
 \end{myrem}
+
+\begin{mydef}
+	Considering an validated chain $LOG_{G,V}$, a player's knowledge $(P,K_T)$ and a block chain protocol $P_{G,V}$. We denote $S_{t,p}$ where $t\in [0,T]$ and $p\in P$ the set of tuple :
+	$$ S_{t,p} = \{log_{G,V}(N)^- | log_{G,V} \in LOG_{G,V} \land log_{G,V}(N)^- \subseteq K_T(p,t)\} $$
+	
+	We call BlockChain at time $t\in [0,T]$ for user $p \in P$ noted $BC_{t,p}$ the tuple:
+	\begin{align*}
+	&BC_{t,p} \in S_{t,p} \\
+	& \forall log \in S_{t,p}, P_{G,V}((log,|log|),(BC_{t,p},|BC_{t,p}|),t) = (BC_{t,p},|BC_{t,p}|) \\
+	\end{align*}
+	
+\end{mydef}
+\begin{myrem}
+	Intuitively the blockchain for a user $p$ at a time $t$ is the best chain he fully knows regarding the protocol function and the validity at time $t$ (time-stamping).
+\end{myrem}
+
+\begin{mydef}
+	We denote $\alpha^*$ the function $$ \mathbb{R}^+ \times LOG_{G,V} \times N \times P \rightarrow [0,1]$$ such that : 
+	$$\alpha^*(\delta,log_{G,V},N,p) = max\{\alpha | \exists b; (b,\alpha) \in K_T(p,T,\delta)\cap V(log_{G,V}(N)^-)\} $$
+	We said that a $LOG_{G,V}$ is alive regarding $(P,K_T)$ iff:
+	$$\exists p, \exists log_{G,V}, \exists N, log_{G,V}(N)^- \in K_T(p,T) \land V(log_{G,V}(N)^-) \cap K_T(p,T) = \emptyset \land lim_{\delta\rightarrow \infty} \alpha^*(\delta,log_{G,V},N,p) = 1$$
+\end{mydef}
+
+
+\section{Draft}
 
 \begin{mydef}
 	We call an alive set of validated chain a tuple $(LOG_{G,V},P,K_P)$ where $LOG_{G,V}$ is an set of infinite validated chain and $P,K_P$ an alive set of player.
@@ -79,31 +122,3 @@ An attempt to give the most abstract possible definition of a blockchain.
 \begin{myrem}
 	To be honest i am not sure as we are dealing with infinite number. I may have to trick things here. I want to ensure the fact that the chain will eventually move forward.
 \end{myrem}
-
-\begin{mydef}
-	A block chain protocol is a function noted $P_{G,V}$:
-	$$P_{G,V} : (LOG_{G,V}\times \mathbb{N})  \times (LOG_{G,V}\times \mathbb{N}) \times T \rightarrow (LOG_{G,V}\times \mathbb{N}) $$
-	such that :
-		\begin{align*}
-		&\forall log_{G,V},log_{G,V}' \in LOG_{G,V}, \forall n,n' \in \mathbb{N} , \forall t \in T; P_{G,V}(log_{G,V},n,log_{G,V}',n',t) = (log_{G,V},n) \lor (log_{G,V},n')		\end{align*}
-\end{mydef}
-\begin{myrem}
-	$P_{G,V}$ can be seen as the rule in case of fork and new block. 
-\end{myrem}
-
-\begin{mydef}
-	Considering an alive set of validated chain $(LOG_{G,V},P,K_P)$ and a block chain protocol $P_{G,V}$. We denote $S_{t,p}$ where $t\in T$ and $p\in P$ the set of tuple :
-	$$ S_{t,p} = \{log_{G,V}(N)^- | log_{G,V} \in LOG_{G,V} \land log_{G,V}(N)^- \subseteq K_P(p,t)\} $$
-	
-	We call BlockChain at time $t\in T$ for user $p \in P$ noted $BC_{t,p}$ the tuple:
-	\begin{align*}
-	&BC_{t,p} \in S_{t,p} \\
-	& \forall log \in S_{t,p}, P_{G,V}((log,|log|),(BC_{t,p},|BC_{t,p}|),t) = (BC_{t,p},|BC_{t,p}|) \\
-	\end{align*}
-	
-\end{mydef}
-\begin{myrem}
-	Intuitively the blockchain for a user $p$ at a time $t$ is the best chain he fully knows regarding the protocol function and the validity at time $t$ (time-stamping).
-\end{myrem}
-
-At the end a specific block chain seems to be definable through her validation rules, a consensus protocol and each player knowledge function. Which seems to fit puzzle and rules.
