@@ -40,58 +40,61 @@ V([f(1), \ldots, f(n), b_1]) \cap V([f(1), \ldots, f(n), b_2]) & = & \emptyset
 \end{mydef}
 Intuitively, in order to be secured $V$ should depend on the last block $b$ that is included in the blockchain.
 
-\begin{mydef}
-	We call player's knowledge a tuple $(P,K_{T})$ where $P$ is a set of player and $K_{T}$ a function:
-	$$K_{T} : P\times [0;T] \times \mathbb{R}^+ \rightarrow \mathscr{P}(\Sigma^* \times ]0;1])$$
-	such that: 
-	\begin{align*}
-	&\forall p \in P,\forall t\in [ 0;T ], (b,\alpha) \in K_{T}(t,0,p) \implies \alpha = 1 \\
-	&\forall p \in P,\forall t,t'\in [ 0;T ], t' \geq t \implies K_{T}(t',0,p) \subseteq K(t,0,p)  \\
-	&\forall p \in P,\forall t\in [ 0;T ], \forall \delta \in \mathbb{R}^+, K_{T}(t,0,p) \subseteq K_{T}(t,\delta,p) \\
-	&\forall p \in P,\forall t\in [ 0;T ], \forall \delta,\delta' \in \mathbb{R}^+, \delta' \geq \delta \implies \forall (b,\alpha) \in K_{T}(p,t,\delta), \exists (b,\alpha') \in K_{T}(p,t,\delta'), \alpha'\geq \alpha\\
-	\end{align*}
-\end{mydef}
-
 \begin{mynota}
-	$\forall p \in P, \forall t\in [0;T]$ we denote $\{b | (b,1) \in K_{T}(p,t,0)\}$ : $K_{T}(p,t)$
+	For all $f : \{1, \ldots, n\} \rightarrow \B$ with $n \in \mathbb{N} \in LOG_{G,V}$ we denote $$f^L = [f(1), \ldots, f(n)]$$
 \end{mynota}
 
 \begin{mydef}
-	Let $T,T' \in \mathbb{R}^+$ such that $T>T'$ we say that $K'_{T'}$ extend $K_{T}$ if $\forall p, K_{T}(p,T) = K'_{T'}(p,T)$
+Let $P$ be a set of players and $K_T$ a function :
+$$K_{T} : P \times \llbracket 0;T \rrbracket \times \mathbb{N} \rightarrow \fset(\B \times [0;1])$$ 
+Then $(P,K_{T})$ is a valid knowledge representation if :
+
+\begin{eqnarray*}
+&\forall p \in P,\forall t\in \llbracket 0;T \rrbracket, (b,\alpha) \in K_{T}(t,0,p) \implies \alpha = 1 \lor \alpha = 0\\
+&\forall p \in P,\forall t,t'\in \llbracket 0;T \rrbracket, t' \geq t, \forall b \in \B,  (b,1) \in K_{T}(t,0,p) \implies (b,1) \in K(t',0,p)  \\
+&\forall p \in P,\forall t\in \llbracket 0;T \rrbracket, \forall \delta \in \mathbb{N}, \forall b \in \B,  (b,1) \in K_{T}(t,0,p) \implies (b,1) \in K(t,\delta,p) \\
+&\forall p \in P,\forall t\in \llbracket 0;T \rrbracket, \forall \delta,\delta' \in \mathbb{N}, \delta' \geq \delta \implies \forall (b,\alpha) \in K_{T}(p,t,\delta), \exists (b,\alpha') \in K_{T}(p,t,\delta'), \alpha'\geq \alpha\\
+\end{eqnarray*}
+\end{mydef}
+
+\begin{mynota}
+	$\forall p \in P, \forall t\in \llbracket 0;T \rrbracket$ we denote $$K_{T}(p,t)=\{b | (b,1) \in K_{T}(p,t,0)\}$$
+\end{mynota}
+
+\begin{mydef}
+	Let $T,T' \in \mathbb{N}$ such that $T>T'$ we say that $K'_{T'}$ extend $K_{T}$ if $$\forall p, K_{T}(p,T) = K'_{T'}(p,T)$$
 \end{mydef}
 
 \begin{mydef}
 	A block chain protocol is a function noted $P_{G,V}$:
-	$$P_{G,V} : (LOG_{G,V}\times \mathbb{N})  \times (LOG_{G,V}\times \mathbb{N}) \times T \rightarrow (LOG_{G,V}\times \mathbb{N}) $$
+	$$P_{G,V} : \fset(LOG_{G,V}) \times \llbracket0,T\rrbracket \rightarrow \fset(LOG_{G,V}) $$
 	such that :
-		\begin{align*}
-		&\forall log_{G,V},log_{G,V}' \in LOG_{G,V}, \forall n,n' \in \mathbb{N} , \forall t \in T; P_{G,V}(log_{G,V},n,log_{G,V}',n',t) = (log_{G,V},n) \lor (log_{G,V},n')		\end{align*}
+\begin{eqnarray*}		
+	\forall S, \forall t \in \llbracket0,T\rrbracket, P_{G,V}(S,t) \subseteq S
+\end{eqnarray*}
 \end{mydef}
 \begin{myrem}
 	$P_{G,V}$ can be seen as the rule in case of fork and new block. 
-	Have to be improve to impose that there is no cycle (an order ?)
 \end{myrem}
 
 \begin{mydef}
-	Considering an validated chain $LOG_{G,V}$, a player's knowledge $(P,K_T)$ and a block chain protocol $P_{G,V}$. We denote $S_{t,p}$ where $t\in [0,T]$ and $p\in P$ the set of tuple :
-	$$ S_{t,p} = \{log_{G,V}(N)^- | log_{G,V} \in LOG_{G,V} \land log_{G,V}(N)^- \subseteq K_T(p,t)\} $$
+	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation and $P_{G,V}$ a block chain protocol. We denote $S_{t,p}$ where $t\in \llbracket0,T\rrbracket$ and $p\in P$ the set:
+	$$ S_{t,p} = \{f | f \in LOG_{G,V} \land \forall i \in \{1, \ldots, |f^L|\}, f(i) \in K_T(p,t)\} $$
 	
-	We call BlockChain at time $t\in [0,T]$ for user $p \in P$ noted $BC_{t,p}$ the tuple:
-	\begin{align*}
-	&BC_{t,p} \in S_{t,p} \\
-	& \forall log \in S_{t,p}, P_{G,V}((log,|log|),(BC_{t,p},|BC_{t,p}|),t) = (BC_{t,p},|BC_{t,p}|) \\
-	\end{align*}
+	We call a BlockChain at time $t\in \llbracket0,T\rrbracket$ for user $p \in P$ noted $BC_{t,p}$ a tuple:
+	$$BC_{t,p} \in P_{G,V}(S_{t,p},t) $$
 	
 \end{mydef}
 \begin{myrem}
-	Intuitively the blockchain for a user $p$ at a time $t$ is the best chain he fully knows regarding the protocol function and the validity at time $t$ (time-stamping).
+	Intuitively the blockchain for a user $p$ at a time $t$ is one of the best chain he fully knows regarding the protocol function and the validity at time $t$ (time-stamping).
 \end{myrem}
 
 \begin{mydef}
-	We denote $\alpha^*$ the function $$ \mathbb{R}^+ \times LOG_{G,V} \times N \times P \rightarrow [0,1]$$ such that : 
-	$$\alpha^*(\delta,log_{G,V},N,p) = max\{\alpha | \exists b; (b,\alpha) \in K_T(p,T,\delta)\cap V(log_{G,V}(N)^-)\} $$
-	We said that a $LOG_{G,V}$ is alive regarding $(P,K_T)$ iff:
-	$$\exists p, \exists log_{G,V}, \exists N, log_{G,V}(N)^- \in K_T(p,T) \land V(log_{G,V}(N)^-) \cap K_T(p,T) = \emptyset \land lim_{\delta\rightarrow \infty} \alpha^*(\delta,log_{G,V},N,p) = 1$$
+	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation.
+	We denote $\alpha^*$ the function $$ \mathbb{N} \times LOG_{G,V} \times P \rightarrow [0,1]$$ such that : 
+	$$\alpha^*(\delta,f,p) = max\{\alpha | \exists b \in \B; (b,\alpha) \in K_T(p,T,\delta)\cap V(f^L)\} $$
+	We said that $LOG_{G,V}$ is alive regarding $(P,K_T)$ if:
+	$$\exists p, \exists f, \forall  \in K_T(p,T) \land V(log_{G,V}(N)^-) \cap K_T(p,T) = \emptyset \land lim_{\delta\rightarrow \infty} \alpha^*(\delta,log_{G,V},N,p) = 1$$
 \end{mydef}
 
 

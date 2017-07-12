@@ -1,7 +1,6 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  11 JUL 2017 18:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.8.29)  11 JUL 2017 22:26
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
 **main.tex
 (./main.tex
@@ -1549,26 +1548,9 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <10> not available
 (Font)              Font shape `T1/ppl/b/n' tried instead on input line 6.
+ [1
 
-Overfull \hbox (21.66316pt too wide) in paragraph at lines 68--68
-[] 
- []
-
-[1
-
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (28.72055pt too wide) detected at line 94
-\OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 p; \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 log[];
- \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 N; log[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 N
-\OT1/cmr/m/n/10 )[] \OMS/cmsy/m/n/10 2 \OML/cmm/m/it/10 K[]\OT1/cmr/m/n/10 (\OM
-L/cmm/m/it/10 p; T\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^ \OML/cmm/m/it/10 V\OT1/c
-mr/m/n/10 (\OML/cmm/m/it/10 log[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 N\OT1/cmr/m/
-n/10 )[]) \OMS/cmsy/m/n/10 \ \OML/cmm/m/it/10 K[]\OT1/cmr/m/n/10 (\OML/cmm/m/it
-/10 p; T\OT1/cmr/m/n/10 ) = \OMS/cmsy/m/n/10 ; ^ \OML/cmm/m/it/10 lim[][]\OT1/
-cmr/m/n/10 (\OML/cmm/m/it/10 ^^N; log[]; N; p\OT1/cmr/m/n/10 ) = 1
- []
-
-) [2]
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 78.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
  (./main.aux)
@@ -1584,11 +1566,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  31315 strings out of 493014
  609651 string characters out of 6133351
- 702716 words of memory out of 5000000
+ 700716 words of memory out of 5000000
  34305 multiletter control sequences out of 15000+600000
  25039 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,8n,84p,10415b,2563s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,8n,84p,10415b,2539s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc
 }</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></
@@ -1598,11 +1580,11 @@ ocal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/loca
 l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/lo
-cal/texlive/2016/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/local/texl
-ive/2016/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/201
-6/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texmf
--dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (2 pages, 128097 bytes).
+cal/texlive/2016/texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb></usr/loca
+l/texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texli
+ve/2016/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016
+/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on main.pdf (2 pages, 126706 bytes).
 PDF statistics:
  116 PDF objects out of 1000 (max. 8388607)
  83 compressed objects within 1 object stream
