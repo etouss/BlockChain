@@ -3,21 +3,25 @@
 An attempt to give the most abstract possible definition of a blockchain.
 
 \section{BlockChain}
-Given a set $S$, let $\flist(S)$ and $\fset(S)$ be the sets of all finite lists and all finite sets of elements of $S$, respectively. Given $L \in \flist(S)$, we use notation $|L|$ to refer to the number of elements in $L$, and notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, |L|\}$. From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks. 
+Given a set $S$, let $\flist(S)$ and $\fset(S)$ be the sets of all finite lists and all finite sets of elements of $S$, respectively. Given $L \in \flist(S)$, we use notation $|L|$ to refer to the number of elements in $L$, and notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, |L|\}$. From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  Moreover we extend the definition of $\subseteq$ such that :
+\begin{eqnarray*}
+	\forall S \in \fset(B), \forall L \in \flist(B), L \subseteq S \Leftrightarrow \forall i \in \{1, \ldots, |L|\}, L[i] \in S
+\end{eqnarray*}
+
 \begin{mydef}
 A validation rule is a function $V : \flist(\B) \to \fset(\B)$
 \end{mydef}
 Intuitively $V$ is a function taking a list $L$ of block as input, and returning the set of blocks that could be added to $L$ to produce a valid blockchain.
 
 \begin{mydef}
-Let $G \in \flist(\B)$ be non-empty, and $V$ be a validation rule. Then a function $f : \{1, \ldots, n\} \rightarrow \B$ with $n \in \mathbb{N}$ is a validated chain with respect to $(G,V)$ if:
+Let $G \in \flist(\B)$ be non-empty, and $V$ be a validation rule. Then a list $L \in \flist(\B)$ is a validated chain with respect to $(G,V)$ if:
 \begin{enumerate}
-\item $|G| \leq n$ and $f(i) = G[i]$, for every $i \in \{1, \ldots, n\}$.
+\item $|G| \leq |L|$ and $L[i] = G[i]$, for every $i \in \{1, \ldots, |G|\}$.
 
-\item $f(1) \in V([\ ])$ and $f(i+1) \in V([f(1), \ldots, f(i)])$, for every $i \in \{1, \ldots, i-1\}$.
+\item $L[1] \in V([\ ])$ and $L[i+1] \in V([L[1], \ldots, L[i]])$, for every $i \in \{1, \ldots, |L|-1\}$.
 \end{enumerate}
 \end{mydef}
-Function $f$ in this definition is a valid chain according to the validation rule $V$ and the lists $G$ of genesis blocks (whose role is to provide the blocks to startup the system). Let $\LOG(G,V)$ be the set of validated chains with respect to $(G,V)$.
+List $L$ in this definition is a valid chain according to the validation rule $V$ and the lists $G$ of genesis blocks (whose role is to provide the blocks to startup the system). Let $\LOG(G,V)$ be the set of validated chains with respect to $(G,V)$.
 
 %\begin{myrem}
 %	We introduce $LOG_{G,V}$ which really complicated but is actually necessary to deal with fork and consensus later.
@@ -33,16 +37,12 @@ Function $f$ in this definition is a valid chain according to the validation rul
 %\end{myrem}
 
 \begin{mydef}
-Let $G \in \flist(\B)$ be non-empty, and $V$ be a validation rule. Then $\LOG(G,V)$ is safe if for every $f \in \LOG(G,V)$ such that $f : \{1, \ldots, n\} \to \B$, and every $b_1, b_2 \in \B$ such that $b_1 \neq b_2$:
+Let $G \in \flist(\B)$ be non-empty, and $V$ be a validation rule. Then $\LOG(G,V)$ is safe if for every $L \in \LOG(G,V)$ such that every $b_1, b_2 \in \B$ such that $b_1 \neq b_2$:
 \begin{eqnarray*}
-V([f(1), \ldots, f(n), b_1]) \cap V([f(1), \ldots, f(n), b_2]) & = & \emptyset
+V([L[1], \ldots, L[|L|], b_1]) \cap V([L[1], \ldots, L[|L|], b_2]) & = & \emptyset
 \end{eqnarray*}
 \end{mydef}
 Intuitively, in order to be secured $V$ should depend on the last block $b$ that is included in the blockchain.
-
-\begin{mynota}
-	For all $f : \{1, \ldots, n\} \rightarrow \B$ with $n \in \mathbb{N} \in LOG_{G,V}$ we denote $$f^L = [f(1), \ldots, f(n)]$$
-\end{mynota}
 
 \begin{mydef}
 Let $P$ be a set of players and $K_T$ a function :
@@ -66,23 +66,23 @@ Then $(P,K_{T})$ is a valid knowledge representation if :
 \end{mydef}
 
 \begin{mydef}
-	A block chain protocol is a function noted $P_{G,V}$:
-	$$P_{G,V} : \fset(LOG_{G,V}) \times \llbracket0,T\rrbracket \rightarrow \fset(LOG_{G,V}) $$
-	such that :
+	Let $\preceq_{G,V,t}$ be  a total preorder over $LOG_{G,V}$:
 \begin{eqnarray*}		
-	\forall S, \forall t \in \llbracket0,T\rrbracket, P_{G,V}(S,t) \subseteq S
+	&\forall L_1, L_2, L_3 \in LOG_{G,V}, L_1 \preceq_{G,V,t} L_2 \land L_2 \preceq_{G,V,t} L_3 \implies L_1 \preceq_{G,V,t} L_3  \\
+	&\forall L_1, L_2 \in LOG_{G,V}, L_1 \preceq_{G,V,t} L_2 \lor L_2 \preceq_{G,V,t} L_1 
 \end{eqnarray*}
+	A block chain protocol over $LOG_{G,V}$ is a function noted $\preceq_{G,V}$ such that: $$ \forall t \in \mathbb{N}, \preceq_{G,V}(t) =  \preceq_{G,V,t}$$ where $\preceq_{G,V,t}$ is a total preorder over $LOG_{G,V}$
 \end{mydef}
 \begin{myrem}
-	$P_{G,V}$ can be seen as the rule in case of fork and new block. 
+	$\preceq_{G,V}$ can be seen as the rules in case of fork and new block. 
 \end{myrem}
 
 \begin{mydef}
-	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation and $P_{G,V}$ a block chain protocol. We denote $S_{t,p}$ where $t\in \llbracket0,T\rrbracket$ and $p\in P$ the set:
-	$$ S_{t,p} = \{f | f \in LOG_{G,V} \land \forall i \in \{1, \ldots, |f^L|\}, f(i) \in K_T(p,t)\} $$
+	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation and $\preceq_{G,V}$ a block chain protocol. We denote $S_{t,p}$ where $t\in \llbracket0,T\rrbracket$ and $p\in P$ the set:
+	$$ S_{t,p} = \{L | L \in LOG_{G,V} \land  L \subseteq K_T(p,t)\} $$
 	
-	We call a BlockChain at time $t\in \llbracket0,T\rrbracket$ for user $p \in P$ noted $BC_{t,p}$ a tuple:
-	$$BC_{t,p} \in P_{G,V}(S_{t,p},t) $$
+	We call a BlockChain at time $t\in \llbracket0,T\rrbracket$ for user $p \in P$ noted $BC_{t,p}$ a list such that:
+	$$BC_{t,p} \in S_{t,p} \land \forall L \in S_{t,p}, L \preceq_{G,V,t} BC_{t,p} $$
 	
 \end{mydef}
 \begin{myrem}
@@ -92,22 +92,27 @@ Then $(P,K_{T})$ is a valid knowledge representation if :
 \begin{mydef}
 	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation.
 	We denote $\alpha^*$ the function $$ \mathbb{N} \times LOG_{G,V} \times P \rightarrow [0,1]$$ such that : 
-	$$\alpha^*(\delta,f,p) = max\{\alpha | \exists b \in \B; (b,\alpha) \in K_T(p,T,\delta)\cap V(f^L)\} $$
+	$$\alpha^*(\delta,L,p) = max\{\alpha | \exists b \in \B; (b,\alpha) \in K_T(p,T,\delta)\cap V(L)\} $$
 	We said that $LOG_{G,V}$ is alive regarding $(P,K_T)$ if:
-	$$\exists p, \exists f, \forall  \in K_T(p,T) \land V(log_{G,V}(N)^-) \cap K_T(p,T) = \emptyset \land lim_{\delta\rightarrow \infty} \alpha^*(\delta,log_{G,V},N,p) = 1$$
+	$$\exists p \in P, \exists L \in LOG_{G,V}, L \subseteq K_T(p,T) \land K_T(p,T) \cap V(L) = \emptyset \land \lim\limits_{\delta\rightarrow +\infty} \alpha^*(\delta,L,p) = 1$$
 \end{mydef}
 
 
-\section{Draft}
 
+
+\section{draft}
+	
+	\begin{mydef}
+		Considering $(P,K_T)$ a valid knowledge representation, $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$ alive, and $\preceq_{G,V}$ a block chain protocol. Let $L \in LOG_{G,V}$ we note 
+		the probabilty that $L \subseteq B_{T+\delta,p}$  
+	\end{mydef}
+	
+	
 \begin{mydef}
-	We call an alive set of validated chain a tuple $(LOG_{G,V},P,K_P)$ where $LOG_{G,V}$ is an set of infinite validated chain and $P,K_P$ an alive set of player.
+	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation. A block chain protocol $\preceq_{G,V,T}$ is said to be ageing-secured if
+	\begin{eqnarray*}
+		&\forall p \in P,\forall T_0 < T, \forall t,t' \leq T, B_{t,p} \subseteq B_{T_0,p}, B_{t',p} \subseteq B_{T_0,p} \\
+		&t\leq t' \implies \forall T_1\geq T_0 , \mathbb{P}(B_{t,p}\subseteq B_{T_1,p}) \geq \mathbb{P}(B_{t',p}\subseteq B_{T_1,p})
+	\end{eqnarray*}
 \end{mydef}
 
-\begin{myprop*}
-	Let $(LOG_{G,V},P,K_P)$ an alive set of validated chain then:
-	$$\forall log_{G,V} \in LOG_{G,V}, \forall i \in \mathbb{N}, \exists p \in P, \exists t \in T , V(log_{G,V}(i)^-) \cap K_P(p,t) \neq \emptyset $$
-\end{myprop*}
-\begin{myrem}
-	To be honest i am not sure as we are dealing with infinite number. I may have to trick things here. I want to ensure the fact that the chain will eventually move forward.
-\end{myrem}
