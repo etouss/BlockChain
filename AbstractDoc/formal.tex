@@ -50,11 +50,11 @@ Intuitively, in order to be secured $V$ should depend on the last block $b$ that
 
 \medskip
 \noindent
-\textbf{Knowledge and strategies for discovery}
+\textbf{Knowledge}
 
 \begin{mydef}
 A \emph{knowledge tree} $K$ is a tree $K = (N,E)$ with $N \subseteq \B$ and such that 
-every path from in $K$ from its root to a leaf belongs to $LOG_{G,V}$.
+every path in $K$ from its root to a leaf belongs to $LOG_{G,V}$.
 \end{mydef}
 
 Intuitively, the knowledge tree represents all the blockchain information we know. 
@@ -62,24 +62,10 @@ Abusing notation, we say that a block $B$ is in a knowledge tree $K = (N,E)$ if 
 (this is informal) We use $\paths(K)$ to denote the set of all lists of blocks made out of a path 
 in $K$ from its root to a leaf. 
 
-\begin{mydef}
-A \emph{strategy} is a partial function $S: \B \times \mathbb{N} \rightarrow [0,1]$ that 
-satisfies $S(B,i) \leq S(B,j)$ for all $i \leq j$. That is, $S$ assigns 
-to each block $B$ and number $i$ a probability $S(B,i)$ that is not decreasing on $i$. 
-\end{mydef}
-
-Intuitively, a strategy assigns to a time $i$ a probability that a certain block is discovered amongst the 
-$i$ next blocks that are discovered. 
-
-\begin{mydef}
-Given a genesis $G$ and a validation function $V$, 
-A Knowledge representation for $G$ and $V$ is a pair $(K,S)$, where $K$ is a knowledge tree and 
-$S$ is a strategy with preimage $\{B \in \B \mid B \notin K\} \times \mathbb N$. 
-\end{mydef}
 
 \medskip
 \noindent
-\textbf{Block chain, protocols and liveliness}
+\textbf{Block chain, protocols}
 
 \begin{mydef}
 	Let $\preceq_{G,V,t}$ be  a total preorder over $LOG_{G,V}$:
@@ -92,92 +78,13 @@ $S$ is a strategy with preimage $\{B \in \B \mid B \notin K\} \times \mathbb N$.
 
 \begin{mydef}
 Let $t \in \mathbb N$, $\preceq_{G,V}$ a block chain protocol and $K$ a knowledge tree. 
-A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal element in $\paths(L)$ with respect to 
- $\preceq_{G,V}(t)$.
-\end{mydef}
-
-Let $\mathcal K$ be a set $\{(K_1,S_1),\dots,(K_n,S_n)\}$ of knowledge trees. 
-We say that $LOG_{G,V}$ is alive with respect to $\mathcal K$ if there is an $(K_\ell,S_\ell)$ with $1 \leq \ell \leq n$ 
-and a block $B$ not in $K_\ell$ such that 
-$$\lim\limits_{\delta\rightarrow +\infty}S_\ell(B,\delta) = 1$$
-
-$LOG_{G,V}$ is alive with respect to $\mathcal K$ and a protocol $\preceq_{G,V}$ on a time $t$
-if there is an $(K_\ell,S_\ell)$ with $1 \leq \ell \leq n$ 
-and a block $B \in V(BC_t)$ such that 
-$$\lim\limits_{\delta\rightarrow +\infty}S_\ell(B,\delta) = 1, $$
-where $BC_t$ is a blockchain of $K_\ell$ with respect to $\preceq_{G,V}$ in $t$.
-
-\section{old stuff}
-
-\begin{mydef}
-Let $P$ be a set of players and $K_T$ a function :
-$$K_{T} : P \times \llbracket 0;T \rrbracket \times \mathbb{N} \rightarrow \fset(\B \times [0;1])$$ 
-Then $(P,K_{T})$ is a valid knowledge representation if :
-
-\begin{eqnarray*}
-&\forall p \in P,\forall t\in \llbracket 0;T \rrbracket, (b,\alpha) \in K_{T}(t,0,p) \implies \alpha = 1 \lor \alpha = 0\\
-&\forall p \in P,\forall t,t'\in \llbracket 0;T \rrbracket, t' \geq t, \forall b \in \B,  (b,1) \in K_{T}(t,0,p) \implies (b,1) \in K(t',0,p)  \\
-&\forall p \in P,\forall t\in \llbracket 0;T \rrbracket, \forall \delta \in \mathbb{N}, \forall b \in \B,  (b,1) \in K_{T}(t,0,p) \implies (b,1) \in K(t,\delta,p) \\
-&\forall p \in P,\forall t\in \llbracket 0;T \rrbracket, \forall \delta,\delta' \in \mathbb{N}, \delta' \geq \delta \implies \forall (b,\alpha) \in K_{T}(p,t,\delta), \exists (b,\alpha') \in K_{T}(p,t,\delta'), \alpha'\geq \alpha\\
-\end{eqnarray*}
-\end{mydef}
-
-\begin{mynota}
-	$\forall p \in P, \forall t\in \llbracket 0;T \rrbracket$ we denote $$K_{T}(p,t)=\{b | (b,1) \in K_{T}(p,t,0)\}$$
-\end{mynota}
-
-\begin{mydef}
-	Let $T,T' \in \mathbb{N}$ such that $T>T'$ we say that $K'_{T'}$ extend $K_{T}$ if $$\forall p, K_{T}(p,T) = K'_{T'}(p,T)$$
-\end{mydef}
-
-\begin{mydef}
-	Let $\preceq_{G,V,t}$ be  a total preorder over $LOG_{G,V}$:
-\begin{eqnarray*}		
-	&\forall L_1, L_2, L_3 \in LOG_{G,V}, L_1 \preceq_{G,V,t} L_2 \land L_2 \preceq_{G,V,t} L_3 \implies L_1 \preceq_{G,V,t} L_3  \\
-	&\forall L_1, L_2 \in LOG_{G,V}, L_1 \preceq_{G,V,t} L_2 \lor L_2 \preceq_{G,V,t} L_1 
-\end{eqnarray*}
-	A block chain protocol over $LOG_{G,V}$ is a function noted $\preceq_{G,V}$ such that: $$ \forall t \in \mathbb{N}, \preceq_{G,V}(t) =  \preceq_{G,V,t}$$ where $\preceq_{G,V,t}$ is a total preorder over $LOG_{G,V}$
-\end{mydef}
-\begin{myrem}
-	$\preceq_{G,V}$ can be seen as the rules in case of fork and new block. 
-\end{myrem}
-
-\begin{mydef}
-	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation and $\preceq_{G,V}$ a block chain protocol. We denote $S_{t,p}$ where $t\in \llbracket0,T\rrbracket$ and $p\in P$ the set:
-	$$ S_{t,p} = \{L | L \in LOG_{G,V} \land  L \subseteq K_T(p,t)\} $$
-	
-	We call a BlockChain at time $t\in \llbracket0,T\rrbracket$ for user $p \in P$ noted $BC_{t,p}$ a list such that:
-	$$BC_{t,p} \in S_{t,p} \land \forall L \in S_{t,p}, L \preceq_{G,V,t} BC_{t,p} $$
-	
-\end{mydef}
-\begin{myrem}
-	Intuitively the blockchain for a user $p$ at a time $t$ is one of the best chain he fully knows regarding the protocol function and the validity at time $t$ (time-stamping).
-\end{myrem}
-
-\begin{mydef}
-	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation.
-	We denote $\alpha^*$ the function $$ \mathbb{N} \times LOG_{G,V} \times P \rightarrow [0,1]$$ such that : 
-	$$\alpha^*(\delta,L,p) = max\{\alpha | \exists b \in \B; (b,\alpha) \in K_T(p,T,\delta)\cap V(L)\} $$
-	We said that $LOG_{G,V}$ is alive regarding $(P,K_T)$ if:
-	$$\exists p \in P, \exists L \in LOG_{G,V}, L \subseteq K_T(p,T) \land K_T(p,T) \cap V(L) = \emptyset \land \lim\limits_{\delta\rightarrow +\infty} \alpha^*(\delta,L,p) = 1$$
+A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal element in $\paths(K)$ with respect to $\preceq_{G,V}(t)$.
 \end{mydef}
 
 
 
 
-\section{draft}
-	
-	\begin{mydef}
-		Considering $(P,K_T)$ a valid knowledge representation, $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$ alive, and $\preceq_{G,V}$ a block chain protocol. Let $L \in LOG_{G,V}$ we note 
-		the probabilty that $L \subseteq B_{T+\delta,p}$  
-	\end{mydef}
-	
-	
-\begin{mydef}
-	Considering $LOG_{G,V}$ the set of validated chains with respect to $(G,V)$, $(P,K_T)$ a valid knowledge representation. A block chain protocol $\preceq_{G,V,T}$ is said to be ageing-secured if
-	\begin{eqnarray*}
-		&\forall p \in P,\forall T_0 < T, \forall t,t' \leq T, B_{t,p} \subseteq B_{T_0,p}, B_{t',p} \subseteq B_{T_0,p} \\
-		&t\leq t' \implies \forall T_1\geq T_0 , \mathbb{P}(B_{t,p}\subseteq B_{T_1,p}) \geq \mathbb{P}(B_{t',p}\subseteq B_{T_1,p})
-	\end{eqnarray*}
-\end{mydef}
+
+
+
 
