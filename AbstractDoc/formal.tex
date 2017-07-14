@@ -93,10 +93,19 @@ A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal eleme
 	\end{eqnarray*}
 	Let $A$ be the set of action.
 \end{mydef}
+The action represents the mining strategy we only capture valid mining strategy...  not sure if the second property is needed we could represent more complex strategy without it. Have to thinks about it.
+
+\begin{myrem}
+	In order to reach a finite number of action we might end up definition them over equivalence classes of $K$ (meaning a block B upon V(L) is equivalent to mine a block B' upon V(L) then the number of possible action for a player would be |Path(K)|). just an idea that i dont want to forget.
+\end{myrem}
+
+
 
 \begin{mydef}
 	We call incentive a function $I : A \times \mathcal{K} \times P \rightarrow \mathbb{R}^+$ 
 \end{mydef}
+This incentive function will capture all the real world assumption such as, want money, destroy system ?,  50\% hpower etc ... reward will also rely on probability to sucess.
+
 
 \begin{mydef}
 	Considering a set of player $P$, a function $K_P : P \rightarrow \mathcal{K}$, the set of action $A$, and a incentive $I$. We define a strategic game such that:
@@ -110,8 +119,12 @@ A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal eleme
 Tweak definition a bit to reach finite game (doable if i touch to $A$) and proove equilibrium existence..
 
 \begin{mydef}
-	We say that $K'_P$ is reasonable if exists an equilibrium profile $E$ 
-	such that: $$\forall p \in P, K'_P(p) = E(p)(K_P(p))$$
+	We say that $K'_P$ is reasonable if exists an action $a \in A$ associate to a player $w \in P$ in an equilibrium profile such that: 	\begin{eqnarray*}	
+		& K'_P(w) = a(K_P(w)) \\
+		&\forall p \in P, K_P(p) \subseteq K'_P(p) \\
+		&\forall p \in P, K'_P(p) \subseteq K_P(p) \cup K'_P(w) \\
+	\end{eqnarray*}	
+	$K'_P$ represent all the possible knowledge after one reasonable action (on belonging to a nash equilibrium) has happened with an optional comunication round from the winner ($K'_P(p) \subseteq K_P(p) \cup K'_P(w)$). 
 \end{mydef}
 
 Good to go we finally have a defintion of reasonable $K$ and can define blockchain property which should be verified over all reasonable $K$.
