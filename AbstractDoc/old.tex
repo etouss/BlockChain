@@ -2,6 +2,19 @@
 
 \medskip
 \noindent
+\textbf{Block chain game}
+
+\begin{mydef}
+A block-chain game is a tuple $(G,V,\preceq_{G,V},P,\mathcal K,D)$ where $V$ is a validation rule, $G$ a list of genesis blocks, $\preceq_{G,V}$ a block chain protocol over $LOG_{G,V}$, $P$ a set of player, $\mathcal K$ a function which map each player of $P$ to a knowledge tree and $D : P \rightarrow [0, 1] $ such that $$\sum_{p\in P} D(p) = 1 \lor \sum_{p\in P} D(p) = 0$$ 
+\end{mydef}
+$D(p)$ represents the probability, that a player $p$, has to be the first to discover a list $L \in LOG_{G,V}$ such that for all $L'$ block chain of $\mathcal K (p)$ with respect to $\preceq_{G,V}(t)$, $L \neq L'$ and $L \preceq_{G,V,t} L'$
+
+\begin{mydef}
+	A block-chain game $(G,V,\preceq_{G,V},P,\mathcal K,D)$ is said to be alive if $$\sum_{p\in P} D(p) = 1$$
+\end{mydef}
+
+\medskip
+\noindent
 \textbf{Strategies for discovery}
 
 \begin{mydef}

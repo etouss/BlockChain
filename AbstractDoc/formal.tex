@@ -55,6 +55,7 @@ Intuitively, in order to be secured $V$ should depend on the last block $b$ that
 \begin{mydef}
 A \emph{knowledge tree} $K$ is a tree $K = (N,E)$ with $N \subseteq \B$ and such that 
 every path in $K$ from its root to a leaf belongs to $LOG_{G,V}$.
+Let $\mathcal{K}$ be the set of knowledge tree with respect to $(G,V)$.
 \end{mydef}
 
 Intuitively, the knowledge tree represents all the blockchain information we know. 
@@ -81,10 +82,36 @@ Let $t \in \mathbb N$, $\preceq_{G,V}$ a block chain protocol and $K$ a knowledg
 A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal element in $\paths(K)$ with respect to $\preceq_{G,V}(t)$.
 \end{mydef}
 
+\medskip
+\noindent
+\textbf{Action, incentive and game}
+\begin{mydef}
+	We call action a function $a: \mathcal{K} \rightarrow \mathcal{K}$ such that: 
+	\begin{eqnarray*}	
+		&\forall K \in \mathcal{K}, K \subseteq a(K) \\
+		&\forall K \in \mathcal{K} , |a(K) \setminus K| \leq 1
+	\end{eqnarray*}
+	Let $A$ be the set of action.
+\end{mydef}
 
+\begin{mydef}
+	We call incentive a function $I : A \times \mathcal{K} \times P \rightarrow \mathbb{R}^+$ 
+\end{mydef}
 
+\begin{mydef}
+	Considering a set of player $P$, a function $K_P : P \rightarrow \mathcal{K}$, the set of action $A$, and a incentive $I$. We define a strategic game such that:
+	\begin{itemize}
+		\item $P$ is the set of player.
+		\item $\forall p \in P$, $A$ is the set of available action.
+		\item $\forall p \in P, \forall a_1, a_2 \in A$ we say that $a_1$ is preferred to $a_2$ if $I(a_1,K_P(p),p) \geq I(a_2,K_P(p),p)$.
+	\end{itemize}
+\end{mydef}
 
+Tweak definition a bit to reach finite game (doable if i touch to $A$) and proove equilibrium existence..
 
+\begin{mydef}
+	We say that $K'_P$ is reasonable if exists an equilibrium profile $E$ 
+	such that: $$\forall p \in P, K'_P(p) = E(p)(K_P(p))$$
+\end{mydef}
 
-
-
+Good to go we finally have a defintion of reasonable $K$ and can define blockchain property which should be verified over all reasonable $K$.
