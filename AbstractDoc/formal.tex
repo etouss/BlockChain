@@ -82,49 +82,80 @@ Let $t \in \mathbb N$, $\preceq_{G,V}$ a block chain protocol and $K$ a knowledg
 A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal element in $\paths(K)$ with respect to $\preceq_{G,V}(t)$.
 \end{mydef}
 
+\begin{mydef}
+	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge trees we say that $K$ and $K'$ are $\equiv$ equivalent if :
+	\begin{eqnarray*}
+		& \equiv \textit{ is an equivalent function} \\
+		& \forall L \in \paths(K), \exists L' \in \paths(K'), \forall i \in \llbracket 1,|L| \rrbracket, L[i] \equiv L'[i] \\
+		& \forall L' \in \paths(K'), \exists L \in \paths(K), \forall i \in \llbracket 1,|L'| \rrbracket, L[i] \equiv L'[i] \\
+	\end{eqnarray*}	
+	We denote $K^{\equiv}$ the set of knowledge equivalent to $K$. 
+\end{mydef}
+
+
 \medskip
 \noindent
-\textbf{Action, incentive and game}
+\textbf{Action, states, reward and game}
 \begin{mydef}
-	We call action a function $a: \mathcal{K} \rightarrow \mathcal{K}$ such that: 
+	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
+	We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
+	$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
+\end{mydef}
+
+Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
+
+\begin{mydef}
+	We call action a for player $w\in P$ function $a^\equiv_w: \mathcal{K}_P \rightarrow \mathcal{K}_P^{\equiv}$ such that: 
 	\begin{eqnarray*}	
-		&\forall K \in \mathcal{K}, K \subseteq a(K) \\
-		&\forall K \in \mathcal{K} , |a(K) \setminus K| \leq 1
+		&\forall K_P \in \mathcal{K}_P, \forall K'_P \in a_w(K_P),  \forall u \in P, K_P(u) \subseteq K'_P(u)  \\
+		&\forall K_P \in \mathcal{K}_P, \forall K'_P \in a_w(K_P), \forall u \in P, K'_P(u) \subseteq K'_P(w) \cup K_P(u)  \\
 	\end{eqnarray*}
-	Let $A$ be the set of action.
+	Let $A^\equiv_w$ be the set of action for player $w$.
 \end{mydef}
-The action represents the mining strategy we only capture valid mining strategy...  not sure if the second property is needed we could represent more complex strategy without it. Have to thinks about it.
+An action of player $w$ is represented by a modification of $w$ knowledge and a round of communication. We are dealing with equivalence knowledge in order to reduce the number of action possible.
 
-\begin{myrem}
-	In order to reach a finite number of action we might end up definition them over equivalence classes of $K$ (meaning a block B upon V(L) is equivalent to mine a block B' upon V(L) then the number of possible action for a player would be |Path(K)|). just an idea that i dont want to forget.
-\end{myrem}
+\begin{mydef}
+	Let $P$ be a set of player, $\mathcal{A}^\equiv = A_{p_1}^\equiv \times A_{p_1}^\equiv \ldots \times A_{p_{|P|}}^\equiv$
+\end{mydef}
+
+\begin{mydef}
+	We call reward for player $w$ a function $r_w : \mathcal{K}_P \times \mathcal{A}^\equiv \rightarrow \mathbb{R}^+$ 
+	such that: $$ \forall A \in \mathcal{A}^\equiv, K_P \textit{ equivalent } K'_P \Rightarrow r_w(K_P,A) = r_w(K'_P,A) $$
+\end{mydef}
+Intuitively $\mathcal{K}_P$ represent the knowledge of each player assumed by $w$
+
+\begin{mydef}
+	Let $P$ be a set of player, $\mathcal{R} = r_{p_1} \times r_{p_1} \ldots \times r_{p_{|P|}}$
+\end{mydef}
 
 
 
 \begin{mydef}
-	We call incentive a function $I : A \times \mathcal{K} \times P \rightarrow \mathbb{R}^+$ 
-\end{mydef}
-This incentive function will capture all the real world assumption such as, want money, destroy system ?,  50\% hpower etc ... reward will also rely on probability to sucess.
-
-
-\begin{mydef}
-	Considering a set of player $P$, a function $K_P : P \rightarrow \mathcal{K}$, the set of action $A$, and a incentive $I$. We define a strategic game such that:
+	Considering a set of player $P$, a set of function $\mathcal{K}_P$, the set of action $\mathcal{A}$, the set of reward $\mathcal{R}$, and a function $\mathcal{P} : \mathcal{K}_P \times \mathcal{A} \times \mathcal{K}_P^\equiv \rightarrow [0;1]$ a transition probability ($\mathcal{P}(K_P,A,K_P^{1\equiv})$ is the probability of transitioning from $K_P$ to an element of $K_P^{1\equiv}$ after joint action $A$).
+	We define a infinite stochastic game  such that:
 	\begin{itemize}
 		\item $P$ is the set of player.
-		\item $\forall p \in P$, $A$ is the set of available action.
-		\item $\forall p \in P, \forall a_1, a_2 \in A$ we say that $a_1$ is preferred to $a_2$ if $I(a_1,K_P(p),p) \geq I(a_2,K_P(p),p)$.
+		\item $\mathcal{A}$ is the set of available action.
+		\item $\mathcal{K}_P$ is the set of states.
+		\item $\mathcal{R}$ the set of pay-off function.
+		\item $\mathcal{P}$ is the transition probability function.
 	\end{itemize}
 \end{mydef}
 
-Tweak definition a bit to reach finite game (doable if i touch to $A$) and proove equilibrium existence..
+\begin{myrem}
+	I don't like what i am doing with equivalence as it complicate stuff a lot. Moreover if i have to prove that my game is well defined as it is not immediate due to that. Finally we have an infinite number of states, equivalence states and finitely repeated game might be a solution.
+\end{myrem}
+
 
 \begin{mydef}
-	We say that $K'_P$ is reasonable if exists an action $a \in A$ associate to a player $w \in P$ in an equilibrium profile such that: 	\begin{eqnarray*}	
+	We say that $K'_P$ is reasonable regarding $I$ and $K_P$ if exists an action $a \in A$ associate to a player $w \in P$ in an equilibrium profile such that: 	\begin{eqnarray*}	
 		& K'_P(w) = a(K_P(w)) \\
-		&\forall p \in P, K_P(p) \subseteq K'_P(p) \\
-		&\forall p \in P, K'_P(p) \subseteq K_P(p) \cup K'_P(w) \\
 	\end{eqnarray*}	
-	$K'_P$ represent all the possible knowledge after one reasonable action (on belonging to a nash equilibrium) has happened with an optional comunication round from the winner ($K'_P(p) \subseteq K_P(p) \cup K'_P(w)$). 
+	$K'_P$ represent all the possible knowledge after one reasonable action (on belonging to a nash equilibrium) has happened with an optional comunication round from the winner ($K'_P(p) \subseteq K_P(p) \cup K'_P(w)$).  (We may want to include comunication is A instead of here as it's part of the strategie ... so will influence I).
+\end{mydef}
+
+\begin{mydef}
+	We say that $K^n_p$ is $n$ reasonable regarding $K_p$ and $I$ if exists $(K^i_p), \forall i \leq n, K^i_p$ reasonable regarding $K^{i-1}_p$ and $I$ and $K^0_P = K_P$.   
 \end{mydef}
 
 Good to go we finally have a defintion of reasonable $K$ and can define blockchain property which should be verified over all reasonable $K$.
