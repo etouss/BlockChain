@@ -127,35 +127,3 @@ Intuitively $\mathcal{K}_P$ represent the knowledge of each player assumed by $w
 \begin{mydef}
 	Let $P$ be a set of player, $\mathcal{R} = r_{p_1} \times r_{p_1} \ldots \times r_{p_{|P|}}$
 \end{mydef}
-
-
-
-\begin{mydef}
-	Considering a set of player $P$, a set of function $\mathcal{K}_P$, the set of action $\mathcal{A}$, the set of reward $\mathcal{R}$, and a function $\mathcal{P} : \mathcal{K}_P \times \mathcal{A} \times \mathcal{K}_P^\equiv \rightarrow [0;1]$ a transition probability ($\mathcal{P}(K_P,A,K_P^{1\equiv})$ is the probability of transitioning from $K_P$ to an element of $K_P^{1\equiv}$ after joint action $A$).
-	We define a infinite stochastic game  such that:
-	\begin{itemize}
-		\item $P$ is the set of player.
-		\item $\mathcal{A}$ is the set of available action.
-		\item $\mathcal{K}_P$ is the set of states.
-		\item $\mathcal{R}$ the set of pay-off function.
-		\item $\mathcal{P}$ is the transition probability function.
-	\end{itemize}
-\end{mydef}
-
-\begin{myrem}
-	I don't like what i am doing with equivalence as it complicate stuff a lot. Moreover if i have to prove that my game is well defined as it is not immediate due to that. Finally we have an infinite number of states, equivalence states and finitely repeated game might be a solution.
-\end{myrem}
-
-
-\begin{mydef}
-	We say that $K'_P$ is reasonable regarding $I$ and $K_P$ if exists an action $a \in A$ associate to a player $w \in P$ in an equilibrium profile such that: 	\begin{eqnarray*}	
-		& K'_P(w) = a(K_P(w)) \\
-	\end{eqnarray*}	
-	$K'_P$ represent all the possible knowledge after one reasonable action (on belonging to a nash equilibrium) has happened with an optional comunication round from the winner ($K'_P(p) \subseteq K_P(p) \cup K'_P(w)$).  (We may want to include comunication is A instead of here as it's part of the strategie ... so will influence I).
-\end{mydef}
-
-\begin{mydef}
-	We say that $K^n_p$ is $n$ reasonable regarding $K_p$ and $I$ if exists $(K^i_p), \forall i \leq n, K^i_p$ reasonable regarding $K^{i-1}_p$ and $I$ and $K^0_P = K_P$.   
-\end{mydef}
-
-Good to go we finally have a defintion of reasonable $K$ and can define blockchain property which should be verified over all reasonable $K$.

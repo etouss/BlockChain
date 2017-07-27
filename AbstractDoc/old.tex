@@ -115,3 +115,16 @@ Then $(P,K_{T})$ is a valid knowledge representation if :
 	\end{eqnarray*}
 \end{mydef}
 
+\begin{mydef}
+	We say that $K'_P$ is reasonable regarding $I$ and $K_P$ if exists an action $a \in A$ associate to a player $w \in P$ in an equilibrium profile such that: 	\begin{eqnarray*}	
+		& K'_P(w) = a(K_P(w)) \\
+	\end{eqnarray*}	
+	$K'_P$ represent all the possible knowledge after one reasonable action (on belonging to a nash equilibrium) has happened with an optional comunication round from the winner ($K'_P(p) \subseteq K_P(p) \cup K'_P(w)$).  (We may want to include comunication is A instead of here as it's part of the strategie ... so will influence I).
+\end{mydef}
+
+\begin{mydef}
+	We say that $K^n_p$ is $n$ reasonable regarding $K_p$ and $I$ if exists $(K^i_p), \forall i \leq n, K^i_p$ reasonable regarding $K^{i-1}_p$ and $I$ and $K^0_P = K_P$.   
+\end{mydef}
+
+Good to go we finally have a defintion of reasonable $K$ and can define blockchain property which should be verified over all reasonable $K$.
+

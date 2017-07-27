@@ -1,0 +1,31 @@
+%!TEX root = main.tex
+\section{Etienne 's modification space}
+
+\begin{mydef}
+	Considering a set of player $P$, a set of function $\mathcal{K}_P$, the set of action $\mathcal{A}$, the set of reward $\mathcal{R}$, and a function $\mathcal{P} : \mathcal{K}_P \times \mathcal{A} \times \mathcal{K}_P^\equiv \rightarrow [0;1]$ a transition probability ($\mathcal{P}(K_P,A,K_P^{1\equiv})$ is the probability of transitioning from $K_P$ to an element of $K_P^{1\equiv}$ after joint action $A$).
+	We define a infinite stochastic game $\Gamma$  such that:
+	\begin{itemize}
+		\item $P$ is the set of player.
+		\item $\mathcal{A}$ is the set of available action.
+		\item $\mathcal{K}_P$ is the set of states.
+		\item $\mathcal{R}$ the set of pay-off function.
+		\item $\mathcal{P}$ is the transition probability function.
+	\end{itemize}
+\end{mydef}
+
+\begin{myrem}
+	I don't like what i am doing with equivalence as it complicate stuff a lot. Moreover if i have to prove that my game is well defined as it is not immediate due to that. Finally we have an infinite number of states, equivalence states and finitely repeated game might be a solution.
+\end{myrem}
+
+\medskip
+\noindent
+\textbf{Stationary Nash equilibrium, Reasonable knowledge}
+
+We know that stochastic games with finite number of states have a discounted nash equilibrium and it is computable : (Nonlinear program with linear constraints). 2 solutions: either we are able to define equivalence classe over states to create a finite number state stochastic game or our game fit	 in the "On a new class of nonzero-sum discounted stochastic
+games having stationary Nash equilibrium points", have to understand this paper ...
+
+\begin{mydef}
+	We say that $K'_P$ is reasonable regarding a game $\Gamma$ if exists a strategy 
+\end{mydef}
+
+
