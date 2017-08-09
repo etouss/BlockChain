@@ -1,3 +1,8 @@
 
 *.log
 AbstractDoc/main.log
+AbstractDoc/main.aux
+AbstractDoc/main.log
+AbstractDoc/main.out
+AbstractDoc/main.pdf
+AbstractDoc/main.synctex.gz
