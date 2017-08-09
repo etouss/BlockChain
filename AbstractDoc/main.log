@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.8.29)  20 JUL 2017 17:53
 =======
@@ -7,6 +8,9 @@ This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format
 This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  12 JUL 2017 17:23
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.8.29)  27 JUL 2017 17:15
+>>>>>>> 093d0b83170e9c5991ef4e9e546c8fc7b0eba407
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1558,17 +1562,21 @@ LaTeX Font Info:    Try loading font information for U+rsfs on input line 10.
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ) [1
 
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 137.
-
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) (./eti
+enne.tex
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 8.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsppl.fd
 File: omsppl.fd 
 )
 <<<<<<< Updated upstream
 LaTeX Font Info:    Font shape `OMS/ppl/m/it' in size <10> not available
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 137.
+=======
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 8.
+>>>>>>> 093d0b83170e9c5991ef4e9e546c8fc7b0eba407
  [2]) [3]
 =======
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 113.
@@ -1599,14 +1607,22 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
 (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 78.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 78.
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 67E63E3917A15DF7012C00A95423EC3F;45.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 6AD1A60397022D8A99D1C5B9A7693EE7;90
+(rerunfilecheck)             After:  B84B133868F73A0BB0E8935F4C8FFAAF;109.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
+<<<<<<< HEAD
 <<<<<<< Updated upstream
  31338 strings out of 493014
  609992 string characters out of 6133351
@@ -1615,8 +1631,12 @@ Here is how much of TeX's memory you used:
  31352 strings out of 493014
  610105 string characters out of 6133351
 >>>>>>> Stashed changes
+=======
+ 31342 strings out of 493014
+ 610035 string characters out of 6133351
+>>>>>>> 093d0b83170e9c5991ef4e9e546c8fc7b0eba407
  701726 words of memory out of 5000000
- 34319 multiletter control sequences out of 15000+600000
+ 34320 multiletter control sequences out of 15000+600000
  25039 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,8n,84p,10415b,2577s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1635,8 +1655,9 @@ exlive/2016/texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb></usr/local/tex
 live/2016/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/20
 16/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texm
 f-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (3 pages, 149071 bytes).
+Output written on main.pdf (3 pages, 149787 bytes).
 PDF statistics:
+<<<<<<< HEAD
 <<<<<<< Updated upstream
  131 PDF objects out of 1000 (max. 8388607)
  95 compressed objects within 1 object stream
@@ -1676,4 +1697,10 @@ PDF statistics:
 >>>>>>> Stashed changes
  133 words of extra memory for PDF output out of 10000 (max. 10000000)
 >>>>>>> Stashed changes
+=======
+ 134 PDF objects out of 1000 (max. 8388607)
+ 98 compressed objects within 1 object stream
+ 22 named destinations out of 1000 (max. 500000)
+ 125 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> 093d0b83170e9c5991ef4e9e546c8fc7b0eba407
 
