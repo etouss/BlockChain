@@ -6,7 +6,9 @@ An attempt to give the most abstract possible definition of a blockchain.
 
 \subsection{Lists and their validation}
 
-Given a set $S$, let $\set(S)$ be the set of all sets of elements of $S$, and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $\length(L)$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, \length(L)\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, \length(L)\}$ and $i \leq j$. Notice that $\length(L) = 0$ if and only if $L$ is the empty list $[\ ]$. From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  
+Given a set $S$, let $\set(S)$ be the set of all sets of elements of $S$, and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $\length(L)$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, \length(L)\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, \length(L)\}$ and $i \leq j$. Notice that $\length(L) = 0$ if and only if $L$ is the empty list $[\ ]$. 
+
+From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  
 %MARCELO: Do we really need the following?
 %Moreover we extend the definition of $\subseteq$ such that :
 %\begin{eqnarray*}
@@ -54,6 +56,9 @@ Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\
 \begin{mylem}
 Assume that $\LOG(G,V)$ is safe. The for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
 \end{mylem}
+
+\juan{Related to the next comment, why do we need $\K(G,V)$? this is just all non-empty finite subset $K$ of $\LOG(G,V)$}\\ 
+
 Thus, assuming that $\LOG(G,V)$ is safe, from now on we refer to every non-empty finite subset $K$ of $\LOG(G,V)$ as a {\em knowledge tree} of $(G,V)$. Moreover, we define $\K(G,V)$ as the set of all knowledge trees of $(G,V)$.
 
 %A \emph{knowledge tree} $K$ is a tree $K = (N,E)$ with $N \subseteq \B$ and such that 
@@ -85,8 +90,10 @@ Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a seque
 
 \marcelo{Do we really need to use the notion of knowledge tree in the following definitions? If we say that $K$ is a knowledge tree then we need to use $\paths(K)$ to refer to the paths in $K$. On the other hand, if we directly say that $K \in \LOG(G,V)$, we can just refer to the elements of $K$ (we do not a special notation for paths). Knowledge trees are a nice way to visualize the blocks of set $K \in \LOG(G,V)$, but I think we should just mention them because of this (and we should not use them in the definitions). What do you think?}
 
+\juan{You mean $K \subset \LOG(G,V)$ right? I agree that here we do not need safeness nor finitiness to make this work, so we could just stick with $\LOG(G,V)$ instead of all knowledge trees}
+
 \begin{mydef}
-Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \in \LOG(G,V)$ and $t \in \mathbb{N}$. 
+Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \subseteq \LOG(G,V)$ and $t \in \mathbb{N}$. 
 Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at time $t$ with respect to the protocol $P$.
 \end{mydef}
 
