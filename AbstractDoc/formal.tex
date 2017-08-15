@@ -3,11 +3,10 @@
 An attempt to give the most abstract possible definition of a blockchain.
 
 \section{BlockChain}
-\medskip
-\noindent
+
 \subsection{Lists and their validation}
 
-Given a set $S$, let $\set(S)$ be the set of all sets of elements of $S$, and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $|L|$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, |L|\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, |L|\}$ and $i \leq j$. From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  
+Given a set $S$, let $\set(S)$ be the set of all sets of elements of $S$, and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $\length(L)$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, \length(L)\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, \length(L)\}$ and $i \leq j$. Notice that $\length(L) = 0$ if and only if $L$ is the empty list $[\ ]$. From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  
 %MARCELO: Do we really need the following?
 %Moreover we extend the definition of $\subseteq$ such that :
 %\begin{eqnarray*}
@@ -19,14 +18,13 @@ A validation rule is a function $V : \flist(\B) \to \set(\B)$
 \end{mydef}
 Intuitively, $V$ is a function taking a finite list $L$ of blocks as input, and returning the set of blocks that could be added to $L$ to produce a valid blockchain.
 
-A list $L \in \flist(\B)$ is simple if for every $i,j \in \{1, \ldots, |L|\}$ such that $i \neq j$, it holds that $L[i] \neq L[j]$. Moreover, $L$ is said to be a genesis list of $V$ if $L$ is non-empty, simple, $L[1] \in V([\ ])$ and $L[i+1] \in V(L[1,i])$, for every $i \in \{1, \ldots, |L|-1\}$.
-
+A list $G \in \flist(\B)$  is said to be a genesis list of $V$ if $\length(G) \geq 1$, $G[1] \in V([\ ])$ and $G[i+1] \in V(G[1,i])$, for every $i \in \{1, \ldots, \length(G)-1\}$. That is, $G$ is a genesis list if $G$ is a non-empty valid blockchain. 
 \begin{mydef}
-Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then a list $L \in \flist(\B)$ is valid with respect to $(G,V)$ if:
+Let $V$ be a validation rule and $G$ be a genesis list. Then a list $L \in \flist(\B)$ is valid with respect to $(G,V)$ if:
 \begin{enumerate}
-\item $k \leq |L|$ and $G = L[1,k]$.
+\item $\length(G) \leq \length(L)$ and $G = L[1,\length(G)]$.
 
-\item $L[i+1] \in V(L[1,i])$, for every $i \in \{k, \ldots, |L|-1\}$.
+\item $L[i+1] \in V(L[1,i])$, for every $i \in \{\length(G), \ldots, \length(L)-1\}$.
 \end{enumerate}
 \end{mydef}
 The role of $G$ in this definition is to provide the blocks to startup the system. Let $\LOG(G,V)$ be the set of valid lists with respect to $(G,V)$.
@@ -44,16 +42,15 @@ The role of $G$ in this definition is to provide the blocks to startup the syste
 %	Infinite here is used in a sense that whatever instance of a $G,V$ validated-chain we are dealing with we will always be able to complete it.
 %\end{myrem}
 
+Two lists $L_1, L_2 \in \flist(\B)$ are said to disagree in the last element if one of the following conditions holds: (1) $\length(L_1) = 0$ and $\length(L_2) > 0$, (2) $\length(L_1) > 0$ and $\length(L_2) = 0$, or (3) $\length(L_1) > 0$, $\length(L_2) > 0$ and $L_1[\length(L_1)] \neq L_2[\length(L_2)]$.
 \begin{mydef}
-Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then $\LOG(G,V)$ is safe if for every $L \in \LOG(G,V)$, with $|L| = k$, and every $b_1, b_2 \in \B$ such that $b_1 \neq b_2$, it holds that$:$
-\begin{eqnarray*}
-V([L[1], \ldots, L[k], b_1]) \cap V([L[1], \ldots, L[k], b_2]) & = & \emptyset
-\end{eqnarray*}
+Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then $\LOG(G,V)$ is safe if for every pair $L_1, L_2 \in \flist(\B)$ that disagree in the last element, it holds that $V(L_1) \cap V(L_2) = \emptyset$.
 \end{mydef}
+
 
 \subsection{Knowledge}
 
-Given a  a validation rule $V$, a genesis list $G$ with respect to $V$ and a subset $K$ of $\LOG(G,V)$, there is a natural way to  visualize  $K$ as a graph $\G(K)$. The set of nodes of $\G(K)$ is the set of blocks occurring in the lists in $K$, and there is an edge from a block $b_1$ to a block $b_2$ if there exists a list $L \in K$ such that $b_1 = L[i]$ and $b_2 = L[i+1]$, where $i \in \{1, \ldots, |L| -1\}$.
+Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\LOG(G,V)$, there is a natural way to  visualize  $K$ as a graph $\G(K)$. The set of nodes of $\G(K)$ is the set of blocks occurring in the lists in $K$, and there is an edge from a block $b_1$ to a block $b_2$ if there exists a list $L \in K$ such that $b_1 = L[i]$ and $b_2 = L[i+1]$, where $i \in \{1, \ldots, \length(L) -1\}$.
 \begin{mylem}
 Assume that $\LOG(G,V)$ is safe. The for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
 \end{mylem}
@@ -71,13 +68,9 @@ Thus, assuming that $\LOG(G,V)$ is safe, from now on we refer to every non-empty
 \subsection{Block chain and protocols}
 
 \begin{mydef}
-A relation $\preceq$ on $\LOG(G,V)$ is said to be a knowledge order over $(G,V)$ if the following conditions are satisfied:
-\begin{enumerate}
-\item $\preceq$ is a total preorder, that is, $\preceq$ is reflexive, transitive and total.
+A relation $\preceq$ on $\LOG(G,V)$ is said to be a knowledge order over $(G,V)$ if $\preceq$ is a total preorder on $\LOG(G,V)$, that is, $\preceq$ is reflexive, transitive and total.
 
-\item For every $K_1, K_2 \in \K(G,V)$ such that $K_1 \subsetneq K_2$, it holds that $K_1 \preceq K_2$ and $K_2 \not\preceq K_1$.
-\end{enumerate}
-Moreover, a blockchain protocol over $(G,V)$ is a sequence $\{ \preceq_t\}_{t \in \mathbb{N}}$ such that each $\preceq_i$ $(i \in \mathbb{N})$ is a knowledge order over $(G,V)$.
+Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a sequence $\{ \preceq_i\}_{i \in \mathbb{N}}$ such that each $\preceq_i$ $(i \in \mathbb{N})$ is a knowledge order over $(G,V)$.
 \end{mydef}
 
 %\begin{mydef}
@@ -90,12 +83,15 @@ Moreover, a blockchain protocol over $(G,V)$ is a sequence $\{ \preceq_t\}_{t \i
 %\end{mydef}
 
 
-
+\marcelo{Do we really need to use the notion of knowledge tree in the following definitions? If we say that $K$ is a knowledge tree then we need to use $\paths(K)$ to refer to the paths in $K$. On the other hand, if we directly say that $K \in \LOG(G,V)$, we can just refer to the elements of $K$ (we do not a special notation for paths). Knowledge trees are a nice way to visualize the blocks of set $K \in \LOG(G,V)$, but I think we should just mention them because of this (and we should not use them in the definitions). What do you think?}
 
 \begin{mydef}
-Let $t \in \mathbb N$, $\preceq_{G,V}$ a block chain protocol and $K$ a knowledge tree. 
-A block chain of $K$ with respect to $\preceq_{G,V}$ in $t$ is any minimal element in $\paths(K)$ with respect to $\preceq_{G,V}(t)$.
+Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \in \LOG(G,V)$ and $t \in \mathbb{N}$. 
+Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at time $t$ with respect to the protocol $P$.
 \end{mydef}
+
+
+\marcelo{I stopped here. I am not totally convinced that we need to introduce the following notion of equivalence, this is something that we need to discuss.}
 
 \begin{mydef}
 	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge trees we say that $K$ and $K'$ are $\equiv$ equivalent if :
