@@ -54,7 +54,7 @@ Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then $\LOG(G,V)$ 
 
 Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\LOG(G,V)$, there is a natural way to  visualize  $K$ as a graph $\G(K)$. The set of nodes of $\G(K)$ is the set of blocks occurring in the lists in $K$, and there is an edge from a block $b_1$ to a block $b_2$ if there exists a list $L \in K$ such that $b_1 = L[i]$ and $b_2 = L[i+1]$, where $i \in \{1, \ldots, \length(L) -1\}$.
 \begin{mylem}
-Assume that $\LOG(G,V)$ is safe. The for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
+Assume that $\LOG(G,V)$ is safe. Then for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
 \end{mylem}
 
 \juan{Related to the next comment, why do we need $\K(G,V)$? this is just all non-empty finite subset $K$ of $\LOG(G,V)$}\\ 
@@ -92,6 +92,7 @@ Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a seque
 
 \juan{You mean $K \subset \LOG(G,V)$ right? I agree that here we do not need safeness nor finitiness to make this work, so we could just stick with $\LOG(G,V)$ instead of all knowledge trees}
 
+
 \begin{mydef}
 Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \subseteq \LOG(G,V)$ and $t \in \mathbb{N}$. 
 Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at time $t$ with respect to the protocol $P$.
@@ -100,45 +101,34 @@ Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockc
 
 \marcelo{I stopped here. I am not totally convinced that we need to introduce the following notion of equivalence, this is something that we need to discuss.}
 
-\begin{mydef}
-	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge trees we say that $K$ and $K'$ are $\equiv$ equivalent if :
-	\begin{eqnarray*}
-		& \equiv \textit{ is an equivalent function} \\
-		& \forall L \in \paths(K), \exists L' \in \paths(K'), \forall i \in \llbracket 1,|L| \rrbracket, L[i] \equiv L'[i] \\
-		& \forall L' \in \paths(K'), \exists L \in \paths(K), \forall i \in \llbracket 1,|L'| \rrbracket, L[i] \equiv L'[i] \\
-	\end{eqnarray*}	
-	We denote $K^{\equiv}$ the set of knowledge equivalent to $K$. 
-\end{mydef}
 
+\subsection{Action, states, reward and game}
 
-\medskip
-\noindent
-\textbf{Action, states, reward and game}
 \begin{mydef}
 	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
-	We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
-	$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
+	%We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
+	%$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
 \end{mydef}
 
 Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
 
 \begin{mydef}
-	We call action a for player $w\in P$ function $a^\equiv_w: \mathcal{K}_P \rightarrow \mathcal{K}_P^{\equiv}$ such that: 
+	We call action a for player $w\in P$ function $a^\equiv_w: \mathcal{K}_P \rightarrow \mathcal{K}_P$ such that: 
 	\begin{eqnarray*}	
-		&\forall K_P \in \mathcal{K}_P, \forall K'_P \in a_w(K_P),  \forall u \in P, K_P(u) \subseteq K'_P(u)  \\
-		&\forall K_P \in \mathcal{K}_P, \forall K'_P \in a_w(K_P), \forall u \in P, K'_P(u) \subseteq K'_P(w) \cup K_P(u)  \\
+		&\forall K_P \in \mathcal{K}_P, \forall u \in P, K_P(u) \subseteq a_w(K_P)(u)  \\
+		&\forall K_P \in \mathcal{K}_P, \forall u \in P, a_w(K_P)(u) \subseteq a_w(K_P)(w) \cup K_P(u)  \\
 	\end{eqnarray*}
-	Let $A^\equiv_w$ be the set of action for player $w$.
+	Let $A_w$ be the set of action for player $w$.
 \end{mydef}
-An action of player $w$ is represented by a modification of $w$ knowledge and a round of communication. We are dealing with equivalence knowledge in order to reduce the number of action possible.
+An action of player $w$ is represented by a modification of $w$ knowledge and a round of communication. 
+%We are dealing with equivalence knowledge in order to reduce the number of action possible.
 
 \begin{mydef}
-	Let $P$ be a set of player, $\mathcal{A}^\equiv = A_{p_1}^\equiv \times A_{p_1}^\equiv \ldots \times A_{p_{|P|}}^\equiv$
+	Let $P$ be a set of player, $\mathcal{A} = A_{p_1} \times A_{p_1} \ldots \times A_{p_{|P|}}$
 \end{mydef}
 
 \begin{mydef}
-	We call reward for player $w$ a function $r_w : \mathcal{K}_P \times \mathcal{A}^\equiv \rightarrow \mathbb{R}^+$ 
-	such that: $$ \forall A \in \mathcal{A}^\equiv, K_P \textit{ equivalent } K'_P \Rightarrow r_w(K_P,A) = r_w(K'_P,A) $$
+	We call reward for player $w$ a function $r_w : \mathcal{K}_P \times \mathcal{A} \rightarrow \mathbb{R}^+$ 
 \end{mydef}
 Intuitively $\mathcal{K}_P$ represent the knowledge of each player assumed by $w$
 

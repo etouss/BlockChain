@@ -2,7 +2,7 @@
 \section{Etienne 's modification space}
 
 \begin{mydef}
-	Considering a set of player $P$, a set of function $\mathcal{K}_P$, the set of action $\mathcal{A}$, the set of reward $\mathcal{R}$, and a function $\mathcal{P} : \mathcal{K}_P \times \mathcal{A} \times \mathcal{K}_P^\equiv \rightarrow [0;1]$ a transition probability ($\mathcal{P}(K_P,A,K_P^{1\equiv})$ is the probability of transitioning from $K_P$ to an element of $K_P^{1\equiv}$ after joint action $A$).
+	Considering a set of player $P$, a set of function $\mathcal{K}_P$, the set of action $\mathcal{A}$, the set of reward $\mathcal{R}$, and a function $\mathcal{P} : \mathcal{K}_P \times \mathcal{A} \times \mathcal{K}_P \rightarrow [0;1]$ a transition probability ($\mathcal{P}(K_P,A,K_P^{1})$ is the probability of transitioning from $K_P$ to an element of $K_P^{1}$ after joint action $A$).
 	We define a infinite stochastic game $\Gamma$  such that:
 	\begin{itemize}
 		\item $P$ is the set of player.
@@ -13,19 +13,59 @@
 	\end{itemize}
 \end{mydef}
 
-\begin{myrem}
-	I don't like what i am doing with equivalence as it complicate stuff a lot. Moreover if i have to prove that my game is well defined as it is not immediate due to that. Finally we have an infinite number of states, equivalence states and finitely repeated game might be a solution.
-\end{myrem}
 
 \medskip
 \noindent
 \textbf{Stationary Nash equilibrium, Reasonable knowledge}
 
-We know that stochastic games with finite number of states have a discounted nash equilibrium and it is computable : (Nonlinear program with linear constraints). 2 solutions: either we are able to define equivalence classe over states to create a finite number state stochastic game or our game fit	 in the "On a new class of nonzero-sum discounted stochastic
-games having stationary Nash equilibrium points", have to understand this paper ...
+\begin{mydef}
+	We call stationary strategy for a player $w$ a function $\sigma_w : \mathcal{V} \rightarrow \mathcal{A}_w$ 
+\end{mydef}
 
 \begin{mydef}
-	We say that $K'_P$ is reasonable regarding a game $\Gamma$ if exists a strategy 
+	Considering a game $\Gamma$ and a stationary strategy vector $\sigma$, 
+	we define the n-reachability probability $\mathcal{P}^\sigma_n : \mathcal{V} \rightarrow [0;1]$ by induction such that :
+		$$\mathcal{P}^\sigma_0(v_0) = 1 \land \forall v \in \mathcal{V},  v \neq v_0 \implies \mathcal{P}^\sigma_0(v) = 0$$
+		$$\mathcal{P}^\sigma_{n+1}(v) = \sum_{v' \in \mathcal{V}} \mathcal{P}^\sigma_{n}(v') * T(v',\sigma(v'),v)$$
+	We say that $v$ is $\sigma$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\sigma_{n}(v) > 0$
+\end{mydef}
+
+	
+
+
+\begin{mydef}
+	We call $\beta$ discounted reward of player $w$ for a strategy vector $\sigma$ and a game $\Gamma$ the value 
+	$$u_w(\sigma) = 	\sum_{n=0}^{+\infty}\beta^{n+1} * r_w(v,\sigma_w(v)) * T(v,\sigma(v),\sigma_w(v))*\mathcal{P}^\sigma_{n}(v) $$
+\end{mydef}
+
+\begin{mydef}
+	We say that $\sigma$ a vector of stationary strategies is a $\beta$ discounted stationary equilibrium of $\Gamma$ iff : 
+	$$\forall w \in P, \forall \sigma_w,  u_w(\sigma) \geq u_w((\sigma_{\neg w},\sigma_w)) $$
+\end{mydef}
+
+\begin{mydef}
+	We say that $v$ is $\alpha$ reasonable  regarding a game $\Gamma$ if exists a a $\beta$ discounted stationary equilibrium of $\Gamma$ noted $\sigma$ such that $$\sum_{n=0}^{+\infty} \mathcal{P}^\sigma_{n}(v) \geq \alpha$$
+\end{mydef}
+
+
+Not done ...
+
+\subsection{Equivalent games}
+
+In order to define equivalent game we just have to define equivalent knowledge regarding a game.
+
+\begin{mydef}
+	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge we say that $K$ and $K'$ are $\equiv$ equivalent regarding $\Gamma = (P,\mathcal{A},\mathcal{K}_P,\mathcal{R},\mathcal{P})$ if :
+	\begin{eqnarray*}
+		& \equiv \textit{ is an equivalent function over blocks}  \\
+		& \forall L \in K, \exists L' \in K', \forall i \in \llbracket 1,|L| \rrbracket, L[i] \equiv L'[i] \\
+		& \forall L' \in K', \exists L \in K, \forall i \in \llbracket 1,|L'| \rrbracket, L[i] \equiv L'[i] \\
+		&\forall w \in P, \forall a_w \in \mathcal{A}_w, \forall K_P \in \mathcal{K}_P, K_P(w) = K, \forall p \neq w \in P, K'_P(p) = K_P(p) \land K'_P(w) = K' \implies
+		r_w(K_p,a_w) = r_w(K'_p,a_w) \\
+		&\forall w \in P, \forall a_w \in \mathcal{A}_w, \forall K_P \in \mathcal{K}_P, K_P(w) = K, \forall p \neq w \in P, K'_P(p) = K_P(p) \land K'_P(w) = K' \implies 
+		\forall K^1_P \in \mathcal{K}_P, \mathcal{P}(K_P,A,K_P^{1}) = \mathcal{P}(K'_P,A,K^{'1}_P)
+	\end{eqnarray*}	
+	We denote $K^{\equiv}$ the set of knowledge equivalent to $K$. 
 \end{mydef}
 
 
