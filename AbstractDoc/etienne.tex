@@ -30,8 +30,6 @@
 	We say that $v$ is $\sigma$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\sigma_{n}(v) > 0$
 \end{mydef}
 
-	
-
 
 \begin{mydef}
 	We call $\beta$ discounted reward of player $w$ for a strategy vector $\sigma$ and a game $\Gamma$ the value 
@@ -45,9 +43,15 @@
 
 
 \begin{mydef}
-	We say that $v$ is $\alpha$ reasonable  regarding a game $\Gamma$ if exists a a $\beta$ discounted stationary equilibrium of $\Gamma$ noted $\sigma$ such that $$\sum_{n=0}^{+\infty} \mathcal{P}^\sigma_{n}(v) \geq \alpha$$
+	Considering a game $\Gamma$ and a stationary strategy vector $\sigma$, 
+	we define the n-reachability probability without cycle $\mathcal{P}^{\sigma+}_n : \mathcal{V} \rightarrow [0;1]$ by induction such that :
+	$$\mathcal{P}^{\sigma+}_0(v_0) = 1 \land \forall v \in \mathcal{V},  v \neq v_0 \implies \mathcal{P}^{\sigma+}_0(v) = 0$$
+	$$\mathcal{P}^{\sigma+}_{n+1}(v) = \sum_{v' \in \mathcal{V}\setminus\{v\}} \mathcal{P}^{\sigma+}_{n}(v') * T(v',\sigma(v'),v)$$
 \end{mydef}
-Not good due to possible cycle ... find a better way.
+
+\begin{mydef}
+	We say that $v$ is $\alpha$ reasonable  regarding a game $\Gamma$ if exists a a $\beta$ discounted stationary equilibrium of $\Gamma$ noted $\sigma$ such that $$\sum_{n=0}^{+\infty} \mathcal{P}^{\sigma+}_{n}(v) \geq \alpha$$
+\end{mydef}
 
 \etienne{Do not read after}
 
