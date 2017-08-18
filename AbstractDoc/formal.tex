@@ -149,5 +149,54 @@ for every $\bv \in \cV$ and $\ba \in \cA$:
 \end{eqnarray*}
 Intuitively, $\pr(\bv, \ba, \bw)$ tell us what the probability of modifying $\bv$ to generate $\bw$ is when the tuple of actions $\ba$ is executed.
 
+Then $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ is an infinite stochastic game where :
+\begin{itemize}
+	\item $\cP$ is the set of player.
+	\item $\cA$ is the set of available action.
+	\item $\cV$ is the set of states.
+	\item $\cR$ the set of pay-off function.
+	\item $\pr$ is the transition probability function.
+\end{itemize} 
+
+
+\subsection{Stationary Nash equilibrium and Reasonable knowledge}
+
+\begin{mydef}
+	We call stationary strategy for a player $p$ a function $s : \cV \rightarrow \cA_p$ 
+	Moreover $\cS_p$ is the set of all strategy for player $p$. 
+\end{mydef}
+From now on, assume that $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$. Thus, every element of $\bs \in \cS$ is a tuple containing exactly one strategy for each player.
+
+\begin{mydef}
+	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
+	we define the n-reachability probability $\mathcal{P}^\bs_n : \cV \rightarrow [0;1]$ by induction such that :
+	$$\mathcal{P}^\bs_0(\bv_0) = 1 \land \forall \bv \in \cV,  \bv \neq \bv_0 \implies \mathcal{P}^\bs_0(\bv) = 0$$
+	$$\mathcal{P}^\bs_{n+1}(\bv) = \sum_{\bv' \in \cV} \mathcal{P}^\bs_{n}(\bv') * \pr(\bv',\bs(\bv'),\bv)$$
+	We say that $\bv$ is $\bs$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\bs_{n}(\bv) > 0$
+\end{mydef}
+
+
+\begin{mydef}
+	We call $\beta$ discounted reward of player $p$ for a strategy vector $\bs$ and a game $\Gamma$ the value 
+	$$u_p(\bs) = 	\sum_{n=0}^{+\infty}\beta^{n+1} * r_p(\bv,\bs(\bv)) * \pr(\bv,\bs(\bv),s_p(\bv))*\mathcal{P}^\bs_{n}(\bv) $$
+\end{mydef}
+
+\begin{mydef}
+	We say that $\bs$ a vector of stationary strategies is a $\beta$ discounted stationary equilibrium of $\Gamma$ iff : 
+	$$\forall p \in P, \forall s'_p,  u_p(\bs) \geq u_w((\bs_{\neg p},s'_p)) $$
+\end{mydef}
+
+
+\begin{mydef}
+	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
+	we define the n-reachability probability without cycle $\mathcal{P}^{\bs+}_n : \cV \rightarrow [0;1]$ by induction such that :
+	$$\mathcal{P}^{\bs+}_0(\bv_0) = 1 \land \forall \bv \in \cV,  \bv \neq \bv_0 \implies \mathcal{P}^{\bs+}_0(\bv) = 0$$
+	$$\mathcal{P}^{\bs+}_{n+1}(\bv) = \sum_{\bv' \in \cV \setminus \{\bv\}} \mathcal{P}^{\bs+}_{n}(\bv') * \pr(\bv',\bs(\bv'),\bv)$$
+\end{mydef}
+
+\begin{mydef}
+	We say that $\bv$ is $\alpha$ reasonable  regarding a game $\Gamma$ if exists a $\beta$ discounted stationary equilibrium of $\Gamma$ noted $\bs$ such that $$\sum_{n=0}^{+\infty} \mathcal{P}^{\bs+}_{n}(\bv) \geq \alpha$$
+\end{mydef}
+
 
 

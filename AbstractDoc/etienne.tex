@@ -1,58 +1,6 @@
 %!TEX root = main.tex
 \section{Etienne 's modification space}
 
-\begin{mydef}
-	Considering a set of player $P$, a set of function $\mathcal{K}_P$, the set of action $\mathcal{A}$, the set of reward $\mathcal{R}$, and a function $\mathcal{P} : \mathcal{K}_P \times \mathcal{A} \times \mathcal{K}_P \rightarrow [0;1]$ a transition probability ($\mathcal{P}(K_P,A,K_P^{1})$ is the probability of transitioning from $K_P$ to an element of $K_P^{1}$ after joint action $A$).
-	We define a infinite stochastic game $\Gamma$  such that:
-	\begin{itemize}
-		\item $P$ is the set of player.
-		\item $\mathcal{A}$ is the set of available action.
-		\item $\mathcal{K}_P$ is the set of states.
-		\item $\mathcal{R}$ the set of pay-off function.
-		\item $\mathcal{P}$ is the transition probability function.
-	\end{itemize}
-\end{mydef}
-
-
-\medskip
-\noindent
-\textbf{Stationary Nash equilibrium, Reasonable knowledge}
-
-\begin{mydef}
-	We call stationary strategy for a player $w$ a function $\sigma_w : \mathcal{V} \rightarrow \mathcal{A}_w$ 
-\end{mydef}
-
-\begin{mydef}
-	Considering a game $\Gamma$ and a stationary strategy vector $\sigma$, 
-	we define the n-reachability probability $\mathcal{P}^\sigma_n : \mathcal{V} \rightarrow [0;1]$ by induction such that :
-		$$\mathcal{P}^\sigma_0(v_0) = 1 \land \forall v \in \mathcal{V},  v \neq v_0 \implies \mathcal{P}^\sigma_0(v) = 0$$
-		$$\mathcal{P}^\sigma_{n+1}(v) = \sum_{v' \in \mathcal{V}} \mathcal{P}^\sigma_{n}(v') * T(v',\sigma(v'),v)$$
-	We say that $v$ is $\sigma$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\sigma_{n}(v) > 0$
-\end{mydef}
-
-
-\begin{mydef}
-	We call $\beta$ discounted reward of player $w$ for a strategy vector $\sigma$ and a game $\Gamma$ the value 
-	$$u_w(\sigma) = 	\sum_{n=0}^{+\infty}\beta^{n+1} * r_w(v,\sigma_w(v)) * T(v,\sigma(v),\sigma_w(v))*\mathcal{P}^\sigma_{n}(v) $$
-\end{mydef}
-
-\begin{mydef}
-	We say that $\sigma$ a vector of stationary strategies is a $\beta$ discounted stationary equilibrium of $\Gamma$ iff : 
-	$$\forall w \in P, \forall \sigma'_w,  u_w(\sigma) \geq u_w((\sigma_{\neg w},\sigma'_w)) $$
-\end{mydef}
-
-
-\begin{mydef}
-	Considering a game $\Gamma$ and a stationary strategy vector $\sigma$, 
-	we define the n-reachability probability without cycle $\mathcal{P}^{\sigma+}_n : \mathcal{V} \rightarrow [0;1]$ by induction such that :
-	$$\mathcal{P}^{\sigma+}_0(v_0) = 1 \land \forall v \in \mathcal{V},  v \neq v_0 \implies \mathcal{P}^{\sigma+}_0(v) = 0$$
-	$$\mathcal{P}^{\sigma+}_{n+1}(v) = \sum_{v' \in \mathcal{V}\setminus\{v\}} \mathcal{P}^{\sigma+}_{n}(v') * T(v',\sigma(v'),v)$$
-\end{mydef}
-
-\begin{mydef}
-	We say that $v$ is $\alpha$ reasonable  regarding a game $\Gamma$ if exists a a $\beta$ discounted stationary equilibrium of $\Gamma$ noted $\sigma$ such that $$\sum_{n=0}^{+\infty} \mathcal{P}^{\sigma+}_{n}(v) \geq \alpha$$
-\end{mydef}
-
 \etienne{I can add mix stationary strategy to equilibrium if you want Do not read after}
 
 \etienne{-> Simulate network position (constrain communication in action)}
