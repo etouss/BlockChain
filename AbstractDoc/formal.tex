@@ -6,7 +6,7 @@ An attempt to give the most abstract possible definition of a blockchain.
 
 \subsection{Lists and their validation}
 
-Given a set $S$, let $\set(S)$ be the set of all sets of elements of $S$, and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $\length(L)$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, \length(L)\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, \length(L)\}$ and $i \leq j$. Notice that $\length(L) = 0$ if and only if $L$ is the empty list $[\ ]$. 
+Given a set $S$, let $\set(S)$ be the set of sets of elements of $S$ and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $\length(L)$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, \length(L)\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, \length(L)\}$ and $i \leq j$. Notice that $\length(L) = 0$ if and only if $L$ is the empty list $[\ ]$. Finally, we say that a list $L_1$ is a prefix of a list $L_2$ if $L_1$ is the empty list, or $1 \leq \length(L_1) \leq \length(L_2)$ and $L_1 = L_2[1, \length(L_1)]$. 
 
 From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  
 %MARCELO: Do we really need the following?
@@ -22,7 +22,7 @@ Intuitively, $V$ is a function taking a finite list $L$ of blocks as input, and 
 
 A list $G \in \flist(\B)$  is said to be a genesis list of $V$ if $\length(G) \geq 1$, $G[1] \in V([\ ])$ and $G[i+1] \in V(G[1,i])$, for every $i \in \{1, \ldots, \length(G)-1\}$. That is, $G$ is a genesis list if $G$ is a non-empty valid blockchain. 
 \begin{mydef}
-	Let $V$ be a validation rule and $G$ be a genesis list. Then a list $L \in \flist(\B)$ is valid with respect to $(G,V)$ if:
+	Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then a list $L \in \flist(\B)$ is valid with respect to $(G,V)$ if:
 	\begin{enumerate}
 		\item $\length(G) \leq \length(L)$ and $G = L[1,\length(G)]$.
 		
@@ -50,13 +50,17 @@ Two lists $L_1, L_2 \in \flist(\B)$ are said to disagree in the last element if 
 \end{mydef}
 
 
-\subsection{Knowledge trees}
+\subsection{Body of knowledge}
 
-\marcelo{We need to add the condition that $K$ is prefix closed}
+In this document,  we will give a game-theoretic characterization of the notion of blockchain where it plays a key role the knowledge of each participant. More precisely, given a validation rule $V$ and a genesis list $G$ of $V$, a body of knowledge of $(G,V)$ is a non-empty and finite subset $K$ of $\LOG(G,V)$ satisfying the following closure property:
+\begin{itemize}
+\item if $L_1 \in \LOG(G,V)$, $L_1$ is a prefix of $L_2$ and $L_2 \in K$, then $L_1 \in K$.
+\end{itemize}
+Intuitively, if at some iteration a participant considers a list $L \in \LOG(G,V)$ as valid, then she should also consider as valid every prefix of $L$ including the genesis list, that is, every prefix of $L$ belonging to $\LOG(G,V)$. The set of bodies of knowledge of $(G,V)$ is denoted by $\BK(G,V)$. 
 
-Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\LOG(G,V)$, there is a natural way to  visualize  $K$ as a graph $\G(K)$. The set of nodes of $\G(K)$ is the set of blocks occurring in the lists in $K$, and there is an edge from a block $b_1$ to a block $b_2$ if there exists a list $L \in K$ such that $b_1 = L[i]$ and $b_2 = L[i+1]$, where $i \in \{1, \ldots, \length(L) -1\}$.
+There is a natural way to  visualize a body of knowledge $K$ as a graph $\G(K)$. The set of nodes of $\G(K)$ is the set of blocks occurring in the lists in $K$, and there is an edge from a block $b_1$ to a block $b_2$ if there exists a list $L \in K$ such that $b_1 = L[i]$ and $b_2 = L[i+1]$, where $i \in \{1, \ldots, \length(L) -1\}$.
 \begin{mylem}
-	Assume that $\LOG(G,V)$ is safe. Then for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
+	Assume that $\LOG(G,V)$ is safe. Then for every $K \in \BK(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
 \end{mylem}
 
 %\juan{Related to the next comment, why do we need $\K(G,V)$? this is just all non-empty finite subset $K$ of $\LOG(G,V)$}\\ 
@@ -72,12 +76,12 @@ Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\
 %(this is informal) We use $\paths(K)$ to denote the set of all lists of blocks made out of a path 
 %in $K$ from its root to a leaf. 
 
-\subsection{Block chain and protocols}
+\subsection{Protocols and blockchain}
 
 \begin{mydef}
 	A relation $\preceq$ on $\LOG(G,V)$ is said to be a knowledge order over $(G,V)$ if $\preceq$ is a total preorder on $\LOG(G,V)$, that is, $\preceq$ is reflexive, transitive and total.
 	
-	Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a sequence $\{ \preceq_i\}_{i \in \mathbb{N}}$ such that each $\preceq_i$ $(i \in \mathbb{N})$ is a knowledge order over $(G,V)$.
+	Moreover, a sequence $\{ \preceq_i\}_{i \in \mathbb{N}}$ is said to be a blockchain protocol over $(G,V)$ if every $\preceq_i$ $(i \in \mathbb{N})$ is a knowledge order over $(G,V)$.
 \end{mydef}
 
 %\begin{mydef}
@@ -96,44 +100,54 @@ Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\
 
 
 \begin{mydef}
-	Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \subseteq \LOG(G,V)$ and $t \in \mathbb{N}$. 
-	Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at iteration $t$ with respect to the protocol $P$.
+	Let $\{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \in \BK(G,V)$ and $t \in \mathbb{N}$. 
+	Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at iteration $t$ with respect to the protocol $\{ \preceq_i\}_{i \in \mathbb{N}}$.
 \end{mydef}
 
 
-\marcelo{I stopped here. I am not totally convinced that we need to introduce the following notion of equivalence, this is something that we need to discuss.}
+%\marcelo{I stopped here. I am not totally convinced that we need to introduce the following notion of equivalence, this is something that we need to discuss.}
 
 
-\subsection{Action, states, reward and game}
+\subsection{Definition of the game}
+Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, n\}$ is a finite set of players, and we say that a view $\bv$ is a tuple $(v_1, \ldots, v_n) \in \BK(G,V)^n$. Intuitively, each component $v_i$ of $\bv$ represents the knowledge of player $i$, so $\bv$ contains the knowledge of all the players. Moreover, we denote by $\cV$ the set of all possible views, that is, $\cV = \BK(G,V)^n$.
 
-\begin{mydef}
-	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
-	%We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
-	%$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
+\marcelo{Notice that I am using bold font for tuples. Please use the same notation in the rest of the paper.}
+
+%\begin{mydef}
+%	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
+%	%We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
+%	%$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
+%\end{mydef}
+
+%Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
+
+\begin{mydef}\label{def-action}
+Given a player $p \in \cP$, a function $a : \cV \to \cV$ is an action for $p$ if
+\begin{itemize}
+\item for every $\bv \in \cV$ and $q \in \cP$, if $\bv = (v_1, \ldots, v_n)$ and $a(\bv) = (w_1, \ldots, w_n)$, then it holds that:
+\begin{eqnarray*}
+v_q \ \subseteq \ w_q \ \subseteq \ v_q \cup w_p.
+\end{eqnarray*}
+
+\end{itemize}
+Moreover, $\cA_p$ is the set of all actions for player $p$.
 \end{mydef}
+An action of a player $p$ is represented by a modification of the knowledge of $p$ and a round of communication between players. 
 
-Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
+If we need to restrict the number of blocks that can be added when an action is executed (like in the case of Bitcoin), then we need to include in Definition \ref{def-action} a condition like the following:
+\begin{itemize}
+\item for every $\bv \in \cV$, if $\bv = (v_1, \ldots, v_n)$ and $a(\bv) = (w_1, \ldots, w_n)$, then it holds that $|w_p| \leq |v_p| + 1$.
+\end{itemize}
+In this case, at most one block can be added as the result of executing action $a$ by player $p$. 
 
-\begin{mydef}
-	We call action a for player $w\in P$ function $a_w: \mathcal{K}_P \rightarrow \mathcal{K}_P$ such that: 
-	\begin{eqnarray*}	
-		&\forall K_P \in \mathcal{K}_P, \forall u \in P, K_P(u) \subseteq a_w(K_P)(u)  \\
-		&\forall K_P \in \mathcal{K}_P, \forall u \in P, a_w(K_P)(u) \subseteq a_w(K_P)(w) \cup K_P(u)  \\
-	\end{eqnarray*}
-	Let $A_w$ be the set of action for player $w$.
-\end{mydef}
-An action of player $w$ is represented by a modification of $w$ knowledge and a round of communication. 
-%We are dealing with equivalence knowledge in order to reduce the number of action possible.
+From now on, assume that $\cA = \cA_{1} \times \cA_{2} \times \cdots \times \cA_{n}$. Thus, every element of $\ba \in \cA$ is a tuple containing exactly one action for each player. Moreover, given a player $p \in \cP$, a function $r_p : \cV \times \cA \to \mathbb{R}$ is called a reward function for $p$. Intuitively, given the knowledge of each player, encoded as a view $\bv$ in $\cV$, and the actions executed by each player, encoded as a tuple $\ba$ in $\cA$, function $r_p$ tell us what the reward of player $p$ is if the state of the world is $v$ and the tuple of actions $\ba$ is executed. Finally, assuming that there is a reward function $r_p$ for each player $p \in \cP$, define $\cR = (r_1, \ldots, r_n)$ as the reward function of the game.
 
-\begin{mydef}
-	Let $P$ be a set of player, $\mathcal{A} = A_{p_1} \times A_{p_1} \ldots \times A_{p_{|P|}}$
-\end{mydef}
+As a last component of the game, we assume that $\pr : \cV \times \cA \times \cV \to [0,1]$ is a function such that 
+for every $\bv \in \cV$ and $\ba \in \cA$:
+\begin{eqnarray*}
+\sum_{\bw \in \cV} \pr(\bv, \ba, \bw) & = & 1
+\end{eqnarray*}
+Intuitively, $\pr(\bv, \ba, \bw)$ tell us what the probability of modifying $\bv$ to generate $\bw$ is when the tuple of actions $\ba$ is executed.
 
-\begin{mydef}
-	We call reward for player $w$ a function $r_w : \mathcal{K}_P \times \mathcal{A} \rightarrow \mathbb{R}^+$ 
-\end{mydef}
-Intuitively $\mathcal{K}_P$ represent the knowledge of each player assumed by $w$
 
-\begin{mydef}
-	Let $P$ be a set of player, $\mathcal{R} = r_{p_1} \times r_{p_1} \ldots \times r_{p_{|P|}}$
-\end{mydef}
+
