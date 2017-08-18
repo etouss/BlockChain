@@ -1,5 +1,15 @@
 \section{old stuff}
 
+\begin{mydef}
+	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge trees we say that $K$ and $K'$ are $\equiv$ equivalent if :
+	\begin{eqnarray*}
+		& \equiv \textit{ is an equivalent function} \\
+		& \forall L \in \paths(K), \exists L' \in \paths(K'), \forall i \in \llbracket 1,|L| \rrbracket, L[i] \equiv L'[i] \\
+		& \forall L' \in \paths(K'), \exists L \in \paths(K), \forall i \in \llbracket 1,|L'| \rrbracket, L[i] \equiv L'[i] \\
+	\end{eqnarray*}	
+	We denote $K^{\equiv}$ the set of knowledge equivalent to $K$. 
+\end{mydef}
+
 \medskip
 \noindent
 \textbf{Block chain game}

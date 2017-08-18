@@ -16,18 +16,18 @@ From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \
 %\end{eqnarray*}
 
 \begin{mydef}
-A validation rule is a function $V : \flist(\B) \to \set(\B)$
+	A validation rule is a function $V : \flist(\B) \to \set(\B)$
 \end{mydef}
 Intuitively, $V$ is a function taking a finite list $L$ of blocks as input, and returning the set of blocks that could be added to $L$ to produce a valid blockchain.
 
 A list $G \in \flist(\B)$  is said to be a genesis list of $V$ if $\length(G) \geq 1$, $G[1] \in V([\ ])$ and $G[i+1] \in V(G[1,i])$, for every $i \in \{1, \ldots, \length(G)-1\}$. That is, $G$ is a genesis list if $G$ is a non-empty valid blockchain. 
 \begin{mydef}
-Let $V$ be a validation rule and $G$ be a genesis list. Then a list $L \in \flist(\B)$ is valid with respect to $(G,V)$ if:
-\begin{enumerate}
-\item $\length(G) \leq \length(L)$ and $G = L[1,\length(G)]$.
-
-\item $L[i+1] \in V(L[1,i])$, for every $i \in \{\length(G), \ldots, \length(L)-1\}$.
-\end{enumerate}
+	Let $V$ be a validation rule and $G$ be a genesis list. Then a list $L \in \flist(\B)$ is valid with respect to $(G,V)$ if:
+	\begin{enumerate}
+		\item $\length(G) \leq \length(L)$ and $G = L[1,\length(G)]$.
+		
+		\item $L[i+1] \in V(L[1,i])$, for every $i \in \{\length(G), \ldots, \length(L)-1\}$.
+	\end{enumerate}
 \end{mydef}
 The role of $G$ in this definition is to provide the blocks to startup the system. Let $\LOG(G,V)$ be the set of valid lists with respect to $(G,V)$.
 
@@ -46,20 +46,22 @@ The role of $G$ in this definition is to provide the blocks to startup the syste
 
 Two lists $L_1, L_2 \in \flist(\B)$ are said to disagree in the last element if one of the following conditions holds: (1) $\length(L_1) = 0$ and $\length(L_2) > 0$, (2) $\length(L_1) > 0$ and $\length(L_2) = 0$, or (3) $\length(L_1) > 0$, $\length(L_2) > 0$ and $L_1[\length(L_1)] \neq L_2[\length(L_2)]$.
 \begin{mydef}
-Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then $\LOG(G,V)$ is safe if for every pair $L_1, L_2 \in \flist(\B)$ that disagree in the last element, it holds that $V(L_1) \cap V(L_2) = \emptyset$.
+	Let $V$ be a validation rule and $G$ be a genesis list of $V$. Then $\LOG(G,V)$ is safe if for every pair $L_1, L_2 \in \flist(\B)$ that disagree in the last element, it holds that $V(L_1) \cap V(L_2) = \emptyset$.
 \end{mydef}
 
 
-\subsection{Knowledge}
+\subsection{Knowledge trees}
+
+\marcelo{We need to add the condition that $K$ is prefix closed}
 
 Given a  a validation rule $V$, a genesis list $G$ of $V$ and a subset $K$ of $\LOG(G,V)$, there is a natural way to  visualize  $K$ as a graph $\G(K)$. The set of nodes of $\G(K)$ is the set of blocks occurring in the lists in $K$, and there is an edge from a block $b_1$ to a block $b_2$ if there exists a list $L \in K$ such that $b_1 = L[i]$ and $b_2 = L[i+1]$, where $i \in \{1, \ldots, \length(L) -1\}$.
 \begin{mylem}
-Assume that $\LOG(G,V)$ is safe. The for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
+	Assume that $\LOG(G,V)$ is safe. Then for every subset $K$ of $\LOG(G,V)$, it holds that $\G(K)$ is a tree rooted at $G[1]$.
 \end{mylem}
 
-\juan{Related to the next comment, why do we need $\K(G,V)$? this is just all non-empty finite subset $K$ of $\LOG(G,V)$}\\ 
-
-Thus, assuming that $\LOG(G,V)$ is safe, from now on we refer to every non-empty finite subset $K$ of $\LOG(G,V)$ as a {\em knowledge tree} of $(G,V)$. Moreover, we define $\K(G,V)$ as the set of all knowledge trees of $(G,V)$.
+%\juan{Related to the next comment, why do we need $\K(G,V)$? this is just all non-empty finite subset $K$ of $\LOG(G,V)$}\\ 
+%
+%Thus, assuming that $\LOG(G,V)$ is safe, from now on we refer to every non-empty finite subset $K$ of $\LOG(G,V)$ as a {\em knowledge tree} of $(G,V)$. Moreover, we define $\K(G,V)$ as the set of all knowledge trees of $(G,V)$.
 
 %A \emph{knowledge tree} $K$ is a tree $K = (N,E)$ with $N \subseteq \B$ and such that 
 %every path in $K$ from its root to a leaf belongs to $LOG_{G,V}$.
@@ -73,9 +75,9 @@ Thus, assuming that $\LOG(G,V)$ is safe, from now on we refer to every non-empty
 \subsection{Block chain and protocols}
 
 \begin{mydef}
-A relation $\preceq$ on $\LOG(G,V)$ is said to be a knowledge order over $(G,V)$ if $\preceq$ is a total preorder on $\LOG(G,V)$, that is, $\preceq$ is reflexive, transitive and total.
-
-Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a sequence $\{ \preceq_i\}_{i \in \mathbb{N}}$ such that each $\preceq_i$ $(i \in \mathbb{N})$ is a knowledge order over $(G,V)$.
+	A relation $\preceq$ on $\LOG(G,V)$ is said to be a knowledge order over $(G,V)$ if $\preceq$ is a total preorder on $\LOG(G,V)$, that is, $\preceq$ is reflexive, transitive and total.
+	
+	Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a sequence $\{ \preceq_i\}_{i \in \mathbb{N}}$ such that each $\preceq_i$ $(i \in \mathbb{N})$ is a knowledge order over $(G,V)$.
 \end{mydef}
 
 %\begin{mydef}
@@ -88,57 +90,47 @@ Moreover, $P$ is said to be a blockchain protocol over $(G,V)$ if $P$ is a seque
 %\end{mydef}
 
 
-\marcelo{Do we really need to use the notion of knowledge tree in the following definitions? If we say that $K$ is a knowledge tree then we need to use $\paths(K)$ to refer to the paths in $K$. On the other hand, if we directly say that $K \in \LOG(G,V)$, we can just refer to the elements of $K$ (we do not a special notation for paths). Knowledge trees are a nice way to visualize the blocks of set $K \in \LOG(G,V)$, but I think we should just mention them because of this (and we should not use them in the definitions). What do you think?}
+%\marcelo{Do we really need to use the notion of knowledge tree in the following definitions? If we say that $K$ is a knowledge tree then we need to use $\paths(K)$ to refer to the paths in $K$. On the other hand, if we directly say that $K \in \LOG(G,V)$, we can just refer to the elements of $K$ (we do not a special notation for paths). Knowledge trees are a nice way to visualize the blocks of set $K \in \LOG(G,V)$, but I think we should just mention them because of this (and we should not use them in the definitions). What do you think?}
+%
+%\juan{You mean $K \subset \LOG(G,V)$ right? I agree that here we do not need safeness nor finitiness to make this work, so we could just stick with $\LOG(G,V)$ instead of all knowledge trees}
 
-\juan{You mean $K \subset \LOG(G,V)$ right? I agree that here we do not need safeness nor finitiness to make this work, so we could just stick with $\LOG(G,V)$ instead of all knowledge trees}
 
 \begin{mydef}
-Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \subseteq \LOG(G,V)$ and $t \in \mathbb{N}$. 
-Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at time $t$ with respect to the protocol $P$.
+	Let $P = \{ \preceq_i\}_{i \in \mathbb{N}}$ be a blockchain protocol over $(G,V)$, $K \subseteq \LOG(G,V)$ and $t \in \mathbb{N}$. 
+	Then a maximal element of $K$ with respect to $\preceq_t$ is said to be a blockchain of $K$ at iteration $t$ with respect to the protocol $P$.
 \end{mydef}
 
 
 \marcelo{I stopped here. I am not totally convinced that we need to introduce the following notion of equivalence, this is something that we need to discuss.}
 
-\begin{mydef}
-	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge trees we say that $K$ and $K'$ are $\equiv$ equivalent if :
-	\begin{eqnarray*}
-		& \equiv \textit{ is an equivalent function} \\
-		& \forall L \in \paths(K), \exists L' \in \paths(K'), \forall i \in \llbracket 1,|L| \rrbracket, L[i] \equiv L'[i] \\
-		& \forall L' \in \paths(K'), \exists L \in \paths(K), \forall i \in \llbracket 1,|L'| \rrbracket, L[i] \equiv L'[i] \\
-	\end{eqnarray*}	
-	We denote $K^{\equiv}$ the set of knowledge equivalent to $K$. 
-\end{mydef}
 
+\subsection{Action, states, reward and game}
 
-\medskip
-\noindent
-\textbf{Action, states, reward and game}
 \begin{mydef}
 	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
-	We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
-	$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
+	%We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
+	%$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
 \end{mydef}
 
 Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
 
 \begin{mydef}
-	We call action a for player $w\in P$ function $a^\equiv_w: \mathcal{K}_P \rightarrow \mathcal{K}_P^{\equiv}$ such that: 
+	We call action a for player $w\in P$ function $a_w: \mathcal{K}_P \rightarrow \mathcal{K}_P$ such that: 
 	\begin{eqnarray*}	
-		&\forall K_P \in \mathcal{K}_P, \forall K'_P \in a_w(K_P),  \forall u \in P, K_P(u) \subseteq K'_P(u)  \\
-		&\forall K_P \in \mathcal{K}_P, \forall K'_P \in a_w(K_P), \forall u \in P, K'_P(u) \subseteq K'_P(w) \cup K_P(u)  \\
+		&\forall K_P \in \mathcal{K}_P, \forall u \in P, K_P(u) \subseteq a_w(K_P)(u)  \\
+		&\forall K_P \in \mathcal{K}_P, \forall u \in P, a_w(K_P)(u) \subseteq a_w(K_P)(w) \cup K_P(u)  \\
 	\end{eqnarray*}
-	Let $A^\equiv_w$ be the set of action for player $w$.
+	Let $A_w$ be the set of action for player $w$.
 \end{mydef}
-An action of player $w$ is represented by a modification of $w$ knowledge and a round of communication. We are dealing with equivalence knowledge in order to reduce the number of action possible.
+An action of player $w$ is represented by a modification of $w$ knowledge and a round of communication. 
+%We are dealing with equivalence knowledge in order to reduce the number of action possible.
 
 \begin{mydef}
-	Let $P$ be a set of player, $\mathcal{A}^\equiv = A_{p_1}^\equiv \times A_{p_1}^\equiv \ldots \times A_{p_{|P|}}^\equiv$
+	Let $P$ be a set of player, $\mathcal{A} = A_{p_1} \times A_{p_1} \ldots \times A_{p_{|P|}}$
 \end{mydef}
 
 \begin{mydef}
-	We call reward for player $w$ a function $r_w : \mathcal{K}_P \times \mathcal{A}^\equiv \rightarrow \mathbb{R}^+$ 
-	such that: $$ \forall A \in \mathcal{A}^\equiv, K_P \textit{ equivalent } K'_P \Rightarrow r_w(K_P,A) = r_w(K'_P,A) $$
+	We call reward for player $w$ a function $r_w : \mathcal{K}_P \times \mathcal{A} \rightarrow \mathbb{R}^+$ 
 \end{mydef}
 Intuitively $\mathcal{K}_P$ represent the knowledge of each player assumed by $w$
 
