@@ -159,44 +159,178 @@ Then $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ is an infinite stochastic game where :
 \end{itemize} 
 
 
-\subsection{Stationary Nash equilibrium and Reasonable knowledge}
+\subsection{Stationary equilibrium}
 
 \begin{mydef}
 	We call stationary strategy for a player $p$ a function $s : \cV \rightarrow \cA_p$ 
 	Moreover $\cS_p$ is the set of all strategy for player $p$. 
 \end{mydef}
+
+
 From now on, assume that $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$. Thus, every element of $\bs \in \cS$ is a tuple containing exactly one strategy for each player.
 
-\begin{mydef}
+Considering a view $\bv \in \cV$ and $\bs \in \cS$ we denote $\bs(\bv)$ the action vector $(s_{1}(\bv),\ldots,s_{n}(\bv)) \in \cA$ 
+\begin{myprop}
 	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
-	we define the n-reachability probability $\mathcal{P}^\bs_n : \cV \rightarrow [0;1]$ by induction such that :
-	$$\mathcal{P}^\bs_0(\bv_0) = 1 \land \forall \bv \in \cV,  \bv \neq \bv_0 \implies \mathcal{P}^\bs_0(\bv) = 0$$
+	the probability to reach a view $\bv \in \cV$ in $n$ step called $n$-reachability probability noted $\mathcal{P}^\bs_n : \cV \rightarrow [0;1]$ is computed by induction :
+	$$\mathcal{P}^\bs_0(\bv) = \left\{\begin{array}{ll}
+	1 & \mbox{if } \bv = \bv_0 \\
+	0 & \mbox{otherwise}
+	\end{array}\right.$$
 	$$\mathcal{P}^\bs_{n+1}(\bv) = \sum_{\bv' \in \cV} \mathcal{P}^\bs_{n}(\bv') * \pr(\bv',\bs(\bv'),\bv)$$
-	We say that $\bv$ is $\bs$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\bs_{n}(\bv) > 0$
-\end{mydef}
+	%We say that $\bv$ is $\bs$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\bs_{n}(\bv) > 0$
+\end{myprop}
+
+\begin{proof}
+	immediate.
+\end{proof}
 
 
 \begin{mydef}
-	We call $\beta$ discounted reward of player $p$ for a strategy vector $\bs$ and a game $\Gamma$ the value 
+	Let $\beta \in [0,1]$, we call $\beta$ discounted reward of player $p \in \cP$ for a strategy vector $\bs \in \cS$ and a game $\Gamma$ the value 
 	$$u_p(\bs) = 	\sum_{n=0}^{+\infty}\beta^{n+1} * r_p(\bv,\bs(\bv)) * \pr(\bv,\bs(\bv),s_p(\bv))*\mathcal{P}^\bs_{n}(\bv) $$
 \end{mydef}
 
+Considering $p \in \cP$, $\bs \in \cS$ and $s'\in \cS_p$ we denote $(\bs_{\neg p}, s')$ the strategy vector $(s_1, \ldots s_{p-1},s',s_{p+1}, \ldots, s_{n})$.
 \begin{mydef}
-	We say that $\bs$ a vector of stationary strategies is a $\beta$ discounted stationary equilibrium of $\Gamma$ iff : 
-	$$\forall p \in P, \forall s'_p,  u_p(\bs) \geq u_w((\bs_{\neg p},s'_p)) $$
+	We say that $\bs \in \cS$ is a $\beta$ discounted stationary equilibrium of $\Gamma$ iff : 
+	$$\forall p \in \cP, \forall s' \in \cS_p,  u_p(\bs) \geq u_p((\bs_{\neg p},s')) $$
 \end{mydef}
 
+\subsection{Properties of a blockchain}
 
-\begin{mydef}
+\begin{mylem}
 	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
-	we define the n-reachability probability without cycle $\mathcal{P}^{\bs+}_n : \cV \rightarrow [0;1]$ by induction such that :
-	$$\mathcal{P}^{\bs+}_0(\bv_0) = 1 \land \forall \bv \in \cV,  \bv \neq \bv_0 \implies \mathcal{P}^{\bs+}_0(\bv) = 0$$
-	$$\mathcal{P}^{\bs+}_{n+1}(\bv) = \sum_{\bv' \in \cV \setminus \{\bv\}} \mathcal{P}^{\bs+}_{n}(\bv') * \pr(\bv',\bs(\bv'),\bv)$$
+	the probability to reach an element of a set of view $\bV \in \set(\cV)$  without walking by an element of $\bV' \in \set(\cV)$ in $n$ steps noted $\mathcal{P}^{\bs+}_n : \set(\cV) \times \set(\cV) \rightarrow [0;1]$ is computed by induction :
+	$$\mathcal{P}^{\bs+}_0(\bV,\bV') = \left\{\begin{array}{ll}
+	1 & \mbox{if } \bv_0 \in \bV \\
+	0 & \mbox{otherwise}
+	\end{array}\right.$$
+	
+	$$\mathcal{P}^{\bs+}_{n+1}(\bV,\bV') = \sum_{\bw \in \cV \setminus \bV'}   [\mathcal{P}^{\bs+}_{n}(\{\bw\},\bV') * \sum_{\bv \in \bV}^{}\pr(\bw,\bs(\bw),\bv) ]$$
+	%We say that $\bv$ is $\bs$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\bs_{n}(\bv) > 0$
+\end{mylem}
+
+\begin{proof}
+	to do.
+\end{proof}
+
+\begin{mylem}
+	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
+	the probability to reach an element of a set of view $\bV \in \set(\cV)$ for the first time in $n$-step is equal to $\mathcal{P}^{\bs+}_n(\bV,\bV)$
+\end{mylem}
+
+\begin{proof}
+	immediate.
+\end{proof}
+
+\begin{myprop}
+	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
+	the probability to reach an element of a set of view $\bV \in \set(\cV)$ noted  $\mathcal{P}^{\bs} : \set(\cV) \rightarrow [0;1]$ is equal to $$\mathcal{P}^{\bs}(\bV) = \sum_{n=0}^{+\infty}\mathcal{P}^{\bs+}_n(\bV,\bV)$$
+\end{myprop}
+
+\begin{proof}
+	to do.
+\end{proof}
+
+\begin{mydef}
+	Let $P$ be a property over a view, let $\bv \in \cV$ we denote $\bv \vdash P$ if $\bv$ satisfies the property $P$. Let $\bV \in \set(\cV)$ we denote $\bV \vdash P$ if and only if $\forall \bv \in \bV, \bv \vdash P$.
 \end{mydef}
 
 \begin{mydef}
-	We say that $\bv$ is $\alpha$ reasonable  regarding a game $\Gamma$ if exists a $\beta$ discounted stationary equilibrium of $\Gamma$ noted $\bs$ such that $$\sum_{n=0}^{+\infty} \mathcal{P}^{\bs+}_{n}(\bv) \geq \alpha$$
+	Considering $(G,V)$, $\{ \preceq_i\}_{i \in \mathbb{N}}$ a blockchain protocol over $(G,V)$ and $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ a stochastic game. We say that a property $P$ is verified by $(G,V)$, $\{ \preceq_i\}_{i \in \mathbb{N}}$ regarding $\Gamma$ with a probability $\alpha$ if and only if:
+	\begin{itemize}
+		\item Exists a $\beta$ discounted stationary equilibrium of $\Gamma$ \\
+		\item Forall $\beta$ discounted stationary equilibrium of $\Gamma$ $\bs \in \cS $ for every set of view $\bV \in \cV$ we have $$\mathcal{P}^{\bs}(\bV) \geq \alpha \implies \bV \vdash  P $$ 
+	\end{itemize}
 \end{mydef}
 
 
+\section{Block Equivalence}
+
+\subsection{Equivalent Body of knowledge}
+
+\begin{mydef}
+	Given a validation rule $V$, a genesis list $G$ of $V$ and an equivalence relationship $\equiv$ over $\B$. We say that $K_1 \in \BK(G,V)$ and $K_2 \in \BK(G,V)$ are $\equiv$ equivalent if and only if:
+	\begin{eqnarray*}
+		& \forall L_1 \in K_1, \exists L_2 \in K_2, \forall i \in \llbracket 1,|L_1| \rrbracket, L_1[i] \equiv L_2[i] \\
+		& \forall L_2 \in K_2, \exists L_1 \in K, \forall i \in \llbracket 1,|L_2| \rrbracket, L_1[i] \equiv L_2[i] \\
+	\end{eqnarray*}	
+	By extension we denote $K_1 \equiv K_2$ resp. $L_1 \equiv L_2$ when two body knowledge resp. list are $\equiv$ equivalent.
+\end{mydef}
+We denote $\BK^\equiv(G,V)$ the set of equivalence classes of $\BK(G,V)$
+
+
+\begin{mydef}
+	Given a validation rule $V$, a genesis list $G$ of $V$ and $\{ \preceq_i\}_{i \in \mathbb{N}}$ a blockchain protocol over $(G,V)$ we say that an equivalence relationship $\equiv$ over $\B$ is $\{ \preceq_i\}_{i \in \mathbb{N}}$ compatible if and only if:
+	$$\forall K_1 , K_2 \in \BK(G,V)$$
+	$$K_1 \equiv K_2 \implies \forall i \in \mathbb{N}, \forall L_1 \in \{L | L \in K_1, \forall L' \in K_1, L' \preceq_i L \}, \exists L_2 \in \{L | L \in K_2, \forall L' \in K_2, L' \preceq_i L \}, L_1 \equiv L_2$$
+\end{mydef}
+
+
+\subsection{Game with equivalence}
+
+For now on we consider a game $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ associated to  a validation rule $V$ a genesis list $G$ and a blockchain protocol $\{ \preceq_i\}_{i \in \mathbb{N}}$. 
+
+We say that two view $\bv_1, \bv_2 \in \cV$ are equivalent regarding $\equiv$ a equivalent relationship over $\B$ noted $\bv_1\equiv \bv_2$ if $$\forall p \in \cP, v_{1p} \equiv v_{2p}$$
+
+We denote $\cV^\equiv$ the set of equivalence classes of $\cV$
+
+\begin{mydef}
+	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cA$ compatible if $\forall p \in \cP$ and $\forall a \in \cA_p$ we have $$\forall \bv_1,\bv_2 \in \cV, \bv_1 \equiv \bv_2 \implies a(\bv_1) \equiv a(\bv_2 )$$
+\end{mydef}
+
+\begin{mydef}
+	Let $p \in \cP$,considering $a_1, a_2 \in \cA_p$ and $\equiv$ a equivalence relationship $\cA$ compatible we say that $a_1$ and $a_2$ are equivalent noted $a_1 \equiv a_2$ if and if:
+	$$\forall \bv_1,\bv_2 \in \cV, \bv_1 \equiv \bv_2 \implies a_1(\bv_1) \equiv a_2(\bv_2)$$
+\end{mydef}
+We denote $\cA^\equiv_p$ the set of equivalence classes of $\cA$ then a element of $\cA^\equiv_p$ is a function $$a^\equiv : \cV^\equiv \rightarrow \cV^\equiv$$.
+
+\begin{myprop}
+	Let $p \in \cP$, $\equiv$ a equivalence relationship $\cA$ compatible and $a^\equiv \in \cA^\equiv_p $ then
+	\begin{itemize}
+		\item for every $\bv^\equiv \in \cV^\equiv$ and $q \in \cP$, if $\bv^\equiv = (v_1^\equiv, \ldots, v_n^\equiv)$ and $a^\equiv(\bv^\equiv) = (w_1^\equiv, \ldots, w_n^\equiv)$, then it holds that:
+		\begin{eqnarray*}
+			\forall v_q \in v_q ^\equiv,\forall w_q \in w_q ^\equiv,\forall w_p \in w_p ^\equiv,  v_q \ \subseteq \ w_q \ \subseteq \ v_q \cup w_p.
+		\end{eqnarray*}
+	\end{itemize}
+\end{myprop}
+
+\begin{proof}
+	to do.
+\end{proof}
+
+
+\begin{myprop}
+	Let $p \in \cP$, and $\equiv$ a $\cA$ compatible equivalence relationship over $\B$
+	then the function $\pr^\equiv : \cV^\equiv \times \cA^\equiv \times \cV^\equiv \rightarrow [0,1]$ such that: 
+	$$\pr^\equiv(\bv^\equiv,\ba^\equiv,\bw) = \sum_{\ba \in \ba^equiv}\pr(\bv,\ba,\bw) \mbox{ where : } \bv\in \bv^\equiv \mbox{ and } \bw \in \bw^\equiv$$ 
+	is well defined and 
+	$$\forall \bv^\equiv \in \cV^equiv,\forall \ba \in \cA^\equiv, \sum_{\bw ^\equiv \in \cV^\equiv} \pr^\equiv(\bv^\equiv, \ba^\equiv, \bw^\equiv)  =  1 $$
+\end{myprop}
+\begin{proof}
+	to do.
+\end{proof}
+
+\begin{mydef}
+	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cR$ compatible if its $\cA$ compatible and $\forall p \in \cP$ and $\forall \bv \in \cV$ we have 
+	$$\forall \ba_1,\ba_2 \in \cA, \ba_1 \equiv \ba_2 \implies r_p(\bv,\ba_1) = r_p(\bv,\ba_1)$$
+\end{mydef}
+
+\begin{myprop}
+	Let $p \in \cP$, and $\equiv$ a $\cR$ compatible equivalence relationship over $\B$ then the function $r_p^\equiv : \cV^\equiv \times \cA^\equiv \rightarrow \mathbb{R}$ such that :
+	$$r_p^\equiv(\bv^\equiv,\ba^\equiv,) = r_p(\bv,\ba) \mbox{ where : } \bv\in \bv^\equiv \mbox{ and } \ba \in \ba^\equiv $$
+	is well defined.
+\end{myprop}
+\begin{proof}
+	to do.
+\end{proof}
+
+\begin{myprop}
+	Let $\equiv$ a $\cR$ compatible equivalence relationship over $\B$ then $\Gamma^\equiv = (\cP,\cA^\equiv,\cV^\equiv,\cR^\equiv,\pr^\equiv)$ is a well defined infinite stochastic game.
+\end{myprop}
+
+\begin{proof}
+	immediate.
+\end{proof}
 

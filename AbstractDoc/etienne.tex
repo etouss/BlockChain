@@ -1,28 +1,3 @@
 %!TEX root = main.tex
 \section{Etienne 's modification space}
 
-\etienne{I can add mix stationary strategy to equilibrium if you want Do not read after}
-
-\etienne{-> Simulate network position (constrain communication in action)}
-
-\etienne{It seems that we are not able to express behaviour/attack such as blockwitholding for a certain amount of time as we are event based}
-
-\subsection{Equivalent games}
-
-In order to define equivalent game we just have to define equivalent knowledge regarding a game.
-
-\begin{mydef}
-	Let $K = (N,E)$ and $K'=(N',E')$ two knowledge we say that $K$ and $K'$ are $\equiv$ equivalent if :
-	\begin{eqnarray*}
-		& \equiv \textit{ is an equivalent function over blocks}  \\
-		& \forall L \in K, \exists L' \in K', \forall i \in \llbracket 1,|L| \rrbracket, L[i] \equiv L'[i] \\
-		& \forall L' \in K', \exists L \in K, \forall i \in \llbracket 1,|L'| \rrbracket, L[i] \equiv L'[i] 
-		%&\forall w \in P, \forall a_w \in \mathcal{A}_w, \forall K_P \in \mathcal{K}_P, K_P(w) = K, \forall p \neq w \in P, K'_P(p) = K_P(p) \land K'_P(w) = K' \implies r_w(K_p,a_w) = r_w(K'_p,a_w) \\
-		%&\forall w \in P, \forall a_w \in \mathcal{A}_w, \forall K_P \in \mathcal{K}_P, K_P(w) = K, \forall p \neq w \in P, K'_P(p) = K_P(p) \land K'_P(w) = K' \implies \forall K^1_P \in \mathcal{K}_P, \mathcal{P}(K_P,A,K_P^{1}) = \mathcal{P}(K'_P,A,K^{'1}_P)
-	\end{eqnarray*}	
-	We denote $K^{\equiv}$ the set of knowledge equivalent to $K$. 
-\end{mydef}
-
-\begin{mydef}
-	Considering a game $\Gamma$ we say that $\equiv$ is $\gamma$ fitting if :
-\end{mydef}

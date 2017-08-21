@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.8.29)  18 AUG 2017 13:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.8.29)  20 AUG 2017 22:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1562,48 +1562,100 @@ LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
 {/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `OMS/ppl/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 127.
- [2]) (./etienne.tex) [3] [4]
+ [2]
+Overfull \hbox (44.11678pt too wide) in paragraph at lines 194--195
+[]\T1/ppl/m/n/10 Considering $\OML/cmm/m/it/10 p \OMS/cmsy/m/n/10 2 P$\T1/ppl/m
+/n/10 , $\OT1/cmr/bx/n/10 s \OMS/cmsy/m/n/10 2 S$ \T1/ppl/m/n/10 and $\OML/cmm/
+m/it/10 s[] \OMS/cmsy/m/n/10 2 S[]$ \T1/ppl/m/n/10 we de-note $\OT1/cmr/m/n/10 
+(\OT1/cmr/bx/n/10 s[]\OML/cmm/m/it/10 ; s[]\OT1/cmr/m/n/10 )$ \T1/ppl/m/n/10 th
+e strat-egy vec-tor $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s[]; [] s[]; s[]; s[]; [
+] ; s[]\OT1/cmr/m/n/10 )$\T1/ppl/m/n/10 . 
+ []
+
+
+Overfull \hbox (1.3661pt too wide) in paragraph at lines 241--242
+[][]\T1/ppl/b/n/10 Definition 11. []\T1/ppl/m/it/10 Con-sid-er-ing $\OT1/cmr/m/
+n/10 (\OML/cmm/m/it/10 G; V\OT1/cmr/m/n/10 )$\T1/ppl/m/it/10 , $\OMS/cmsy/m/n/1
+0 f^^V[]g[]$ \T1/ppl/m/it/10 a blockchain pro-to-col over $\OT1/cmr/m/n/10 (\OM
+L/cmm/m/it/10 G; V\OT1/cmr/m/n/10 )$ \T1/ppl/m/it/10 and $\OT1/cmr/m/n/10 ^^@ =
+ (\OMS/cmsy/m/n/10 P\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 A\OML/cmm/m/it/10 ; \OM
+S/cmsy/m/n/10 V\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 R\OML/cmm/m/it/10 ; []\OT1/c
+mr/m/n/10 )$
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 243--244
+
+ []
+
+
+Overfull \hbox (45.61362pt too wide) detected at line 267
+\OML/cmm/m/it/10 K[] \OMS/cmsy/m/n/10 ^^Q \OML/cmm/m/it/10 K[]  \OT1/cmr/m/n/10
+ =[]\OMS/cmsy/m/n/10 )  8\OML/cmm/m/it/10 i \OMS/cmsy/m/n/10 2 \U/msb/m/n/10 N\
+OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 L[] \OMS/cmsy/m/n/10 2 f\O
+ML/cmm/m/it/10 L\OMS/cmsy/m/n/10 j\OML/cmm/m/it/10 L \OMS/cmsy/m/n/10 2 \OML/cm
+m/m/it/10 K[]; \OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 L[] \OMS/cmsy/m/n/10 2 \OML/c
+mm/m/it/10 K[]; L[] \OMS/cmsy/m/n/10 ^^V[] \OML/cmm/m/it/10 L\OMS/cmsy/m/n/10 g
+\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 L[] \OMS/cmsy/m/n/10 2 f\
+OML/cmm/m/it/10 L\OMS/cmsy/m/n/10 j\OML/cmm/m/it/10 L \OMS/cmsy/m/n/10 2 \OML/c
+mm/m/it/10 K[]; \OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 L[] \OMS/cmsy/m/n/10 2 \OML/
+cmm/m/it/10 K[]; L[] \OMS/cmsy/m/n/10 ^^V[] \OML/cmm/m/it/10 L\OMS/cmsy/m/n/10 
+g\OML/cmm/m/it/10 ; L[] \OMS/cmsy/m/n/10 ^^Q \OML/cmm/m/it/10 L[]
+ []
+
+[4]) (./etienne.tex) [5]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 78.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 78.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 78.
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 0F54993166F16ABD5796AE41F23C536F;560.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 60BE1454D0DF2BC8B604E76AEDBD22D7;807
+(rerunfilecheck)             After:  D0F84B85B71EDA488F41AAC71B6EC872;741.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 31383 strings out of 493014
- 610406 string characters out of 6133351
- 700953 words of memory out of 5000000
- 34350 multiletter control sequences out of 15000+600000
+ 31403 strings out of 493014
+ 610602 string characters out of 6133351
+ 701959 words of memory out of 5000000
+ 34355 multiletter control sequences out of 15000+600000
  28346 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,8n,84p,10415b,2589s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc
-}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></
-usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></u
-sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></us
-r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/
-local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
-cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
-texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/te
-xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
-ive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/
-texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/loc
-al/texlive/2016/texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texliv
-e/2016/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/
-texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (4 pages, 172273 bytes).
+ 62i,7n,84p,10415b,2661s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{subsection.3.1} has been referenced
+ but does not exist, replaced by a fixed one
+
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
+live/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texl
+ive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texliv
+e/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive
+/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/
+2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/20
+16/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2016/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dis
+t/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf
+-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2016/te
+xmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb></usr/local/texlive/2016/texm
+f-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2016/texmf-dist/
+fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
+ype1/urw/palatino/uplri8a.pfb>
+Output written on main.pdf (5 pages, 186340 bytes).
 PDF statistics:
- 174 PDF objects out of 1000 (max. 8388607)
- 134 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 173 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 213 PDF objects out of 1000 (max. 8388607)
+ 171 compressed objects within 2 object streams
+ 45 named destinations out of 1000 (max. 500000)
+ 205 words of extra memory for PDF output out of 10000 (max. 10000000)
 
