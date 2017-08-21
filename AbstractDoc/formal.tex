@@ -188,7 +188,7 @@ Considering a view $\bv \in \cV$ and $\bs \in \cS$ we denote $\bs(\bv)$ the acti
 
 \begin{mydef}
 	Let $\beta \in [0,1]$, we call $\beta$ discounted reward of player $p \in \cP$ for a strategy vector $\bs \in \cS$ and a game $\Gamma$ the value 
-	$$u_p(\bs) = 	\sum_{n=0}^{+\infty}\beta^{n+1} * r_p(\bv,\bs(\bv)) * \pr(\bv,\bs(\bv),s_p(\bv))*\mathcal{P}^\bs_{n}(\bv) $$
+	$$u_p(\bs) = 	\sum_{n=0}^{+\infty}\beta^{n+1} *  (\sum_{\bv\in\cV} r_p(\bv,\bs(\bv))*\pr(\bv,\bs(\bv),s_p(\bv))*\mathcal{P}^\bs_{n}(\bv)) $$
 \end{mydef}
 
 Considering $p \in \cP$, $\bs \in \cS$ and $s'\in \cS_p$ we denote $(\bs_{\neg p}, s')$ the strategy vector $(s_1, \ldots s_{p-1},s',s_{p+1}, \ldots, s_{n})$.
@@ -304,9 +304,9 @@ We denote $\cA^\equiv_p$ the set of equivalence classes of $\cA$ then a element 
 \begin{myprop}
 	Let $p \in \cP$, and $\equiv$ a $\cA$ compatible equivalence relationship over $\B$
 	then the function $\pr^\equiv : \cV^\equiv \times \cA^\equiv \times \cV^\equiv \rightarrow [0,1]$ such that: 
-	$$\pr^\equiv(\bv^\equiv,\ba^\equiv,\bw) = \sum_{\ba \in \ba^equiv}\pr(\bv,\ba,\bw) \mbox{ where : } \bv\in \bv^\equiv \mbox{ and } \bw \in \bw^\equiv$$ 
+	$$\pr^\equiv(\bv^\equiv,\ba^\equiv,\bw) = \sum_{\ba \in \ba^\equiv}\pr(\bv,\ba,\bw) \mbox{ where : } \bv\in \bv^\equiv \mbox{ and } \bw \in \bw^\equiv$$ 
 	is well defined and 
-	$$\forall \bv^\equiv \in \cV^equiv,\forall \ba \in \cA^\equiv, \sum_{\bw ^\equiv \in \cV^\equiv} \pr^\equiv(\bv^\equiv, \ba^\equiv, \bw^\equiv)  =  1 $$
+	$$\forall \bv^\equiv \in \cV^\equiv,\forall \ba \in \cA^\equiv, \sum_{\bw ^\equiv \in \cV^\equiv} \pr^\equiv(\bv^\equiv, \ba^\equiv, \bw^\equiv)  =  1 $$
 \end{myprop}
 \begin{proof}
 	to do.
