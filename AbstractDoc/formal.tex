@@ -173,7 +173,7 @@ Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probabi
 1 & \text{if } \bq = \bq_0\\
 0 & \text{otherwise}
 \end{cases}\\
-\pr_{k+1}^{\bs}(\bq \mid \bq_0) & = & \sum_{\bq' \in \cQ} \pr_k^{\bs}(\bq') \cdot \pr(\bq', \bs(\bq'), \bq) \quad \quad \quad  \quad \quad \text{ for every } k \in \mathbb{N}
+\pr_{k+1}^{\bs}(\bq \mid \bq_0) & = & \sum_{\bq' \in \cQ} \pr_k^{\bs}(\bq'\mid \bq_0) \cdot \pr(\bq', \bs(\bq'), \bq) \quad \quad \quad  \quad \quad \text{ for every } k \in \mathbb{N}
 \end{eqnarray*}
 
 
@@ -181,7 +181,7 @@ Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probabi
 Let $p \in \cP$, $\bq_0 \in \cQ$, $\bs \in \cS$ and $\beta \in [0,1]$. Then the $\beta$ discounted pay-off of the player $p$ for the strategy $\bs$ from the state $\bq_0$, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
 u_p(\bs \mid \bq_0) & = & (1 - \beta) \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\bq \in \cQ} r_p(\bq,\bs(\bq)) \cdot 
-\pr_n^{\bs}(\bq \mid \bq_0)\bigg)
+\pr_i^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
 \end{mydef}
 Given $p \in \cP$, $\bs \in \cS$, with $\bs = (s_1, \ldots, s_n)$, and $s \in \cS_p$, we denote by $(\bs_{-p}, s)$ strategy of the game $(s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{n})$.
@@ -194,25 +194,18 @@ u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 
 \subsection{Properties of a blockchain}
 
-\begin{mylem}
-	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
-	the probability to reach an element of a set of view $\bV \in \set(\cV)$  without walking by an element of $\bV' \in \set(\cV)$ in $n$ steps noted $\mathcal{P}^{\bs+}_n : \set(\cV) \times \set(\cV) \rightarrow [0;1]$ is computed by induction :
-	$$\mathcal{P}^{\bs+}_0(\bV,\bV') = \left\{\begin{array}{ll}
-	1 & \mbox{if } \bv_0 \in \bV \\
-	0 & \mbox{otherwise}
-	\end{array}\right.$$
-	
-	$$\mathcal{P}^{\bs+}_{n+1}(\bV,\bV') = \sum_{\bw \in \cV \setminus \bV'}   [\mathcal{P}^{\bs+}_{n}(\{\bw\},\bV') * \sum_{\bv \in \bV}^{}\pr(\bw,\bs(\bw),\bv) ]$$
-	%We say that $\bv$ is $\bs$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\bs_{n}(\bv) > 0$
-\end{mylem}
-
-\begin{proof}
-	to do.
-\end{proof}
+Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching a state of $\bQ \in \set{\cQ}$  without walking by a state of $\bQ' \in \set{\cQ}$ in $k$ iterations is recursively defined as follows:
+\begin{eqnarray*}
+	\pr_0^{\bs}(\bQ,\bQ' \mid \bq_0) & = &
+	\begin{cases}
+		1 & \text{if } \bq_0 \in \bQ\\
+		0 & \text{otherwise}
+	\end{cases}\\
+	\pr_{k+1}^{\bs}(\bQ,\bQ' \mid \bq_0) & = & \sum_{\bq' \in \cQ \setminus \bQ'} \pr_k^{\bs}(\{\bq'\},\bQ'\mid \bq_0) \cdot \sum_{\bq \in \bQ} \pr(\bq', \bs(\bq'), \bq) \quad \quad \quad  \quad \quad \text{ for every } k \in \mathbb{N}
+\end{eqnarray*}
 
 \begin{mylem}
-	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
-	the probability to reach an element of a set of view $\bV \in \set(\cV)$ for the first time in $n$-step is equal to $\mathcal{P}^{\bs+}_n(\bV,\bV)$
+	Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability to reach a state of $\bQ \in \set(\cQ)$ for the first time in $k$-step is equal to $\pr^{\bs}_k(\bQ,\bQ \mid \bq_0)$
 \end{mylem}
 
 \begin{proof}
@@ -220,25 +213,23 @@ u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 \end{proof}
 
 \begin{myprop}
-	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
-	the probability to reach an element of a set of view $\bV \in \set(\cV)$ noted  $\mathcal{P}^{\bs} : \set(\cV) \rightarrow [0;1]$ is equal to $$\mathcal{P}^{\bs}(\bV) = \sum_{n=0}^{+\infty}\mathcal{P}^{\bs+}_n(\bV,\bV)$$
+	Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability to reach a state of $\bQ \in \set(\cQ)$ noted  $\pr^{\bs} : \set(\cV) \rightarrow [0;1]$ is equal to $$\pr^{\bs}(\bQ \mid \bq_0) = \sum_{i=0}^{+\infty}\pr^{\bs}_i(\bQ,\bQ \mid \bq_0)$$
 \end{myprop}
 
 \begin{proof}
 	to do.
 \end{proof}
 
-\begin{mydef}
-	Let $P$ be a property over a view, let $\bv \in \cV$ we denote $\bv \vdash P$ if $\bv$ satisfies the property $P$. Let $\bV \in \set(\cV)$ we denote $\bV \vdash P$ if and only if $\forall \bv \in \bV, \bv \vdash P$.
-\end{mydef}
+Let $P$ be a property over states, let $\bq \in \cQ$ we denote $\bq \vdash P$ if $\bq$ satisfies the property $P$. 
 
 \begin{mydef}
-	Considering $(G,V)$, $\{ \preceq_i\}_{i \in \mathbb{N}}$ a blockchain protocol over $(G,V)$ and $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ a stochastic game. We say that a property $P$ is verified by $(G,V)$, $\{ \preceq_i\}_{i \in \mathbb{N}}$ regarding $\Gamma$ with a probability $\alpha$ if and only if:
+	Given an initial state $\bq_0 \in \cQ$ and a property $P$ We say that $P$ is verified by $(G,V)$, $\{ \preceq_i\}_{i \in \mathbb{N}}$ regarding $\Gamma$ with a probability $\alpha$ if and only if:
 	\begin{itemize}
 		\item Exists a $\beta$ discounted stationary equilibrium of $\Gamma$ \\
-		\item Forall $\beta$ discounted stationary equilibrium of $\Gamma$ $\bs \in \cS $ for every set of view $\bV \in \cV$ we have $$\mathcal{P}^{\bs}(\bV) \geq \alpha \implies \bV \vdash  P $$ 
+		\item Forall $\beta$ discounted stationary equilibrium of $\Gamma$ $\bs \in \cS $ we have : $$ \forall \bQ \in \set{\cQ}, (\pr{\bs}(\bQ \mid \bq_0)\geq(1-\alpha) \implies \exists \bq \in \bQ,  \bq \vdash P)$$
 	\end{itemize}
 \end{mydef}
+The previous definition is a bit strong, we can reduce it by considering only the majority of knowledge in $\bq$
 
 
 \section{Block Equivalence}
