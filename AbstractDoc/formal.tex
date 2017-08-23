@@ -109,9 +109,7 @@ There is a natural way to  visualize a body of knowledge $K$ as a graph $\G(K)$.
 
 
 \subsection{Definition of the game}
-Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, n\}$ is a finite set of players, and we say that a view $\bv$ is a tuple $(v_1, \ldots, v_n) \in \BK(G,V)^n$. Intuitively, each component $v_i$ of $\bv$ represents the knowledge of player $i$, so $\bv$ contains the knowledge of all the players. Moreover, we denote by $\cV$ the set of all possible views, that is, $\cV = \BK(G,V)^n$.
-
-\marcelo{Notice that I am using bold font for tuples. Please use the same notation in the rest of the paper.}
+Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, n\}$ is a finite set of players, and we say that a state $\bq$ is a tuple $(q_1, \ldots, q_n) \in \BK(G,V)^n$. Intuitively, each component $q_i$ of $\bq$ represents the knowledge of player $i$, so $\bq$ contains the knowledge of all the players. Moreover, we denote by $\cQ$ the set of all possible states, that is, $\cQ = \BK(G,V)^n$.
 
 %\begin{mydef}
 %	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
@@ -122,11 +120,11 @@ Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume 
 %Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
 
 \begin{mydef}\label{def-action}
-Given a player $p \in \cP$, a function $a : \cV \to \cV$ is an action for $p$ if
+Given a player $p \in \cP$, a function $a : \cQ \to \cQ$ is an action for $p$ if
 \begin{itemize}
-\item for every $\bv \in \cV$ and $q \in \cP$, if $\bv = (v_1, \ldots, v_n)$ and $a(\bv) = (w_1, \ldots, w_n)$, then it holds that:
+\item for every $\bq \in \cQ$ and $p' \in \cP$, if $\bq = (q_1, \ldots, q_n)$ and $a(\bq) = (q'_1, \ldots, q'_n)$, then it holds that:
 \begin{eqnarray*}
-v_q \ \subseteq \ w_q \ \subseteq \ v_q \cup w_p.
+q_{p'} \ \subseteq \ q'_{p'} \ \subseteq \ q_{p'} \cup q'_p.
 \end{eqnarray*}
 
 \end{itemize}
@@ -136,65 +134,62 @@ An action of a player $p$ is represented by a modification of the knowledge of $
 
 If we need to restrict the number of blocks that can be added when an action is executed (like in the case of Bitcoin), then we need to include in Definition \ref{def-action} a condition like the following:
 \begin{itemize}
-\item for every $\bv \in \cV$, if $\bv = (v_1, \ldots, v_n)$ and $a(\bv) = (w_1, \ldots, w_n)$, then it holds that $|w_p| \leq |v_p| + 1$.
+\item for every $\bq \in \cQ$, if $\bq = (q_1, \ldots, q_n)$ and $a(\bq) = (q'_1, \ldots, q'_n)$, then it holds that $|q'_p| \leq |q_p| + 1$.
 \end{itemize}
 In this case, at most one block can be added as the result of executing action $a$ by player $p$. 
 
-From now on, assume that $\cA = \cA_{1} \times \cA_{2} \times \cdots \times \cA_{n}$. Thus, every element of $\ba \in \cA$ is a tuple containing exactly one action for each player. Moreover, given a player $p \in \cP$, a function $r_p : \cV \times \cA \to \mathbb{R}$ is called a reward function for $p$. Intuitively, given the knowledge of each player, encoded as a view $\bv$ in $\cV$, and the actions executed by each player, encoded as a tuple $\ba$ in $\cA$, function $r_p$ tell us what the reward of player $p$ is if the state of the world is $v$ and the tuple of actions $\ba$ is executed. Finally, assuming that there is a reward function $r_p$ for each player $p \in \cP$, define $\cR = (r_1, \ldots, r_n)$ as the reward function of the game.
+From now on, assume that $\cA = \cA_{1} \times \cA_{2} \times \cdots \times \cA_{n}$. Thus, every element of $\ba \in \cA$ is a tuple containing exactly one action for each player. Moreover, given a player $p \in \cP$, a function $r_p : \cQ \times \cA \to \mathbb{R}$ is called a pay-off function for $p$. Intuitively, given $(\bq, \ba) \in \cQ \times \cA$, we have that $r_p(\bq, \ba)$ is the pay-off of player $p$ when the set of actions to be executed is $\ba$ and the knowledge of each player is encoded in $\bq$. Finally, assuming that there is a  function $r_p$ for each player $p \in \cP$, define $\cR = (r_1, \ldots, r_n)$ as the pay-off function of the game.
 
-As a last component of the game, we assume that $\pr : \cV \times \cA \times \cV \to [0,1]$ is a function such that 
-for every $\bv \in \cV$ and $\ba \in \cA$:
+As a last component of the game, we assume that $\pr : \cQ \times \cA \times \cQ \to [0,1]$ is a transition probability function satisfying the following conditions:
+\begin{enumerate}
+\item For every $\bq \in \cQ$ and $\ba \in \cA$:
 \begin{eqnarray*}
-\sum_{\bw \in \cV} \pr(\bv, \ba, \bw) & = & 1
+\sum_{\bq' \in \cQ} \pr(\bq, \ba, \bq' ) & = & 1.
 \end{eqnarray*}
-Intuitively, $\pr(\bv, \ba, \bw)$ tell us what the probability of modifying $\bv$ to generate $\bw$ is when the tuple of actions $\ba$ is executed.
 
-Thus, $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ is an infinite stochastic game where :
+\item For every $\bq \in \cQ$, $\ba \in \cA$ and $\bq' \in \cQ$, it holds that $\pr(\bq, \ba, \bq') = 0$ if $\ba = (a_1, \ldots, a_n)$ and $a_i(\bq) \neq \bq'$ for every $i \in \{1, \ldots, n\}$.
+\end{enumerate}
+Intuitively, $\pr(\bq, \ba, \bq')$ tell us what the probability of generating $\bq'$ from $\bq$ is when one of the actions in the tuple $\ba$ is executed.
+
+If the knowledge of all the players is given by $\bq \in \cQ$, and a player $p$ decides to execute an action $a_p$, its rewards not only depends on $\bq$ and $a_p$, but also on the actions to be executed by the other players. If the tuple of actions to be executed by all the players is $\ba = (a_1, \ldots, a_n)$, then the computation of the value $r_p(\bq, \ba)$ should take into consideration the knowledge in $\bq$ and the probability that the action executed is $a_p$. Thus, intuitively, if player $p$ foresees to receive $C(\bq, a_p)$ as reward, then we should have that $r_p(\bq, \ba) = C(\bq, a_p) \cdot \pr(\bq, \ba, a_p(\bq))$.
+
+Summing up, we consider an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ where:
 \begin{itemize}
 	\item $\cP$ is the set of player.
 	\item $\cA$ is the set of available action.
-	\item $\cV$ is the set of states.
+	\item $\cQ$ is the set of states.
 	\item $\cR$ is the pay-off function.
 	\item $\pr$ is the transition probability function.
 \end{itemize} 
 
 
 \subsection{Stationary equilibrium}
+A stationary strategy for a player $p$ a function $s : \cQ \rightarrow \cA_p$. Moreover $\cS_p$ is the set of all strategy for player $p$, and $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$ is the set of strategies for the game. Thus, every element of $\bs \in \cS$ is a tuple containing exactly one strategy for each player. Finally, assuming that $\bs = (s_1, \ldots, s_n)$ and $\bq \in \cQ$, define $\bs(\bq)$ as the tuple of actions $(s_1(\bq), \ldots, s_n(\bq))$. 
+
+Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching state $\bq \in \cQ$ in $k$ iterations is recursively defined as follows:
+\begin{eqnarray*}
+\pr_0^{\bs}(\bq \mid \bq_0) & = &
+\begin{cases}
+1 & \text{if } \bq = \bq_0\\
+0 & \text{otherwise}
+\end{cases}\\
+\pr_{k+1}^{\bs}(\bq \mid \bq_0) & = & \sum_{\bq' \in \cQ} \pr_k^{\bs}(\bq') \cdot \pr(\bq', \bs(\bq'), \bq) \quad \quad \quad  \quad \quad \text{ for every } k \in \mathbb{N}
+\end{eqnarray*}
+
 
 \begin{mydef}
-	We call stationary strategy for a player $p$ a function $s : \cV \rightarrow \cA_p$ 
-	Moreover $\cS_p$ is the set of all strategy for player $p$. 
+Let $p \in \cP$, $\bq_0 \in \cQ$, $\bs \in \cS$ and $\beta \in [0,1]$. Then the $\beta$ discounted pay-off of the player $p$ for the strategy $\bs$ from the state $\bq_0$, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
+\begin{eqnarray*}
+u_p(\bs \mid \bq_0) & = & (1 - \beta) \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\bq \in \cQ} r_p(\bq,\bs(\bq)) \cdot 
+\pr_n^{\bs}(\bq \mid \bq_0)\bigg)
+\end{eqnarray*}
 \end{mydef}
-
-
-From now on, assume that $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$. Thus, every element of $\bs \in \cS$ is a tuple containing exactly one strategy for each player.
-
-Considering a view $\bv \in \cV$ and $\bs \in \cS$ we denote $\bs(\bv)$ the action vector $(s_{1}(\bv),\ldots,s_{n}(\bv)) \in \cA$ 
-\begin{myprop}
-	Considering a game $\Gamma$ and a stationary strategy vector $\bs \in \cS$, 
-	the probability to reach a view $\bv \in \cV$ in $n$ step called $n$-reachability probability noted $\mathcal{P}^\bs_n : \cV \rightarrow [0;1]$ is computed by induction :
-	$$\mathcal{P}^\bs_0(\bv) = \left\{\begin{array}{ll}
-	1 & \mbox{if } \bv = \bv_0 \\
-	0 & \mbox{otherwise}
-	\end{array}\right.$$
-	$$\mathcal{P}^\bs_{n+1}(\bv) = \sum_{\bv' \in \cV} \mathcal{P}^\bs_{n}(\bv') * \pr(\bv',\bs(\bv'),\bv)$$
-	%We say that $\bv$ is $\bs$ reachable if exists $n \in \mathcal{N}$ such that $\mathcal{P}^\bs_{n}(\bv) > 0$
-\end{myprop}
-
-\begin{proof}
-	immediate.
-\end{proof}
-
-
+Given $p \in \cP$, $\bs \in \cS$, with $\bs = (s_1, \ldots, s_n)$, and $s \in \cS_p$, we denote by $(\bs_{-p}, s)$ strategy of the game $(s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{n})$.
 \begin{mydef}
-	Let $\beta \in [0,1]$, we call $\beta$ discounted reward of player $p \in \cP$ for a strategy vector $\bs \in \cS$ and a game $\Gamma$ the value 
-	$$u_p(\bs) = 	\sum_{n=0}^{+\infty}\beta^{n+1} *  (\sum_{\bv\in\cV} r_p(\bv,\bs(\bv))*\pr(\bv,\bs(\bv),s_p(\bv))*\mathcal{P}^\bs_{n}(\bv)) $$
-\end{mydef}
-
-Considering $p \in \cP$, $\bs \in \cS$ and $s'\in \cS_p$ we denote $(\bs_{\neg p}, s')$ the strategy vector $(s_1, \ldots s_{p-1},s',s_{p+1}, \ldots, s_{n})$.
-\begin{mydef}
-	We say that $\bs \in \cS$ is a $\beta$ discounted stationary equilibrium of $\Gamma$ iff : 
-	$$\forall p \in \cP, \forall s' \in \cS_p,  u_p(\bs) \geq u_p((\bs_{\neg p},s')) $$
+Let $\bq_0 \in \cQ$, $\bs \in \cS$ and $\beta \in [0,1]$. Then $\bs$ is a $\beta$ discounted stationary equilibrium from the state $\bq_0$ if for every player $p \in \cP$ and every strategy $s$ for player $p$ $(s \in\cS_p)$, it holds that:
+\begin{eqnarray*}
+u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
+\end{eqnarray*}
 \end{mydef}
 
 \subsection{Properties of a blockchain}
