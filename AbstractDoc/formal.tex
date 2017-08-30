@@ -109,6 +109,7 @@ There is a natural way to  visualize a body of knowledge $K$ as a graph $\G(K)$.
 
 
 \subsection{Definition of the game}
+
 Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, n\}$ is a finite set of players, and we say that a state $\bq$ is a tuple $(q_1, \ldots, q_n) \in \BK(G,V)^n$. Intuitively, each component $q_i$ of $\bq$ represents the knowledge of player $i$, so $\bq$ contains the knowledge of all the players. Moreover, we denote by $\cQ$ the set of all possible states, that is, $\cQ = \BK(G,V)^n$.
 
 %\begin{mydef}
@@ -168,9 +169,15 @@ Summing up, we consider an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\
 
 
 \subsection{Stationary equilibrium}
-A stationary strategy for a player $p$ a function $s : \cQ \rightarrow \cA_p$. Moreover $\cS_p$ is the set of all strategy for player $p$, and $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$ is the set of strategies for the game. Thus, every element $\bs$ of $\cS$ is a tuple containing exactly one strategy for each player. Finally, assuming that $\bs = (s_1, \ldots, s_n)$ and $\bq \in \cQ$, define $\bs(\bq)$ as the tuple of actions $(s_1(\bq), \ldots, s_n(\bq))$. 
 
-Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching state $\bq \in \cQ$ in $k$ iterations is recursively defined as follows:
+A stationary strategy for a player $p$ is a function $s : \cQ \rightarrow \cA_p$. 
+We define $\cS_p$ as the set of all strategies for player $p$, and $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$ as the set of combined strategies for the game. Thus, every element $\bs$ of $\cS$ is a tuple containing exactly one strategy for each player. 
+For a combined strategy $\bs = (s_1, \ldots, s_n)$, 
+we also write $\bs(\bq)$ to refer to the tuple of actions $(s_1(\bq), \ldots, s_n(\bq))$. 
+
+Next we define a notion of how likely is reaching a set of states using a particular strategy, when stating at a state $\bq_0$. 
+Formally, given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, 
+the probability of reaching state $\bq \in \cQ$ in $k$ iterations is recursively defined as follows:
 \begin{eqnarray*}
 \pr_0^{\bs}(\bq \mid \bq_0) & = &
 \begin{cases}
@@ -198,7 +205,35 @@ u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 
 \subsection{Properties of a blockchain}
 
-Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching a state of $\bQ \in \set(\cQ)$  without walking by a state of $\bQ' \in \set(\cQ)$ in $k$ iterations is recursively defined as follows:
+We are interested in proving that certain conditions are verified for stationary equilibria of the blockchain game. 
+However, we cannot just mandate that ``every state reachable with a high probability satisfies this condition", or 
+``every state not satisfying the conditions is reached with a low probability. The first statement is far too weak, as in a game with several rounds 
+most likely all states will be reached with low probability, rendering the statement useless. But the second statement is not strong enough either: even if every \emph{bad} state is reached with 
+low probability, it could be the case that we can reach \emph{any} bad state with high probability, and thus our game would not be satisfying the 
+required conditions in its most likely outcome. 
+
+This is why we need a statement that can talk about sets of states. Let $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ be a BlockChain 
+game for a validation rule $V$ and a genesis list $G$ for $V$. We first define $\pr^{\bs}(\bQ \mid \bq_0)$, for an initial state 
+$\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, as the probability of reaching a state of $\bQ \in \set(\cQ)$. 
+
+Let now $P\subseteq \cQ$ be a property of states. We have the following definition. 
+
+\begin{mydef}
+	We say that $P$ is verified by $\Gamma$ with a probability $\alpha$ if and only if:
+	\begin{itemize}
+		\item There exists a $\beta$-discounted stationary equilibrium for $\Gamma$ \\
+		\item Every $\beta$-discounted stationary equilibrium $\bs$ for $\Gamma$ verifies the following: 
+		for every set $\bQ \in \set{\cQ}$, if $\pr^{\bs}(\bQ \mid \bq_0)\geq(\alpha)$ then $\bQ \cap P \neq \emptyset$.	
+		\end{itemize}
+\end{mydef}
+%The previous definition is a bit strong, we can reduce it by considering only the majority of knowledge in $\bq$
+
+\juan{still need to iterate over the definition above. I put everything about computing the probability in this separate piece below. }
+
+
+\medskip
+\noindent
+\textbf{Computing $\pr^{\bs}(\bQ \mid \bq_0)$}. Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching a state of $\bQ \in \set(\cQ)$  without walking by a state of $\bQ' \in \set(\cQ)$ in $k$ iterations is recursively defined as follows:
 \begin{eqnarray*}
 	\pr_0^{\bs}(\bQ \setminus \bQ' \mid \bq_0) & = &
 	\begin{cases}
@@ -217,23 +252,12 @@ Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probabi
 \end{proof}
 
 \begin{myprop}
-	Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability to reach a state of $\bQ \in \set(\cQ)$ noted  $\pr^{\bs} : \set(\cV) \rightarrow [0;1]$ is equal to $$\pr^{\bs}(\bQ \mid \bq_0) = \sum_{i=0}^{+\infty}\pr^{\bs}_i(\bQ,\bQ \mid \bq_0)$$
+	Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability to reach a state of $\bQ \in \set(\cQ)$  is equal to $$\pr^{\bs}(\bQ \mid \bq_0) = \sum_{i=0}^{+\infty}\pr^{\bs}_i(\bQ,\bQ \mid \bq_0)$$
 \end{myprop}
 
 \begin{proof}
 	to do.
 \end{proof}
-
-Let $P$ be a property over states, let $\bq \in \cQ$ we denote $\bq \vdash P$ if $\bq$ satisfies the property $P$. 
-
-\begin{mydef}
-	Given an initial state $\bq_0 \in \cQ$ and a property $P$ We say that $P$ is verified by $(G,V)$, $\{ \preceq_i\}_{i \in \mathbb{N}}$ regarding $\Gamma$ with a probability $\alpha$ if and only if:
-	\begin{itemize}
-		\item Exists a $\beta$ discounted stationary equilibrium of $\Gamma$ \\
-		\item Forall $\beta$ discounted stationary equilibrium of $\Gamma$ $\bs \in \cS $ we have : $$ \forall \bQ \in \set{\cQ}, (\pr{\bs}(\bQ \mid \bq_0)\geq(1-\alpha) \implies \exists \bq \in \bQ,  \bq \vdash P)$$
-	\end{itemize}
-\end{mydef}
-The previous definition is a bit strong, we can reduce it by considering only the majority of knowledge in $\bq$
 
 
 \section{Block Equivalence}
