@@ -151,6 +151,10 @@ As a last component of the game, we assume that $\pr : \cQ \times \cA \times \cQ
 \end{enumerate}
 Intuitively, $\pr(\bq, \ba, \bq')$ tell us what the probability of generating $\bq'$ from $\bq$ is when one of the actions in the tuple $\ba$ is executed.
 
+Note that condition (2) above forces that the communication happen only by the player that is ``mining" (player $i$ such that 
+action $a_i$ verifies $a_i(\bq) = \bq'$. If we want to relax this we should require instead that there is some $i$ such that $a_i(\bq)$ can be extended to $\bq'$, or that $\bq'$ is built by somehow merging some $a_j(\bq)$s (but might be tricky to define that).
+
+
 If the knowledge of all the players is given by $\bq \in \cQ$, and a player $p$ decides to execute an action $a_p$, its rewards not only depends on $\bq$ and $a_p$, but also on the actions to be executed by the other players. If the tuple of actions to be executed by all the players is $\ba = (a_1, \ldots, a_n)$, then the computation of the value $r_p(\bq, \ba)$ should take into consideration the knowledge in $\bq$ and the probability that the action executed is $a_p$. Thus, intuitively, if player $p$ foresees to receive $C(\bq, a_p)$ as reward, then we should have that $r_p(\bq, \ba) = C(\bq, a_p) \cdot \pr(\bq, \ba, a_p(\bq))$.
 
 Summing up, we consider an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ where:
@@ -164,7 +168,7 @@ Summing up, we consider an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\
 
 
 \subsection{Stationary equilibrium}
-A stationary strategy for a player $p$ a function $s : \cQ \rightarrow \cA_p$. Moreover $\cS_p$ is the set of all strategy for player $p$, and $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$ is the set of strategies for the game. Thus, every element of $\bs \in \cS$ is a tuple containing exactly one strategy for each player. Finally, assuming that $\bs = (s_1, \ldots, s_n)$ and $\bq \in \cQ$, define $\bs(\bq)$ as the tuple of actions $(s_1(\bq), \ldots, s_n(\bq))$. 
+A stationary strategy for a player $p$ a function $s : \cQ \rightarrow \cA_p$. Moreover $\cS_p$ is the set of all strategy for player $p$, and $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{n}$ is the set of strategies for the game. Thus, every element $\bs$ of $\cS$ is a tuple containing exactly one strategy for each player. Finally, assuming that $\bs = (s_1, \ldots, s_n)$ and $\bq \in \cQ$, define $\bs(\bq)$ as the tuple of actions $(s_1(\bq), \ldots, s_n(\bq))$. 
 
 Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching state $\bq \in \cQ$ in $k$ iterations is recursively defined as follows:
 \begin{eqnarray*}
@@ -194,9 +198,9 @@ u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 
 \subsection{Properties of a blockchain}
 
-Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching a state of $\bQ \in \set{\cQ}$  without walking by a state of $\bQ' \in \set{\cQ}$ in $k$ iterations is recursively defined as follows:
+Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching a state of $\bQ \in \set(\cQ)$  without walking by a state of $\bQ' \in \set(\cQ)$ in $k$ iterations is recursively defined as follows:
 \begin{eqnarray*}
-	\pr_0^{\bs}(\bQ,\bQ' \mid \bq_0) & = &
+	\pr_0^{\bs}(\bQ \setminus \bQ' \mid \bq_0) & = &
 	\begin{cases}
 		1 & \text{if } \bq_0 \in \bQ\\
 		0 & \text{otherwise}
