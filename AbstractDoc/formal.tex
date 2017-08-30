@@ -262,26 +262,26 @@ We denote $\BK^\equiv(G,V)$ the set of equivalence classes of $\BK(G,V)$
 
 For now on we consider a game $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ associated to  a validation rule $V$ a genesis list $G$ and a blockchain protocol $\{ \preceq_i\}_{i \in \mathbb{N}}$. 
 
-We say that two view $\bv_1, \bv_2 \in \cV$ are equivalent regarding $\equiv$ a equivalent relationship over $\B$ noted $\bv_1\equiv \bv_2$ if $$\forall p \in \cP, v_{1p} \equiv v_{2p}$$
+We say that two view $\bq_1, \bq_2 \in \cQ$ are equivalent regarding $\equiv$ a equivalent relationship over $\B$ noted $\bq_1\equiv \bq_2$ if $$\forall p \in \cP, q_{1p} \equiv q_{2p}$$
 
-We denote $\cV^\equiv$ the set of equivalence classes of $\cV$
+We denote $\cQ^\equiv$ the set of equivalence classes of $\cQ$
 
 \begin{mydef}
-	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cA$ compatible if $\forall p \in \cP$ and $\forall a \in \cA_p$ we have $$\forall \bv_1,\bv_2 \in \cV, \bv_1 \equiv \bv_2 \implies a(\bv_1) \equiv a(\bv_2 )$$
+	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cA$ compatible if $\forall p \in \cP$ and $\forall a \in \cA_p$ we have $$\forall \bq_1,\bq_2 \in \cQ, \bq_1 \equiv \bq_2 \implies a(\bq_1) \equiv a(\bq_2 )$$
 \end{mydef}
 
 \begin{mydef}
 	Let $p \in \cP$,considering $a_1, a_2 \in \cA_p$ and $\equiv$ a equivalence relationship $\cA$ compatible we say that $a_1$ and $a_2$ are equivalent noted $a_1 \equiv a_2$ if and if:
-	$$\forall \bv_1,\bv_2 \in \cV, \bv_1 \equiv \bv_2 \implies a_1(\bv_1) \equiv a_2(\bv_2)$$
+	$$\forall \bq_1,\bq_2 \in \cQ, \bq_1 \equiv \bq_2 \implies a_1(\bq_1) \equiv a_2(\bq_2)$$
 \end{mydef}
 We denote $\cA^\equiv_p$ the set of equivalence classes of $\cA$ then a element of $\cA^\equiv_p$ is a function $$a^\equiv : \cV^\equiv \rightarrow \cV^\equiv$$.
 
 \begin{myprop}
 	Let $p \in \cP$, $\equiv$ a equivalence relationship $\cA$ compatible and $a^\equiv \in \cA^\equiv_p $ then
 	\begin{itemize}
-		\item for every $\bv^\equiv \in \cV^\equiv$ and $q \in \cP$, if $\bv^\equiv = (v_1^\equiv, \ldots, v_n^\equiv)$ and $a^\equiv(\bv^\equiv) = (w_1^\equiv, \ldots, w_n^\equiv)$, then it holds that:
+		\item for every $\bq^\equiv \in \cQ^\equiv$ and $p' \in \cP$, if $\bq^\equiv = (q_1^\equiv, \ldots, q_n^\equiv)$ and $a^\equiv(\bq^\equiv) = (q_1^{'\equiv}, \ldots, q_n^{'\equiv})$, then it holds that:
 		\begin{eqnarray*}
-			\forall v_q \in v_q ^\equiv,\forall w_q \in w_q ^\equiv,\forall w_p \in w_p ^\equiv,  v_q \ \subseteq \ w_q \ \subseteq \ v_q \cup w_p.
+			\forall q_{p'} \in q_{p'}^\equiv,\forall q'_{p'} \in q_{p'} ^{'\equiv},\forall q'_p \in q_p^{'\equiv},  q_{p'} \ \subseteq \ q'_{p'} \ \subseteq \ q_{p'} \cup q_p.
 		\end{eqnarray*}
 	\end{itemize}
 \end{myprop}
@@ -294,22 +294,22 @@ We denote $\cA^\equiv_p$ the set of equivalence classes of $\cA$ then a element 
 \begin{myprop}
 	Let $p \in \cP$, and $\equiv$ a $\cA$ compatible equivalence relationship over $\B$
 	then the function $\pr^\equiv : \cV^\equiv \times \cA^\equiv \times \cV^\equiv \rightarrow [0,1]$ such that: 
-	$$\pr^\equiv(\bv^\equiv,\ba^\equiv,\bw) = \sum_{\ba \in \ba^\equiv}\pr(\bv,\ba,\bw) \mbox{ where : } \bv\in \bv^\equiv \mbox{ and } \bw \in \bw^\equiv$$ 
+	$$\pr^\equiv(\bq^\equiv,\ba^\equiv,\bq^{'\equiv}) = \sum_{\ba \in \ba^\equiv}\pr(\bq,\ba,\bq') \mbox{ where : } \bq \in \bq^\equiv \mbox{ and } \bq' \in \bq^{'\equiv}$$ 
 	is well defined and 
-	$$\forall \bv^\equiv \in \cV^\equiv,\forall \ba \in \cA^\equiv, \sum_{\bw ^\equiv \in \cV^\equiv} \pr^\equiv(\bv^\equiv, \ba^\equiv, \bw^\equiv)  =  1 $$
+	$$\forall \bq^\equiv \in \cQ^\equiv,\forall \ba \in \cA^\equiv, \sum_{\bq ^{'\equiv} \in \cQ^\equiv} \pr^\equiv(\bq^\equiv, \ba^\equiv, \bq^{'\equiv})  =  1 $$
 \end{myprop}
 \begin{proof}
 	to do.
 \end{proof}
 
 \begin{mydef}
-	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cR$ compatible if its $\cA$ compatible and $\forall p \in \cP$ and $\forall \bv \in \cV$ we have 
-	$$\forall \ba_1,\ba_2 \in \cA, \ba_1 \equiv \ba_2 \implies r_p(\bv,\ba_1) = r_p(\bv,\ba_1)$$
+	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cR$ compatible if its $\cA$ compatible and $\forall p \in \cP$ and $\forall \bq \in \cQ$ we have 
+	$$\forall \ba_1,\ba_2 \in \cA, \ba_1 \equiv \ba_2 \implies r_p(\bq,\ba_1) = r_p(\bq,\ba_2)$$
 \end{mydef}
 
 \begin{myprop}
-	Let $p \in \cP$, and $\equiv$ a $\cR$ compatible equivalence relationship over $\B$ then the function $r_p^\equiv : \cV^\equiv \times \cA^\equiv \rightarrow \mathbb{R}$ such that :
-	$$r_p^\equiv(\bv^\equiv,\ba^\equiv,) = r_p(\bv,\ba) \mbox{ where : } \bv\in \bv^\equiv \mbox{ and } \ba \in \ba^\equiv $$
+	Let $p \in \cP$, and $\equiv$ a $\cR$ compatible equivalence relationship over $\B$ then the function $r_p^\equiv : \cQ^\equiv \times \cA^\equiv \rightarrow \mathbb{R}$ such that :
+	$$r_p^\equiv(\bq^\equiv,\ba^\equiv,) = r_p(\bq,\ba) \mbox{ where : } \bq\in \bq^\equiv \mbox{ and } \ba \in \ba^\equiv $$
 	is well defined.
 \end{myprop}
 \begin{proof}
