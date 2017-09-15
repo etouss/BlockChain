@@ -112,6 +112,8 @@ There is a natural way to  visualize a body of knowledge $K$ as a graph $\G(K)$.
 
 Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, m\}$ is a finite set of players, and we say that a state $\bq$ is a tuple $(q_1, \ldots, q_m) \in \BK(G,V)^m$. Intuitively, each component $q_i$ of $\bq$ represents the knowledge of player $i$, so $\bq$ contains the knowledge of all the players. Moreover, we denote by $\cQ$ the set of all possible states, that is, $\cQ = \BK(G,V)^m$.
 
+\etienne{There is an issue with : $\cQ = \BK(G,V)^m$ should be closer to :$\cQ = \BK(G,V)^{n \times m}$}
+
 %\begin{mydef}
 %	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
 %	%We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
@@ -150,13 +152,15 @@ As a last component of the game, we assume that $\pr : \cQ \times \cA \times \cQ
 
 \item \label{c-z} For every $\bq \in \cQ$, $\ba \in \cA$ and $\bq' \in \cQ$, it holds that $\pr(\bq, \ba, \bq') = 0$ if $\ba = (a_1, \ldots, a_m)$ and $a_i(\bq) \neq \bq'$ for every $i \in \{1, \ldots, m\}$.
 \end{enumerate}
-Intuitively, $\pr(\bq, \ba, \bq')$ tell us what the probability of generating $\bq'$ from $\bq$ is when one of the actions in the tuple $\ba$ is executed.
+Intuitively, $\pr(\bq, \ba, \bq')$ tell us what the probability of generating $\bq'$ from $\bq$ is 0 when one of the actions in the tuple $\ba$ is executed.
 
 Note that condition \ref{c-z} above forces that the communication happens only by the player that is mining (player $i$ such that 
 action $a_i$ satisfies $a_i(\bq) = \bq'$). If we want to relax this we should require instead that there is some $i$ such that $a_i(\bq)$ can be extended to $\bq'$, or that $\bq'$ is built by somehow merging some $a_j(\bq)$'s (but might be tricky to define that).
 
 
 If the knowledge of all the players is given by $\bq \in \cQ$, and a player $p$ decides to execute an action $a_p$, its rewards not only depends on $\bq$ and $a_p$, but also on the actions to be executed by the other players. If the tuple of actions to be executed by all the players is $\ba = (a_1, \ldots, a_m)$, then the computation of the value $r_p(\bq, \ba)$ should take into consideration the knowledge in $\bq$ and the probability that the action executed is $a_p$. Thus, intuitively, if player $p$ foresees to receive $C(\bq, a_p)$ as reward, then we should have that $r_p(\bq, \ba) = C(\bq, a_p) \cdot \pr(\bq, \ba, a_p(\bq))$.
+
+\etienne{I completely agree with what you say about reward function, but i am not sure people will get this is only a fact in our game and not a generality of stochastic game}
 
 Summing up, from now on we consider an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ where:
 \begin{itemize}
@@ -175,11 +179,13 @@ We define $\cS_p$ as the set of all strategies for player $p$, and $\cS = \cS_{1
 For a combined strategy $\bs = (s_1, \ldots, s_m)$, 
 we also write $\bs(\bq)$ to refer to the tuple of actions $(s_1(\bq), \ldots, s_m(\bq))$. 
 
+\etienne{We may want to avoid changing between n and m for the player and the state}
+
 Next we define a notion of how likely is reaching a set of states using a particular strategy, when starting at some specific state.
 Formally, given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, 
 the probability of reaching state $\bq \in \cQ$ in $n$ iterations is recursively defined as follows:
 \begin{eqnarray*}
-\pr_0^{\bs}(\bq \mid \bq_0) & = &
+\pr_0^{\bs}(\bq \mid \bq_0) & = &...
 \begin{cases}
 1 & \text{if } \bq = \bq_0\\
 0 & \text{otherwise}
@@ -195,6 +201,9 @@ u_p(\bs \mid \bq_0) & = & (1 - \beta) \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot  
 \pr_i^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
 \end{mydef}
+
+\etienne{We define utility only over infinity ?}
+
 Given $p \in \cP$, $\bs \in \cS$, with $\bs = (s_1, \ldots, s_m)$, and $s \in \cS_p$, we denote by $(\bs_{-p}, s)$ strategy of the game $(s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m})$.
 \begin{mydef}
 Let $\bq_0 \in \cQ$, $\bs \in \cS$ and $\beta \in [0,1]$. Then $\bs$ is a $\beta$ discounted stationary equilibrium for $(\Gamma, \bq_0)$ if for every player $p \in \cP$ and every strategy $s$ for player $p$ $(s \in\cS_p)$, it holds that:
@@ -207,9 +216,11 @@ u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 
 We are interested in proving that certain conditions are verified for stationary equilibria of the blockchain game. 
 However, we cannot just ask that ``every state reachable with a high probability satisfies these conditions'', or 
-``every state not satisfying these conditions is reached with a low probability''. The first statement is too weak, as in a game with several rounds 
+``every state not satisfying these conditions is reached with a low probability''. #
+The first statement is too weak, as in a game with several rounds 
 most likely all states will be reached with low probability, rendering the statement useless. Moreover, the second statement is not strong enough; even if every \emph{bad} state is reached with 
 low probability, the set of \emph{bad} states could be large enough so that the probability of reaching it is high, so our game does not satisfy the  required conditions in its most likely outcome. 
+\etienne{We have an issue here, we use weak and not strong enough as antonym}
 
 We overcome the issues mentioned in the previous paragraph by considering a statement that talks about sets of states. Recall that we  fixed a validation rule $V$, a genesis list $G$ for $V$ and an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$. Moreover,  define a condition $\cC$ on the set of states $\cQ$ simply as a subset of $\cQ$ ($\cC \subseteq \cQ$).
 
@@ -226,6 +237,9 @@ ${\displaystyle \lim_{n \to \infty} \pr_n^{\bs}(\cC \mid \bq_0) = 1}$
 
 		\end{itemize}
 \end{mydef}
+
+\etienne{the paper probably miss some input (definition of probability over Condition. But to be honest i am sceptical on how to reach such properties at the end. Moreover as we define it as a limit over n through infinity it forces us to consider an infinite number of step so states. I would gladly take an update on that}
+
 %The previous definition is a bit strong, we can reduce it by considering only the majority of knowledge in $\bq$
 
 %\juan{still need to iterate over the definition above. I put everything about computing the probability in this separate piece below. }
@@ -315,7 +329,7 @@ Recall that given an equivalence relation $\sim$ on a set $X$, the equivalent cl
 \begin{mydef}
 $\equiv$ is consistent with $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ if the following conditions are satisfied:
 \begin{enumerate}
-\item For every $p \in \cP$, $\ba \in \cA$ and $\bq_1, \bq_2 \in \cQ$ such that $\bq_1 \equiv \bq_2$, it holds that $\ba(\bq_1) \equiv \ba(\bq_2)$.
+\item For every $p \in \cP$, $\ba \in \cA_p$ and $\bq_1, \bq_2 \in \cQ$ such that $\bq_1 \equiv \bq_2$, it holds that $\ba(\bq_1) \equiv \ba(\bq_2)$.
 
 \item For every $p \in \cP$, $\bq_1, \bq_2 \in \cQ$ and $\ba_1,\ba_2 \in \cA$ such that $\bq_1 \equiv \bq_2$ and  $\ba_1 \equiv \ba_2$, it holds that $r_p(\bq_1, \ba_1) = r_p(\bq_2, \ba_2)$.
 
@@ -351,6 +365,7 @@ It is not difficult to see that this game is well-defined. In particular, for ev
 \end{eqnarray*}
 Moreover, given $\bq_1, \bq_2 \in \cQ$ and $\ba \in \cA$ such that $\ba = (a_1, \ldots, a_m)$, if we have that $[a_i]_\equiv([\bq_1]_\equiv) \neq [\bq_2]_\equiv$ for every $i \in \{1, \ldots, m\}$, then it holds that $\pr'([\bq_1]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv), [\bq_2]_\equiv) = 0$. For the sake contradiction, assume that $\pr'([\bq_1]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv), [\bq_2]_\equiv) > 0$. Then by definition of $\Gamma'$, there exists $\bq \in [\bq_2]_\equiv$ such that $\pr'(\bq_1, \ba, \bq) > 0$. Hence, given that 
 $\Gamma$ is an infinite stochastic game, there exists $j \in \{1, \ldots, m\}$ such that $a_j(\bq_1) = \bq$. Thus, we conclude that $[a_j]_\equiv([\bq_1]_\equiv) = [a_j(\bq_1)]_\equiv = [\bq]_\equiv = [\bq_2]_\equiv$ (recall that $\bq \equiv \bq_2$ since $\bq \in [\bq_2]_\equiv$), which contradicts our initial assumption. 
+
 
 %
 %
