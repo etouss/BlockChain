@@ -2,6 +2,18 @@
 
 An attempt to give the most abstract possible definition of a blockchain.
 
+\section{General Comments}
+I have assisted to my first class with Aggelos Kiayias (backbone paper author) and a talk this morning about how bitcoin "revolutionised" the historical framework. From my understanding, cryptographic community manage to prove that in the bitcoin open setup (Unknown identity and number of player involved), that a consensus (through a robust transaction ledger) is reachable under the assumption of at least 50\% of honest players. The consensus problem (without prior setup information) upper bound was 33.33..\% of Malicious players.
+The new upper-bound, mostly come from the proof of work which avoid malicious player to synchronize (and does not involve the money/reward at all). 
+
+However non of those studies tackle the problem the way we tried, we are in an open setting with unknown player so 50\% of honest player is a strong assumption (knowing that being honest mean following the exact protocol). 
+
+We are proving stuff on a higher abstraction by showing that player have an incentives to behave according to the protocol. 
+
+This only to say that i may have to talk with Aggelos in order not to offense any one regarding the previous state of the art. As if i am following carefully, even terminology as blockchain protocol for our total preorder might be a declaration of war for the crypto community.
+
+
+
 \section{BlockChain}
 
 \subsection{Lists and their validation}
@@ -216,7 +228,7 @@ u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 
 We are interested in proving that certain conditions are verified for stationary equilibria of the blockchain game. 
 However, we cannot just ask that ``every state reachable with a high probability satisfies these conditions'', or 
-``every state not satisfying these conditions is reached with a low probability''. #
+``every state not satisfying these conditions is reached with a low probability''. 
 The first statement is too weak, as in a game with several rounds 
 most likely all states will be reached with low probability, rendering the statement useless. Moreover, the second statement is not strong enough; even if every \emph{bad} state is reached with 
 low probability, the set of \emph{bad} states could be large enough so that the probability of reaching it is high, so our game does not satisfy the  required conditions in its most likely outcome. 

@@ -1,6 +1,7 @@
 %!TEX root = main.tex
 %Etienne 's modification space
 
+
 \section{Bitcoin}
 In this part we apply our framework to bitcoin, we will try to justify every choice we made. 
 We will assume that hash function are perfect, meaning ... (no 2 element with the same hash to simplify)
@@ -8,7 +9,11 @@ We will assume that hash function are perfect, meaning ... (no 2 element with th
 \subsection{Bitcoin 's Verification Rules}
 Genesis block ?
 
-Let the function $V_{bit} : \flist(\B) \rightarrow \set(\B)$ be the validation rule function of bitcoin. 
+Assume that exists a decision procedure $DP_{bit}$ which takes in input a list of blocks $L \in \flist(\B)$ and a block $b \in \B$, and return true if and only if $L+b$ is a valid list of blocks. (A bitcoin full node implement such a decision procedure).
+
+Let the function $V_{bit} : \flist(\B) \rightarrow \set(\B)$ such that:
+$$\forall L \in \flist(\B), V_{bit}(L) = \{ b | b \in \B, DP_{bit}(L,b) \}$$
+
 We define the set of well-formed block regarding bitcoin rules as : 
 $$\B_{bit} = \{b| \exists L \in \flist(\B), L[0] = G, b \in V_{bit}(L) \}$$
 
@@ -90,6 +95,7 @@ Here we want the probability to be inferred by a player hash power. Intuitively 
 
 \etienne{it doesn't seem valid at first due to the definition of action which are define as looking for a specific block, but as every action in the vector is defined the same way, the transition probability does not change}
 
+
 \subsection{Equivalence}
 
 \begin{mydef}
@@ -97,7 +103,7 @@ Here we want the probability to be inferred by a player hash power. Intuitively 
 	\begin{eqnarray*}
 		b_1 \equiv_{bit} b_2 & \Leftrightarrow &
 		\begin{cases}
-			b_1("prevhash") = b_2("prevhash") \\
+			b_1("prevhash") = b_2("prevhash") \\0-
 			b_1("owner") = b_2("owner") \\
 			b_1("reward") = b_2("reward")
 		\end{cases}\\
