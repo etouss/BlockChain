@@ -1,6 +1,7 @@
 %!TEX root = main.tex
 %Etienne 's modification space
 
+
 \section{Bitcoin}
 In this part we apply our framework to bitcoin, we will try to justify every choice we made. 
 We will assume that hash function are perfect, meaning ... (no 2 element with the same hash to simplify)
@@ -8,17 +9,23 @@ We will assume that hash function are perfect, meaning ... (no 2 element with th
 \subsection{Bitcoin 's Verification Rules}
 Genesis block ?
 
-Let the function $V_{bit} : \flist(\B) \rightarrow \set(\B)$ be the validation rule function of bitcoin. 
+Assume that exists a decision procedure $DP_{bit}$ which takes in input a list of blocks $L \in \flist(\B)$ and a block $b \in \B$, and return true if and only if $L+b$ is a valid list of blocks. (A bitcoin full node implement such a decision procedure).
+
+Let the function $V_{bit} : \flist(\B) \rightarrow \set(\B)$ such that:
+$$\forall L \in \flist(\B), V_{bit}(L) = \{ b | b \in \B, DP_{bit}(L,b) \}$$
+
+\begin{myrem}
+	$V_{bit}$ is also computable as we only have to test a finite number of block, indeed there is a maximal size for blocks in bitcoin.
+\end{myrem}
+
 We define the set of well-formed block regarding bitcoin rules as : 
 $$\B_{bit} = \{b| \exists L \in \flist(\B), L[0] = G, b \in V_{bit}(L) \}$$
 
 \begin{mylem*}
-	Every block $b \in \B_{bit}$ can be visualize as a mapping from keywords to values: 
+	From the specification (quote) we get that every block $b \in \B_{bit}$ can be visualize as a mapping from keywords to values: 
 	\begin{itemize}
 		\item $b("hash") \rightarrow$ hash of the block
 		\item $b("previous hash") \rightarrow$ hash of the previous block
-		\item $b("timestamp") \rightarrow$ timestamp of the block
-		\item $b("target") \rightarrow$ current puzzle difficulty
 		\item ...
 	\end{itemize}
 \end{mylem*}
@@ -44,9 +51,9 @@ We will focus on a few important properties of bitcoin validation rules.
 
 \subsection{Bitcoin's Protocol}
 
-For all $i \in \mathbb{N}$ we define the relation $\preceq^{bit}_i$ over $\LOG(G,V_{bit})$ as : 
+We define the relation $\preceq^{bit}$ over $\LOG(G,V_{bit})$ as : 
 
-$$ L_1 \preceq^{bit}_i L_2  \Leftrightarrow \left ( \exists b \in L_1, b("timestamp") - 7200 > i \right ) \lor \left ( \length(L_1) \leq \length(L_2) \land \forall b \in L_2, b("timestamp") - 7200 \leq i \right )$$
+$$ L_1 \preceq^{bit} L_2  \Leftrightarrow \length(L_1) \leq \length(L_2)$$
 
 \begin{myprop}
 	$\{\preceq^{bit}_i\}_{i\in\mathbb{N}}$ is a blockchain protocol.
@@ -66,22 +73,40 @@ The issue is that action presented here are not a good representation of what on
 \subsubsection{PayOff Function}
 Intuitively we want the payoff function to immediately represent the earning of a miner. However this can not be achieve easily due to possible instability of the main block chain support. 
 
-The first definition of payoff we offer is node orientated meaning that if at least half of the player agree on a block belonging to the blockchain then the block reward is "accessible". The second one is miner orientated meaning that if at least half of the hash power agree on a block belonging to the blockchain then the block reward is "accessible".
+The first definition of payoff we offer is node orientated meaning that if at least half of the player agree on a block belonging to the blockchain then the block reward is "accessible". An other one is miner orientated meaning that if at least half of the hash power agree on a block belonging to the blockchain then the block reward is "accessible".
+
+%\begin{mydef}
+%	We define the set of consensus blocks for $\bq$ and $p$ as :
+%	$$\{b | \forall L \in min(q_p), b \in L  \} $$  
+%	We say that a block is accepted at state $\bq$ by a set of player $P$ if he belongs to the consensus blocks of a majority of player. We denote $C_{\bq}$ this set of blocks.
+%\end{mydef}
+
+%We then define the payoff function for a player $p$, a state $\bq$ and an action vector $\ba$ as : 
+%$$ r_p(\bq,\ba) = \sum_{b \in C_{a_p(\bq)}} b("reward") * 1_{b("owner")=p}$$
+
+%\etienne{I dont like it at all but that the idea}
+
+
+We define the $\alpha \in [0,1]$ consensus body of knowledge for a state $\bq$ as: 
+$$q_{\alpha} = \{L | \exists P \in \set(\cP); |P|> \alpha |\cP|;\forall p \in P; L\in q_p \}$$
+Moreover we define the set of list :
+$$bc_{\alpha}^\bq = \{L |L\in q_{\alpha} ;\forall L' \in q_{\alpha}; L'\preceq^{bit} L \} $$
+Finally we define the intersection of this set as the list:
+$$L_\alpha^\bq = \bigcap_{L \in bc_{\alpha}} L$$
+
+\begin{mylem*}
+	$L_\alpha^\bq \in \LOG(G_{bit},V_{bit})$
+\end{mylem*}
+\begin{proof}
+	To do.
+\end{proof}
 
 \begin{mydef}
-	We define the set of consensus blocks for $\bq$ and $p$ as :
-	$$\{b | \forall L \in min(q_p), b \in L  \} $$  
-	We say that a block is accepted at state $\bq$ by a set of player $P$ if he belongs to the consensus blocks of a majority of player. We denote $C_{\bq}$ this set of blocks.
+We define the payoff function for a player $p$, a state $\bq$ and an action vector $\ba$ as : 
+$$ r_p(\bq,\ba) = \left ( \sum_{b \in L_{1/2}^{a_p(\bq)}} b("reward") * \mathbb{1}_{b("owner")=p} \right ) * \pr(\bq, \ba, a_p(\bq))$$
 \end{mydef}
 
-We then define the payoff function for a player $p$, a state $\bq$ and an action vector $\ba$ as : 
-$$ r_p(\bq,\ba) = \sum_{b \in C_{a_p(\bq)}} b("reward") * 1_{b("owner")=p}$$
 
-\etienne{I dont like it at all but that the idea}
-
-\begin{myrem}
-	Notice that the reward function only depend on the state and my action.
-\end{myrem}
 
 \etienne{Maybe we should add a cost of mining for electricity}
 
@@ -89,6 +114,16 @@ $$ r_p(\bq,\ba) = \sum_{b \in C_{a_p(\bq)}} b("reward") * 1_{b("owner")=p}$$
 Here we want the probability to be inferred by a player hash power. Intuitively if a player $p$ own a third of the hash power which is involved in the action vector then he should have $1/3$ to transition. 
 
 \etienne{it doesn't seem valid at first due to the definition of action which are define as looking for a specific block, but as every action in the vector is defined the same way, the transition probability does not change}
+
+
+
+\begin{eqnarray*}
+	\pr(\bq, \ba, \bq') & = &
+	\begin{cases}
+		\frac{\sum_{a_p \in \ba} \mathbb{1}_{a_p(\bq) = \bq'}*p("hashpower")}{\sum_{a_p \in \ba} \mathbb{1}_{a_p(\bq) \neq \bq}*p("hashpower")} \textit{ if }  \bq \neq \bq' \\
+		0 \textit{ otherwise } 
+	\end{cases}\\
+\end{eqnarray*}
 
 \subsection{Equivalence}
 
