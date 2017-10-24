@@ -166,6 +166,8 @@ As a last component of the game, we assume that $\pr : \cQ \times \cA \times \cQ
 \end{enumerate}
 Intuitively, $\pr(\bq, \ba, \bq')$ tell us what the probability of generating $\bq'$ from $\bq$ is 0 when one of the actions in the tuple $\ba$ is executed.
 
+\juan{As Francisco suggested, might be better if we just say that Pr assigns, for each tuple $(\bq,\ba)$ probability on each of the $a_1(\bq),\dots,a_m(\bq)$}
+
 Note that condition \ref{c-z} above forces that the communication happens only by the player that is mining (player $i$ such that 
 action $a_i$ satisfies $a_i(\bq) = \bq'$). If we want to relax this we should require instead that there is some $i$ such that $a_i(\bq)$ can be extended to $\bq'$, or that $\bq'$ is built by somehow merging some $a_j(\bq)$'s (but might be tricky to define that).
 
@@ -197,7 +199,7 @@ Next we define a notion of how likely is reaching a set of states using a partic
 Formally, given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, 
 the probability of reaching state $\bq \in \cQ$ in $n$ iterations is recursively defined as follows:
 \begin{eqnarray*}
-\pr_0^{\bs}(\bq \mid \bq_0) & = &...
+\pr_0^{\bs}(\bq \mid \bq_0) & = &
 \begin{cases}
 1 & \text{if } \bq = \bq_0\\
 0 & \text{otherwise}
