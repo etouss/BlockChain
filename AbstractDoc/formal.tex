@@ -444,3 +444,90 @@ $\Gamma$ is an infinite stochastic game, there exists $j \in \{1, \ldots, m\}$ s
 %	immediate.
 %\end{proof}
 
+\section{Some results for a simplified bitcoin game}
+
+\medskip
+\noindent
+\textbf{Blocks and validation}. We assume blocks have just three parts: the hash of the previous block, the owner (one of the players) and 
+and an id. Given a valid list $L$ of blocks ending in block $B$, we define $V(L)$ as all possible blocks whose previous block hash is 
+the has of block $B$. We also assume that the genesis list is just a block with $id = 1$ and 
+whose previous block hash and owner strings are empty. 
+
+With this fixed validation rule and genesis list, we work with the following game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ where:
+\begin{itemize}
+	\item $\cP$ is the set of player.
+	\item $\cA$ is the set of available action.
+	\item $\cQ$ is the set of states.
+	\item $\cR$ is the pay-off function.
+	\item $\pr$ is the transition probability function.
+\end{itemize} 
+
+
+\medskip
+\noindent
+\textbf{Mining actions}. We want to model that miners just  
+is to create new valid blocks, one at a time. To do this we impose the following condition on $\cA$: 
+\begin{itemize}
+\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $|y_p| \leq |x_p| + 1$.
+\end{itemize}
+
+We also impose a \textbf{Full disclosure} rule, that assumes that players have no interest in withholding any information: 
+\begin{itemize}
+\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $y_i = y_j$ for each $1 \leq i \leq j \leq m$.
+\end{itemize} 
+
+Note that because of the full disclosure rule we can speak of \emph{the} state $\bq$, since any state that can actually be reached by means of 
+any actions must consists of $p$ identical body of knowledges. 
+
+
+\medskip
+\noindent
+\textbf{Blockchain}. We work with a blockchain protocol that considers just a single knowledge order (regardless of the instant of time), 
+given by the following rule for two lists $L_1, L_2 \in \LOG(G,V)$: $L_1 \preceq L_2$ if $|L_1| \leq |L_2|$. 
+
+\newcommand{\blockchain}{\textit{blockchain}}
+\newcommand{\hashpower}{\textit{haspower}}
+
+Given a state (or a body of knowledge) $\bq$, we define $\blockchain(\bq)$ as the maximum list in $\bq$ according to $\preceq$, if 
+such maximum exists, or $\emptyset$ if there is more than one $\preceq$-maximal element in $\bq$. 
+
+
+\medskip
+\noindent
+\textbf{Payoff function}. For each state $\bq$, action $a$, and player $p \in \cP$, let us denote $C_p(\bq,a)$ 
+as the number of blocks owned by $p$ in $\blockchain(a(\bq))$, if it returns a list, or $0$ if $\blockchain(a(\bq))$ is empty. 
+Then the payoff $\cR = (r_1, \ldots, r_m)$ is defined as $r_p(\bq, \ba) = C_p(\bq, a_p) \cdot \pr(\bq, \ba, a_p(\bq))$.
+
+\medskip
+\noindent
+\textbf{Probability based on hashpower}. We assume that each player $p \in \cP$ is assigned a fixed positive number $\hashpower(p)$, 
+and so that $\sum_{p \in \cP} \hashpower(p) = 1$. 
+
+Then for each action $(a_1,\dots,a_p) \in \cA$, and state $\bq \in \cQ$, we 
+define $\pr(\bq, \ba, a_p(\bq)) = \hashpower(p)$. Note that $\pr(\bq, \ba, \bq') = 0$ if $\bq'$ does not correspond to any of the $a_p(\bq)$. 
+
+\subsection{Constant rewards, Infinite rounds}
+
+\medskip
+\noindent
+\textbf{Two players}
+Let $P = \{1,2\}$, and consider the strategies $s_1,s_2$ given as follows: 
+\begin{itemize}
+\item Whenever $\bq$ has one blockchain (i.e., $\blockchain(\bq)$ returns a list), $a_p(\bq)$ aims to put a single block at the end of the 
+blockchain, owned by $p$. 
+\item Whenever $\bq$ has more than one blockchain, $a_p(\bq)$ aims to put a single block at the end of the maximal chain with the 
+greatest number of blocks owned by $p$, or, if there is more than one chain tied with number of blocks owned by $p$, on the maximal chain that ends in the block with the smallest id. 
+\end{itemize}
+
+\begin{myprop}
+The Strategy $(s_1,s_2)$ is a $\beta$-discounted nash equilibrium for the bitcoin game. There is no other equilibria using either $s_1$ or 
+$s_2$. 
+\end{myprop}
+
+\medskip
+\noindent
+\textbf{Any number of players}. We can seemingly define strategies $s_1,\dots,s_P$ for a similar game with $P$ players. 
+
+\begin{myprop}
+The Strategy $(s_1,s_2,\dots,s_P)$ is a $\beta$-discounted nash equilibrium for the bitcoin game. There is no other equilibria using either any of the $s_P$. 
+\end{myprop}
