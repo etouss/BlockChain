@@ -49,7 +49,7 @@ Given a body of knowledge $\body$, we say that the blockchain of $\body$ is the 
 
 On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to put the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player puts a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
 
-Let $\BK$ be the set of all possible bodies of knowledge, and let $\bQ = \BK^m$. Each tuple $(q_1, \ldots, q_m) \in \bQ$ is a state of the game where each component $q_i$ of $\bq$ represents the knowledge of player 
+Let $\BK$ be the set of all possible bodies of knowledge, and let $\bQ = \BK^m$. Each tuple $(q_1, \ldots, q_m)$ in $\bQ$ is a state of the game, where each component $q_i$ of $\bq$ represents the knowledge of player $i$.
 
 
 Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, m\}$ is a finite set of players, and we say that a state $\bq$ is a tuple $(q_1, \ldots, q_m) \in \BK(G,V)^m$. Intuitively, each component $q_i$ of $\bq$ represents the knowledge of player $i$, so $\bq$ contains the knowledge of all the players. Moreover, we denote by $\cQ$ the set of all possible states, that is, $\cQ = \BK(G,V)^m$.
