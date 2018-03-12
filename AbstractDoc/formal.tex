@@ -468,13 +468,15 @@ With this fixed validation rule and genesis list, we work with the following gam
 \textbf{Mining actions}. We want to model that miners just  
 is to create new valid blocks, one at a time. To do this we impose the following condition on $\cA$: 
 \begin{itemize}
-\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $|y_p| \leq |x_p| + 1$.
+\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a_p(\bq) = (y_1, \ldots, y_m)$, then it holds that $|y_p| = |x_p| + 1$.
 \end{itemize}
 
 We also impose a \textbf{Full disclosure} rule, that assumes that players have no interest in withholding any information: 
 \begin{itemize}
 \item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $y_i = y_j$ for each $1 \leq i \leq j \leq m$.
 \end{itemize} 
+
+%%% say that this is equivalent to starting with the genesis list and add one block at a time
 
 Note that because of the full disclosure rule we can speak of \emph{the} state $\bq$, since any state that can actually be reached by means of 
 any actions must consists of $p$ identical body of knowledges. 
@@ -524,6 +526,8 @@ The Strategy $(s_1,s_2)$ is a $\beta$-discounted nash equilibrium for the bitcoi
 $s_2$. 
 \end{myprop}
 
+% try to show that no fork is somehow the best
+
 \medskip
 \noindent
 \textbf{Any number of players}. We can seemingly define strategies $s_1,\dots,s_P$ for a similar game with $P$ players. 
@@ -531,3 +535,7 @@ $s_2$.
 \begin{myprop}
 The Strategy $(s_1,s_2,\dots,s_P)$ is a $\beta$-discounted nash equilibrium for the bitcoin game. There is no other equilibria using either any of the $s_P$. 
 \end{myprop}
+
+\subsection{Variable rewards, Infinite rounds}
+
+Now we redefine the reward based on the length of the blockchain: a block corresponding to the $i$-th block of the blockchain is worth a value of $\alpha^i$
