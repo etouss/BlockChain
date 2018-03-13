@@ -32,451 +32,102 @@
 
 \section{A Game-theoretic Characterization of Bitcoin Mining}
 
-The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players. In this game, each player has some reward depending on the number of blocks she owns. We denote by $\bB$ the set of all possible blocks, and we assume that there is a special block $\varepsilon \in \bB$ that is called the genesis block. Moreover, we associate the following functions to these blocks:
+The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns. We denote by $\bB$ the set of all possible blocks, and we assume that there is a special block $\varepsilon \in \bB$ that is called the genesis block. Moreover, we associate the following functions to these blocks:
 \begin{itemize}
 \item $\owner : (\bB \setminus \{\varepsilon\}) \to \bP$: This function assigns an owner to each block, except for the genesis block that is assumed not to have an owner.
 
 \item $\pred : (\B \setminus \{\varepsilon\}) \to \B$: This functions assigns a predecessor to each block, except for the genesis block that is the first block in every blockchain.
 \end{itemize}
-To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge that each player has. More precisely, given a subset $\body$ of $\bB$, define $G_\body = (N,E)$ as a graph such that:
+To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge that each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying that:
 \begin{eqnarray*}
-N &=& \body\\
-E &=& \{ (b_1,b_2) \in \body^2 \mid \pred(b_2) = b_1\}
+N &=& q\\
+E &=& \{ (b_1,b_2) \in q^2 \mid \pred(b_2) = b_1\}
 \end{eqnarray*}
-Then $\body$ is said to be a body of knowledge (of a player) if $G_\body$ is a tree rooted at $\varepsilon$. If $\body$ is a body of knowledge, then we use notation $T_\body$ instead of $G_\body$ to make explicit the fact that $G_\body$ is a tree.
+Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a tree.
 
-Given a body of knowledge $\body$, we say that the blockchain of $\body$ is the longest path in $T_\body$ if such a path is unique, in which case we denote it by $\bchain(\body)$. If two or more different paths are tied for the longest, then we say that the blockchain in $\body$ does not exists, and we assume that $\bchain(\body)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
+Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$ if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
 
 On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to put the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player puts a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
 
-Let $\BK$ be the set of all possible bodies of knowledge, and let $\bQ = \BK^m$. Each tuple $(q_1, \ldots, q_m)$ in $\bQ$ is a state of the game, where each component $q_i$ of $\bq$ represents the knowledge of player $i$.
+Let $Q$ be the set of all possible bodies of knowledge, and let $\bQ = Q^m$. Each tuple $\bq = (q_1, \ldots, q_m)$ in $\bQ$ is a state of the mining game, where each component $q_p$ of $\bq$ is a body of knowledge that represents the knowledge of player $p$.
 
-
-Fix a validation rule $V$ and a genesis list $G$ of $V$. From now on, we assume that $\cP = \{1, \ldots, m\}$ is a finite set of players, and we say that a state $\bq$ is a tuple $(q_1, \ldots, q_m) \in \BK(G,V)^m$. Intuitively, each component $q_i$ of $\bq$ represents the knowledge of player $i$, so $\bq$ contains the knowledge of all the players. Moreover, we denote by $\cQ$ the set of all possible states, that is, $\cQ = \BK(G,V)^m$.
-
-In order to formally define our game, let us denote by $\BLOCKS(\cP)$ the set of all possible blocks owned by any player in $\cP$, and 
-$\BK(\cP)$ the set of all body of knowledges constructed from blocks in $\BLOCKS(\cP)$, so that the states of our game are precisely 
-$\BK(\cP)$. 
-
-A strategy for a player $p$ is a function $\BK(\cP) \rightarrow \BLOCKS(\cP)$ that assigns to each body of knowledge a block of it 
-where player $p$ wishes to mine next. 
-
-From now on, assume that $\Sigma$ is a finite alphabet, and that $\B \subseteq \Sigma^*$ is the set of all possible blocks.  
-
-
-
-
-\subsection{Definition of the game}
-
-
-
-%\etienne{There is an issue with : $\cQ = \BK(G,V)^m$ should be closer to :$\cQ = \BK(G,V)^{n \times m}$}
-
-%\begin{mydef}
-%	Considering a set of player $P$ we denote $\mathcal{K}_P$ the set of function $K_P : P \rightarrow \mathcal{K}$ mapping a knowledge tree to each player. 
-%	%We denote $\mathcal{K}^{\equiv}_P$ the set of mapping where:
-%	%$$\forall K_P, K'_P \in \mathcal{K}^{\equiv}_P, \forall p \in P, K_P(p) \textit{ and } K'_P(p) \textit{ are } \equiv \textit{ equivalent } $$ 
-%\end{mydef}
-
-%Intuitively $\mathcal{K}_P$ represents the true knowledge of each player.
-
-\begin{mydef}\label{def-action}
-Given a player $p \in \cP$, a function $a : \cQ \to \cQ$ is an action for $p$ if
+Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the main action played in the mining game, in which player $p$ mines block $b$, put this block in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q$. Thus, action $\mine(p,b,q,q')$ is valid if:
 \begin{itemize}
-\item for every $\bq \in \cQ$ and $p' \in \cP$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that:
-\begin{eqnarray*}
-x_{p'} \ \subseteq \ y_{p'} \ \subseteq \ x_{p'} \cup y_p.
-\end{eqnarray*}
+\item $\owner(b) = p$,
 
+\item $b \not\in q$,
+
+\item $\pred(b) \in q$, and
+
+\item $q' \subseteq q \cup \{b\}$.
 \end{itemize}
-Moreover, $\cA_p$ is the set of all actions for player $p$.
-\end{mydef}
-An action of a player $p$ is represented by a modification of the knowledge of $p$ and a round of communication between players. 
+Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{b\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
 
-If we need to restrict the number of blocks that can be added when an action is executed (like in the case of Bitcoin), then we need to include in Definition \ref{def-action} a condition like the following:
+Let $\bx =  (x_1, \ldots, x_m)$ be a state in $\bQ$ and $\mine(p,b,x_p,q)$ be a valid action in state $\bx$. Then the result of applying $\mine(p,b,x_p,q)$ to $\bx$ is a state $\by = (y_1, \ldots, y_m)$ in $\bQ$ such that:
 \begin{itemize}
-\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $|y_p| \leq |x_p| + 1$.
+\item $y_p = x_p \cup \{b\}$, and
+
+\item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
 \end{itemize}
-In this case, at most one block can be added as the result of executing action $a$ by player $p$ (notice that this holds because every body of knowledge is closed under prefix).
+In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{b\})$, that is, all the information of player $p$ after putting $b$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{b\})$.
 
-From now on, assume that $\cA = \cA_{1} \times \cA_{2} \times \cdots \times \cA_{m}$. Thus, every element of $\ba \in \cA$ is a tuple containing exactly one action for each player. Moreover, given a player $p \in \cP$, a function $r_p : \cQ \times \cA \to \mathbb{R}$ is called a pay-off function for $p$. Intuitively, given $(\bq, \ba) \in \cQ \times \cA$, we have that $r_p(\bq, \ba)$ is the pay-off of player $p$ when the set of actions to be executed is $\ba$ and the knowledge of each player is encoded in $\bq$. Finally, assuming that there is a  function $r_p$ for each player $p \in \cP$, define $\cR = (r_1, \ldots, r_m)$ as the pay-off function of the game.
-
-As a last component of the game, we assume that $\pr : \cQ \times \cA \times \cQ \to [0,1]$ is a transition probability function satisfying the following conditions:
-\begin{enumerate}
-\item For every $\bq \in \cQ$ and $\ba \in \cA$:
+Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
-\sum_{\bq' \in \cQ} \pr(\bq, \ba, \bq' ) & = & 1.
+\bA_p & = & \{ \mine(p,b,q,q') \mid \mine(p,b,q,q') \text{ is a valid action}\}.
 \end{eqnarray*}
+Given an action $a \in \bA_p$ and a state $\bq \in \bQ$ such that $a$ is a valid action in $\bq$, we use $a(\bq)$ to denote the state resulting of applying $a$ to $\bq$. Moreover, we denote by $\bA$ the set of all possible actions, that is, $\bA = \bA_1 \cup \cdots \cup \bA_m$.
 
-\item \label{c-z} For every $\bq \in \cQ$, $\ba \in \cA$ and $\bq' \in \cQ$, it holds that $\pr(\bq, \ba, \bq') = 0$ if $\ba = (a_1, \ldots, a_m)$ and $a_i(\bq) \neq \bq'$ for every $i \in \{1, \ldots, m\}$.
-\end{enumerate}
-Intuitively, $\pr(\bq, \ba, \bq')$ tell us what the probability of generating $\bq'$ from $\bq$ is 0 when one of the actions in the tuple $\ba$ is executed.
+Given a player $p \in \bP$ and a state $\bq \in \bQ$, the pay-off of player $p$ in $\bq$ is denoted by $r_p(\bq)$. Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_1, \ldots, r_m)$ as the pay-off function of the game.
 
-\juan{As Francisco suggested, might be better if we just say that Pr assigns, for each tuple $(\bq,\ba)$ probability on each of the $a_1(\bq),\dots,a_m(\bq)$}
-
-Note that condition \ref{c-z} above forces that the communication happens only by the player that is mining (player $i$ such that 
-action $a_i$ satisfies $a_i(\bq) = \bq'$). If we want to relax this we should require instead that there is some $i$ such that $a_i(\bq)$ can be extended to $\bq'$, or that $\bq'$ is built by somehow merging some $a_j(\bq)$'s (but might be tricky to define that).
+Finally, we assume that the hash power of each player $p$ is given by a number $h_i \in (0,1)$, which represents the probability that player $p$ succeeds in putting the next block. Thus, we assume that $\sum_{p=1}^m h_p = 1$, and we define $\bH = (h_1, \ldots, h_m)$ as the hash power distribution.
 
 
-If the knowledge of all the players is given by $\bq \in \cQ$, and a player $p$ decides to execute an action $a_p$, its rewards not only depends on $\bq$ and $a_p$, but also on the actions to be executed by the other players. If the tuple of actions to be executed by all the players is $\ba = (a_1, \ldots, a_m)$, then the computation of the value $r_p(\bq, \ba)$ should take into consideration the knowledge in $\bq$ and the probability that the action executed is $a_p$. Thus, intuitively, if player $p$ foresees to receive $C(\bq, a_p)$ as reward, then we should have that $r_p(\bq, \ba) = C(\bq, a_p) \cdot \pr(\bq, \ba, a_p(\bq))$.
-
-\etienne{I completely agree with what you say about reward function, but i am not sure people will get this is only a fact in our game and not a generality of stochastic game}
-
-Summing up, from now on we consider an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ where:
+Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$ where:
 \begin{itemize}
-	\item $\cP$ is the set of player.
-	\item $\cA$ is the set of available action.
-	\item $\cQ$ is the set of states.
-	\item $\cR$ is the pay-off function.
-	\item $\pr$ is the transition probability function.
+	\item $\bP$ is the set of player.
+	\item $\bA$ is the set of possible actions.
+	\item $\bQ$ is the set of states.
+	\item $\bR$ is the pay-off function.
+	\item $\bH$ is the hash power distribution.
 \end{itemize} 
+
+
+
+
+
 
 
 \subsection{Stationary equilibrium}
+A strategy for a player $p \in \bP$ is a function $s : \bQ \rightarrow \bA_p$. 
+We define $\bS_p$ as the set of all strategies for player $p$, and $\bS = \bS_{1} \times \bS_{2} \times \cdots \times \bS_{m}$ as the set of combined strategies for the game (recall that we are assuming that $\bP = \{1, \ldots, m\}$ is the set of players). 
 
-A stationary strategy for a player $p$ is a function $s : \cQ \rightarrow \cA_p$. 
-We define $\cS_p$ as the set of all strategies for player $p$, and $\cS = \cS_{1} \times \cS_{2} \times \cdots \times \cS_{m}$ as the set of combined strategies for the game (recall that we are assuming that $\cP = \{1, \ldots, m\}$ is the set of players). Thus, every element $\bs$ of $\cS$ is a tuple containing exactly one strategy for each player. 
-For a combined strategy $\bs = (s_1, \ldots, s_m)$, 
-we also write $\bs(\bq)$ to refer to the tuple of actions $(s_1(\bq), \ldots, s_m(\bq))$. 
-
-%\etienne{We may want to avoid changing between n and m for the player and the state}
-
-Next we define a notion of how likely is reaching a set of states using a particular strategy, when starting at some specific state.
-Formally, given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, 
-the probability of reaching state $\bq \in \cQ$ in $n$ iterations is recursively defined as follows:
+Next we define a notion of how likely is reaching a state using a particular strategy, when starting at some specific state. Formally, given an initial state $\bq_0 \in \bQ$ and a strategy $\bs = (s_1, \ldots, s_m)$ in $\bS$, 
+the probability of reaching state $\bq \in \bQ$ is recursively defined as follows:
 \begin{eqnarray*}
-\pr_0^{\bs}(\bq \mid \bq_0) & = &
+\pr^{\bs}(\bq \mid \bq_0) & = &
 \begin{cases}
-1 & \text{if } \bq = \bq_0\\
-0 & \text{otherwise}
-\end{cases}\\
-\pr_{n+1}^{\bs}(\bq \mid \bq_0) & = & \sum_{\bq' \in \cQ} \pr_n^{\bs}(\bq'\mid \bq_0) \cdot \pr(\bq', \bs(\bq'), \bq) \quad \quad \quad  \quad \quad \text{ for every } n \in \mathbb{N}
+0 & \text{if } |\bq| < |\bq_0|,\\
+& \text{or if }  |\bq| = |\bq_0| \text{ and } \bq \neq \bq_0\\
+&\\
+1 & \text{if } \bq =  \bq_0\\
+& \\
+{\displaystyle \sum_{\substack{\bq' \in \bQ \,:\\ |\bq'| = k-1}} \bigg( \pr^{\bs}(\bq' \mid \bq_0) \cdot \sum_{\substack{p \in \{1, \ldots, m\} \,: \\ s_p(\bq') = a \text{ and } a(\bq') = \bq}} h_p\bigg)}
+ & \text{if } |\bq| > |\bq_0| \text{ and } |\bq| = k
+\end{cases}
 \end{eqnarray*}
-
+We finally have all the necessary ingredients to define the pay-off of a player in a mining game given a particular strategy.
 
 \begin{mydef}
-Let $p \in \cP$, $\bq_0 \in \cQ$, $\bs \in \cS$ and $\beta \in [0,1]$. Then the $\beta$ discounted pay-off of the player $p$ for the strategy $\bs$ from the state $\bq_0$, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
+Let $p \in \bP$, $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the $\beta$ discounted pay-off of player $p$ for the strategy $\bs$ from the state $\bq_0$ in a mining game with $n$ steps, denoted by $u_p^n(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
-u_p(\bs \mid \bq_0) & = & (1 - \beta) \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\bq \in \cQ} r_p(\bq,\bs(\bq)) \cdot 
-\pr_i^{\bs}(\bq \mid \bq_0)\bigg)
+u_p^n(\bs \mid \bq_0) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\bq \in \bQ \,:\, |\bq| = i} r_p(\bq) \cdot 
+\pr^{\bs}(\bq \mid \bq_0)\bigg)
+\end{eqnarray*}
+Moreover, the $\beta$ discounted pay-off of player $p$ for the strategy $\bs$ from the state $\bq_0$ in an infinite mining game, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
+\begin{eqnarray*}
+u_p(\bs \mid \bq_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\bq \in \bQ \,:\, |\bq| = i} r_p(\bq) \cdot 
+\pr^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
 \end{mydef}
-
-\etienne{We define utility only over infinity ?}
-
-Given $p \in \cP$, $\bs \in \cS$, with $\bs = (s_1, \ldots, s_m)$, and $s \in \cS_p$, we denote by $(\bs_{-p}, s)$ strategy of the game $(s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m})$.
-\begin{mydef}
-Let $\bq_0 \in \cQ$, $\bs \in \cS$ and $\beta \in [0,1]$. Then $\bs$ is a $\beta$ discounted stationary equilibrium for $(\Gamma, \bq_0)$ if for every player $p \in \cP$ and every strategy $s$ for player $p$ $(s \in\cS_p)$, it holds that:
-\begin{eqnarray*}
-u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
-\end{eqnarray*}
-\end{mydef}
-
-\subsection{Properties of a blockchain}
-
-We are interested in proving that certain conditions are verified for stationary equilibria of the blockchain game. 
-However, we cannot just ask that ``every state reachable with a high probability satisfies these conditions'', or 
-``every state not satisfying these conditions is reached with a low probability''. 
-The first statement is too weak, as in a game with several rounds 
-most likely all states will be reached with low probability, rendering the statement useless. Moreover, the second statement is not strong enough; even if every \emph{bad} state is reached with 
-low probability, the set of \emph{bad} states could be large enough so that the probability of reaching it is high, so our game does not satisfy the  required conditions in its most likely outcome. 
-\etienne{We have an issue here, we use weak and not strong enough as antonym}
-
-We overcome the issues mentioned in the previous paragraph by considering a statement that talks about sets of states. Recall that we  fixed a validation rule $V$, a genesis list $G$ for $V$ and an infinite stochastic game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$. Moreover,  define a condition $\cC$ on the set of states $\cQ$ simply as a subset of $\cQ$ ($\cC \subseteq \cQ$). 
-
-\begin{mydef}
-Let $\bq_0 \in \cQ$ be an initial state. Then a condition $\cC$ on the set of states $\cQ$ is satisfied by $(\Gamma, \bq_0)$ if:
-%	We say that $P$ is verified by $\Gamma$ with a probability $\alpha$ if and only if:
-	\begin{itemize}
-		\item There exists a $\beta$-discounted stationary equilibrium for $(\Gamma, \bq_0)$
-		
-		\item For every $\beta$-discounted stationary equilibrium $\bs$ for $(\Gamma, \bq_0)$, it holds that:
-\begin{eqnarray*}
-\lim_{n \to \infty} \pr_n^{\bs}(\cC \mid \bq_0) & = & 1, 
-\end{eqnarray*}
-where ${\displaystyle \pr_n^{\bs}(\cC \mid \bq_0) = \sum_{\bq \in \cC} \pr_n^{\bs}(\bq \mid \bq_0)}$. 
-		%verifies the following: 
-		%for every set $\bQ \in \set{\cQ}$, if $\pr^{\bs}(\bQ \mid \bq_0)\geq(\alpha)$ then $\bQ \cap P \neq \emptyset$.	
-
-		\end{itemize}
-\end{mydef}
-
-%\etienne{the paper probably miss some input (definition of probability over Condition. But to be honest i am sceptical on how to reach such properties at the end. Moreover as we define it as a limit over n through infinity it forces us to consider an infinite number of step so states. I would gladly take an update on that}
-
-%The previous definition is a bit strong, we can reduce it by considering only the majority of knowledge in $\bq$
-
-%\juan{still need to iterate over the definition above. I put everything about computing the probability in this separate piece below. }
-%\domagoj{Should be $1-\alpha$ above; we want to say that even when the probability of reaching something is small (we want $\alpha$ to be big) we can find an element with the desired property.}
-%
-%\medskip
-%\noindent
-%\textbf{Computing $\pr^{\bs}(\bQ \mid \bq_0)$}. Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability of reaching a state of $\bQ \in \set(\cQ)$  without walking by a state of $\bQ' \in \set(\cQ)$ in $k$ iterations is recursively defined as follows:
-%\begin{eqnarray*}
-%	\pr_0^{\bs}(\bQ \setminus \bQ' \mid \bq_0) & = &
-%	\begin{cases}
-%		1 & \text{if } \bq_0 \in \bQ\\
-%		0 & \text{otherwise}
-%	\end{cases}\\
-%	\pr_{k+1}^{\bs}(\bQ,\bQ' \mid \bq_0) & = & \sum_{\bq' \in \cQ \setminus \bQ'} \pr_k^{\bs}(\{\bq'\},\bQ'\mid \bq_0) \cdot \sum_{\bq \in \bQ} \pr(\bq', \bs(\bq'), \bq) \quad \quad \quad  \quad \quad \text{ for every } k \in \mathbb{N}
-%\end{eqnarray*}
-%
-%\begin{mylem}
-%	Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability to reach a state of $\bQ \in \set(\cQ)$ for the first time in $k$-step is equal to $\pr^{\bs}_k(\bQ,\bQ \mid \bq_0)$
-%\end{mylem}
-%
-%\begin{proof}
-%	immediate.
-%\end{proof}
-%
-%\begin{myprop}
-%	Given an initial state $\bq_0 \in \cQ$ and a strategy $\bs \in \cS$, the probability to reach a state of $\bQ \in \set(\cQ)$  is equal to $$\pr^{\bs}(\bQ \mid \bq_0) = \sum_{i=0}^{+\infty}\pr^{\bs}_i(\bQ,\bQ \mid \bq_0)$$
-%\end{myprop}
-%
-%\begin{proof}
-%	to do.
-%\end{proof}
-%
-%
-%\section{Block Equivalence}
-
-\subsection{Equivalence between blocks, and games over equivalence classes}
-
-Fix an equivalence relation $\equiv$ on $\B$. Then we say that two lists $L_1, L_2 \in \LOG(G,V)$ are equivalent, denoted by $L_1 \equiv L_2$, if $\length(L_1) = \length(L_2)$ and $L_1[i] \equiv L_2[i]$ for every $i \in \{1, \ldots, \length(L_1)\}$. Moreover, we say that two bodies of knowledge $K_1, K_2 \in \BK(G,V)$ are equivalent, denoted by $K_1 \equiv K_2$, if (i) for every $L_1 \in K_1$, there exists $L_2 \in K_2$ such that $L_1 \equiv L_2$, and (ii) for every $L_2 \in K_2$, there exists $L_1 \in K_1$ such that $L_1 \equiv L_2$. 
-
-\begin{mylem}
-$\equiv$ is an equivalence relation on $\BK(G,V)$.
-\end{mylem}
-
-%\begin{mydef}
-%	Given a validation rule $V$, a genesis list $G$ of $V$ and an equivalence relationship $\equiv$ over $\B$. We say that $K_1 \in \BK(G,V)$ and $K_2 \in \BK(G,V)$ are $\equiv$ equivalent if and only if:
-%	\begin{eqnarray*}
-%		& \forall L_1 \in K_1, \exists L_2 \in K_2, \forall i \in \llbracket 1,|L_1| \rrbracket, L_1[i] \equiv L_2[i] \\
-%		& \forall L_2 \in K_2, \exists L_1 \in K, \forall i \in \llbracket 1,|L_2| \rrbracket, L_1[i] \equiv L_2[i] \\
-%	\end{eqnarray*}	
-%	By extension we denote $K_1 \equiv K_2$ resp. $L_1 \equiv L_2$ when two body knowledge resp. list are $\equiv$ equivalent.
-%\end{mydef}
-%We denote $\BK^\equiv(G,V)$ the set of equivalence classes of $\BK(G,V)$
-%
-%
-%\begin{mydef}
-%	Given a validation rule $V$, a genesis list $G$ of $V$ and $\{ \preceq_i\}_{i \in \mathbb{N}}$ a blockchain protocol over $(G,V)$ we say that an equivalence relationship $\equiv$ over $\B$ is $\{ \preceq_i\}_{i \in \mathbb{N}}$ compatible if and only if:
-%	$$\forall K_1 , K_2 \in \BK(G,V)$$
-%	$$K_1 \equiv K_2 \implies \forall i \in \mathbb{N}, \forall L_1 \in \{L | L \in K_1, \forall L' \in K_1, L' \preceq_i L \}, \exists L_2 \in \{L | L \in K_2, \forall L' \in K_2, L' \preceq_i L \}, L_1 \equiv L_2$$
-%\end{mydef}
-
-
-%\subsection{Game with equivalence}
-
-%For now on we consider a game $\Gamma = (\cP,\cA,\cV,\cR,\pr)$ associated to  a validation rule $V$ a genesis list $G$ and a blockchain protocol $\{ \preceq_i\}_{i \in \mathbb{N}}$. 
-
-The previous definitions of equivalence can be extended to states . Given two states $\bq_1, \bq_2 \in \cQ$ such that $\bq_1 = (q_1, \ldots, q_m)$ and $\bq_2 = (q'_1, \ldots, q'_m)$, we say $\bq_1$ and $\bq_2$ are equivalent, denoted by $\bq_1 \equiv \bq_2$, if $q_i \equiv q'_i$ for every $i \in \{1, \ldots, m\}$. 
-
-\begin{mylem}
-$\equiv$ is an equivalence relation on $\cQ$.
-\end{mylem}
-
-
-Finally, the previous definitions of equivalence can be extended to actions.
-Given a player $p$ and two actions $a_1, a_2 \in \cA_p$, we say that $a_1$ and $a_2$ are equivalent, denoted by $a_1 \equiv a_2$, if for every $\bq \in \cQ$, it holds that $a_1(\bq) \equiv a_2(\bq)$. Moreover, given two actions $\ba_1, \ba_2 \in \cA$ such that $\ba_1 = (a_1, \ldots, a_m)$ and $\ba_2 = (a'_1, \ldots, a'_m)$, we say that $\ba_1$ and $\ba_2$ are equivalent, denoted by $\ba_1 \equiv \ba_2$, if $a_i \equiv a'_i$ for every $i \in \{1, \ldots, m\}$.
-\begin{mylem}
-For every $p \in \cP$, it holds that $\equiv$ is an equivalence relation on $\cA_p$. Moreover, $\equiv$ is an equivalence relation on $\cA$. 
-\end{mylem}
-
-
-%We say that two view $\bq_1, \bq_2 \in \cQ$ are equivalent regarding $\equiv$ a equivalent relationship over $\B$ noted $\bq_1\equiv \bq_2$ if $$\forall p \in \cP, q_{1p} \equiv q_{2p}$$
-
-%We denote $\cQ^\equiv$ the set of equivalence classes of $\cQ$
-
-Recall that given an equivalence relation $\sim$ on a set $X$, the equivalent class of $a \in X$ is denoted by $[a]_\sim$. Moreover, the set of equivalence classes of $\sim$, or quotient space, is denoted by $X/\!\!\sim$. 
-
-\begin{mydef}
-$\equiv$ is consistent with $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ if the following conditions are satisfied:
-\begin{enumerate}
-\item For every $p \in \cP$, $\ba \in \cA_p$ and $\bq_1, \bq_2 \in \cQ$ such that $\bq_1 \equiv \bq_2$, it holds that $\ba(\bq_1) \equiv \ba(\bq_2)$.
-
-\item For every $p \in \cP$, $\bq_1, \bq_2 \in \cQ$ and $\ba_1,\ba_2 \in \cA$ such that $\bq_1 \equiv \bq_2$ and  $\ba_1 \equiv \ba_2$, it holds that $r_p(\bq_1, \ba_1) = r_p(\bq_2, \ba_2)$.
-
-\item For every $\ba_1,\ba_2 \in \cA$, $\bq_1, \bq_2 \in \cQ$ and $E \in \quot{\cQ}$ such that $\ba_1 \equiv \ba_2$ and $\bq_1 \equiv \bq_2$, it holds that 
-\begin{eqnarray*}
-\sum_{\bq \in E} \pr(\bq_1, \ba_1, \bq) & = & \sum_{\bq \in E} \pr(\bq_2, \ba_2, \bq)
-\end{eqnarray*}
-
-\end{enumerate}
-\end{mydef}
-If $\equiv$ is consistent with $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$, then a new game on equivalence relations can be defined as $\Gamma' = (\cP,\cA',\quot{\cQ},\cR',\pr')$, where:
-\begin{enumerate}
-\item $\cA' = \quot{\cA_1} \times \cdots \times \quot{\cA_m}$, and for every $p \in \cP$, $a \in \cA_p$ and $\bq \in \cQ$, we have that:
-\begin{eqnarray*}
-[a]_\equiv([\bq]_\equiv) & = & [a(\bq)]_\equiv
-\end{eqnarray*}
-
-\item $\cR' = (r'_1, \ldots, r'_m)$, and for every $p \in \cP$, $\bq \in \cQ$ and $\ba \in \cA$ such that $\ba = (a_1, \ldots, a_m)$, we have that:
-\begin{eqnarray*}
-r_p([\bq]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv)) & = & r_p(\bq, \ba)
-\end{eqnarray*}
-
-\item For every $\bq_1, \bq_2 \in \cQ$ and $\ba \in  \cA$ such that $\ba = (a_1, \ldots, a_m)$, we have that:
-\begin{eqnarray*}
-\pr'([\bq_1]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv), [\bq_2]_\equiv) & = & \sum_{\bq \in [\bq_2]_\equiv} \pr(\bq_1, \ba, \bq).
-\end{eqnarray*}
-\end{enumerate}
-It is not difficult to see that this game is well-defined. In particular, for every $\bq \in \cQ$ and $\ba \in  \cA$ such that $\ba = (a_1, \ldots, a_m)$, we have by definition of $\Gamma'$ that:
-\begin{eqnarray*}
-\sum_{E \in \quot{\cQ}} \pr'([\bq]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv), E) & = & \sum_{E \in \quot{\cQ}} \sum_{\bq' \in E} \pr(\bq, \ba, \bq')\\
-& = & \sum_{\bq' \in \cQ} \pr(\bq, \ba, \bq')\\
-& = & 1
-\end{eqnarray*}
-Moreover, given $\bq_1, \bq_2 \in \cQ$ and $\ba \in \cA$ such that $\ba = (a_1, \ldots, a_m)$, if we have that $[a_i]_\equiv([\bq_1]_\equiv) \neq [\bq_2]_\equiv$ for every $i \in \{1, \ldots, m\}$, then it holds that $\pr'([\bq_1]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv), [\bq_2]_\equiv) = 0$. For the sake contradiction, assume that $\pr'([\bq_1]_\equiv, ([a_1]_\equiv, \ldots, [a_m]_\equiv), [\bq_2]_\equiv) > 0$. Then by definition of $\Gamma'$, there exists $\bq \in [\bq_2]_\equiv$ such that $\pr'(\bq_1, \ba, \bq) > 0$. Hence, given that 
-$\Gamma$ is an infinite stochastic game, there exists $j \in \{1, \ldots, m\}$ such that $a_j(\bq_1) = \bq$. Thus, we conclude that $[a_j]_\equiv([\bq_1]_\equiv) = [a_j(\bq_1)]_\equiv = [\bq]_\equiv = [\bq_2]_\equiv$ (recall that $\bq \equiv \bq_2$ since $\bq \in [\bq_2]_\equiv$), which contradicts our initial assumption. 
-
-
-%
-%
-%\begin{mydef}
-%	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cA$ compatible if $\forall p \in \cP$ and $\forall a \in \cA_p$ we have $$\forall \bq_1,\bq_2 \in \cQ, \bq_1 \equiv \bq_2 \implies a(\bq_1) \equiv a(\bq_2 )$$
-%\end{mydef}
-%
-%\begin{mydef}
-%	Let $p \in \cP$,considering $a_1, a_2 \in \cA_p$ and $\equiv$ a equivalence relationship $\cA$ compatible we say that $a_1$ and $a_2$ are equivalent noted $a_1 \equiv a_2$ if and if:
-%	$$\forall \bq_1,\bq_2 \in \cQ, \bq_1 \equiv \bq_2 \implies a_1(\bq_1) \equiv a_2(\bq_2)$$
-%\end{mydef}
-%We denote $\cA^\equiv_p$ the set of equivalence classes of $\cA$ then a element of $\cA^\equiv_p$ is a function $$a^\equiv : \cV^\equiv \rightarrow \cV^\equiv$$.
-%
-%\begin{myprop}
-%	Let $p \in \cP$, $\equiv$ a equivalence relationship $\cA$ compatible and $a^\equiv \in \cA^\equiv_p $ then
-%	\begin{itemize}
-%		\item for every $\bq^\equiv \in \cQ^\equiv$ and $p' \in \cP$, if $\bq^\equiv = (q_1^\equiv, \ldots, q_n^\equiv)$ and $a^\equiv(\bq^\equiv) = (q_1^{'\equiv}, \ldots, q_n^{'\equiv})$, then it holds that:
-%		\begin{eqnarray*}
-%			\forall q_{p'} \in q_{p'}^\equiv,\forall q'_{p'} \in q_{p'} ^{'\equiv},\forall q'_p \in q_p^{'\equiv},  q_{p'} \ \subseteq \ q'_{p'} \ \subseteq \ q_{p'} \cup q_p.
-%		\end{eqnarray*}
-%	\end{itemize}
-%\end{myprop}
-%
-%\begin{proof}
-%	to do.
-%\end{proof}
-%
-%
-%\begin{myprop}
-%	Let $p \in \cP$, and $\equiv$ a $\cA$ compatible equivalence relationship over $\B$
-%	then the function $\pr^\equiv : \cV^\equiv \times \cA^\equiv \times \cV^\equiv \rightarrow [0,1]$ such that: 
-%	$$\pr^\equiv(\bq^\equiv,\ba^\equiv,\bq^{'\equiv}) = \pr(\bq,\ba,\bq') \mbox{ where : } \bq \in \bq^\equiv \mbox{ and } \bq' \in \bq^{'\equiv} \mbox{ and } \ba \in \ba^\equiv$$ 
-%	is well defined and 
-%	$$\forall \bq^\equiv \in \cQ^\equiv,\forall \ba \in \cA^\equiv, \sum_{\bq ^{'\equiv} \in \cQ^\equiv} \pr^\equiv(\bq^\equiv, \ba^\equiv, \bq^{'\equiv})  =  1 $$
-%\end{myprop}
-%\begin{proof}
-%	to do.
-%\end{proof}
-%
-%\begin{mydef}
-%	Let $\equiv$ a equivalence relationship over $\B$ we say that $\equiv$ is $\cR$ compatible if its $\cA$ compatible and $\forall p \in \cP$ and $\forall \bq \in \cQ$ we have 
-%	$$\forall \ba_1,\ba_2 \in \cA, \ba_1 \equiv \ba_2 \implies r_p(\bq,\ba_1) = r_p(\bq,\ba_2)$$
-%\end{mydef}
-%
-%\begin{myprop}
-%	Let $p \in \cP$, and $\equiv$ a $\cR$ compatible equivalence relationship over $\B$ then the function $r_p^\equiv : \cQ^\equiv \times \cA^\equiv \rightarrow \mathbb{R}$ such that :
-%	$$r_p^\equiv(\bq^\equiv,\ba^\equiv,) = r_p(\bq,\ba) \mbox{ where : } \bq\in \bq^\equiv \mbox{ and } \ba \in \ba^\equiv $$
-%	is well defined.
-%\end{myprop}
-%\begin{proof}
-%	to do.
-%\end{proof}
-%
-%\begin{myprop}
-%	Let $\equiv$ a $\cR$ compatible equivalence relationship over $\B$ then $\Gamma^\equiv = (\cP,\cA^\equiv,\cV^\equiv,\cR^\equiv,\pr^\equiv)$ is a well defined infinite stochastic game.
-%\end{myprop}
-%
-%\begin{proof}
-%	immediate.
-%\end{proof}
-
-\section{Some results for a simplified bitcoin game}
-
-\medskip
-\noindent
-\textbf{Blocks and validation}. We assume blocks have just three parts: the hash of the previous block, the owner (one of the players) and 
-and an id. Given a valid list $L$ of blocks ending in block $B$, we define $V(L)$ as all possible blocks whose previous block hash is 
-the has of block $B$. We also assume that the genesis list is just a block with $id = 1$ and 
-whose previous block hash and owner strings are empty. 
-
-With this fixed validation rule and genesis list, we work with the following game $\Gamma = (\cP,\cA,\cQ,\cR,\pr)$ where:
-\begin{itemize}
-	\item $\cP$ is the set of player.
-	\item $\cA$ is the set of available action.
-	\item $\cQ$ is the set of states.
-	\item $\cR$ is the pay-off function.
-	\item $\pr$ is the transition probability function.
-\end{itemize} 
-
-
-\medskip
-\noindent
-\textbf{Mining actions}. We want to model that miners just  
-is to create new valid blocks, one at a time. To do this we impose the following condition on $\cA$: 
-\begin{itemize}
-\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $|y_p| \leq |x_p| + 1$.
-\end{itemize}
-
-We also impose a \textbf{Full disclosure} rule, that assumes that players have no interest in withholding any information: 
-\begin{itemize}
-\item for every $\bq \in \cQ$, if $\bq = (x_1, \ldots, x_m)$ and $a(\bq) = (y_1, \ldots, y_m)$, then it holds that $y_i = y_j$ for each $1 \leq i \leq j \leq m$.
-\end{itemize} 
-
-Note that because of the full disclosure rule we can speak of \emph{the} state $\bq$, since any state that can actually be reached by means of 
-any actions must consists of $p$ identical body of knowledges. 
-
-
-\medskip
-\noindent
-\textbf{Blockchain}. We work with a blockchain protocol that considers just a single knowledge order (regardless of the instant of time), 
-given by the following rule for two lists $L_1, L_2 \in \LOG(G,V)$: $L_1 \preceq L_2$ if $|L_1| \leq |L_2|$. 
-
-\newcommand{\blockchain}{\textit{blockchain}}
-\newcommand{\hashpower}{\textit{haspower}}
-
-Given a state (or a body of knowledge) $\bq$, we define $\blockchain(\bq)$ as the maximum list in $\bq$ according to $\preceq$, if 
-such maximum exists, or $\emptyset$ if there is more than one $\preceq$-maximal element in $\bq$. 
-
-
-\medskip
-\noindent
-\textbf{Payoff function}. For each state $\bq$, action $a$, and player $p \in \cP$, let us denote $C_p(\bq,a)$ 
-as the number of blocks owned by $p$ in $\blockchain(a(\bq))$, if it returns a list, or $0$ if $\blockchain(a(\bq))$ is empty. 
-Then the payoff $\cR = (r_1, \ldots, r_m)$ is defined as $r_p(\bq, \ba) = C_p(\bq, a_p) \cdot \pr(\bq, \ba, a_p(\bq))$.
-
-\medskip
-\noindent
-\textbf{Probability based on hashpower}. We assume that each player $p \in \cP$ is assigned a fixed positive number $\hashpower(p)$, 
-and so that $\sum_{p \in \cP} \hashpower(p) = 1$. 
-
-Then for each action $(a_1,\dots,a_p) \in \cA$, and state $\bq \in \cQ$, we 
-define $\pr(\bq, \ba, a_p(\bq)) = \hashpower(p)$. Note that $\pr(\bq, \ba, \bq') = 0$ if $\bq'$ does not correspond to any of the $a_p(\bq)$. 
-
-\subsection{Constant rewards, Infinite rounds}
-
-\medskip
-\noindent
-\textbf{Two players}
-Let $P = \{1,2\}$, and consider the strategies $s_1,s_2$ given as follows: 
-\begin{itemize}
-\item Whenever $\bq$ has one blockchain (i.e., $\blockchain(\bq)$ returns a list), $a_p(\bq)$ aims to put a single block at the end of the 
-blockchain, owned by $p$. 
-\item Whenever $\bq$ has more than one blockchain, $a_p(\bq)$ aims to put a single block at the end of the maximal chain with the 
-greatest number of blocks owned by $p$, or, if there is more than one chain tied with number of blocks owned by $p$, on the maximal chain that ends in the block with the smallest id. 
-\end{itemize}
-
-\begin{myprop}
-The Strategy $(s_1,s_2)$ is a $\beta$-discounted nash equilibrium for the bitcoin game. There is no other equilibria using either $s_1$ or 
-$s_2$. 
-\end{myprop}
-
-\medskip
-\noindent
-\textbf{Any number of players}. We can seemingly define strategies $s_1,\dots,s_P$ for a similar game with $P$ players. 
-
-\begin{myprop}
-The Strategy $(s_1,s_2,\dots,s_P)$ is a $\beta$-discounted nash equilibrium for the bitcoin game. There is no other equilibria using either any of the $s_P$. 
-\end{myprop}
-
 
 \end{document}
