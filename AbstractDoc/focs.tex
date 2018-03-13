@@ -134,10 +134,39 @@ Let $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then $\bs$
 u_p^n(\bs \mid \bq_0)  & \geq  & u_p^n((\bs_{-p},s) \mid \bq_0).
 \end{eqnarray*}
 Moreover, $\bs$ is a $\beta$ discounted stationary equilibrium  in  the infinite mining game if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
-\begin{eqnarray*}
-u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
+\begin{eqnarray*}u_p(\bs \mid \bq_0)  & \geq  & u_p ((\bs_{-p},s) \mid \bq_0).
 \end{eqnarray*}
 \end{mydef}
+
+
+
+\section{Full Disclosure Scenario and Two Players}
+In this case, we consider $\bP = \{1,2\}$, and we assume full disclosure of information between players.
+For every state $\bq \in \bQ$ with $\bq = (q_1, \ldots, q_m)$, in this case it holds that $q_i = q_j$ for every $i,j \in \{1, \ldots, m\}$. Thus, in this section we simplify the notation and use a body of knowledge $q$ to represent a state of the game, instead of a tuple $\bq$ of the form $(q, \ldots, q)$.
+
+For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
+\begin{eqnarray*}
+\chi_p(b) & = & 
+\begin{cases}
+0 & \text{ if } b = \varepsilon \text{ or } \owner(b) \neq p\\
+1 & \text{ otherwise}
+\end{cases}
+\end{eqnarray*}
+
+Given a body of knowledge $q$ such that $\bchain(q)$ is defined, the length of path $\bchain(q)$ is defined as the number of edges in $\bchain(q)$, and it is denoted by $|\bchain(q)|$. Moreover, given $i \in \{0, \ldots, |\bchain(q)|\}$, we use $\bchain(q,i)$ to denote the $i$-th block in the path $\bchain(q)$.
+
+
+\subsection{Constant Reward}
+For a player $p \in \bP$, its reward $r_p(q)$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{ if } \bchain(q) \text{ is not defined}\\
+{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|} \chi_p(\bchain(q,i))} & \text{ otherwise}
+\end{cases}
+\end{eqnarray*}
+
+
 
 
 
