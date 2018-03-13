@@ -37,11 +37,11 @@ The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m 
 \item $\owner : (\bB \setminus \{\varepsilon\}) \to \bP$: This function assigns an owner to each block, except for the genesis block that is assumed not to have an owner.
 
 %\item $\pred : (\B \setminus \{\varepsilon\}) \to \B$: This functions assigns a predecessor to each block, except for the genesis block that is the first block in every blockchain.
-\item $\suc: \bB \times \bP \to \bB$: This function tells us which will a player $p$ use to extend the current blockchain when mining on top of a block $b$. We require this function to be injective and if $\suc(b_1,p)=b_2$, then $\owner(b_2)=p$.
+\item $\suc: \bB \times \bP \to \bB$: This function tells us which block will a player $p$ use to extend the current blockchain when mining on top of a block $b$. We require this function to be injective and if $\suc(b_1,p)=b_2$, then $\owner(b_2)=p$.
 \end{itemize}
-The injectivity and the other condition on $\suc$ tell us that the hash of each block is unique. This function tells us which block can a player $p$ put when mining on top of a block $b_1$.
+%The injectivity and the other condition on $\suc$ tell us that the hash of each block is unique. This function tells us which block can a player $p$ put when mining on top of a block $b_1$.
 
-Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we will only be interested in the owner of the block following $b$, and will not consider the possibility of two different block belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward (or a similar one in the actual Bitcoin protocol).
+Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different block belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward. %(or a similar one in the actual Bitcoin protocol).
 
 To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge that each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying that:
 \begin{eqnarray*}
@@ -50,7 +50,7 @@ E &=& \{ (b_1,b_2) \in q^2 \mid \exists p \text{ s.t. }\suc(b_1,p) = b_2\}
 \end{eqnarray*}
 Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a tree.
 
-Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$ if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
+Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$, if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
 
 On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to place the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
 
