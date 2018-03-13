@@ -47,11 +47,11 @@ Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree r
 
 Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$ if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
 
-On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to put the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player puts a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
+On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to place the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
 
 Let $Q$ be the set of all possible bodies of knowledge, and let $\bQ = Q^m$. Each tuple $\bq = (q_1, \ldots, q_m)$ in $\bQ$ is a state of the mining game, where each component $q_p$ of $\bq$ is a body of knowledge that represents the knowledge of player $p$.
 
-Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the main action played in the mining game, in which player $p$ mines block $b$, put this block in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q$. Thus, action $\mine(p,b,q,q')$ is valid if:
+Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines block $b$, places this block in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q$. Thus, action $\mine(p,b,q,q')$ is valid if:
 \begin{itemize}
 \item $\owner(b) = p$,
 
@@ -61,15 +61,15 @@ Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \
 
 \item $q' \subseteq q \cup \{b\}$.
 \end{itemize}
-Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{b\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
+Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q \cup \{b\}$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{b\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
 
-Let $\bx =  (x_1, \ldots, x_m)$ be a state in $\bQ$ and $\mine(p,b,x_p,q)$ be a valid action in state $\bx$. Then the result of applying $\mine(p,b,x_p,q)$ to $\bx$ is a state $\by = (y_1, \ldots, y_m)$ in $\bQ$ such that:
+Let $p \in \bP$ be a player, $\bx =  (x_1, \ldots, x_m)$ a state in $\bQ$ and $\mine(p,b,x_p,q)$ a valid action of $p$ in state $\bx$. Then the result of applying $\mine(p,b,x_p,q)$ to $\bx$ is a state $\by = (y_1, \ldots, y_m)$ in $\bQ$ such that:
 \begin{itemize}
 \item $y_p = x_p \cup \{b\}$, and
 
 \item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
 \end{itemize}
-In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{b\})$, that is, all the information of player $p$ after putting $b$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{b\})$.
+In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{b\})$, that is, all the information of player $p$ after placing $b$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{b\})$.
 
 Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
@@ -79,7 +79,10 @@ Given an action $a \in \bA_p$ and a state $\bq \in \bQ$ such that $a$ is a valid
 
 Given a player $p \in \bP$ and a state $\bq \in \bQ$, the pay-off of player $p$ in $\bq$ is denoted by $r_p(\bq)$. Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_1, \ldots, r_m)$ as the pay-off function of the game.
 
-Finally, we assume that the hash power of each player $p$ is given by a number $h_i \in (0,1)$, which represents the probability that player $p$ succeeds in putting the next block. Thus, we assume that $\sum_{p=1}^m h_p = 1$, and we define $\bH = (h_1, \ldots, h_m)$ as the hash power distribution.
+Finally, we assume that the hash power of each player $p$ is given by a number $h_p \in (0,1)$ that represents the probability that player $p$ succeeds in placing the next block. Thus, we assume that:
+\begin{eqnarray*}
+\sum_{p=1}^m h_p & = &  1, 
+\end{eqnarray*}and we define $\bH = (h_1, \ldots, h_m)$ as the hash power distribution.
 
 
 Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$ where:
@@ -90,11 +93,6 @@ Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\
 	\item $\bR$ is the pay-off function.
 	\item $\bH$ is the hash power distribution.
 \end{itemize} 
-
-
-
-
-
 
 
 \subsection{Stationary equilibrium}
@@ -111,7 +109,7 @@ the probability of reaching state $\bq \in \bQ$ is recursively defined as follow
 &\\
 1 & \text{if } \bq =  \bq_0\\
 & \\
-{\displaystyle \sum_{\substack{\bq' \in \bQ \,:\\ |\bq'| = k-1}} \bigg( \pr^{\bs}(\bq' \mid \bq_0) \cdot \sum_{\substack{p \in \{1, \ldots, m\} \,: \\ s_p(\bq') = a \text{ and } a(\bq') = \bq}} h_p\bigg)}
+{\displaystyle \sum_{\substack{\bq' \in \bQ \,:\\ |\bq'| = k-1}} \pr^{\bs}(\bq' \mid \bq_0) \cdot \bigg(\sum_{\substack{p \in \{1, \ldots, m\} \,: \\ s_p(\bq') = a \text{ and } a(\bq') = \bq}} h_p\bigg)}
  & \text{if } |\bq| > |\bq_0| \text{ and } |\bq| = k
 \end{cases}
 \end{eqnarray*}
