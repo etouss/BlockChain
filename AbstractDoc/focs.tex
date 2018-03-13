@@ -36,12 +36,17 @@ The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m 
 \begin{itemize}
 \item $\owner : (\bB \setminus \{\varepsilon\}) \to \bP$: This function assigns an owner to each block, except for the genesis block that is assumed not to have an owner.
 
-\item $\pred : (\B \setminus \{\varepsilon\}) \to \B$: This functions assigns a predecessor to each block, except for the genesis block that is the first block in every blockchain.
+%\item $\pred : (\B \setminus \{\varepsilon\}) \to \B$: This functions assigns a predecessor to each block, except for the genesis block that is the first block in every blockchain.
+\item $\suc: \bB \times \bP \to \bB$: This function tells us which will a player $p$ use to extend the current blockchain when mining on top of a block $b$. We require this function to be injective and if $\suc(b_1,p)=b_2$, then $\owner(b_2)=p$.
 \end{itemize}
+The injectivity and the other condition on $\suc$ tell us that the hash of each block is unique. This function tells us which block can a player $p$ put when mining on top of a block $b_1$.
+
+Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we will only be interested in the owner of the block following $b$, and will not consider the possibility of two different block belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward (or a similar one in the actual Bitcoin protocol).
+
 To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge that each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying that:
 \begin{eqnarray*}
 N &=& q\\
-E &=& \{ (b_1,b_2) \in q^2 \mid \pred(b_2) = b_1\}
+E &=& \{ (b_1,b_2) \in q^2 \mid \exists p \text{ s.t. }\suc(b_1,p) = b_2\}
 \end{eqnarray*}
 Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a tree.
 
@@ -53,23 +58,25 @@ Let $Q$ be the set of all possible bodies of knowledge, and let $\bQ = Q^m$. Eac
 
 Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines block $b$, places this block in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q$. Thus, action $\mine(p,b,q,q')$ is valid if:
 \begin{itemize}
-\item $\owner(b) = p$,
+%\item $\owner(b) = p$,
 
-\item $b \not\in q$,
+\item $b \in q$,
 
-\item $\pred(b) \in q$, and
+%\item $\pred(b) \in q$, and
 
-\item $q' \subseteq q \cup \{b\}$.
+\item $\suc(b,p) \not\in q$
+
+\item $q' \subseteq q \cup \{\suc(b,p)\}$.
 \end{itemize}
-Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q \cup \{b\}$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{b\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
+Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q \cup \{\suc(b,p)\}$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{\suc(b,p)\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
 
 Let $p \in \bP$ be a player, $\bx =  (x_1, \ldots, x_m)$ a state in $\bQ$ and $\mine(p,b,x_p,q)$ a valid action of $p$ in state $\bx$. Then the result of applying $\mine(p,b,x_p,q)$ to $\bx$ is a state $\by = (y_1, \ldots, y_m)$ in $\bQ$ such that:
 \begin{itemize}
-\item $y_p = x_p \cup \{b\}$, and
+\item $y_p = x_p \cup \{\suc(b,p)\}$, and
 
 \item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
 \end{itemize}
-In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{b\})$, that is, all the information of player $p$ after placing $b$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{b\})$.
+In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $b$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
 
 Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
@@ -155,6 +162,10 @@ For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}
 
 Given a body of knowledge $q$ such that $\bchain(q)$ is defined, the length of path $\bchain(q)$ is defined as the number of edges in $\bchain(q)$, and it is denoted by $|\bchain(q)|$. Moreover, given $i \in \{0, \ldots, |\bchain(q)|\}$, we use $\bchain(q,i)$ to denote the $i$-th block in the path $\bchain(q)$.
 
+
+Next step is to describe different strategies that the players can use in the game. The first strategy we describe will be called {\em \df}, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
+
+$$\df = $$
 
 \subsection{Constant Reward}
 For a player $p \in \bP$, its reward $r_p(q)$ is defined as:
