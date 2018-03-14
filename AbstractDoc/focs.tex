@@ -46,7 +46,7 @@ Note that in Bitcoin there are several different blocks that a player $p$ can us
 To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge that each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying that:
 \begin{eqnarray*}
 N &=& q\\
-E &=& \{ (b_1,b_2) \in q^2 \mid \exists p \text{ s.t. }\suc(b_1,p) = b_2\}
+E &=& \{ (b_1,b_2) \in q^2 \mid \text{there exists } p \in \bP \text{ such that }\suc(b_1,p) = b_2\}
 \end{eqnarray*}
 Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a tree.
 
@@ -56,7 +56,7 @@ On each step, miners looking to maximise their rewards choose a block in the cur
 
 Let $Q$ be the set of all possible bodies of knowledge, and let $\bQ = Q^m$. Each tuple $\bq = (q_1, \ldots, q_m)$ in $\bQ$ is a state of the mining game, where each component $q_p$ of $\bq$ is a body of knowledge that represents the knowledge of player $p$.
 
-Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines block $b$, places this block in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q$. Thus, action $\mine(p,b,q,q')$ is valid if:
+Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines block $b$, places the block $\suc(b,p)$ in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q \cup \{\suc(b,p)\}$. Thus, action $\mine(p,b,q,q')$ is valid if:
 \begin{itemize}
 %\item $\owner(b) = p$,
 
@@ -76,7 +76,7 @@ Let $p \in \bP$ be a player, $\bx =  (x_1, \ldots, x_m)$ a state in $\bQ$ and $\
 
 \item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
 \end{itemize}
-In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $b$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
+In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $\suc(b,p)$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
 
 Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
@@ -162,20 +162,9 @@ For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}
 
 Given a body of knowledge $q$ such that $\bchain(q)$ is defined, the length of path $\bchain(q)$ is defined as the number of edges in $\bchain(q)$, and it is denoted by $|\bchain(q)|$. Moreover, given $i \in \{0, \ldots, |\bchain(q)|\}$, we use $\bchain(q,i)$ to denote the $i$-th block in the path $\bchain(q)$.
 
-
-Next step is to describe different strategies that the players can use in the game. The first strategy we describe will be called {\em \df}, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
-
-$$\df_p(q) = 
-\begin{cases}
-mine(p,last(\bchain(q)),q), \text{ if } \bchain(q) \text{ exists }\\
-mine(p,best(q),q), \text{ if } \bchain(q) \text{ does not exist }
-\end{cases}
-$$
-
-Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
-
-\subsection{Constant Reward}
-For a player $p \in \bP$, its reward $r_p(q)$ is defined as:
+In this section, we consider the following pay-off functions:
+\begin{itemize}
+\item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
@@ -183,6 +172,51 @@ r_p(q) & = &
 {\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|} \chi_p(\bchain(q,i))} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
+where $c$ is a positive real number.
+
+\item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|} \alpha^i \cdot \chi_p(\bchain(q,i))} & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number and $\alpha \in (0,1]$.
+
+\item {\bf $(\alpha,k)$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+\\
+{\displaystyle c \cdot \bigg(
+\sum_{i=0}^{\lfloor\frac{|\bchain(q)|}{k}\rfloor-1}
+\sum_{j=i \cdot k}^{(i+1) \cdot k -1} \alpha^i \cdot \chi_p(\bchain(q,j))
+\ +}\\
+{\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|}{k}\rfloor \cdot k + 1}^{|\bchain(q)|} \alpha^{\lfloor\frac{|\bchain(q)|}{k}\rfloor} \cdot \chi_p(\bchain(q,j))\bigg)}
+& \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
+
+
+
+\end{itemize}
+
+Next step is to describe different strategies that the players can use in the game. The first strategy we describe will be called {\em \df}, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
+
+\begin{eqnarray*}
+\df_p(q) & = &
+\begin{cases}
+\mine(p,last(\bchain(q)),q) & \text{ if } \bchain(q) \text{ exists }\\
+\mine(p,best(q),q), \text{ if } \bchain(q) \text{ does not exist }
+\end{cases}
+\end{eqnarray*}
+
+Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
+
+
 
 
 
