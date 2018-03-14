@@ -1,0 +1,74 @@
+\pagestyle{headings}  % switches on printing of running heads
+%\usepackage{kantlipsum}
+\makeatletter
+  \renewcommand*{\ps@headings}{\let\@mkboth\markboth
+    \renewcommand*{\@evenhead}{%
+      \set@tempdima@hw\hss\hb@xt@ \@tempdima{\vbox{%
+          \hb@xt@ \@tempdima{{\headfont\strut\leftmark\hfil}}%
+          \if@hsl \vskip 1.5\p@ \hrule \fi}}}%
+    \renewcommand*{\@oddhead}{%
+      \set@tempdima@hw\hb@xt@ \@tempdima{\vbox{%
+          \hb@xt@ \@tempdima{{\headfont\hfil\strut\rightmark
+              \if@twoside\else\hfil\fi}}%
+          \if@hsl \vskip 1.5\p@ \hrule \fi}}\hss}%
+    \renewcommand*{\@evenfoot}{%
+      \set@tempdima@hw\hss\hb@xt@ \@tempdima{\vbox{%
+          \if@fsl \hrule \vskip 3\p@ \fi
+          \hb@xt@ \@tempdima{{\pagemark\hfil}}}}}%
+    \renewcommand*{\@oddfoot}{%
+      \set@tempdima@hw\hb@xt@ \@tempdima{\vbox{%
+          \if@fsl \hrule \vskip 3\p@ \fi
+          \hb@xt@ \@tempdima{{\hfil\pagemark
+              \if@twoside\else\hfil\fi}}}}\hss}%
+    \renewcommand*{\sectionmark}[1]{%
+      \if@twoside\expandafter\markboth\else\expandafter\markright\fi
+      {\MakeMarkcase{\ifnumbered{section}{\sectionmarkformat}{}##1}}{}}% MODIFIED
+    \renewcommand*{\subsectionmark}[1]{%
+      \if@twoside
+        \markright{%
+          \MakeMarkcase{\ifnumbered{subsection}{\subsectionmarkformat}{}##1}%
+        }%
+      \fi
+    }%
+  }%
+\makeatother
+%\pagestyle{headings}
+
+\usepackage[english]{babel} %
+\usepackage[T1]{fontenc} %
+% \usepackage[latin1]{inputenc} %
+\usepackage{a4wide} %
+\usepackage{palatino} %
+
+
+
+%% Macros standard
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{color}
+\usepackage{stmaryrd}
+\usepackage{enumerate}
+\usepackage[utf8]{inputenc}
+\usepackage[toc,page]{appendix}
+
+%% Figures
+\usepackage{graphicx,subfigure}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes,shadows,arrows}
+\usetikzlibrary{decorations.pathmorphing,decorations}
+\usepackage{tkz-graph}
+\usepackage{wrapfig}
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{mathrsfs}
+\usepackage{bbold}
+
+%% Hyperlinked references
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ulined}{}%
+\DeclareUrlCommand{\bulurl}{\def\UrlFont{\ttfamily\color{blue}\ulined}}
+%\usepackage{float}
+
+%% Algorithms
+\usepackage[figure,noend]{algorithm2e}%, ruled, lined

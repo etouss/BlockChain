@@ -1,0 +1,132 @@
+\documentclass{article}
+
+\newcommand{\bchain}{\text{bchain}}
+
+\newcommand{\body}{K}
+
+% \let\bfseriesbis=\bfseries \def\bfseries{\sffamily\bfseriesbis}
+%
+%
+% \newenvironment{point}[1]%
+% {\subsection*{#1}}%
+% {}
+%
+% \setlength{\parskip}{0.3\baselineskip}
+
+
+%% USEFUL packages
+\usepackage{mypackages}
+
+%% USEFUL macros
+\input{mymacros}
+
+
+
+%% Title
+% \title{}
+% \author{}
+% \date{}
+
+\begin{document}
+
+% \sloppy
+% \maketitle
+
+\title{BlockChain Framework}
+
+%\author{Etienne Toussaint, Leonid Libkin \\
+%	Laboratory for Foundations of Computer Science, The University of Edinburgh }
+
+%\date{21st August 2016}
+
+%\maketitle
+
+\pagestyle{empty} %
+\thispagestyle{empty}
+
+\section{Blockchain}
+
+\medskip
+\noindent
+\textbf{Lists and blocks}
+
+Given a set $S$, let $\set(S)$ be the set of sets of elements of $S$ and $\flist(S)$ be the set of all finite lists of elements of $S$. Given $L \in \flist(S)$, we use notation $\length(L)$ to refer to the number of elements in $L$, notation $L[i]$ to refer to the $i$-th element in $L$, where $i \in \{1, \ldots, \length(L)\}$, and notation $L[i,j]$ to refer to the sublist $[L[i], \ldots, L[j]]$ of $L$, where $i,j \in \{1, \ldots, \length(L)\}$ and $i \leq j$. Notice that $\length(L) = 0$ if and only if $L$ is the empty list $[\ ]$. Finally, we say that a list $L_1$ is a prefix of a list $L_2$ if $L_1$ is the empty list, or $1 \leq \length(L_1) \leq \length(L_2)$ and $L_1 = L_2[1, \length(L_1)]$. 
+
+We assume a fixed alphabet $\Sigma$, and that blocks contain the following information: 
+\begin{itemize}
+\item A word in $\Sigma^*$ that serves as the id of the block. 
+\item The id of the previous block. 
+\item Another word serving as an identifier of the owner of the block. 
+\end{itemize}
+
+
+\medskip
+\noindent
+\textbf{Body of Knowledge and Blockchain}
+
++++ explain how blockchain works, nodes have ids and previous block hash so one mines blocks after other blocks +++
+
+Let us fix a \emph{genesis block}, identified as $\epsilon$ and that does not contain neither a previous block id or an owner id. 
+
+We represent all knowledge in a blockchain system as a tree $\body$ rooted in the genesis block: the set of nodes of of this tree are all blocks that have been mined and there is an edge from block $b_1$ to block $b_2$ if $b_2$ was mined from $b_1$. We denote these trees as \emph{body of knowledges}. 
+
++++ explain the notion of the blockchain ++++  
+
+
+Given a body of knowledge $\body$, we say that the blockchain of $\body$ is the list formed from the longest path from the root to the tree, 
+if such a path is unique. If two or more different paths are tied for the longest, then we say that the blockchain in $\body$ does not exists. 
+We use the notation $\bchain(\body)$ as a function that returns the blockchain of $\body$, if it exists, or the empty list otherwise. 
+
+
+\section{Mining game}
+
++++ explain a bit on how blockchain uses miners to validate, and that whomever wins a block receives a mining reward. 
+Include the notion that our blocks  +++
+
+The mining game is played by a set $\cP = \{1, \ldots, m\}$ of players, and the set of states of our game consists of all possible body of knowledges in which all blocks except for the genesis block are owned by one of the players in $\cP$. 
+
+On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to put the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player puts a block, this block is added to the current state, obtaining a different body of knowedge, and the game continues from this new state. 
+
+In order to formally define our game, let us denote by $\BLOCKS(\cP)$ the set of all possible blocks owned by any player in $\cP$, and 
+$\BK(\cP)$ the set of all body of knowledges constructed from blocks in $\BLOCKS(\cP)$, so that the states of our game are precisely 
+$\BK(\cP)$. 
+
+A strategy for a player $p$ is a function $\BK(\cP) \rightarrow \BLOCKS(\cP)$ that assigns to each body of knowledge a block of it 
+where player $p$ wishes to mine next. 
+
+
+%\input fichesynth.tex
+
+
+%\input abstract.tex
+
+
+%\input semantics.tex
+%\input preliminaries.tex
+%\input fragmentsimple.tex
+%\input fragmentorder.tex
+
+%\input introduction.tex
+%\input block.tex
+%\input{formal}
+%\input old.tex
+%\input{etienne}
+%\input debt.tex
+%\input blockchain.tex
+%\input openproblem.tex
+
+%\input fragmentimpl.tex
+
+%\input conclusion.tex
+
+%\input acknow.tex
+
+
+%% USEFUL Bibliography
+%\clearpage
+%\bibliographystyle{plain}
+%\bibliography{dp-mset}
+
+%\input appendix.tex
+
+\end{document}
