@@ -164,53 +164,62 @@ Given a body of knowledge $q$ such that $\bchain(q)$ is defined, the length of p
 
 In this section, we consider the following pay-off functions:
 \begin{itemize}
-\item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
+\item {\bf Constant $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|} \chi_p(\bchain(q,i))} & \text{otherwise}
+{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|-d} \chi_p(\bchain(q,i))} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-where $c$ is a positive real number.
+where $c$ is a positive real number and $d \in \mathbb{N}$. 
 
-\item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
+\item {\bf $\alpha$-discounted  $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|} \alpha^i \cdot \chi_p(\bchain(q,i))} & \text{otherwise}
+{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|-d} \alpha^i \cdot \chi_p(\bchain(q,i))} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-where $c$ is a positive real number and $\alpha \in (0,1]$.
+where $c$ is a positive real number, $\alpha \in (0,1]$ and $d \in \mathbb{N}$. 
 
-\item {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+\item {\bf $\alpha$-discounted $d$-delayed $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
 \\
 {\displaystyle c \cdot \bigg(
-\sum_{i=0}^{\lfloor\frac{|\bchain(q)|}{k}\rfloor-1}
+\sum_{i=0}^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor-1}
 \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \alpha^i \cdot \chi_p(\bchain(q,j))
 \ +}\\
-{\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|}{k}\rfloor \cdot k + 1}^{|\bchain(q)|} \alpha^{\lfloor\frac{|\bchain(q)|}{k}\rfloor} \cdot \chi_p(\bchain(q,j))\bigg)}
+{\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|-d}{k}\rfloor \cdot k + 1}^{|\bchain(q)|-d} \alpha^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor} \cdot \chi_p(\bchain(q,j))\bigg)}
 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
 where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
-
-
-
 \end{itemize}
 
-Next step is to describe different strategies that the players can use in the game. The first strategy we describe will be called {\em \df}, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
+The next step step is to describe different strategies that the players can use in the game. To this end, given a player $p \in \bP$ and a body of knowledge $q$,
+
+
+ Let $q$ be a body of knowledge. 
+
+
+terminology. 
+
+
+given a body of knowledge, we assume that 
+
+
+ The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
 
 \begin{eqnarray*}
 \df_p(q) & = &
 \begin{cases}
-\mine(p,last(\bchain(q)),q) & \text{ if } \bchain(q) \text{ exists }\\
-\mine(p,best(q),q), \text{ if } \bchain(q) \text{ does not exist }
+\mine(p,last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
+\mine(p,best(q),q) & \text{if } \bchain(q) \text{ does not exist }
 \end{cases}
 \end{eqnarray*}
 
