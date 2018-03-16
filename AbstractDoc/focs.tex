@@ -32,7 +32,7 @@
 
 \section{A Game-theoretic Characterization of Bitcoin Mining}
 
-The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns. We denote by $\bB$ the set of all possible blocks, and we assume that there is a special block $\varepsilon \in \bB$ that is called the genesis block. Moreover, we associate the following functions to these blocks:
+The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns.\francisco{"in this game, P has some reward" can be more precise, for instance "at any given moment of this game", or "at the end of the game"} We denote by $\bB$ the set of all possible blocks, and we assume that there is a special block $\varepsilon \in \bB$ that is called the genesis block. Moreover, we associate the following functions to these blocks:
 \begin{itemize}
 \item $\owner : (\bB \setminus \{\varepsilon\}) \to \bP$: This function assigns an owner to each block, except for the genesis block that is assumed not to have an owner.
 
@@ -41,14 +41,14 @@ The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m 
 \end{itemize}
 %The injectivity and the other condition on $\suc$ tell us that the hash of each block is unique. This function tells us which block can a player $p$ put when mining on top of a block $b_1$.
 
-Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different block belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward. %(or a similar one in the actual Bitcoin protocol).
+Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward. %(or a similar one in the actual Bitcoin protocol).
 
-To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge that each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying that:
+To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying the following:
 \begin{eqnarray*}
 N &=& q\\
 E &=& \{ (b_1,b_2) \in q^2 \mid \text{there exists } p \in \bP \text{ such that }\suc(b_1,p) = b_2\}
 \end{eqnarray*}
-Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a tree.
+Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a rooted tree.
 
 Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$, if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
 
@@ -76,12 +76,13 @@ Let $p \in \bP$ be a player, $\bx =  (x_1, \ldots, x_m)$ a state in $\bQ$ and $\
 
 \item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
 \end{itemize}
-In a full disclosure scenario all the allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $\suc(b,p)$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
+In a full disclosure scenario all allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $\suc(b,p)$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
 
 Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
 \bA_p & = & \{ \mine(p,b,q,q') \mid \mine(p,b,q,q') \text{ is a valid action}\}.
 \end{eqnarray*}
+\francisco{In the latter definition, I think we have to include some conditions on $p,b,q,q'$... if for no better reason, they are not defined in the scope of the set definition.}
 Given an action $a \in \bA_p$ and a state $\bq \in \bQ$ such that $a$ is a valid action in $\bq$, we use $a(\bq)$ to denote the state resulting of applying $a$ to $\bq$. Moreover, we denote by $\bA$ the set of all possible actions, that is, $\bA = \bA_1 \cup \cdots \cup \bA_m$.
 
 Given a player $p \in \bP$ and a state $\bq \in \bQ$, the pay-off of player $p$ in $\bq$ is denoted by $r_p(\bq)$. Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_1, \ldots, r_m)$ as the pay-off function of the game.
@@ -94,7 +95,7 @@ Finally, we assume that the hash power of each player $p$ is given by a number $
 
 Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$ where:
 \begin{itemize}
-	\item $\bP$ is the set of player.
+	\item $\bP$ is the set of players.
 	\item $\bA$ is the set of possible actions.
 	\item $\bQ$ is the set of states.
 	\item $\bR$ is the pay-off function.
@@ -123,17 +124,18 @@ the probability of reaching state $\bq \in \bQ$ is recursively defined as follow
 We finally have all the necessary ingredients to define the pay-off of a player in a mining game given a particular strategy.
 
 \begin{mydef}
-Let $p \in \bP$, $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the $\beta$ discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in a mining game with $n$ steps, denoted by $u_p^n(\bs \mid \bq_0)$, is defined as:
+Let $p \in \bP$, $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in a mining game with $n$ steps, denoted by $u_p^n(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
 u_p^n(\bs \mid \bq_0) & = & \beta^{|\bq_0|} \cdot \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\bq \in \bQ \,:\, |\bq| = i} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
-Moreover, the $\beta$ discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in an infinite mining game, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
+Moreover, the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in an infinite mining game, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
 u_p(\bs \mid \bq_0) & = & \beta^{|\bq_0|} \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\bq \in \bQ \,:\, |\bq| = i} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
 \end{mydef}
+\francisco{Should we call this the {\it cumulative} $\beta$--discounted utility? In light of the fact that it counts dependent paths, representing accumulated reward?}
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_1, \ldots, s_m)$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m})$.
 \begin{mydef}
 Let $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then $\bs$ is a $\beta$ discounted stationary equilibrium in a mining game with $n$ steps if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
@@ -159,11 +161,12 @@ For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}
 0 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
+\francisco{I actually like this notation, just pointing out this other one: $\mathbb 1_p$}
 
 Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
  $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
  
- In this section, we consider the following pay-off functions:
+In this section, we consider the following pay-off functions:
 \begin{itemize}
 \item {\bf Constant $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
