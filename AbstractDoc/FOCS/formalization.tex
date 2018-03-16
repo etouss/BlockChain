@@ -99,7 +99,7 @@ u_p^n(\bs \mid \bq_0) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack
 \end{eqnarray*}
 Moreover, the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in an infinite mining game, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
-u_p(\bs \mid \bq_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\bq \in \bQ \,:\, |\bq| = i} r_p(\bq) \cdot 
+u_p(\bs \mid \bq_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
 \end{mydef}
