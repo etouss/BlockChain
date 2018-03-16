@@ -3,31 +3,21 @@
 \section{A Game-theoretic Characterization of Bitcoin Mining}
 \label{sec-formalization}
 
-The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns.\francisco{"in this game, P has some reward" can be more precise, for instance "at any given moment of this game", or "at the end of the game"} We denote by $\bB$ the set of all possible blocks, and we assume that there is a special block $\varepsilon \in \bB$ that is called the genesis block. Moreover, we associate the following functions to these blocks:
-\begin{itemize}
-\item $\owner : (\bB \setminus \{\varepsilon\}) \to \bP$: This function assigns an owner to each block, except for the genesis block that is assumed not to have an owner.
+The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns. Blocks are placed one on top of another, starting from an initial block called the {\em genesis block}. Thus, the game will define a tree of blocks. Each block will be put by one player, called the {\em owner} of this block. Each such tree is called a {\em body of knowledge}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
 
-%\item $\pred : (\B \setminus \{\varepsilon\}) \to \B$: This functions assigns a predecessor to each block, except for the genesis block that is the first block in every blockchain.
-\item $\suc: \bB \times \bP \to \bB$: This function tells us which block will a player $p$ use to extend the current blockchain when mining on top of a block $b$. We require this function to be injective and if $\suc(b_1,p)=b_2$, then $\owner(b_2)=p$.
-\end{itemize}
-%The injectivity and the other condition on $\suc$ tell us that the hash of each block is unique. This function tells us which block can a player $p$ put when mining on top of a block $b_1$.
+Formally, in a game played by $m$ players a block is a string $b$ over the alphabet $\{1,2,\ldots, m\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{1,2,\ldots , m\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \backslash \{\varepsilon\}) \rightarrow \{1,2,\ldots ,m\}$ such that $\owner(b)$ equals the last symbol of $b$. A body of knowledge is a finite  set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{1,2,\ldots, m\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed set uniquely defines a tree with the root $\varepsilon$. 
+%
+The intuition here is that each element of $q$ corresponds to a block that was put into the body of knowledge $q$ by some player. The genesis block corresponds to $\varepsilon$. When a player $p$ decides to mine on top of a block $b$, she puts another block into the body of knowledge defined by the string $b\cdot p$.
 
-Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward. %(or a similar one in the actual Bitcoin protocol).
+Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the current body of knowledge when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward. 
 
-To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying the following:
-\begin{eqnarray*}
-N &=& q\\
-E &=& \{ (b_1,b_2) \in q^2 \mid \text{there exists } p \in \bP \text{ such that }\suc(b_1,p) = b_2\}
-\end{eqnarray*}
-Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a rooted tree.
+Given a body of knowledge $q$, we say that the {\em blockchain} of $q$ is the element $b\in q$ of the biggest length, in the case that this element is unique, in which case we denote it by $\bchain(q)$. If two or more different elements of $q$ are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
 
-Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$, if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
+On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine on top of this block. Thus, in each turn, each of the players race to place the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
 
-On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to place the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
+Let $Q$ be the set of all possible bodies of knowledge in a game played by $m$ players, and let $\bQ = Q^m$. Each tuple $\bq = (q_1, \ldots, q_m)$ in $\bQ$ is a state of the mining game, where each component $q_p$ of $\bq$ is a body of knowledge that represents the knowledge of player $p$.
 
-Let $Q$ be the set of all possible bodies of knowledge, and let $\bQ = Q^m$. Each tuple $\bq = (q_1, \ldots, q_m)$ in $\bQ$ is a state of the mining game, where each component $q_p$ of $\bq$ is a body of knowledge that represents the knowledge of player $p$.
-
-Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines block $b$, places the block $\suc(b,p)$ in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q \cup \{\suc(b,p)\}$. Thus, action $\mine(p,b,q,q')$ is valid if:
+Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines on top of the block $b$, and decides to disclose a portion $q'$ of $q \cup \{b\cdot p\}$. Thus, action $\mine(p,b,q,q')$ is valid if:
 \begin{itemize}
 %\item $\owner(b) = p$,
 
@@ -35,19 +25,73 @@ Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \
 
 %\item $\pred(b) \in q$, and
 
-\item $\suc(b,p) \not\in q$
+\item $b\cdot p \not\in q$
 
-\item $q' \subseteq q \cup \{\suc(b,p)\}$.
+\item $q' \subseteq q \cup \{b\cdot p\}$.
 \end{itemize}
-Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q \cup \{\suc(b,p)\}$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{\suc(b,p)\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
+
+
+Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q \cup \{b\cdot p\}$ is equivalent to the condition that $q'$ is a subtree of $q \cup \{c\cdot p\}$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
 
 Let $p \in \bP$ be a player, $\bx =  (x_1, \ldots, x_m)$ a state in $\bQ$ and $\mine(p,b,x_p,q)$ a valid action of $p$ in state $\bx$. Then the result of applying $\mine(p,b,x_p,q)$ to $\bx$ is a state $\by = (y_1, \ldots, y_m)$ in $\bQ$ such that:
 \begin{itemize}
-\item $y_p = x_p \cup \{\suc(b,p)\}$, and
+\item $y_p = x_p \cup \{b\cdot p\}$, and
 
 \item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
 \end{itemize}
-In a full disclosure scenario all allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $\suc(b,p)$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
+In a full disclosure scenario all allowed actions are of the form $\mine(p,b,q,q \cup \{b\cdot p\})$, that is, all the information of player $p$ after placing $b\cdot p$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{b\cdot p\})$.
+
+%%%%%%%%%%%
+%%%OLD:%%%%
+%%%%%%%%%%%%
+%The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns.\francisco{"in this game, P has some reward" can be more precise, for instance "at any given moment of this game", or "at the end of the game"} We denote by $\bB$ the set of all possible blocks, and we assume that there is a special block $\varepsilon \in \bB$ that is called the genesis block. Moreover, we associate the following functions to these blocks:
+%\begin{itemize}
+%\item $\owner : (\bB \setminus \{\varepsilon\}) \to \bP$: This function assigns an owner to each block, except for the genesis block that is assumed not to have an owner.
+%
+%%\item $\pred : (\B \setminus \{\varepsilon\}) \to \B$: This functions assigns a predecessor to each block, except for the genesis block that is the first block in every blockchain.
+%\item $\suc: \bB \times \bP \to \bB$: This function tells us which block will a player $p$ use to extend the current blockchain when mining on top of a block $b$. We require this function to be injective and if $\suc(b_1,p)=b_2$, then $\owner(b_2)=p$.
+%\end{itemize}
+%%The injectivity and the other condition on $\suc$ tell us that the hash of each block is unique. This function tells us which block can a player $p$ put when mining on top of a block $b_1$.
+%
+%Note that in Bitcoin there are several different blocks that a player $p$ can use to extend the blockchain when mining upon a block $b$ (depending e.g on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners' behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered equivalent, since they give $p$ the same reward. %(or a similar one in the actual Bitcoin protocol).
+%
+%To give a game-theoretic characterization of bitcoin mining, we need to formalize the knowledge each player has. More precisely, given a subset $q$ of $\bB$, define $\cG(q) = (N,E)$ as a graph satisfying the following:
+%\begin{eqnarray*}
+%N &=& q\\
+%E &=& \{ (b_1,b_2) \in q^2 \mid \text{there exists } p \in \bP \text{ such that }\suc(b_1,p) = b_2\}
+%\end{eqnarray*}
+%Then $q$ is said to be a body of knowledge (of a player) if $\cG(q)$ is a tree rooted at $\varepsilon$ (in particular, $\varepsilon \in q$). If $q$ is a body of knowledge, then we use notation $\cT(q)$ instead of $\cG(q)$ to make explicit the fact that $\cG(q)$ is a rooted tree.
+
+%Given a body of knowledge $q$, we say that the blockchain of $q$ is the longest path in $\cT(q)$, if such a path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).
+
+%On each step, miners looking to maximise their rewards choose a block in the current body of knowledge, and attempt to mine from this block. Thus, in each turn, each of the players race to place the next block in the body of knowledge, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different body of knowledge, and the game continues from this new state. 
+
+%Let $Q$ be the set of all possible bodies of knowledge, and let $\bQ = Q^m$. Each tuple $\bq = (q_1, \ldots, q_m)$ in $\bQ$ is a state of the mining game, where each component $q_p$ of $\bq$ is a body of knowledge that represents the knowledge of player $p$.
+
+%Given a player $p \in \bP$, a block $b \in \bB$ and bodies of knowledge $q, q' \in Q$, we denote by $\mine(p,b,q,q')$ the action played in the mining game, in which player $p$ mines block $b$, places the block $\suc(b,p)$ in her current body of knowledge $q$ and decides to disclosure a portion $q'$ of $q \cup \{\suc(b,p)\}$. Thus, action $\mine(p,b,q,q')$ is valid if:
+%\begin{itemize}
+%%\item $\owner(b) = p$,
+%
+%\item $b \in q$,
+%
+%%\item $\pred(b) \in q$, and
+%
+%\item $\suc(b,p) \not\in q$
+%
+%\item $q' \subseteq q \cup \{\suc(b,p)\}$.
+%%\end{itemize}
+%Notice that in the previous definition $q'$ is assumed to be a body of knowledge, so that the condition $q' \subseteq q \cup \{\suc(b,p)\}$ is equivalent to the condition that $\cT(q')$ is a subtree of $\cT(q \cup \{\suc(b,p)\})$ rooted at $\varepsilon$. Moreover, action $\mine(p,b,q,q')$ is said to be valid in a state $\bq = (q_1, \ldots, q_m)$ in $\bQ$ if $\mine(p,b,q,q')$ is a valid action and $q = q_p$.
+%
+%Let $p \in \bP$ be a player, $\bx =  (x_1, \ldots, x_m)$ a state in $\bQ$ and $\mine(p,b,x_p,q)$ a valid action of $p$ in state $\bx$. Then the result of applying $\mine(p,b,x_p,q)$ to $\bx$ is a state $\by = (y_1, \ldots, y_m)$ in $\bQ$ such that:
+%\begin{itemize}
+%\item $y_p = x_p \cup \{\suc(b,p)\}$, and
+%
+%\item for every $i \in \{1, \ldots, m\}$ such that $i \neq p$, it holds that $y_i = x_i \cup q$.
+%\end{itemize}
+%In a full disclosure scenario all allowed actions are of the form $\mine(p,b,q,q \cup \{\suc(b,p)\})$, that is, all the information of player $p$ after placing $\suc(b,p)$ in its body of knowledge is sent to the other players. In this case, we simplify the notation and use $\mine(p,b,q)$ instead of $\mine(p,b,q,q\cup \{\suc(b,p)\})$.
+%%%%%%%%%%%%%%%%%%
+%%%ENDOLD%%%%%%%%%
+%%%%%%%%%%%%%%%%%%
 
 Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
