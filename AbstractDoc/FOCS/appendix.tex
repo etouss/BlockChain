@@ -6,13 +6,54 @@
 Given states $\bq = (q_1, \ldots, q_m)$ and $\bq' = (q'_1, \ldots, q'_m)$, we use notation $\bq \subseteq \bq'$ to indicate that $q_p \subseteq q'_p$ for every $p \in \{1, \ldots, m\}$, and we define $|\bq|$ as $\sum_{p=1}^m |q_i|$. 
 
 
-\begin{mylem}\label{lem-dist-1}
-Given $p \in \bP$, a combined strategy $\bs$ and $\bq_0 \in \bQ$, it holds that:
-\begin{eqnarray*}
-u_p(\bs \mid \bq_0) & = & r_p(\bq_0) +  \beta \cdot 
-\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}}
-\pr(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
-\end{eqnarray*}
+%\begin{mylem}\label{lem-dist-1}
+%Given $p \in \bP$, a combined strategy $\bs$ and $\bq_0 \in \bQ$, it holds that:
+%\begin{eqnarray*}
+%u_p(\bs \mid \bq_0) & = & r_p(\bq_0) +  \beta \cdot 
+%\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}}
+%\pr(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
+%\end{eqnarray*}
+%\end{mylem}
+%
+%\begin{proof} We have that:
+%\begin{align*}
+%u_p(\bs \mid & \ \bq_0)  \ =  \\
+%&\sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
+%\pr^{\bs}(\bq \mid \bq_0)\bigg) \ =\\
+%& r_p(\bq_0) + \sum_{i=1}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
+%\pr^{\bs}(\bq \mid \bq_0)\bigg)\ = \\
+%& r_p(\bq_0) + \sum_{i=1}^{\infty}\beta^{i} \cdot  \bigg(
+%\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot
+%\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-1}} r_p(\bq) \cdot 
+%\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
+%& r_p(\bq_0) + \beta \cdot \sum_{i=1}^{\infty}\beta^{i-1} \cdot  \bigg(
+%\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot
+%\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-1}} r_p(\bq) \cdot 
+%\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
+%& r_p(\bq_0) + \beta \cdot \sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(
+%\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot
+%\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq) \cdot 
+%\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
+%& r_p(\bq_0) + 
+% \beta \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot \bigg(\sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq) \cdot 
+%\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\bigg)\ = \\
+%& r_p(\bq_0) +  \beta \cdot 
+%\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}}
+%\pr(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
+%\end{align*}
+%\end{proof}
+
+
+\begin{mylem}\label{lem-dist-k}
+Given $p \in \bP$, a combined strategy $\bs$, $\bq_0 \in \bQ$ and $k \geq 1$, it holds that:
+\begin{multline*}
+u_p(\bs \mid \bq_0) \ = \  
+\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}}
+r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
+\beta^k \cdot 
+\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}}
+\pr^{\bs}(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
+\end{multline*}
 \end{mylem}
 
 \begin{proof} We have that:
@@ -20,41 +61,34 @@ u_p(\bs \mid \bq_0) & = & r_p(\bq_0) +  \beta \cdot
 u_p(\bs \mid & \ \bq_0)  \ =  \\
 &\sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg) \ =\\
-& r_p(\bq_0) + \sum_{i=1}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
+&\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}}
+r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) + 
+\sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg)\ = \\
-& r_p(\bq_0) + \sum_{i=1}^{\infty}\beta^{i} \cdot  \bigg(
-\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot
-\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-1}} r_p(\bq) \cdot 
+&  \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
+& \hspace{15pt} \sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(
+\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot
+\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-k}} r_p(\bq') \cdot 
 \pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
-& r_p(\bq_0) + \beta \cdot \sum_{i=1}^{\infty}\beta^{i-1} \cdot  \bigg(
-\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot
-\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-1}} r_p(\bq) \cdot 
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
+& \hspace{15pt}
+\beta^k \cdot \sum_{i=k}^{\infty}\beta^{i-k} \cdot  \bigg(
+\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot
+\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-k}} r_p(\bq') \cdot 
 \pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
-& r_p(\bq_0) + \beta \cdot \sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(
-\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot
-\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq) \cdot 
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
+& \hspace{15pt} \beta^k \cdot \sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(
+\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot
+\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq') \cdot 
 \pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
-& r_p(\bq_0) + 
- \beta \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot \bigg(\sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq) \cdot 
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
+& \hspace{15pt}
+ \beta^k \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot \bigg(\sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq') \cdot 
 \pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\bigg)\ = \\
-& r_p(\bq_0) +  \beta \cdot 
-\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}}
-\pr(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
-\end{align*}
-\end{proof}
-
-
-\begin{mylem}\label{lem-dist-k}
-Given $p \in \bP$, a combined strategy $\bs$, $\bq_0 \in \bQ$ and $k \geq 1$, it holds that:
-\begin{eqnarray*}
-u_p(\bs \mid \bq_0) & = & r_p(\bq_0) +  \beta^k \cdot 
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) +  \beta^k \cdot 
 \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}}
-\pr(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
-\end{eqnarray*}
-\end{mylem}
-
-\begin{proof} By induction on $k$. The property was already proved for $k =1 $ in Lemma \ref{lem-dist-1}.
-
+\pr^{\bs}(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
+\end{align*}
 \end{proof}
 
 
