@@ -1,0 +1,101 @@
+%!TEX root = focs.tex
+
+
+\section{Full Disclosure Scenario and Two Players}
+In this section, we consider $\bP = \{1,2\}$, and we assume full disclosure of information between players.
+For every state $\bq \in \bQ$ with $\bq = (q_1, \ldots, q_m)$, in this case it holds that $q_i = q_j$ for every $i,j \in \{1, \ldots, m\}$. Thus, in this section we simplify the notation and use a body of knowledge $q$ to represent a state of the game, instead of a tuple $\bq$ of the form $(q, \ldots, q)$.
+
+For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
+\begin{eqnarray*}
+\chi_p(b) & = & 
+\begin{cases}
+1 & \owner(b) = p\\
+0 & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+\francisco{I actually like this notation, just pointing out this other one: $\mathbb 1_p$}
+
+Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
+ $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
+ 
+In this section, we consider the following pay-off functions:
+\begin{itemize}
+\item {\bf Constant $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|-d} \chi_p(\bchain(q)[i])} & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
+
+\item {\bf $\alpha$-discounted  $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|-d} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number, $\alpha \in (0,1]$ and $d \in \mathbb{N}$. 
+
+\item {\bf $\alpha$-discounted $d$-delayed $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+\\
+{\displaystyle c \cdot \bigg(
+\sum_{i=0}^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor-1}
+\sum_{j=i \cdot k}^{(i+1) \cdot k -1} \alpha^i \cdot \chi_p(\bchain(q)[j])
+\ +}\\
+{\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|-d}{k}\rfloor \cdot k + 1}^{|\bchain(q)|-d} \alpha^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor} \cdot \chi_p(\bchain(q)[j])\bigg)}
+& \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
+\end{itemize}
+
+The next step step is to describe different strategies that the players can use in the game. For this we need some notation. 
+
+Assume that $q$ is a body of knowledge. Then for every path $\pi$ in $q$ from the root $\varepsilon$, we associate 
+
+
+First, for a state $q$, we will denote by $\last(\bchain(q))$ the final block in the path $\bchain(q)$, when $\bchain(q)$ is defined, and we leave it undefined otherwise. Similarly, if $q$ is any path (i.e. a body of knowledge with no branches), we define $\last(q)$ as the final block in this path. If $p$ is a player, and $q$ is a state such that $\bchain(q)$ is not defined, we will define the function $\cho_p(q)$ as the block that is most convenient for the player $p$ to mine upon. Formally, if $S=\{ q'\mid q' \text{ is a path in } \cT(q) \text{ from the root to a leaf}\}$, we define $\cho_p(q)$ as the lexicographically smallest $q'\in S$ such that $r_p(q')=max_{q''\in S} \{r_p(q'')\}$.
+
+%To this end, given a player $p \in \bP$ and a body of knowledge $q$,
+%
+%
+% Let $q$ be a body of knowledge. 
+%
+%
+%terminology. 
+%
+%
+%given a body of knowledge, we assume that 
+
+
+For the mining game we will consider the following strategies:
+\begin{itemize}
+\item {\bf The default strategy.}  The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
+
+\begin{eqnarray*}
+\df_p(q) & = &
+\begin{cases}
+\mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
+\mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
+\end{cases}
+\end{eqnarray*}
+
+%Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
+
+\item {\bf Fork on the $k$th from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
+
+\item {\bf Fork on the $k$th block belonging to me counting from the end of the blockchain.} Similar to the previous strategy, but this time the player will mine on the $k$th block belonging to her, counting from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. With $k=1$ the player are forking on her ultimate block in the blockchain, and with $k=\infty$ in the genesis.
+
+\item {\bf Give up time $g$.} This can be a parameter in any of the above strategies. Once forked, if the branch belonging to the non forking player is $g$ block ahead of the forking branch, the game continues on this branch with no more forks.
+\end{itemize}
+
+
+
