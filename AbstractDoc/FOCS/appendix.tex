@@ -4,3 +4,12 @@
 \label{sec-appendix}
 
 
+\begin{eqnarray*}
+u_p(\bs \mid \bq_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
+\pr^{\bs}(\bq \mid \bq_0)\bigg)\\
+& = & r_p(\bq_0) + \sum_{i=1}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
+\pr^{\bs}(\bq \mid \bq_0)\bigg)\\
+& = & r_p(\bq_0) + \sum_{i=1}^{\infty}\beta^{i} \cdot  \bigg(
+\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = 1}} \pr^{\bs}(\bq \mid \bq_0) \cdot 
+\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-1}} r_p(\bq') \cdot \pr^{\bs}(\bq' \mid \bq)\bigg)\\
+\end{eqnarray*}
