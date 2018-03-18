@@ -2,6 +2,7 @@
 
 
 \section{Full Disclosure Scenario and Two Players}
+\label{sec-fd&2p}
 In this section, we consider $\bP = \{1,2\}$, and we assume full disclosure of information between players.
 For every state $\bq \in \bQ$ with $\bq = (q_1, \ldots, q_m)$, in this case it holds that $q_i = q_j$ for every $i,j \in \{1, \ldots, m\}$. Thus, in this section we simplify the notation and use a body of knowledge $q$ to represent a state of the game, instead of a tuple $\bq$ of the form $(q, \ldots, q)$.
 
@@ -13,7 +14,6 @@ For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}
 0 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-\francisco{I actually like this notation, just pointing out this other one: $\mathbb 1_p$}
 
 Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
  $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
@@ -90,7 +90,9 @@ For the mining game we will consider the following strategies:
 
 %Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
 
-\item {\bf Fork on the $k$th from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
+\item {\bf Fork on the $k$th block from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
+
+\francisco{I think this needs to be rephrased. And maybe separate the case $k=\infty$ as a different strategy altogether, for two reasons: 1) it represents a Satoshi-gate, the motivation behind it is more than just stealing blocks, and 2) the case $k=\infty$ is way easier to compute (just Catalan numbers) and it is good to introduce the finite $k$ case (trapezoidal Dyck paths). }
 
 \item {\bf Fork on the $k$th block belonging to me counting from the end of the blockchain.} Similar to the previous strategy, but this time the player will mine on the $k$th block belonging to her, counting from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. With $k=1$ the player are forking on her ultimate block in the blockchain, and with $k=\infty$ in the genesis.
 
@@ -98,4 +100,34 @@ For the mining game we will consider the following strategies:
 \end{itemize}
 
 
+\francisco{Some results follow, only for the $\alpha$ discounted utility, without delay. Should we compute this for other utilities or rewards? Should we put the proof into the appendix?}
+\subsection{Utility of default strategy}
+In this section, players $\{1,2\}$ play according to the default strategy, defined in section \ref{sec-fd&2p}. For any state $q$ of the game, $\mathcal{T}(q)$ consists of a single branch and therefore \bchain$(q)$ is always defined. Moreover, given the behavior of players we can write $q$ uniquely as a binary sequence $w\in\{0,1\}^{\mid q\mid }$ encoding the chronological history of the game until $q$ is reached, where $1$ stands for ``player 1 appends a block'' and $0$ stands for ``player 2 appends a block''. In other words, there is a bijection $ \bQ \simeq\bchain(\bQ)\simeq \{0,1\}^\ast$. This encoding proves useful as we have
+\begin{eqnarray*}
+	r_p(w) &=&	c\cdot \sum_{j=0}^{\mid w\mid}w[j] \alpha^j  \\
+	\pr^{\df}(w \mid \varepsilon) &=&	h^{H(w)}(1-h)^{|w|-H(w)}
+\end{eqnarray*}
+where $H(x)$ denotes the Hamming weight of integer $x$, defined as the amount of non-zero bits of $x$. We prove the following.
 
+
+\begin{myprop*}
+Let $h$ denote the hash power of player 1. Then 
+$$u_1^n(\df\mid\varepsilon) = \frac{\alpha\beta^{n+2}+\alpha(1-\beta)(\alpha\beta)^{n+1}+\beta^{n+1}+(1-\alpha)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\cdot h c.$$
+In particular,
+$$u_1^\infty(\df\mid\varepsilon) = \frac{hc}{(1-\beta)(1-\alpha\beta)}.$$
+\end{myprop*}
+\begin{proof}
+
+\begin{eqnarray*}
+u_1^n(\df \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_p(q) \cdot 
+\pr^{\df}(q \mid \varepsilon)\bigg)\\
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=0}^{i}w[j] \alpha^j \bigg)\cdot 
+\pr^{\df}(w \mid \varepsilon)\bigg)\\
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=0}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
+\pr^{\df}(w \mid \varepsilon)\bigg)\\
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=0}^{i} \alpha^j \expected(w[j]) = ch\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=0}^{i} \alpha^j 
+\end{eqnarray*}
+yielding the result, where we used the facts that ownership of different blocks are independent Bernoulli trials with probability of success $h$ and $\pr(\{0,1\}^i)=1$ for all $i$.
+\end{proof}
+
+\francisco{I feel its better to decide properly how to refer to strategies before plugging other computations here.}
