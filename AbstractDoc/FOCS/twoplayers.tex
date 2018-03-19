@@ -90,19 +90,6 @@ For the mining game we will consider the following strategies:
 \end{cases}
 \end{eqnarray*}
 
-
-\begin{eqnarray*}
-\choose_p(q) & = &
-\begin{cases}
-\last(\bc(q)) & \text{if } \bc(q) \text{ is defined}\\
-
-\{ b \in q \mid 
-
-\mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
-\mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
-\end{cases}
-\end{eqnarray*}
-
 %Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
 
 \item {\bf Fork on the $k$th block from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
