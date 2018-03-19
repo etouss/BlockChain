@@ -3,9 +3,9 @@
 \section{A Game-theoretic Characterization of Bitcoin Mining}
 \label{sec-formalization}
 
-The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns. Blocks are placed one on top of another, starting from an initial block called the {\em genesis block}. Thus, the game will define a tree of blocks. Each block will be put by one player, called the {\em owner} of this block. Each such tree is called a {\em body of knowledge}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
+The mining game is played by a set $\bP = \{1, \ldots, m\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns. Blocks are placed one on top of another, starting from an initial block called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such tree is called a {\em body of knowledge}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
 
-Formally, in a game played by $m$ players a block is a string $b$ over the alphabet $\{1,2,\ldots, m\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{1,2,\ldots , m\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \backslash \{\varepsilon\}) \rightarrow \{1,2,\ldots ,m\}$ such that $\owner(b)$ equals the last symbol of $b$. A body of knowledge is a finite  set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{1,2,\ldots, m\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with the root $\varepsilon$. 
+Formally, in a game played by $m$ players a block is a string $b$ over the alphabet $\{1,2,\ldots, m\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{1,2,\ldots , m\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \backslash \{\varepsilon\}) \rightarrow \{1,2,\ldots ,m\}$ such that $\owner(b)$ equals the last symbol of $b$. A body of knowledge is a finite and non-empty set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{1,2,\ldots, m\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with the root $\varepsilon$. 
 %
 The intuition here is that each element of $q$ corresponds to a block that was put into the body of knowledge $q$ by some player. The genesis block corresponds to $\varepsilon$. When a player $p$ decides to mine on top of a block $b$, she puts another block into the body of knowledge defined by the string $b\cdot p$.
 %
@@ -100,27 +100,32 @@ Given a player $p \in \bP$, the set of actions for player $p$ is defined as:
 \begin{eqnarray*}
 \bA_p & = & \{ \mine(p,b,q,q') \mid b \in \bB, q, q' \text{ are bodies of knowledge and }\mine(p,b,q,q') \text{ is a valid action}\}.
 \end{eqnarray*}
-\francisco{In the latter definition, I think we have to include some conditions on $p,b,q,q'$... if for no better reason, they are not defined in the scope of the set definition.} \marcelo{Done}
 Given an action $a \in \bA_p$ and a state $\bq \in \bQ$ such that $a$ is a valid action in $\bq$, we use $a(\bq)$ to denote the state resulting of applying $a$ to $\bq$. Moreover, we denote by $\bA$ the set of all possible actions, that is, $\bA = \bA_1 \cup \cdots \cup \bA_m$.
 
 Given a player $p \in \bP$ and a state $\bq \in \bQ$, the pay-off of player $p$ in $\bq$ is denoted by $r_p(\bq)$. Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_1, \ldots, r_m)$ as the pay-off function of the game.
 
-Finally, we assume that the hash power of each player $p$ is given by a number $h_p \in (0,1)$ that represents the probability that player $p$ succeeds in placing the next block. Thus, we assume that:
+As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every $\bq \in \bQ$ and $\ba = (a_1, \ldots, a_m)$ in $\bA$:
 \begin{eqnarray*}
-\sum_{p=1}^m h_p & = &  1, 
-\end{eqnarray*}and we define $\bH = (h_1, \ldots, h_m)$ as the hash power distribution.
-\etienne{Here is my only concern, i think that a bit of discussion maybe property would be important to convince people, that a constant h-power repartition is not a too strong assumption. Maybe do something similar as the full disclosure scenario and give a more general framework first. (Lastly are we allowed to say directly that this game is a stochastic game without giving the relation between H and the Transition probability function of a standard stochastic game.)}
+\sum_{p=1}^m \pr(\bq, \ba, a_p(\bq)) & = & 1.
+\end{eqnarray*}
+Intuitively, $\pr(\bq, \ba, a_p(\bq))$ tell us what the probability that a player $p \in \bP$ places the next block is, which will generate the body of knowledge $a_p(\bq)$. 
 
-
-Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$ where:
+Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\bA,\bQ,\bR,\pr)$, where:
 \begin{itemize}
 	\item $\bP$ is the set of players.
 	\item $\bA$ is the set of possible actions.
 	\item $\bQ$ is the set of states.
 	\item $\bR$ is the pay-off function.
-	\item $\bH$ is the hash power distribution.
+	\item $\pr$ is the transition probability function.
 \end{itemize} 
 
+\subsection{A Simplification of the Game}
+As mentioned in the previous section, assuming that each player $p$ would like to execute action $a_p$ in a state $\bq$, the probability that such an action $a_p$ is executed is given by $\pr(\bq, \ba, a_p(\bq))$ with $\ba = (a_1, \ldots, a_m)$. But such a probability is directly related with the hash power of player $p$, the more hash power the likely it is that action $a_p$ is executed and $p$ mines the next block before the rest of the players. In what follows, we assume that the hash power of each player does not change during the mining game, which is captured by the following condition:
+\begin{itemize}
+\item For every $\bq, \bq' \in \bQ$, every $\ba, \ba' \in \bA$ such that $\ba = (a_1, \ldots, a_m)$ and $\ba' = (a'_1, \ldots, a'_m)$,  and every player $p \in \bP$, it holds that $\pr(\bq, \ba, a_p(\bq)) = \pr(\bq', \ba', a'_p(\bq'))$.
+\end{itemize}
+Thus, we assume from now on that this condition is satisfied. In particular, for each player $p \in \bP$, we assume that that 
+$\pr(\bq, \ba, a_p(\bq)) = h_p$ for every $\bq \in \bQ$ and $\ba \in \bA$ with $\ba = (a_1, \ldots, a_m)$, and we refer to $h_p$ as the hash power of player $p$. Moreover, we define $\bH = (h_1, \ldots, h_m)$ as the hash power distribution, and we replace $\pr$ by $\bH$ in the definition of an an infinite stochastic game, so that $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$.
 
 \subsection{Stationary equilibrium}
 A strategy for a player $p \in \bP$ is a function $s : \bQ \rightarrow \bA_p$. 
