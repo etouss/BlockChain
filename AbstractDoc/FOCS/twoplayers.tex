@@ -119,7 +119,7 @@ $$u_1^\infty(\df\mid\varepsilon) = \frac{hc}{(1-\beta)(1-\alpha\beta)}.$$
 \begin{proof}
 
 \begin{eqnarray*}
-u_1^n(\df \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_p(q) \cdot 
+u_1^n(\df \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_1(q) \cdot 
 \pr^{\df}(q \mid \varepsilon)\bigg)\\
 							& = & c\cdot \sum_{i=0}^{n}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=0}^{i}w[j] \alpha^j \bigg)\cdot 
 \pr^{\df}(w \mid \varepsilon)\bigg)\\
@@ -130,4 +130,48 @@ u_1^n(\df \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\su
 yielding the result, where we used the facts that ownership of different blocks are independent Bernoulli trials with probability of success $h$ and $\pr(\{0,1\}^i)=1$ for all $i$.
 \end{proof}
 
-\francisco{I feel its better to decide properly how to refer to strategies before plugging other computations here.}
+\subsection{Utility of the genesis fork}
+Suppose player 2 follows the default strategy, and player 1 attempts to fork once at the genesis block $\varepsilon$, as described in section \ref{sec-fd&2p} (case $k=\infty$).
+\francisco{TBH I dislike the previous notation} As a result of this behavior, for any state of the game $\cT(q)$ consists in a rooted tree in $\varepsilon$ with at most two branches. We can naturally refer to these as the original branch (the one player 2 is mining until the forks succeeds) and the new branch. Note that in this scenario we also have a bijection $\bQ\simeq \{0,1\}^\ast$, since the chronological history of mined blocks allows to uniquely determine any state of the game. Hence, we encode any state $q\in Q$ as a binary string with the instructions 0 (player 2 appends a block) and 1 (player 1 appends a block). For any binary string $x$, let $\Delta(x)$ denote the amount of zeros minus the amount of ones in $x$.
+
+\begin{mydef}
+ A Dyck draw is a binary string $d$ such that $\Delta(d)=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')\leq 0$. We denote by $\Dyck_{2n}$ the set of Dyck draws of length $2n$ and $\Dyck^\ast$ the set of all Dyck draws.
+\end{mydef}
+
+Denote by $\bQ'\subsetneq \bQ$ the states in which player 1 has a positive reward. We can write $\bQ'$ as a disjoint union as follows. First note that before the new branch becomes $\bchain(q)$ for some state $q$ in the game, player 1 receives no reward, (\ie $q\notin \bQ'$). On the other hand, if $\bchain(q)$ includes the new branch for a state $q\in Q$, then $q$ contains an initial string of the form $d1$ where $d\in \Dyck^\ast$. Therefore,
+$$\bQ'\simeq \bigcup_{k=0}^\infty \{d1w,d\in \Dyck^{2k},w\in \{0,1\}^\ast\}$$
+
+With this, we can prove the following.
+\begin{myprop*}
+Suppose player 1 plays with the genesis fork strategy and player 2 follows the default strategy. Let $h$ be the hash power of player 1. Then
+\begin{eqnarray*}
+	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n} \bigg( \sum_{\substack{2k+1+l=i\\k\geq 0,l\geq 0}} C_k\cdot \beta^{i} \cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k} \bigg)
+\end{eqnarray*}
+where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $S_{l,k}(\alpha,h)=\frac{1-\alpha^{k+1}}{1-\alpha}+h\frac{\alpha^{k+1}(1-\alpha^l)}{1-\alpha}$. In particular,
+\begin{eqnarray*}
+	u_1^\infty(\gf \mid \varepsilon) & = & K_1 c(\alpha\beta^2h(1-h))+K_2 c(\beta^2h(1-h))
+\end{eqnarray*}
+for some constants $K_1,K_2$ where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
+
+\end{myprop*}
+\begin{proof} Every state of positive reward $q\in\bQ'$ is of the form $d1w$ for a Dyck draw $d$ and $w\in \{0,1\}^\ast$. Denote $w[i]$ the $i$-th bit of $w$, with $i=1,\dots,|w|$. Note that
+
+\begin{eqnarray*}
+r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=0}^{|d|-1}\alpha^i \bigg)+\alpha^{|d|}+\alpha^{|d|+1}\bigg(\sum_{i=0}^{|w|-1}\alpha^i w[i]\bigg)\bigg),\\
+\pr^{\gf}(d1w|\varepsilon) &=& h^{|d|/2+1+H(w)}(1-h)^{|d|/2+|w|-H(w)}.
+\end{eqnarray*} 
+With this we can compute 
+\begin{eqnarray*}
+	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
+	\pr^{\gf}(q \mid \varepsilon)\bigg)\\
+								& = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i}\sum_{\substack{d\in \Dyck_{2k}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
+	\pr^{\gf}(d1w \mid \varepsilon)\bigg).
+\end{eqnarray*}
+First note that in the inner sum, the expressions $r(d1w)$ and $\pr^{\gf}(d1w|\varepsilon)$ depend only in $k,l$. Define
+$$S_{k,l}(\alpha,h)=\sum_{w\in\{0,1\}^l}r(d1w)\cdot \pr^{\gf}(w|d1)$$
+and compute $S_{k,l}(\alpha,h)$ using the facts $\pr^{\gf}(\{0,1\}^l|d1)=1$ and $\expected(w[i])=h$ for every $i=1,\dots,l$, obtaining the claimed expression. We have
+\begin{eqnarray*}
+u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i} \#(\Dyck_{2k})\cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg)
+\end{eqnarray*}
+It is a well-known fact that $\Dyck_{2k}=C_k$, where $C_k$ is the $k$-th Catalan number, yielding the result. \francisco{TODO: Exact constants, $n=\infty$ case, references to Catalan}
+\end{proof}
