@@ -15,8 +15,11 @@ For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}
 \end{cases}
 \end{eqnarray*}
 
-Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
- $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
+Recall that a block $b$ is a string over the alphabet $\bP = \{1,2\}$. Thus, we use notation $|b|$ for the length of $b$ as a string, and notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$ and $b[i]$ is either 1 or 2. 
+
+%Thus, in a two-players games, a block $b$ is a string over the alphabet $\{1,2\}$. We 
+%Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
+% $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
  
 In this section, we consider the following pay-off functions:
 \begin{itemize}
@@ -25,7 +28,7 @@ In this section, we consider the following pay-off functions:
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|-d} \chi_p(\bchain(q)[i])} & \text{otherwise}
+{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|-d} \chi_p(\bchain(q)[i])} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
 where $c$ is a positive real number and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
@@ -35,7 +38,7 @@ where $c$ is a positive real number and $d \in \mathbb{N}$. Here the number $d$ 
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=0}^{|\bchain(q)|-d} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
+{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|-d} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
 where $c$ is a positive real number, $\alpha \in (0,1]$ and $d \in \mathbb{N}$. 
@@ -47,7 +50,7 @@ r_p(q) & = &
 0 & \text{if } \bchain(q) \text{ is not defined}\\
 \\
 {\displaystyle c \cdot \bigg(
-\sum_{i=0}^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor-1}
+\sum_{i=1}^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor-1}
 \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \alpha^i \cdot \chi_p(\bchain(q)[j])
 \ +}\\
 {\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|-d}{k}\rfloor \cdot k + 1}^{|\bchain(q)|-d} \alpha^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor} \cdot \chi_p(\bchain(q)[j])\bigg)}
@@ -59,7 +62,6 @@ where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural num
 
 The next step step is to describe different strategies that the players can use in the game. For this we need some notation. 
 
-Assume that $q$ is a body of knowledge. Then for every path $\pi$ in $q$ from the root $\varepsilon$, we associate 
 
 
 First, for a state $q$, we will denote by $\last(\bchain(q))$ the final block in the path $\bchain(q)$, when $\bchain(q)$ is defined, and we leave it undefined otherwise. Similarly, if $q$ is any path (i.e. a body of knowledge with no branches), we define $\last(q)$ as the final block in this path. If $p$ is a player, and $q$ is a state such that $\bchain(q)$ is not defined, we will define the function $\cho_p(q)$ as the block that is most convenient for the player $p$ to mine upon. Formally, if $S=\{ q'\mid q' \text{ is a path in } \cT(q) \text{ from the root to a leaf}\}$, we define $\cho_p(q)$ as the lexicographically smallest $q'\in S$ such that $r_p(q')=max_{q''\in S} \{r_p(q'')\}$.
@@ -83,6 +85,19 @@ For the mining game we will consider the following strategies:
 \begin{eqnarray*}
 \df_p(q) & = &
 \begin{cases}
+\mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
+\mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
+\end{cases}
+\end{eqnarray*}
+
+
+\begin{eqnarray*}
+\choose_p(q) & = &
+\begin{cases}
+\last(\bc(q)) & \text{if } \bc(q) \text{ is defined}\\
+
+\{ b \in q \mid 
+
 \mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
 \mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
 \end{cases}

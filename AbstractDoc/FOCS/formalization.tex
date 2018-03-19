@@ -131,7 +131,9 @@ $\pr(\bq, \ba, a_p(\bq)) = h_p$ for every $\bq \in \bQ$ and $\ba \in \bA$ with $
 A strategy for a player $p \in \bP$ is a function $s : \bQ \rightarrow \bA_p$. 
 We define $\bS_p$ as the set of all strategies for player $p$, and $\bS = \bS_{1} \times \bS_{2} \times \cdots \times \bS_{m}$ as the set of combined strategies for the game (recall that we are assuming that $\bP = \{1, \ldots, m\}$ is the set of players). 
 
-Next we define a notion of how likely is reaching a state using a particular strategy, when starting at some specific state. Formally, given an initial state $\bq_0 \in \bQ$ and a strategy $\bs = (s_1, \ldots, s_m)$ in $\bS$, 
+Next we define a notion of how likely is reaching a state using a particular strategy, when starting at some specific state. 
+Given states $\bq = (q_1, \ldots, q_m)$ and $\bq' = (q'_1, \ldots, q'_m)$, we use notation $\bq \subseteq \bq'$ to indicate that $q_p \subseteq q'_p$ for every $p \in \{1, \ldots, m\}$, and we define $|\bq|$ as $\sum_{p=1}^m |q_i|$. 
+Then given an initial state $\bq_0 \in \bQ$ and a strategy $\bs = (s_1, \ldots, s_m)$ in $\bS$, 
 the probability of reaching state $\bq \in \bQ$ such that $\bq_0 \subseteq \bq$ is recursively defined as follows:
 \begin{eqnarray*}
 \pr^{\bs}(\bq \mid \bq_0) & = &
@@ -145,18 +147,19 @@ the probability of reaching state $\bq \in \bQ$ such that $\bq_0 \subseteq \bq$ 
 We finally have all the necessary ingredients to define the pay-off of a player in a mining game given a particular strategy.
 
 \begin{mydef}
-Let $p \in \bP$, $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in a mining game with $n$ steps, denoted by $u_p^n(\bs \mid \bq_0)$, is defined as:
+Let $p \in \bP$, $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the cumulative $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in a mining game with $n$ steps, denoted by $u_p^n(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
 u_p^n(\bs \mid \bq_0) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
-Moreover, the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in an infinite mining game, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
+Moreover, the cumulative $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $\bq_0$ in an infinite mining game, denoted by $u_p(\bs \mid \bq_0)$, is defined as:
 \begin{eqnarray*}
 u_p(\bs \mid \bq_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
 \pr^{\bs}(\bq \mid \bq_0)\bigg)
 \end{eqnarray*}
 \end{mydef}
-\francisco{Should we call this the {\it cumulative} $\beta$--discounted utility? In light of the fact that it counts dependent paths, representing accumulated reward?}
+\francisco{Should we call this the {\it cumulative} $\beta$--discounted utility? In light of the fact that it counts dependent paths, representing accumulated reward?} \marcelo{I agree, I added the word cumulative.}
+
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_1, \ldots, s_m)$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m})$.
 \begin{mydef}
 Let $\bq_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then $\bs$ is a $\beta$ discounted stationary equilibrium in a mining game with $n$ steps if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
