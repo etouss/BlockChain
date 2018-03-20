@@ -59,10 +59,49 @@ r_p(q) & = &
 \end{eqnarray*}
 where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
 \end{itemize}
+The next step is to describe different strategies that the players can use in the game. For this we need some notation. Let $p \in \bP$ and $q$ be a body of knowledge. Then define
+\begin{eqnarray*}
+\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
+\longest(q,p) & = & \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p, \text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
+\end{eqnarray*}
+Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length), and given $b, b' \in q$, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{1, 2\}$). 
 
-The next step step is to describe different strategies that the players can use in the game. For this we need some notation. 
+\begin{mydef}
+Given $p \in \{0,1\}$, $b \in \bB$ and a body of knowledge $q$, an action $\mine(p,b,q)$ is {\em non-receding} if $\mine(p,b,q)$ is a valid action and
+\begin{enumerate}
+\item $b \in \longest(q,p)$ or
 
+\item $\length(q,p) \leq |b|$ and there exists $b' \in \longest(q)$ such that $b \preceq b'$.
+\end{enumerate}
+\end{mydef}
+From now on, we only consider non-receding actions, and we restrict the set $Q$ of bodies of knowledge to be the smallest set satisfying that:
+\begin{itemize}
+\item $\{\varepsilon\} \in Q$, and
 
+\item if $p \in \{1,2\}$, $b \in \bB$, $q \in Q$ and $\mine(p,b,q)$ is a non-receding action, then $q \cup \{ b \cdot p\} \in Q$.
+\end{itemize}
+
+\begin{mylem}
+For every $q \in Q$, the following conditions hold:
+\begin{enumerate}
+\item For every $p \in \{1,2\}$: $|\longest(q,p)| = 1$ 
+
+\item $1 \leq |\longest(q)| \leq 2$
+
+\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,1) \cup \longest(q,2)$
+\end{enumerate}
+\end{mylem}
+
+\begin{proof}
+We prove the lemma by induction on the structure of $Q$. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the lemma hold since $|\longest(q)| = |\longest(q,1)| = |\longest(q,2)| = 1$. Assume that the property holds for $q \in Q$, and assume that $p \in \{1,2\}$, $b \in \bB$ and $\mine(p,b,q)$ is a non-receding action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
+\begin{itemize}
+\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_1,b_2\}$, and without loss of generality assume that $p = 1$. Given that $|b_1| = |b_2|$ and $\mine(p,b,q)$ is a non-receding action, we have that either $b = b_1$ or $b = b_2$. If $b = b_1$, then it holds $b_1 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_1 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_1 \cdot 1\}$.  If $b = b_2$, then it holds $b_2 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_2 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_2 \cdot 1\}$.
+
+\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_1\}$. Thus, we have that $|b_2| < |b_1|$. Notice that if $p =1$, then we have that $b=b_1$ since $\mine(p,b,q)$ is a non-receding action. Hence, it holds $b_1 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_1 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_1 \cdot 1\}$. Therefore, assume that $p = 2$, from which we have that  either $b=b_2$ or $|b_2| \leq |b|$ and $b \preceq b_1$, since $\mine(p,b,q)$ is a non-receding action. In both cases, we conclude that $b \cdot 2 \in q'$, from which we deduce that $\longest(q',1) = \{b_1\}$ and $\longest(q',2) = \{b \cdot 2\}$ (given that $|b_2| \leq |b|$ in both cases). Moreover, if $|b \cdot 2| < |b_1|$, then it holds that $\longest(q') = \{b_1\}$ and the three conditions of the lemma are satisfied. If $|b \cdot 2| = |b_1|$, then we have that $\longest(q') = \{b_1, b \cdot 2\}$, from which we conclude again that the three conditions of the lemma are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',1) \cup \longest(q',2)$.
+
+\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_2\}$. This case is analogous to the previous case, which concludes the proof of the lemma.
+\end{itemize}
+\end{proof}
 
 First, for a state $q$, we will denote by $\last(\bchain(q))$ the final block in the path $\bchain(q)$, when $\bchain(q)$ is defined, and we leave it undefined otherwise. Similarly, if $q$ is any path (i.e. a body of knowledge with no branches), we define $\last(q)$ as the final block in this path. If $p$ is a player, and $q$ is a state such that $\bchain(q)$ is not defined, we will define the function $\cho_p(q)$ as the block that is most convenient for the player $p$ to mine upon. Formally, if $S=\{ q'\mid q' \text{ is a path in } \cT(q) \text{ from the root to a leaf}\}$, we define $\cho_p(q)$ as the lexicographically smallest $q'\in S$ such that $r_p(q')=max_{q''\in S} \{r_p(q'')\}$.
 
