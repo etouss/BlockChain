@@ -90,6 +90,8 @@ r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) +
 \end{proof}
 
 \section{Trapezoidal Dyck paths}
+\label{appendix-trapezoid}
+
 For nonnegative integers $a,b$, let $\mathcal L_{a,b}$ be the trapezoid in $\ZZ^2$ whose vertices are
 $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ Also, let $\mathcal D_{a,b}$ the set of one step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside $\mathcal L_{a,b}$, and $\sigma_{a,b}=\# \mathcal D_{a,b}$ the amount of possible paths. Finally, let $C_n$ denote the $n$-th Catalan number. 
 \begin{myprop*}
@@ -117,7 +119,7 @@ $$\begin{array}{cl}
 \end{array}$$
  
 \begin{myprop*}
-For $x\in [0,1/4]$ and $a\in \NN$ 
+For $x\in [-1/4,1/4]$ and $a\in \NN$ 
 $$\phi_a(x)=c(x)^{a+1},$$
 where $c(x):=\frac{1-\sqrt{1-4x}}{2x}$ is the generating function of the Catalan numbers.
 \end{myprop*}

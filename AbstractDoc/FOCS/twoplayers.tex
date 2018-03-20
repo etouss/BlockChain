@@ -127,7 +127,7 @@ u_1^n(\df \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\su
 \pr^{\df}(w \mid \varepsilon)\bigg)\\
 							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
 \pr^{\df}(w \mid \varepsilon)\bigg)\\
-							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j \expected(w[j]) = ch\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=0}^{i} \alpha^j 
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j \expected(w[j]) = ch\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j 
 \end{eqnarray*}
 yielding the result, where we used the facts that ownership of different blocks are independent Bernoulli trials with probability of success $h$ and $\pr(\{0,1\}^i)=1$ for all $i$.
 \end{proof}
@@ -176,19 +176,61 @@ and compute $S_{k,l}(\alpha,h)$ using the facts $\pr^{\gf}(\{0,1\}^l|d1)=1$ and 
 \begin{eqnarray*}
 u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i} \#(\Dyck_{2k})\cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg).
 \end{eqnarray*}
-It is widely known that $\Dyck_{2k}=C_k$, where $C_k$ is the $k$-th Catalan number, yielding the result. \francisco{TODO: Exact constants, $n=\infty$ case, references to Catalan}
+It is widely known that $\Dyck_{2k}=C_k$, where $C_k$ is the $k$-th Catalan number, yielding the result. \francisco{TODO: Exact constants, $n=\infty$ case, references to Catalan (Stanley's book)}
 \end{proof}
 
 
-\subsection{Utility of the $k$-fork strategy}
+\subsection{Utility of the $m$-fork strategy}
 
-In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $k$ blocks on an already defined blockchain of arbitrary length. In other words, let $c$ be the current blockchain of length $|c|\geq k$, and let $b_{-k}$ the block at position $|c|-k$. We also suppose that $\owner(b_{-k+i})=2$ for all $i=1,\dots,k$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-k}$ (these rewards acting as additive constants). Let us define the following.
+\francisco{I need a notation for this strategy. For the time being I'll use $\mfork$}
+
+In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $m$ blocks on an already defined blockchain of arbitrary length. In other words, let $c$ be the current blockchain of length $|c|\geq m$, and let $b_{-m}$ the block at position $|c|-m$. We also suppose that $\owner(b_{-m+i})=2$ for all $i=1,\dots,m$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-m}$ (these rewards acting as additive constants). Let us define the following.
 
 
 \begin{mydef}
-	A Dyck draw of disadvantage $k$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+k=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+k\leq 0$. We denote by $\Dyck_{2n,k}$ the set of Dyck draws of disadvantage $k$ of length $2n+k$ and $\Dyck^\ast_{k}$ the set of all Dyck draws of disadvantage $k$.
+	A Dyck draw of disadvantage $m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$. We denote by $\Dyck_{2n,m}$ the set of Dyck draws of disadvantage $m$ of length $2n+m$ and $\Dyck^\ast_{m}$ the set of all Dyck draws of disadvantage $m$.
 \end{mydef}
 
-Now, as before note that every state of positive reward for player 1 is a state that successfully orphaned blocks from the original chain. The binary encoding can be written as $d1w$, where $d$ is a Dyck draw with disadvantage $k$ and $w\in\{0,1\}^\ast$ represent default playing by both players after the fork succeeds.
+\begin{myprop*}
+	\label{prop-trapezoidcardinality}
+	Let $(n,m)\in \NN^2$, then 
+	$$\#\Dyck_{2n,m}=\frac{m+1}{m+n+1}{m+2n\choose m+n}.$$
+\end{myprop*}
+\begin{proof}
+Consider the north-east unitary steps $(\uparrow,\rightarrow)=((1,0),(0,1))$ in $\ZZ^2$, and let $d\in \Dyck_{2n,m}$. The bits in $d$ define a path from $(0,0)$ to $(n+m,n)$ where $0:\uparrow$ and $1:\rightarrow$. Because $d$ is a $m$-disadvantaged Dyck draw, this path stays inside the trapezoid $\{(0,0),(m,0),(m+n,n),(0,n)\}$. We count all such paths in appendix \ref{appendix-trapezoid}, obtaining the claimed expression.
+\end{proof}
+Now, as before note that every state of positive reward for player 1 is a state that successfully orphaned blocks from the original chain. The binary encoding can be written as $d1w$, where $d$ is a Dyck draw with disadvantage $m$ and $w\in\{0,1\}^\ast$ represent default playing by both players after the fork succeeds. 
 
-\francisco{to be continued}
+\begin{myprop*}
+If players 1 and 2 follow \mfork and \df strategies respectively, and if $h\in [0,1]$ is the hash power of player 1, then
+
+\begin{eqnarray*}
+	u_1^n(\mfork \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \frac{m+1}{m+k+1}{m+2k\choose m+k} \cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
+\end{eqnarray*}
+In particular,
+\begin{eqnarray*}
+	u_1^\infty(\mfork \mid \varepsilon) & = & K_1 c(\alpha\beta^2h(1-h))^{m+1}+K_2 c(\beta^2h(1-h))^{m+1}
+\end{eqnarray*}
+for some constants $K_1,K_2$.
+
+\end{myprop*}
+\begin{proof}
+	Let $\bQ'\subsetneq \bQ$ the set of states of positive reward for player 1. We have, as before, the disjoint union
+	$$\bQ' = \bigcup_{k=0}^\infty \{d1w,\; d\in\Dyck_{2k,m}, w\in\{0,1\}^\ast\}.$$
+	The reward and probability of a state $q=d1w\in \bQ'$ with $d\in\Dyck_{2k,m}$ and $w\in\{0,1\}^l$ are given by
+\begin{eqnarray*}
+	r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=-m}^{k-1}\alpha^i \bigg)+\alpha^{k}+\alpha^{k}\bigg(\sum_{i=1}^{l}\alpha^i w[i]\bigg)\bigg),\\
+	\pr^{\gf}(d1w|\varepsilon) &=& h^{k+m+1+H(w)}(1-h)^{k+l-H(w)}.
+\end{eqnarray*} 
+We now compute
+\begin{eqnarray*}
+	u_1^n(\mfork \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
+	\pr^{\gf}(q \mid \varepsilon)\bigg)\\
+								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i}\sum_{\substack{d\in \Dyck_{2k,m}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
+	\pr^{\gf}(d1w \mid \varepsilon)\bigg)\\
+								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \#(\Dyck_{2k,m})\cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
+\end{eqnarray*}
+where
+$$S'_{l,k,m}=\sum_{w\in\{0,1\}^l}r(d1w)\pr^\mfork(w|d1)$$
+can be computed as in section $\ref{sec-genfork}$. Finally, use proposition \ref{prop-trapezoidcardinality} to establish the result.
+\end{proof}
