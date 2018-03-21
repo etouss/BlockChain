@@ -222,7 +222,7 @@ Suppose player 1 plays with the genesis fork strategy and player 2 follows the d
 \begin{eqnarray*}
 	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n} \bigg( \sum_{\substack{2k+1+l=i\\k\geq 0,l\geq 0}} C_k\cdot \beta^{i} \cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k} \bigg)
 \end{eqnarray*}
-where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $S_{l,k}(\alpha,h)=\frac{1-\alpha^{k+1}}{1-\alpha}+h\frac{\alpha^{k+1}(1-\alpha^l)}{1-\alpha}$. In particular,
+where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $S_{l,k}(\alpha,h)=\frac{1}{1-\alpha}(1+\alpha^{k+1}(h-1)-h\alpha^{l+k+1})$. In particular,
 \begin{eqnarray*}
 	u_1^\infty(\gf \mid \varepsilon) & = & K_1 c(\alpha\beta^2h(1-h))+K_2 c(\beta^2h(1-h))
 \end{eqnarray*}
@@ -260,7 +260,7 @@ In the same strategy framework as section \ref{sec-genfork}, we now suppose that
 
 
 \begin{mydef}
-	A Dyck draw of disadvantage $m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$. We denote by $\Dyck_{2n,m}$ the set of Dyck draws of disadvantage $m$ of length $2n+m$ and $\Dyck^\ast_{m}$ the set of all Dyck draws of disadvantage $m$.
+	A Dyck draw of disadvantage $m\in\NN$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$. We denote by $\Dyck_{2n,m}$ the set of Dyck draws of disadvantage $m$ of length $2n+m$ and $\Dyck^\ast_{m}$ the set of all Dyck draws of disadvantage $m$.
 \end{mydef}
 
 \begin{myprop*}
