@@ -1,0 +1,275 @@
+%!TEX root = focs.tex
+
+
+\section{Full Disclosure Scenario and Two Players}
+\label{sec-fd&2p}
+In this section, we consider $\bP = \{1,2\}$, and we assume full disclosure of information between players.
+For every state $\bq \in \bQ$ with $\bq = (q_1, \ldots, q_m)$, in this case it holds that $q_i = q_j$ for every $i,j \in \{1, \ldots, m\}$. Thus, in this section we simplify the notation and use a body of knowledge $q$ to represent a state of the game, instead of a tuple $\bq$ of the form $(q, \ldots, q)$.
+
+For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
+\begin{eqnarray*}
+\chi_p(b) & = & 
+\begin{cases}
+1 & \owner(b) = p\\
+0 & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+Recall that a block $b$ is a string over the alphabet $\bP = \{1,2\}$. Thus, we use notation $|b|$ for the length of $b$ as a string, and notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$ and $b[i]$ is either 1 or 2. 
+
+%Thus, in a two-players games, a block $b$ is a string over the alphabet $\{1,2\}$. We 
+%Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
+% $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
+ 
+In this section, we consider the following pay-off functions:
+\begin{itemize}
+\item {\bf Constant $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|-d} \chi_p(\bchain(q)[i])} & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
+
+\item {\bf $\alpha$-discounted  $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|-d} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number, $\alpha \in (0,1]$ and $d \in \mathbb{N}$. 
+
+\item {\bf $\alpha$-discounted $d$-delayed $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+\begin{eqnarray*}
+r_p(q) & = & 
+\begin{cases}
+0 & \text{if } \bchain(q) \text{ is not defined}\\
+\\
+{\displaystyle c \cdot \bigg(
+\sum_{i=1}^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor-1}
+\sum_{j=i \cdot k}^{(i+1) \cdot k -1} \alpha^i \cdot \chi_p(\bchain(q)[j])
+\ +}\\
+{\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|-d}{k}\rfloor \cdot k + 1}^{|\bchain(q)|-d} \alpha^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor} \cdot \chi_p(\bchain(q)[j])\bigg)}
+& \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
+\end{itemize}
+The next step is to describe different strategies that the players can use in the game. For this we need some notation. Let $p \in \bP$ and $q$ be a body of knowledge. Then define
+\begin{eqnarray*}
+\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
+\longest(q,p) & = & \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p, \text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
+\end{eqnarray*}
+Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length), and given $b, b' \in q$, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{1, 2\}$). 
+
+\begin{mydef}
+Given $p \in \{0,1\}$, $b \in \bB$ and a body of knowledge $q$, an action $\mine(p,b,q)$ is {\em non-receding} if $\mine(p,b,q)$ is a valid action and
+\begin{enumerate}
+\item $b \in \longest(q,p)$ or
+
+\item $\length(q,p) \leq |b|$ and there exists $b' \in \longest(q)$ such that $b \preceq b'$.
+\end{enumerate}
+\end{mydef}
+From now on, we only consider non-receding actions, and we restrict the set $Q$ of bodies of knowledge to be the smallest set satisfying that:
+\begin{itemize}
+\item $\{\varepsilon\} \in Q$, and
+
+\item if $p \in \{1,2\}$, $b \in \bB$, $q \in Q$ and $\mine(p,b,q)$ is a non-receding action, then $q \cup \{ b \cdot p\} \in Q$.
+\end{itemize}
+
+\begin{mylem}
+For every $q \in Q$, the following conditions hold:
+\begin{enumerate}
+\item For every $p \in \{1,2\}$: $|\longest(q,p)| = 1$ 
+
+\item $1 \leq |\longest(q)| \leq 2$
+
+\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,1) \cup \longest(q,2)$
+\end{enumerate}
+\end{mylem}
+
+\begin{proof}
+We prove the lemma by induction on the structure of $Q$. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the lemma hold since $|\longest(q)| = |\longest(q,1)| = |\longest(q,2)| = 1$. Assume that the property holds for $q \in Q$, and assume that $p \in \{1,2\}$, $b \in \bB$ and $\mine(p,b,q)$ is a non-receding action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
+\begin{itemize}
+\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_1,b_2\}$, and without loss of generality assume that $p = 1$. Given that $|b_1| = |b_2|$ and $\mine(p,b,q)$ is a non-receding action, we have that either $b = b_1$ or $b = b_2$. If $b = b_1$, then it holds $b_1 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_1 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_1 \cdot 1\}$.  If $b = b_2$, then it holds $b_2 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_2 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_2 \cdot 1\}$.
+
+\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_1\}$. Thus, we have that $|b_2| < |b_1|$. Notice that if $p =1$, then we have that $b=b_1$ since $\mine(p,b,q)$ is a non-receding action. Hence, it holds $b_1 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_1 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_1 \cdot 1\}$. Therefore, assume that $p = 2$, from which we have that  either $b=b_2$ or $|b_2| \leq |b|$ and $b \preceq b_1$, since $\mine(p,b,q)$ is a non-receding action. In both cases, we conclude that $b \cdot 2 \in q'$, from which we deduce that $\longest(q',1) = \{b_1\}$ and $\longest(q',2) = \{b \cdot 2\}$ (given that $|b_2| \leq |b|$ in both cases). Moreover, if $|b \cdot 2| < |b_1|$, then it holds that $\longest(q') = \{b_1\}$ and the three conditions of the lemma are satisfied. If $|b \cdot 2| = |b_1|$, then we have that $\longest(q') = \{b_1, b \cdot 2\}$, from which we conclude again that the three conditions of the lemma are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',1) \cup \longest(q',2)$.
+
+\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_2\}$. This case is analogous to the previous case, which concludes the proof of the lemma.
+\end{itemize}
+\end{proof}
+
+First, for a state $q$, we will denote by $\last(\bchain(q))$ the final block in the path $\bchain(q)$, when $\bchain(q)$ is defined, and we leave it undefined otherwise. Similarly, if $q$ is any path (i.e. a body of knowledge with no branches), we define $\last(q)$ as the final block in this path. If $p$ is a player, and $q$ is a state such that $\bchain(q)$ is not defined, we will define the function $\cho_p(q)$ as the block that is most convenient for the player $p$ to mine upon. Formally, if $S=\{ q'\mid q' \text{ is a path in } \cT(q) \text{ from the root to a leaf}\}$, we define $\cho_p(q)$ as the lexicographically smallest $q'\in S$ such that $r_p(q')=max_{q''\in S} \{r_p(q'')\}$.
+
+%To this end, given a player $p \in \bP$ and a body of knowledge $q$,
+%
+%
+% Let $q$ be a body of knowledge. 
+%
+%
+%terminology. 
+%
+%
+%given a body of knowledge, we assume that 
+
+
+For the mining game we will consider the following strategies:
+\begin{itemize}
+\item {\bf The default strategy.}  The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
+
+\begin{eqnarray*}
+\df_p(q) & = &
+\begin{cases}
+\mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
+\mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
+\end{cases}
+\end{eqnarray*}
+
+%Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
+
+\item {\bf Fork on the $k$th block from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
+
+\francisco{I think this needs to be rephrased. And maybe separate the case $k=\infty$ as a different strategy altogether, for two reasons: 1) it represents a Satoshi-gate, the motivation behind it is more than just stealing blocks, and 2) the case $k=\infty$ is way easier to compute (just Catalan numbers) and it is good to introduce the finite $k$ case (trapezoidal Dyck paths). }
+
+\item {\bf Fork on the $k$th block belonging to me counting from the end of the blockchain.} Similar to the previous strategy, but this time the player will mine on the $k$th block belonging to her, counting from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. With $k=1$ the player are forking on her ultimate block in the blockchain, and with $k=\infty$ in the genesis.
+
+\item {\bf Give up time $g$.} This can be a parameter in any of the above strategies. Once forked, if the branch belonging to the non forking player is $g$ block ahead of the forking branch, the game continues on this branch with no more forks.
+\end{itemize}
+
+
+\francisco{Some results follow, only for the $\alpha$ discounted utility, without delay. Should we compute this for other utilities or rewards? Should we put the proof into the appendix?}
+\subsection{Utility of default strategy}
+In this section, players $\{1,2\}$ play according to the default strategy, defined in section \ref{sec-fd&2p}. For any state $q$ of the game, $\mathcal{T}(q)$ consists of a single branch and therefore \bchain$(q)$ is always defined. Moreover, given the behavior of players we can write $q$ uniquely as a binary sequence $w\in\{0,1\}^{\mid q\mid }$ encoding the chronological history of the game until $q$ is reached, where $1$ stands for ``player 1 appends a block'' and $0$ stands for ``player 2 appends a block''. In other words, there is a bijection $ \bQ \simeq\bchain(\bQ)\simeq \{0,1\}^\ast$. This encoding proves useful as we have
+\begin{eqnarray*}
+	r_p(w) &=&	c\cdot \sum_{j=1}^{\mid w\mid}w[j] \alpha^j  \\
+	\pr^{\df}(w \mid \varepsilon) &=&	h^{H(w)}(1-h)^{|w|-H(w)}
+\end{eqnarray*}
+where $H(x)$ denotes the Hamming weight of integer $x$, defined as the amount of non-zero bits of $x$. We prove the following.
+
+
+\begin{myprop*}
+Let $h$ denote the hash power of player 1. Then 
+$$u_1^n(\df\mid\varepsilon) = \frac{\alpha\beta^{n+2}+\alpha(1-\beta)(\alpha\beta)^{n+1}+\beta^{n+1}+(1-\alpha)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\cdot h c.$$
+In particular,
+$$u_1^\infty(\df\mid\varepsilon) = \frac{hc}{(1-\beta)(1-\alpha\beta)}.$$
+\end{myprop*}
+\begin{proof}
+
+\begin{eqnarray*}
+u_1^n(\df \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_1(q) \cdot 
+\pr^{\df}(q \mid \varepsilon)\bigg)\\
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=1}^{i}w[j] \alpha^j \bigg)\cdot 
+\pr^{\df}(w \mid \varepsilon)\bigg)\\
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
+\pr^{\df}(w \mid \varepsilon)\bigg)\\
+							& = & c\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j \expected(w[j]) = ch\cdot \sum_{i=0}^{n}\beta^{i}\sum_{j=1}^{i} \alpha^j 
+\end{eqnarray*}
+yielding the result, where we used the facts that ownership of different blocks are independent Bernoulli trials with probability of success $h$ and $\pr(\{0,1\}^i)=1$ for all $i$.
+\end{proof}
+
+\subsection{Utility of the genesis fork}
+\label{sec-genfork}
+Suppose player 2 follows the default strategy, and player 1 attempts to fork once at the genesis block $\varepsilon$, as described in section \ref{sec-fd&2p} (case $k=\infty$).
+\francisco{TBH I dislike the previous notation} As a result of this behavior, for any state of the game $\cT(q)$ consists in a rooted tree in $\varepsilon$ with at most two branches. We can naturally refer to these as the original branch (the one player 2 is mining until the forks succeeds) and the new branch. Note that in this scenario we also have a bijection $\bQ\simeq \{0,1\}^\ast$, since the chronological history of mined blocks allows to uniquely determine any state of the game. Hence, we encode any state $q\in Q$ as a binary string with the instructions 0 (player 2 appends a block) and 1 (player 1 appends a block). For any binary string $x$, let $\Delta(x)$ denote the amount of zeros minus the amount of ones in $x$.
+
+\begin{mydef}
+ A Dyck draw is a binary string $d$ such that $\Delta(d)=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')\leq 0$. We denote by $\Dyck_{2n}$ the set of Dyck draws of length $2n$ and $\Dyck^\ast$ the set of all Dyck draws.
+\end{mydef}
+
+Denote by $\bQ'\subsetneq \bQ$ the states in which player 1 has a positive reward. We can write $\bQ'$ as a disjoint union as follows. First note that before the new branch becomes $\bchain(q)$ for some state $q$ in the game, player 1 receives no reward, (\ie $q\notin \bQ'$). On the other hand, if $\bchain(q)$ includes the new branch for a state $q\in Q$, then $q$ contains an initial string of the form $d1$ where $d\in \Dyck^\ast$. Therefore,
+$$\bQ'\simeq \bigcup_{k=0}^\infty \{d1w,d\in \Dyck^{2k},w\in \{0,1\}^\ast\}$$
+
+With this, we can prove the following.
+\begin{myprop*}
+Suppose player 1 plays with the genesis fork strategy and player 2 follows the default strategy. Let $h$ be the hash power of player 1. Then
+\begin{eqnarray*}
+	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n} \bigg( \sum_{\substack{2k+1+l=i\\k\geq 0,l\geq 0}} C_k\cdot \beta^{i} \cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k} \bigg)
+\end{eqnarray*}
+where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $S_{l,k}(\alpha,h)=\frac{1-\alpha^{k+1}}{1-\alpha}+h\frac{\alpha^{k+1}(1-\alpha^l)}{1-\alpha}$. In particular,
+\begin{eqnarray*}
+	u_1^\infty(\gf \mid \varepsilon) & = & K_1 c(\alpha\beta^2h(1-h))+K_2 c(\beta^2h(1-h))
+\end{eqnarray*}
+for some constants $K_1,K_2$ where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
+
+\end{myprop*}
+\begin{proof} Every state of positive reward $q\in\bQ'$ is of the form $d1w$ for a Dyck draw $d$ and $w\in \{0,1\}^\ast$. Denote $w[i]$ the $i$-th bit of $w$, with $i=1,\dots,|w|$. Note that
+
+\begin{eqnarray*}
+r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=0}^{|d|-1}\alpha^i \bigg)+\alpha^{|d|}+\alpha^{|d|+1}\bigg(\sum_{i=0}^{|w|-1}\alpha^i w[i]\bigg)\bigg),\\
+\pr^{\gf}(d1w|\varepsilon) &=& h^{|d|/2+1+H(w)}(1-h)^{|d|/2+|w|-H(w)}.
+\end{eqnarray*} 
+With this we can compute 
+\begin{eqnarray*}
+	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
+	\pr^{\gf}(q \mid \varepsilon)\bigg)\\
+								& = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i}\sum_{\substack{d\in \Dyck_{2k}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
+	\pr^{\gf}(d1w \mid \varepsilon)\bigg).
+\end{eqnarray*}
+First note that in the inner sum, the expressions $r(d1w)$ and $\pr^{\gf}(d1w|\varepsilon)$ depend only in $k,l$. Define
+$$S_{k,l}(\alpha,h)=\sum_{w\in\{0,1\}^l}r(d1w)\cdot \pr^{\gf}(w|d1)$$
+and compute $S_{k,l}(\alpha,h)$ using the facts $\pr^{\gf}(\{0,1\}^l|d1)=1$ and $\expected(w[i])=h$ for every $i=1,\dots,l$, obtaining the claimed expression. We have
+\begin{eqnarray*}
+u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i} \#(\Dyck_{2k})\cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg).
+\end{eqnarray*}
+It is widely known that $\Dyck_{2k}=C_k$, where $C_k$ is the $k$-th Catalan number, yielding the result. \francisco{TODO: Exact constants, $n=\infty$ case, references to Catalan (Stanley's book)}
+\end{proof}
+
+
+\subsection{Utility of the $m$-fork strategy}
+
+\francisco{I need a notation for this strategy. For the time being I'll use $\mfork$}
+
+In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $m$ blocks on an already defined blockchain of arbitrary length. In other words, let $c$ be the current blockchain of length $|c|\geq m$, and let $b_{-m}$ the block at position $|c|-m$. We also suppose that $\owner(b_{-m+i})=2$ for all $i=1,\dots,m$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-m}$ (these rewards acting as additive constants). Let us define the following.
+
+
+\begin{mydef}
+	A Dyck draw of disadvantage $m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$. We denote by $\Dyck_{2n,m}$ the set of Dyck draws of disadvantage $m$ of length $2n+m$ and $\Dyck^\ast_{m}$ the set of all Dyck draws of disadvantage $m$.
+\end{mydef}
+
+\begin{myprop*}
+	\label{prop-trapezoidcardinality}
+	Let $(n,m)\in \NN^2$, then 
+	$$\#\Dyck_{2n,m}=\frac{m+1}{m+n+1}{m+2n\choose m+n}.$$
+\end{myprop*}
+\begin{proof}
+Consider the north-east unitary steps $(\uparrow,\rightarrow)=((1,0),(0,1))$ in $\ZZ^2$, and let $d\in \Dyck_{2n,m}$. The bits in $d$ define a path from $(0,0)$ to $(n+m,n)$ where $0:\uparrow$ and $1:\rightarrow$. Because $d$ is a $m$-disadvantaged Dyck draw, this path stays inside the trapezoid $\{(0,0),(m,0),(m+n,n),(0,n)\}$. We count all such paths in appendix \ref{appendix-trapezoid}, obtaining the claimed expression.
+\end{proof}
+Now, as before note that every state of positive reward for player 1 is a state that successfully orphaned blocks from the original chain. The binary encoding can be written as $d1w$, where $d$ is a Dyck draw with disadvantage $m$ and $w\in\{0,1\}^\ast$ represent default playing by both players after the fork succeeds. 
+
+\begin{myprop*}
+If players 1 and 2 follow \mfork and \df strategies respectively, and if $h\in [0,1]$ is the hash power of player 1, then
+
+\begin{eqnarray*}
+	u_1^n(\mfork \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \frac{m+1}{m+k+1}{m+2k\choose m+k} \cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
+\end{eqnarray*}
+In particular,
+\begin{eqnarray*}
+	u_1^\infty(\mfork \mid \varepsilon) & = & K_1 c(\alpha\beta^2h(1-h))^{m+1}+K_2 c(\beta^2h(1-h))^{m+1}
+\end{eqnarray*}
+for some constants $K_1,K_2$.
+
+\end{myprop*}
+\begin{proof}
+	Let $\bQ'\subsetneq \bQ$ the set of states of positive reward for player 1. We have, as before, the disjoint union
+	$$\bQ' = \bigcup_{k=0}^\infty \{d1w,\; d\in\Dyck_{2k,m}, w\in\{0,1\}^\ast\}.$$
+	The reward and probability of a state $q=d1w\in \bQ'$ with $d\in\Dyck_{2k,m}$ and $w\in\{0,1\}^l$ are given by
+\begin{eqnarray*}
+	r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=-m}^{k-1}\alpha^i \bigg)+\alpha^{k}+\alpha^{k}\bigg(\sum_{i=1}^{l}\alpha^i w[i]\bigg)\bigg),\\
+	\pr^{\gf}(d1w|\varepsilon) &=& h^{k+m+1+H(w)}(1-h)^{k+l-H(w)}.
+\end{eqnarray*} 
+We now compute
+\begin{eqnarray*}
+	u_1^n(\mfork \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
+	\pr^{\gf}(q \mid \varepsilon)\bigg)\\
+								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i}\sum_{\substack{d\in \Dyck_{2k,m}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
+	\pr^{\gf}(d1w \mid \varepsilon)\bigg)\\
+								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \#(\Dyck_{2k,m})\cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
+\end{eqnarray*}
+where
+$$S'_{l,k,m}=\sum_{w\in\{0,1\}^l}r(d1w)\pr^\mfork(w|d1)$$
+can be computed as in section $\ref{sec-genfork}$. Finally, use proposition \ref{prop-trapezoidcardinality} to establish the result.
+\end{proof}
