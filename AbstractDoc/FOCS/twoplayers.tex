@@ -3,10 +3,7 @@
 
 \section{Full Disclosure Scenario and Two Players}
 \label{sec-fd&2p}
-In this section, we consider $\bP = \{1,2\}$, and we assume full disclosure of information between players.
-For every state $\bq \in \bQ$ with $\bq = (q_1, \ldots, q_m)$, in this case it holds that $q_i = q_j$ for every $i,j \in \{1, \ldots, m\}$. Thus, in this section we simplify the notation and use a body of knowledge $q$ to represent a state of the game, instead of a tuple $\bq$ of the form $(q, \ldots, q)$.
-
-For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
+In this section, we consider $\bP = \{0,1\}$. For $p \in \{0,1\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
 \begin{eqnarray*}
 \chi_p(b) & = & 
 \begin{cases}
@@ -14,8 +11,7 @@ For $p \in \{1,2\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}
 0 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-
-Recall that a block $b$ is a string over the alphabet $\bP = \{1,2\}$. Thus, we use notation $|b|$ for the length of $b$ as a string, and notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$ and $b[i]$ is either 1 or 2. 
+Recall that a block $b$ is a string over the alphabet $\bP = \{0,1\}$. Thus, we use notation $|b|$ for the length of $b$ as a string, and notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$ and $b[i]$ is either 0 or 1. 
 
 %Thus, in a two-players games, a block $b$ is a string over the alphabet $\{1,2\}$. We 
 %Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
@@ -23,86 +19,94 @@ Recall that a block $b$ is a string over the alphabet $\bP = \{1,2\}$. Thus, we 
  
 In this section, we consider the following pay-off functions:
 \begin{itemize}
-\item {\bf Constant $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
+\item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|-d} \chi_p(\bchain(q)[i])} & \text{otherwise}
+{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|} \chi_p(\bchain(q)[i])} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-where $c$ is a positive real number and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
+where $c$ is a positive real number.
+% and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
 
-\item {\bf $\alpha$-discounted  $d$-delayed reward.} The pay-off of a player $p \in \bP$ is defined as:
+\item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|-d} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
+{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-where $c$ is a positive real number, $\alpha \in (0,1]$ and $d \in \mathbb{N}$. 
+where $c$ is a positive real number and $\alpha \in (0,1]$.
+% and $d \in \mathbb{N}$. 
 
-\item {\bf $\alpha$-discounted $d$-delayed $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+\item {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
 \begin{cases}
 0 & \text{if } \bchain(q) \text{ is not defined}\\
 \\
 {\displaystyle c \cdot \bigg(
-\sum_{i=1}^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor-1}
-\sum_{j=i \cdot k}^{(i+1) \cdot k -1} \alpha^i \cdot \chi_p(\bchain(q)[j])
+\sum_{i=1}^{\lfloor\frac{|\bchain(q)|}{k}\rfloor-1}
+\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\bchain(q)[j])
 \ +}\\
-{\displaystyle  \hspace{50pt} \sum_{j= \lfloor\frac{|\bchain(q)|-d}{k}\rfloor \cdot k + 1}^{|\bchain(q)|-d} \alpha^{\lfloor\frac{|\bchain(q)|-d}{k}\rfloor} \cdot \chi_p(\bchain(q)[j])\bigg)}
+{\displaystyle  \hspace{50pt} \alpha^{\lfloor\frac{|\bchain(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\bchain(q)|}{k}\rfloor \cdot k + 1}^{|\bchain(q)|}  \chi_p(\bchain(q)[j])\bigg)}
 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
 where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
 \end{itemize}
-The next step is to describe different strategies that the players can use in the game. For this we need some notation. Let $p \in \bP$ and $q$ be a body of knowledge. Then define
+The next step is to describe the different strategies that the players can use in the game. For this we need some notation. Let $p \in \bP$ and $q$ be a state. Then define
 \begin{eqnarray*}
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
 \longest(q,p) & = & \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p, \text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
 \end{eqnarray*}
-Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length), and given $b, b' \in q$, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{1, 2\}$). 
+Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length), and given a pair $b, b' $ of blocks, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{0, 1\}$). 
 
-\begin{mydef}
-Given $p \in \{0,1\}$, $b \in \bB$ and a body of knowledge $q$, an action $\mine(p,b,q)$ is {\em non-receding} if $\mine(p,b,q)$ is a valid action and
-\begin{enumerate}
+\begin{mydef}\label{def-greedy}
+Given $p \in \{0,1\}$, $b \in \bB$ and a state $q$, an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and
+\begin{itemize}
 \item $b \in \longest(q,p)$ or
 
 \item $\length(q,p) \leq |b|$ and there exists $b' \in \longest(q)$ such that $b \preceq b'$.
-\end{enumerate}
-\end{mydef}
-From now on, we only consider non-receding actions, and we restrict the set $Q$ of bodies of knowledge to be the smallest set satisfying that:
-\begin{itemize}
-\item $\{\varepsilon\} \in Q$, and
-
-\item if $p \in \{1,2\}$, $b \in \bB$, $q \in Q$ and $\mine(p,b,q)$ is a non-receding action, then $q \cup \{ b \cdot p\} \in Q$.
 \end{itemize}
-\etienne{I love what you did here, it was basically what i was doing but better ... Btw do we need a proof that we are allowed (From a game theory perspective) to only consider non-receding action: something like a proof that any strat in a B discounted equilibrium have to be composed of non receding actions ?}
+\end{mydef}
+From now on, we only consider greedy actions, and we restrict the set $\bQ$ of states to be the smallest set satisfying that:
+\begin{itemize}
+\item $\{\varepsilon\} \in \bQ$, and
 
-\begin{mylem}
-For every $q \in Q$, the following conditions hold:
+\item if $p \in \{0,1\}$, $b \in \bB$, $q \in \bQ$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in \bQ$.
+\end{itemize}
+\etienne{I love what you did here, it was basically what i was doing but better ... Btw do we need a proof that we are allowed (From a game theory perspective) to only consider non-receding action: something like a proof that any strat in a B discounted equilibrium have to be composed of non receding actions ?} \marcelo{Strictly speaking we don't need to have a proof that the set of greedy (non-receding) actions is the right set of actions, we can provide some arguments for this. But obviously it would be great if we could provide some theoretical justification. In particular, it would be great if we could prove what you are suggesting.}
+
+\begin{myprop}\label{prop-length-greedy}
+For every $q \in \bQ$, the following conditions hold:
 \begin{enumerate}
-\item For every $p \in \{1,2\}$: $|\longest(q,p)| = 1$ 
+\item For every $p \in \{0,1\}$: $|\longest(q,p)| = 1$ 
 
 \item $1 \leq |\longest(q)| \leq 2$
 
-\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,1) \cup \longest(q,2)$
+\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,0) \cup \longest(q,1)$
 \end{enumerate}
-\end{mylem}
+\end{myprop}
 
 \begin{proof}
-We prove the lemma by induction on the structure of $Q$. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the lemma hold since $|\longest(q)| = |\longest(q,1)| = |\longest(q,2)| = 1$. Assume that the property holds for $q \in Q$, and assume that $p \in \{1,2\}$, $b \in \bB$ and $\mine(p,b,q)$ is a non-receding action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
+We prove the proposition by induction on the structure of $\bQ$. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the proposition hold since $|\longest(q)| = |\longest(q,0)| = |\longest(q,1)| = 1$. Assume that the property holds for $q \in \bQ$, and assume that $p \in \{0,1\}$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the proposition hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
 \begin{itemize}
-\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_1,b_2\}$, and without loss of generality assume that $p = 1$. Given that $|b_1| = |b_2|$ and $\mine(p,b,q)$ is a non-receding action, we have that either $b = b_1$ or $b = b_2$. If $b = b_1$, then it holds $b_1 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_1 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_1 \cdot 1\}$.  If $b = b_2$, then it holds $b_2 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_2 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_2 \cdot 1\}$.
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0,b_1\}$, and without loss of generality assume that $p = 0$. Given that $|b_0| = |b_1|$ and $\mine(p,b,q)$ is a greedy action, we have that either $b = b_0$ or $b = b_1$. If $b = b_0$, then it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$.  If $b = b_1$, then it holds $b_1 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_1 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_1 \cdot 0\}$.
 
-\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_1\}$. Thus, we have that $|b_2| < |b_1|$. Notice that if $p =1$, then we have that $b=b_1$ since $\mine(p,b,q)$ is a non-receding action. Hence, it holds $b_1 \cdot 1 \in q'$, from which we conclude that the three conditions of the lemma hold since $\longest(q',1) = \{b_1 \cdot 1\}$, $\longest(q',2) = \{b_2\}$ and $\longest(q') = \{b_1 \cdot 1\}$. Therefore, assume that $p = 2$, from which we have that  either $b=b_2$ or $|b_2| \leq |b|$ and $b \preceq b_1$, since $\mine(p,b,q)$ is a non-receding action. In both cases, we conclude that $b \cdot 2 \in q'$, from which we deduce that $\longest(q',1) = \{b_1\}$ and $\longest(q',2) = \{b \cdot 2\}$ (given that $|b_2| \leq |b|$ in both cases). Moreover, if $|b \cdot 2| < |b_1|$, then it holds that $\longest(q') = \{b_1\}$ and the three conditions of the lemma are satisfied. If $|b \cdot 2| = |b_1|$, then we have that $\longest(q') = \{b_1, b \cdot 2\}$, from which we conclude again that the three conditions of the lemma are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',1) \cup \longest(q',2)$.
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0\}$. Thus, we have that $|b_1| < |b_0|$. Notice that if $p =0$, then we have that $b=b_0$ since $\mine(p,b,q)$ is a greedy action. Hence, it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$. Therefore, assume that $p = 1$, from which we have that  either $b=b_1$ or $|b_1| \leq |b|$ and $b \preceq b_0$, since $\mine(p,b,q)$ is a greedy action. In both cases, we conclude that $b \cdot 1 \in q'$, from which we deduce that $\longest(q',0) = \{b_0\}$ and $\longest(q',1) = \{b \cdot 1\}$ (given that $|b_1| \leq |b|$ in both cases). Moreover, if $|b \cdot 1| < |b_0|$, then it holds that $\longest(q') = \{b_0\}$ and the three conditions of the proposition are satisfied. If $|b \cdot 1| = |b_0|$, then we have that $\longest(q') = \{b_0, b \cdot 1\}$, from which we conclude again that the three conditions of the proposition are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',0) \cup \longest(q',1)$.
 
-\item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_2\}$. This case is analogous to the previous case, which concludes the proof of the lemma.
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_1\}$. This case is analogous to the previous case, which concludes the proof of the proposition.
 \end{itemize}
 \end{proof}
+We can use Proposition \ref{prop-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \bP$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
+\begin{itemize}
+\item If $\bchain(q)$ is defined, then $b = \longest(q,p)$ or $\length(q,p) \leq |b|$ and $b \preceq \bchain(q)$. Notice that if $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ and $p$ attempts to mine in the last block in the blockchain as this block is hers. 
+
+\item If $\bchain(q)$ is not defined, then $b = \longest(q,0)$  or $b = \longest(q,1)$. 
+\end{itemize}
 
 \paragraph{Longest blocks and optimal strategies.}
 For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the body of knowledge 
