@@ -80,6 +80,7 @@ From now on, we only consider non-receding actions, and we restrict the set $Q$ 
 
 \item if $p \in \{1,2\}$, $b \in \bB$, $q \in Q$ and $\mine(p,b,q)$ is a non-receding action, then $q \cup \{ b \cdot p\} \in Q$.
 \end{itemize}
+\etienne{I love what you did here, it was basically what i was doing but better ... Btw do we need a proof that we are allowed (From a game theory perspective) to only consider non-receding action: something like a proof that any strat in a B discounted equilibrium have to be composed of non receding actions ?}
 
 \begin{mylem}
 For every $q \in Q$, the following conditions hold:
@@ -102,6 +103,34 @@ We prove the lemma by induction on the structure of $Q$. If $q = \{ \varepsilon 
 \item Assume that $\longest(q,1) = \{b_1\}$,  $\longest(q, 2) = \{b_2\}$ and $\longest(q) = \{b_2\}$. This case is analogous to the previous case, which concludes the proof of the lemma.
 \end{itemize}
 \end{proof}
+
+\paragraph{Longest blocks and optimal strategies.}
+For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the body of knowledge 
+given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
+$\epsilon$ and all its descendants are renamed accordingly. 
+
+Furthermore, let us denote by $\cap(\longest(q))$ the set of common prefixes of elements in $\longest(q)$. Note that 
+if $\bchain(q)$ is defined then $\cap(\longest(q))$ is simply the set of prefixes of $\bchain(q)$. 
+In the following lemma we use $\longest(\cap(\longest(q)),p)$ to refer to the greatest block owned by $p$ that 
+is a prefix of all blocks in $\longest(q)$. 
+
+The following Lemma tells us that an optimal strategy for player $p$ can only differentiate the portion of 
+a body of knowledge that goes after $\longest(\cap(\longest(q)),p)$: 
+
+\begin{mylem}
+Let $s = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
+Then for every pair $q$ and $q'$ of 
+bodies of knowledge in which $\subbody(q,\longest(\cap(\longest(q)),p)) = \subbody(q',\longest(\cap(\longest(q')),p))$ we have that 
+$s_p(q) = s_p(q')$. 
+\end{mylem}
+
+\begin{proof}
+\end{proof}
+
+
+\bigskip
+
+
 
 First, for a state $q$, we will denote by $\last(\bchain(q))$ the final block in the path $\bchain(q)$, when $\bchain(q)$ is defined, and we leave it undefined otherwise. Similarly, if $q$ is any path (i.e. a body of knowledge with no branches), we define $\last(q)$ as the final block in this path. If $p$ is a player, and $q$ is a state such that $\bchain(q)$ is not defined, we will define the function $\cho_p(q)$ as the block that is most convenient for the player $p$ to mine upon. Formally, if $S=\{ q'\mid q' \text{ is a path in } \cT(q) \text{ from the root to a leaf}\}$, we define $\cho_p(q)$ as the lexicographically smallest $q'\in S$ such that $r_p(q')=max_{q''\in S} \{r_p(q'')\}$.
 
