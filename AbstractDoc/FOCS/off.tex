@@ -3,6 +3,10 @@
 
 \section{Off}
 
+Section under construction, mostly to share my preliminary results with you.
+
+\iffalse
+
 \begin{mydef}
 	Let $p_1,p_2$ two players, we say that a state $q$ is \textbf{steady} if and only if : 
 	\begin{align*}
@@ -54,3 +58,102 @@
 \begin{proof}
 	By induction, we know that $\epsilon$ is steady and with property \ref{consprop} we can conclude. 
 \end{proof}
+
+
+\fi
+\begin{mylem}
+	Let $s = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
+	Then there is a $\beta$ discounted stationary equilibrium such that $u_p(s \mid q_0) = u_p(s' \mid q_0)$ for 
+	any player $p$ and for every pair $q$ and $q'$ of 
+	bodies of knowledge in which $\subbody(q,\mid(q,p)) = \subbody(q',\mid(q',p))$ we have that 
+	$s_p(q) = s_p(q')$. 
+\end{mylem}
+
+\begin{proof}
+	Let $\bs = (s_1,s_2)$ a combined greedy strategy. 
+	Let $q$ a state, such that $\pr^{\bs}(q \mid q_0) \neq 0$. 
+	Then either $\subbody(q,\mid(q,p_1)) \subseteq \subbody(q,\mid(q,p_2))$ or $\subbody(q,\mid(q,p_2)) \subseteq \subbody(q,\mid(q,p_1))$ by definition of $\mid(q,p)$.
+	
+	Then we  can define $q_{max} = \underset{p \in \{p_1,p_2\}}{max}\subbody(q,\mid(q,p))$
+	
+	We also define $b^q_{min} = max\{b \mid b \textit{ strict prefix} \mid(q,p_1) \land b \textit{ strict prefix} \mid(q,p_2) \}$
+	
+	Note that $longest(q) = b^q_{min}.longest(q_{max})$
+	
+	\begin{mylem}
+	Let $q'$ a state, such that $\pr^{\bs}(q' \mid q) \neq 0$. 
+	Then  $\forall b \in longest(q'), b^q_{min} \textit{ prefix of } b$
+	\end{mylem}
+	\begin{proof}
+		by induction : 
+		We just have to prove : 
+		\begin{itemize}
+		\item $\forall b \in longest(s_1(q)), b^q_{min} \textit{ prefix of } b $
+		\item $\forall b \in longest(s_2(q)), b^q_{min} \textit{ prefix of } b $
+		\end{itemize}
+	Which is trivial as $s_1$ and $s_2$ are greedy.
+	\end{proof}
+
+Especially the previous lemma means that $\forall q'$ such that $\pr^{\bs}(q' \mid q) \neq 0$ and $bc(q')$ is defined then $b^q_{min}$ is a prefix of $bc(q')$
+
+
+\etienne{Here it is not true yet because of the definition of reward i will fix it later, but i need to move on for now and the logic behind is the same it just simplified notation and cases. (I dont care about d-delayed and stuff)}
+
+\begin{mylem}
+	Let $q'$ a state, such that $\pr^{\bs}(q' \mid q) \neq 0$, let $b$ such that $bc(q') = b^q_{min}.b$ ($b$ exists by previous lemma.) then there exits a function $f_{b^q_{min}}$ such that :
+	Then  $$r_p(q') = r_p(b^q_{min}) + f_{b^q_{min}}(r_p(b))$$
+\end{mylem}
+\begin{proof}
+	I have to consider every reward for instance:  $\alpha$ discounted reward: 
+	$r_p(q') = r_p(b^q_{min}) + \alpha^{|b^q_{min}|}r_p(b)$
+\end{proof}
+
+Moreover
+\begin{eqnarray*}
+	u_p(\bs \mid q) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}} r_p(q') \cdot 
+	\pr^{\bs}(q' \mid q)\bigg)
+\end{eqnarray*}
+
+By the two previous lemma (as either $\pr^{\bs}(q' \mid q) = 0$ or true) 
+
+\begin{eqnarray*}
+	u_p(\bs \mid q) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}} [r_p(b^q_{min}) + f_{b^q_{min}}(r_p(b))] \cdot 
+	\pr^{\bs}(q' \mid q)\bigg) \\ 
+	& = & \sum_{i=0}^{\infty}\beta^{i} \cdot  r_p(b^q_{min})  \\ 
+	&&+ \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}}  f_{b^q_{min}}(r_p(b)) \cdot 
+	\pr^{\bs}(q' \mid q)\bigg) \\ 
+\end{eqnarray*}
+
+Let $\bs' = (s_1',s_2')$ a combined greedy strategy. 
+Then 
+
+\begin{eqnarray*}
+	u_p(\bs \mid q) - u_p(\bs' \mid q)& = & \sum_{i=0}^{\infty}\beta^{i} \cdot  r_p(b^q_{min})  \\ 
+	&&+ \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}}  f_{b^q_{min}}(r_p(b)) \cdot 
+	\pr^{\bs}(q' \mid q)\bigg) \\ 
+	&& -  \sum_{i=0}^{\infty}\beta^{i} \cdot  r_p(b^q_{min})  \\ 
+	&& - \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}}  f_{b^q_{min}}(r_p(b)) \cdot 
+	\pr^{\bs'}(q' \mid q)\bigg) \\ 	
+	& = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}} f_{b^q_{min}}(r_p(b)) \cdot 
+	[\pr^{\bs}(q' \mid q)-\pr^{\bs'}(q' \mid q)]\bigg) \\
+\end{eqnarray*}
+
+And it is done ! (As the difference of utility doesn't rely on the state before $b^q_{min}$ and by definition we have : 
+$q'_{max} = q_{max} \Rightarrow s_p(q) = s_p(q')$. Which is not exactly the lemma but by application of greedy actions rule we obtain it.
+
+\end{proof}
+
+\etienne{What i am currently working on : }
+\begin{myprop}
+	Let $\bs = (s_1,s_2)$ a $\beta$ discounted nash equilibrium then $\bs$ is greedy.
+\end{myprop}
+\begin{proof}
+	\begin{mylem}
+		Let $\bs = (s_1,s_2)$ a $\beta$ discounted nash equilibrium such that $s_1$ is greedy then $s_2$ is greedy.
+	\end{mylem}
+\end{proof}
+
+
+
+
+
