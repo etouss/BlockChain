@@ -64,18 +64,22 @@ The next step is to describe the different strategies that the players can use i
 \end{eqnarray*}
 Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
 \begin{mydef}\label{def-greedy}
-Given $p \in \{0,1\}$, $b \in \bB$ and a state $q$, an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
-\end{mydef}
-From now on, we only consider greedy actions, and we restrict the set $\bQ$ of states to be the smallest set satisfying that:
-\begin{itemize}
-\item $\{\varepsilon\} \in \bQ$, and
+Given $p \in \{0,1\}$, $b \in \bB$ and $q \in \bQ$,  an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
 
-\item if $p \in \{0,1\}$, $b \in \bB$, $q \in \bQ$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in \bQ$.
-\end{itemize}
+Moreover, a strategy $\bs = (s_0, s_1)$ is {\em greedy} if for every $p \in \{0,1\}$ and  $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $s_p(q)$ is a greedy action.
+\end{mydef}
+From now on, we only consider greedy strategies. 
+%actions, and we restrict the set $\bQ$ of states to be the smallest set satisfying that:
+%\begin{itemize}
+%\item $\{\varepsilon\} \in \bQ$, and
+%
+%\item if $p \in \{0,1\}$, $b \in \bB$, $q \in \bQ$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in \bQ$.
+%\end{itemize}
+
 \etienne{I love what you did here, it was basically what i was doing but better ... Btw do we need a proof that we are allowed (From a game theory perspective) to only consider non-receding action: something like a proof that any strat in a B discounted equilibrium have to be composed of non receding actions ?} \marcelo{Strictly speaking we don't need to have a proof that the set of greedy (non-receding) actions is the right set of actions, we can provide some arguments for this. But obviously it would be great if we could provide some theoretical justification. In particular, it would be great if we could prove what you are suggesting.}
 
 \begin{myprop}\label{prop-length-greedy}
-For every $q \in \bQ$, the following conditions hold:
+Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
 \begin{enumerate}
 \item For every $p \in \{0,1\}$: $|\longest(q,p)| = 1$ 
 
@@ -86,7 +90,13 @@ For every $q \in \bQ$, the following conditions hold:
 \end{myprop}
 
 \begin{proof}
-We prove the proposition by induction on the structure of $\bQ$. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the proposition hold since $|\longest(q)| = |\longest(q,0)| = |\longest(q,1)| = 1$. Assume that the property holds for $q \in \bQ$, and assume that $p \in \{0,1\}$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the proposition hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
+Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
+\begin{itemize}
+\item $\{\varepsilon\} \in S$.
+
+\item If $p \in \{0,1\}$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
+\end{itemize}
+Hence, we have an inductive definition of $S$, and we can prove the proposition by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the proposition hold since $|\longest(q)| = |\longest(q,0)| = |\longest(q,1)| = 1$. Assume that the property holds for $q \in S$, and assume that $p \in \{0,1\}$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the proposition hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
 \begin{itemize}
 \item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0,b_1\}$, and without loss of generality assume that $p = 0$. Given that $|b_0| = |b_1|$ and $\mine(p,b,q)$ is a greedy action, we have that either $b = b_0$ or $b = b_1$. If $b = b_0$, then it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$.  If $b = b_1$, then it holds $b_1 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_1 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_1 \cdot 0\}$.
 
@@ -121,10 +131,11 @@ Then for the mining game, we consider the following strategies:
 \begin{eqnarray*}
 \fg_p(q) & = &
 \begin{cases}
-\mine(p,\varepsilon,q) & \text{if } p \not\in q \text{ and } \longest(q,p) = \varepsilon\\
-\df_p(q) & \text{if } p \not\in q \text{ and } \longest(q,p) \neq \varepsilon\\
+\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
 \mine(p,\bchain(q),q) &  \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q)\\
-\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q \text{ and } p \not\preceq \bchain(q)\\
+\mine(p,b,q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q,\ p \not\preceq \bchain(q)
+\text{ and}\\
+&  \hspace{50pt} {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}\\
 \mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \in q \text{ and}\\
 & \hspace{50pt} p \not\preceq \longest(q,1-p)\\
 \mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \preceq \longest(q,1-p) \text{ and}\\
@@ -133,6 +144,7 @@ Then for the mining game, we consider the following strategies:
 & \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
 \end{cases}
 \end{eqnarray*}
+The set $\{ b' \in q \mid \longest(q,p) \preceq b'\}$ has a maximum element under the partial order $\preceq$ as all the elements in this set are of the form $\longest(q,p) \cdot 0^\ell$ with $\ell \geq 0$.
 
 %\item {\bf Fork on the $\ell$-th block of the blockchain.} Given a player $p \in \bP$, we call this strategy $\fork_{p,\ell}$, and we define it as follows for a state $q \in \bQ$:
 %\begin{eqnarray*}
