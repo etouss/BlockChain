@@ -144,7 +144,7 @@ Then for the mining game, we consider the following strategies:
 & \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
 \end{cases}
 \end{eqnarray*}
-The set $\{ b' \in q \mid \longest(q,p) \preceq b'\}$ has a maximum element under the partial order $\preceq$ as all the elements in this set are of the form $\longest(q,p) \cdot 0^\ell$ with $\ell \geq 0$.
+Notice that in this definition, the set $\{ b' \in q \mid \longest(q,p) \preceq b'\}$ has a maximum element under the partial order $\preceq$ as all the elements in this set are of the form $\longest(q,p) \cdot (1-p)^\ell$ with $\ell \geq 0$.
 
 %\item {\bf Fork on the $\ell$-th block of the blockchain.} Given a player $p \in \bP$, we call this strategy $\fork_{p,\ell}$, and we define it as follows for a state $q \in \bQ$:
 %\begin{eqnarray*}
@@ -226,31 +226,31 @@ First, for a state $q$, we will denote by $\last(\bchain(q))$ the final block in
 %given a body of knowledge, we assume that 
 
 
-For the mining game we will consider the following strategies:
-\begin{itemize}
-\item {\bf The default strategy.}  The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
-
-\begin{eqnarray*}
-\df_p(q) & = &
-\begin{cases}
-\mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
-\mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
-\end{cases}
-\end{eqnarray*}
-
-%Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
-
-\item {\bf Fork on the $k$th block from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
-
-\francisco{I think this needs to be rephrased. And maybe separate the case $k=\infty$ as a different strategy altogether, for two reasons: 1) it represents a Satoshi-gate, the motivation behind it is more than just stealing blocks, and 2) the case $k=\infty$ is way easier to compute (just Catalan numbers) and it is good to introduce the finite $k$ case (trapezoidal Dyck paths). }
-
-\item {\bf Fork on the $k$th block belonging to me counting from the end of the blockchain.} Similar to the previous strategy, but this time the player will mine on the $k$th block belonging to her, counting from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. With $k=1$ the player are forking on her ultimate block in the blockchain, and with $k=\infty$ in the genesis.
-
-\item {\bf Give up time $g$.} This can be a parameter in any of the above strategies. Once forked, if the branch belonging to the non forking player is $g$ block ahead of the forking branch, the game continues on this branch with no more forks.
-\end{itemize}
-
-
-\francisco{Some results follow, only for the $\alpha$ discounted utility, without delay. Should we compute this for other utilities or rewards? Should we put the proof into the appendix?}
+%For the mining game we will consider the following strategies:
+%\begin{itemize}
+%\item {\bf The default strategy.}  The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, the player will mine on the final block of the path that contains the highest number of her blocks. We call this strategy \df, and we define it formally as follows:
+%
+%\begin{eqnarray*}
+%\df_p(q) & = &
+%\begin{cases}
+%\mine(p,\last(\bchain(q)),q) & \text{if } \bchain(q) \text{ exists }\\
+%\mine(p,\cho(q),q) & \text{if } \bchain(q) \text{ does not exist }
+%\end{cases}
+%\end{eqnarray*}
+%
+%%Here $last(\bchain(q))$ returns the last block in $\bchain(q)$, and $best(q)$ returns the last block of the path that is of maximal length in $q$, and on which the player $p$ has the highest number of blocks compared to all maximal paths in $q$. If there is more than one such path, $best(q)$ is the one that is smallest lexicographically. Intuitively, $best(q)$ is the block on which a benevolent player will mine upon when it is not clear what the blockchain is.
+%
+%\item {\bf Fork on the $k$th block from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
+%
+%\francisco{I think this needs to be rephrased. And maybe separate the case $k=\infty$ as a different strategy altogether, for two reasons: 1) it represents a Satoshi-gate, the motivation behind it is more than just stealing blocks, and 2) the case $k=\infty$ is way easier to compute (just Catalan numbers) and it is good to introduce the finite $k$ case (trapezoidal Dyck paths). }
+%
+%\item {\bf Fork on the $k$th block belonging to me counting from the end of the blockchain.} Similar to the previous strategy, but this time the player will mine on the $k$th block belonging to her, counting from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. With $k=1$ the player are forking on her ultimate block in the blockchain, and with $k=\infty$ in the genesis.
+%
+%\item {\bf Give up time $g$.} This can be a parameter in any of the above strategies. Once forked, if the branch belonging to the non forking player is $g$ block ahead of the forking branch, the game continues on this branch with no more forks.
+%\end{itemize}
+%
+%
+%\francisco{Some results follow, only for the $\alpha$ discounted utility, without delay. Should we compute this for other utilities or rewards? Should we put the proof into the appendix?}
 \subsection{Utility of default strategy}
 In this section, players $\{1,2\}$ play according to the default strategy, defined in section \ref{sec-fd&2p}. For any state $q$ of the game, $\mathcal{T}(q)$ consists of a single branch and therefore \bchain$(q)$ is always defined. Moreover, given the behavior of players we can write $q$ uniquely as a binary sequence $w\in\{0,1\}^{\mid q\mid }$ encoding the chronological history of the game until $q$ is reached, where $1$ stands for ``player 1 appends a block'' and $0$ stands for ``player 2 appends a block''. In other words, there is a bijection $ \bQ \simeq\bchain(\bQ)\simeq \{0,1\}^\ast$. This encoding proves useful as we have
 \begin{eqnarray*}
