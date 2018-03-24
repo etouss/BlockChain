@@ -112,6 +112,7 @@ We can use Proposition \ref{prop-length-greedy} to simplify the definition of gr
 
 \item If $\bchain(q)$ is not defined, then $b = \longest(q,0)$  or $b = \longest(q,1)$. 
 \end{itemize}
+\etienne{Sorry but the second item is wrong it could be any block up to $longest(q,1)$ which might not be the last (both according to definition of greedy and to what we need) Informally a player could stop trying to push is previous fork forward, because he has a too low probability to succeed but start a new fork further away on the longest chain of the other player but not on the last block. (As long at it further away)}
 Given a pair $b, b' $ of blocks, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{0, 1\}$). 
 Then for the mining game, we consider the following strategies:
 \begin{itemize}
