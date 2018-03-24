@@ -70,22 +70,24 @@ We finally have all the necessary ingredients to define the utility of a player 
 \begin{mydef}
 Let $p \in \bP$, $q_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the cumulative $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in a mining game with $n$ steps, denoted by $u_p^n(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
-u_p^n(\bs \mid q_0) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
-\pr^{\bs}(q \mid q_0)\bigg)
+%u_p^n(\bs \mid q_0) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
+%\pr^{\bs}(q \mid q_0)\bigg)
+u_p^n(\bs \mid q_0) & = & \sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ and } |q| - |q_0| \leq n}} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
 \end{eqnarray*}
 Moreover, the cumulative $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in an infinite mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
-u_p(\bs \mid q_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
-\pr^{\bs}(q \mid q_0)\bigg)
+%u_p(\bs \mid q_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
+%\pr^{\bs}(q \mid q_0)\bigg)
+u_p(\bs \mid q_0) & = & \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
 \end{eqnarray*}
 \end{mydef}
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_0,s_1, \ldots, s_{m-1})$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$.
 \begin{mydef}
-Let $q_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then $\bs$ is a $\beta$ discounted stationary equilibrium from the state $q_0$ in a mining game with $n$ steps if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
+Let $q_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in a mining game with $n$ steps if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
 \begin{eqnarray*}
 u_p^n(\bs \mid q_0)  & \geq  & u_p^n((\bs_{-p},s) \mid q_0).
 \end{eqnarray*}
-Moreover, $\bs$ is a $\beta$ discounted stationary equilibrium from the state $q_0$ in  the infinite mining game if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
+Moreover, $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in  the infinite mining game if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
 \begin{eqnarray*}u_p(\bs \mid q_0)  & \geq  & u_p ((\bs_{-p},s) \mid q_0).
 \end{eqnarray*}
 \end{mydef}

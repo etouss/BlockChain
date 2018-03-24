@@ -62,15 +62,9 @@ The next step is to describe the different strategies that the players can use i
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
 \longest(q,p) & = & \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p, \text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
 \end{eqnarray*}
-Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length), and given a pair $b, b' $ of blocks, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{0, 1\}$). 
-
+Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
 \begin{mydef}\label{def-greedy}
-Given $p \in \{0,1\}$, $b \in \bB$ and a state $q$, an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and
-\begin{itemize}
-\item $b \in \longest(q,p)$ or
-
-\item $\length(q,p) \leq |b|$ and there exists $b' \in \longest(q)$ such that $b \preceq b'$.
-\end{itemize}
+Given $p \in \{0,1\}$, $b \in \bB$ and a state $q$, an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
 \end{mydef}
 From now on, we only consider greedy actions, and we restrict the set $\bQ$ of states to be the smallest set satisfying that:
 \begin{itemize}
@@ -96,17 +90,88 @@ We prove the proposition by induction on the structure of $\bQ$. If $q = \{ \var
 \begin{itemize}
 \item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0,b_1\}$, and without loss of generality assume that $p = 0$. Given that $|b_0| = |b_1|$ and $\mine(p,b,q)$ is a greedy action, we have that either $b = b_0$ or $b = b_1$. If $b = b_0$, then it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$.  If $b = b_1$, then it holds $b_1 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_1 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_1 \cdot 0\}$.
 
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0\}$. Thus, we have that $|b_1| < |b_0|$. Notice that if $p =0$, then we have that $b=b_0$ since $\mine(p,b,q)$ is a greedy action. Hence, it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$. Therefore, assume that $p = 1$, from which we have that  either $b=b_1$ or $|b_1| \leq |b|$ and $b \preceq b_0$, since $\mine(p,b,q)$ is a greedy action. In both cases, we conclude that $b \cdot 1 \in q'$, from which we deduce that $\longest(q',0) = \{b_0\}$ and $\longest(q',1) = \{b \cdot 1\}$ (given that $|b_1| \leq |b|$ in both cases). Moreover, if $|b \cdot 1| < |b_0|$, then it holds that $\longest(q') = \{b_0\}$ and the three conditions of the proposition are satisfied. If $|b \cdot 1| = |b_0|$, then we have that $\longest(q') = \{b_0, b \cdot 1\}$, from which we conclude again that the three conditions of the proposition are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',0) \cup \longest(q',1)$.
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0\}$, so that $|b_1| < |b_0|$. Notice that if $p =0$, then we have that $b=b_0$ since $\mine(p,b,q)$ is a greedy action. Hence, it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$. Therefore, assume that $p = 1$, from which we have that  $|b_1| \leq |b|$ and $|b| \leq |b_0|$, since $\mine(p,b,q)$ is a greedy action and $\longest(q) = \{b_0\}$. Thus, given that $b \cdot 1 \in q'$, we conclude that $\longest(q',0) = \{b_0\}$ and $\longest(q',1) = \{b \cdot 1\}$. 
+Moreover, if $|b \cdot 1| < |b_0|$, then it holds that $\longest(q') = \{b_0\}$ and the three conditions of the proposition are satisfied. If $|b \cdot 1| = |b_0|$, then we have that $\longest(q') = \{b_0, b \cdot 1\}$, from which we conclude that the three conditions of the proposition are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',0) \cup \longest(q',1)$. Finally, if $|b \cdot 1| > |b_0|$ (that is, if $b = b_0$), then $\longest(q') = \{b \cdot 1\}$ and again the three conditions of the proposition are satisfied.
 
 \item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_1\}$. This case is analogous to the previous case, which concludes the proof of the proposition.
 \end{itemize}
 \end{proof}
 We can use Proposition \ref{prop-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \bP$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
 \begin{itemize}
-\item If $\bchain(q)$ is defined, then $b = \longest(q,p)$ or $\length(q,p) \leq |b|$ and $b \preceq \bchain(q)$. Notice that if $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ and $p$ attempts to mine in the last block in the blockchain as this block is hers. 
+\item If $\bchain(q)$ is defined, then $|\longest(q,p)| \leq |b|  \leq \bchain(q)$. In particular, if $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and, thus, $p$ attempts to mine in the last block in the blockchain as this block is hers).
 
 \item If $\bchain(q)$ is not defined, then $b = \longest(q,0)$  or $b = \longest(q,1)$. 
 \end{itemize}
+Given a pair $b, b' $ of blocks, define notation $b \preceq b'$ to indicate that $b$ is a prefix of $b'$ (recall that every block is a string over the alphabet $\{0, 1\}$). 
+Then for the mining game, we consider the following strategies:
+\begin{itemize}
+\item {\bf The default strategy.}  The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Given a player $p \in \bP$, we call this strategy $\df_p$, and we define it as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\df_p(q) & = &
+\begin{cases}
+\mine(p,\bchain(q),q) & \text{if } \bchain(q) \text{ is defined}\\
+\mine(p,\longest(q,p),p) & \text{if } \bchain(q) \text{ is not defined and} \\
+& \hspace{40pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
+\mine(p,\longest(q,1-p),p) & \text{if } \bchain(q) \text{ is not defined and}\\
+& \hspace{40pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
+\end{cases}
+\end{eqnarray*}
+
+\item {\bf Fork on the genesis of the blockchain.} Given a player $p \in \bP$, we call this strategy $\fg_p$, and we define it as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_p(q) & = &
+\begin{cases}
+\mine(p,\varepsilon,q) & \text{if } p \not\in q \text{ and } \longest(q,p) = \varepsilon\\
+\df_p(q) & \text{if } p \not\in q \text{ and } \longest(q,p) \neq \varepsilon\\
+\mine(p,\bchain(q),q) &  \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q)\\
+\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q \text{ and } p \not\preceq \bchain(q)\\
+\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \in q \text{ and}\\
+& \hspace{50pt} p \not\preceq \longest(q,1-p)\\
+\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \preceq \longest(q,1-p) \text{ and}\\
+& \hspace{50pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
+\mine(p,\longest(q,1-p),q) &  \text{if } \bchain(q) \text{ is not defined},\  p \preceq \longest(q,1-p) \text{ and}\\
+& \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
+\end{cases}
+\end{eqnarray*}
+
+%\item {\bf Fork on the $\ell$-th block of the blockchain.} Given a player $p \in \bP$, we call this strategy $\fork_{p,\ell}$, and we define it as follows for a state $q \in \bQ$:
+%\begin{eqnarray*}
+%\fork_p(q) & = &
+%\begin{cases}
+%\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
+%\mine(p,\bchain(q),q) &  \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q)\\
+%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q \text{ and } p \not\preceq \bchain(q)\\
+%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \in q \text{ and}\\
+%& \hspace{50pt} p \not\preceq \longest(q,1-p)\\
+%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \preceq \longest(q,1-p) \text{ and}\\
+%& \hspace{50pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
+%\mine(p,\longest(q,1-p),q) &  \text{if } \bchain(q) \text{ is not defined},\  p \preceq \longest(q,1-p) \text{ and}\\
+%& \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
+%\end{cases}
+%\end{eqnarray*}
+
+\item {\bf Fork on the genesis with give up time.} Given a player $p \in \bP$ and a natural number $k \geq 1$, we call this strategy $\fg_{p,k}$, and we define it as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_{p,k}(q) & = &
+\begin{cases}
+\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
+\fg_p(q) &   \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+
+%\item {\bf Forking repeatedly with give up time.} Given a player $p \in \bP$ and a natural number $k \geq 1$, we call this strategy $\fr_{p,k}$, and we define it as follows for a state $q \in \bQ$:
+%\begin{eqnarray*}
+%\fr_{p,k}(q) & = &
+%\begin{cases}
+%\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
+%\fg_p(q) &   \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+\end{itemize}
+
+
+
 
 \paragraph{Longest blocks and optimal strategies.}
 For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the body of knowledge 
