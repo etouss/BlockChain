@@ -3,63 +3,63 @@
 
 \section{Full Disclosure Scenario and Two Players}
 \label{sec-fd&2p}
-In this section, we consider $\bP = \{0,1\}$. For $p \in \{0,1\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
-\begin{eqnarray*}
-\chi_p(b) & = & 
-\begin{cases}
-1 & \owner(b) = p\\
-0 & \text{otherwise}
-\end{cases}
-\end{eqnarray*}
-Recall that a block $b$ is a string over the alphabet $\bP = \{0,1\}$. Thus, we use notation $|b|$ for the length of $b$ as a string, and notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$ and $b[i]$ is either 0 or 1. 
+%In this section, we consider $\bP = \{0,1\}$. For $p \in \{0,1\}$, we define the indicator  function $\chi_p : \bB \to \{0,1\}$ as follows:
+%\begin{eqnarray*}
+%\chi_p(b) & = & 
+%\begin{cases}
+%1 & \owner(b) = p\\
+%0 & \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+%Recall that a block $b$ is a string over the alphabet $\bP = \{0,1\}$. Thus, we use notation $|b|$ for the length of $b$ as a string, and notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$ and $b[i]$ is either 0 or 1. 
 
-%Thus, in a two-players games, a block $b$ is a string over the alphabet $\{1,2\}$. We 
-%Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
-% $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
+%%Thus, in a two-players games, a block $b$ is a string over the alphabet $\{1,2\}$. We 
+%%Given a body of knowledge $q$ and a path $\pi$ in $\cT(q)$ from the root $\varepsilon$, the length of $\pi$ is defined as the number of edges in $\pi$, and it is denoted by $|\pi|$. Moreover, given $i \in \{0, \ldots, |\pi|\}$, we denote the $i$-th block of
+%% $\pi$ by $\pi[i]$ (assuming that the first block of the path is in position 0). 
  
-In this section, we consider the following pay-off functions:
-\begin{itemize}
-\item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
-\begin{eqnarray*}
-r_p(q) & = & 
-\begin{cases}
-0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|} \chi_p(\bchain(q)[i])} & \text{otherwise}
-\end{cases}
-\end{eqnarray*}
-where $c$ is a positive real number.
-% and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
+%In this section, we consider the following pay-off functions:
+%\begin{itemize}
+%\item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
+%\begin{eqnarray*}
+%r_p(q) & = & 
+%\begin{cases}
+%0 & \text{if } \bchain(q) \text{ is not defined}\\
+%{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|} \chi_p(\bchain(q)[i])} & \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+%where $c$ is a positive real number.
+%% and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
 
-\item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
-\begin{eqnarray*}
-r_p(q) & = & 
-\begin{cases}
-0 & \text{if } \bchain(q) \text{ is not defined}\\
-{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
-\end{cases}
-\end{eqnarray*}
-where $c$ is a positive real number and $\alpha \in (0,1]$.
-% and $d \in \mathbb{N}$. 
+%\item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
+%\begin{eqnarray*}
+%r_p(q) & = & 
+%\begin{cases}
+%0 & \text{if } \bchain(q) \text{ is not defined}\\
+%{\displaystyle c \cdot \sum_{i=1}^{|\bchain(q)|} \alpha^i \cdot \chi_p(\bchain(q)[i])} & \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+%where $c$ is a positive real number and $\alpha \in (0,1]$.
+%% and $d \in \mathbb{N}$. 
 
-\item {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+%\item {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+%\begin{eqnarray*}
+%r_p(q) & = & 
+%\begin{cases}
+%0 & \text{if } \bchain(q) \text{ is not defined}\\
+%\\
+%{\displaystyle c \cdot \bigg(
+%\sum_{i=1}^{\lfloor\frac{|\bchain(q)|}{k}\rfloor-1}
+%\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\bchain(q)[j])
+%\ +}\\
+%{\displaystyle  \hspace{50pt} \alpha^{\lfloor\frac{|\bchain(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\bchain(q)|}{k}\rfloor \cdot k + 1}^{|\bchain(q)|}  \chi_p(\bchain(q)[j])\bigg)}
+%& \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+%where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
+%\end{itemize}
+We describe the different strategies that the players can use in the game. For this we need some notation. Let $p \in \bP$ and $q$ be a state. Then define
 \begin{eqnarray*}
-r_p(q) & = & 
-\begin{cases}
-0 & \text{if } \bchain(q) \text{ is not defined}\\
-\\
-{\displaystyle c \cdot \bigg(
-\sum_{i=1}^{\lfloor\frac{|\bchain(q)|}{k}\rfloor-1}
-\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\bchain(q)[j])
-\ +}\\
-{\displaystyle  \hspace{50pt} \alpha^{\lfloor\frac{|\bchain(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\bchain(q)|}{k}\rfloor \cdot k + 1}^{|\bchain(q)|}  \chi_p(\bchain(q)[j])\bigg)}
-& \text{otherwise}
-\end{cases}
-\end{eqnarray*}
-where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
-\end{itemize}
-The next step is to describe the different strategies that the players can use in the game. For this we need some notation. Let $p \in \bP$ and $q$ be a state. Then define
-\begin{eqnarray*}
-\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
+%\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
 \longest(q,p) & = & \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p, \text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
 \end{eqnarray*}
 Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
@@ -190,8 +190,8 @@ For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,
 given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
 $\epsilon$ and all its descendants are renamed accordingly. 
 
-Furthermore, let us denote by $\meet(q,p)$ the greatest block in the set $\{b \in q \mid b$ is a prefix all nodes in $\longest(q)\}$, the greatest common block owned by $p$ that is a prefix of all 
-blocks in $\longest(q)$. 
+%Furthermore, let us denote by $\meet(q,p)$ the greatest block in the set $\{b \in q \mid b$ is a prefix all nodes in $\longest(q)\}$, the greatest common block owned by $p$ that is a prefix of all 
+%blocks in $\longest(q)$. 
 
 The following Lemma tells us that an optimal strategy for player $p$ can only differentiate the portion of 
 a body of knowledge that goes after $\meet(q,p)$: 
