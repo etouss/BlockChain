@@ -190,17 +190,17 @@ For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,
 given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
 $\epsilon$ and all its descendants are renamed accordingly. 
 
-Furthermore, let us denote by $\mid(q,p)$ the greatest block in the set $\{b \in q \mid b$ is a prefix all nodes in $\longest(q)\}$, the greatest common block owned by $p$ that is a prefix of all 
+Furthermore, let us denote by $\meet(q,p)$ the greatest block in the set $\{b \in q \mid b$ is a prefix all nodes in $\longest(q)\}$, the greatest common block owned by $p$ that is a prefix of all 
 blocks in $\longest(q)$. 
 
 The following Lemma tells us that an optimal strategy for player $p$ can only differentiate the portion of 
-a body of knowledge that goes after $\mid(q,p)$: 
+a body of knowledge that goes after $\meet(q,p)$: 
 
 \begin{mylem}
 Let $s = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
 Then there is a $\beta$ discounted stationary equilibrium such that $u_p(s \mid q_0) = u_p(s' \mid q_0)$ for 
 any player $p$ and for every pair $q$ and $q'$ of 
-bodies of knowledge in which $\subbody(q,\mid(q,p)) = \subbody(q',\mid(q',p))$ we have that 
+bodies of knowledge in which $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that 
 $s_p(q) = s_p(q')$. 
 \end{mylem}
 
