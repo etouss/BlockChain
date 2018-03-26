@@ -89,7 +89,7 @@ the probability of reaching state $q \in \bQ$ such that $q_0 \subseteq q$ is rec
  & \text{if } |q| - |q_0| = k \text{ and } k \geq 1
 \end{cases}
 \end{eqnarray*}
-In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$. Hence, consistently with the simplification described in Section \ref{sec-simp}, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$. 
+In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$. Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$. 
 
 We finally have all the necessary ingredients to define the utility of a player in a mining game given a particular strategy. As is common 
 when looking at personal utilities, we define it as the summation of the expected rewards, and choose 
@@ -128,6 +128,8 @@ A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from the state 
 
 Along the paper we will also consider games ending in a finite number of steps. For these games we redefine the notion of $\beta$-discounted utilities by summing up the rewards only up to $n$, and define the notion of a $\beta$-discounted equilibrium accordingly. 
 
+\marcelo{In these definitions we are assuming that $u_p(\bs \mid q_0)$ is defined, which could not be the case if the series diverges. We should say something about this.}
+
 \subsection{Pay-off functions}
 
 The last item we discuss is the different pay-off functions we use. Recall that one of the rules of bitcoin is that the money can only 
@@ -140,7 +142,7 @@ An example showing that I should want to try to compete when some other player f
 \end{myex} 
 
 So how do we put incentives both on putting new blocks in the blockchain and maintaining them there? As it turns, this is not a trivial question. Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting. 
-What we do instead is to use an heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. 
+What we do instead is to use a heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. 
 
 \juan{Compare and put forward links to the comparison with other options when we have something}.
 
@@ -149,50 +151,49 @@ would be to declare that players receive no pay-off when this happens. But again
 In order to avoid this scenario, we choose to maintain the reward for blocks buried deep in the blockchain even when there is a contest, 
 and formalise this as follows. 
 
-Recall that a block $b$ is a string over the alphabet $\bP = \{0,1\}$, and we use notation $|b|$ for the length of $b$ as a string. 
-Then we define: 
+Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$  when considered as strings. Then we define: 
 \begin{eqnarray*}
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
-\meet(q) & = & \{b \in q \mid b \text{ is the greatest block that is a prefix of each } b' \in \longest(q) \}
+\meet(q) & = & {\displaystyle \max_{\preceq} \ \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}}
 \end{eqnarray*}
-Intuitively, $\longest(q)$ contains the leaves all branches in a state that are currently competing for the blockchain, and $\meet(q)$ corresponds to the last block for which all these branches agree on. Our pay-off functions keep rewarding players for the blocks they have that 
-precede $\meet(q)$. We are now ready to define them. 
+Intuitively, $\longest(q)$ contains the leaves of all branches in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ corresponds to the last block for which all these branches agree on. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$.
 
-First, for a player $p$, define the indicator function $\chi_p : \bB \to \{0,1\}$ as follows:
+We need a formal definition of $\meet(q)$ as the pay-off functions considered in this document keep rewarding each player for her blocks in the path from the genesis block to $\meet(q)$. Thus, in the definition of these functions we need to identify who is the owner of each one of these blocks, which is done by considering a function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$ and $i \in \{1, \ldots, |b|\}$, we have that:
+%First, for a player $p$, define the indicator function $\chi_p : \bB \to \{0,1\}$ as follows:
 \begin{eqnarray*}
-\chi_p(b) & = & 
+\chi_p(b,i) & = & 
 \begin{cases}
-1 & \owner(b) = p\\
+1 & \text{the } i\text{-th symbol in } b \text{ is } p\\
 0 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
-
-
-In this paper we consider the following pay-off functions:
+We have all the necessary ingredients to define the pay-off functions considered in this paper:
 \begin{itemize}
 \item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
-{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \chi_p(\bchain(q)[i])} 
+{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \chi_p(\meet(q),i)} 
 \end{eqnarray*}
-where $c$ is a positive real number. Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
+where $c$ is a positive real number. 
+%Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
 % and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
 
 \item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
 \begin{eqnarray*}
 r_p(q) & = & 
-{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\bchain(q)[i])} \end{eqnarray*}
+{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\meet(q),i)} \end{eqnarray*}
 where $c$ is a positive real number and $\alpha \in (0,1]$.
 % and $d \in \mathbb{N}$. 
 
 \item {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
-\begin{eqnarray*}
-r_p(q) & = & 
+\begin{multline*}
+r_p(q) \ = \
 {\displaystyle c \cdot \bigg(
 \sum_{i=1}^{\lfloor\frac{|\meet(q)|}{k}\rfloor-1}
-\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\bchain(q)[j])
-\ +\hspace{10pt} \alpha^{\lfloor\frac{|\meet(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\meet(q)|}{k}\rfloor \cdot k + 1}^{|\meet(q)|}  \chi_p(\bchain(q)[j])\bigg)}
-\end{eqnarray*}
+\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\meet(q),j)
+\ +}\\
+{\displaystyle \alpha^{\lfloor\frac{|\meet(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\meet(q)|}{k}\rfloor \cdot k + 1}^{|\meet(q)|}  \chi_p(\meet(q),j)\bigg)}
+\end{multline*}
 where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
 \end{itemize}
 
