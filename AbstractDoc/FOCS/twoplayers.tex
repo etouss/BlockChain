@@ -120,9 +120,9 @@ Then for the mining game, we consider the following strategies:
 \df_p(q) & = &
 \begin{cases}
 \mine(p,\bchain(q),q) & \text{if } \bchain(q) \text{ is defined}\\
-\mine(p,\longest(q,p),p) & \text{if } \bchain(q) \text{ is not defined and} \\
+\mine(p,\longest(q,p),q) & \text{if } \bchain(q) \text{ is not defined and} \\
 & \hspace{40pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
-\mine(p,\longest(q,1-p),p) & \text{if } \bchain(q) \text{ is not defined and}\\
+\mine(p,\longest(q,1-p),q) & \text{if } \bchain(q) \text{ is not defined and}\\
 & \hspace{40pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
 \end{cases}
 \end{eqnarray*}
