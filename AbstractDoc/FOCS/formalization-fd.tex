@@ -3,16 +3,21 @@
 \section{Introduction}
 \label{sec-intro}
 
+Explain how bitcoin and blockchain works, and why is important to understand mining. Where should we put related work?
+
 \section{A Game-theoretic Characterization of Bitcoin Mining}
 \label{sec-formalization}
-The mining game is played by a set $\bP = \{0, 1, , \ldots, m-1\}$ of players, with $m \geq 2$. In this game, each player has some reward depending on the number of blocks she owns. Blocks are placed one on top of another, starting from an initial block called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far. 
+
+The mining game is played by a set $\bP = \{0, 1, , \ldots, m-1\}$ of players, with $m \geq 2$.
+In this game, each player has some reward depending on the number of blocks she owns. Blocks are placed one on top of another, starting from an initial block called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far. 
 
 The key question for each player is, then, where do I put my next block? In bitcoin, miners are only allowed to spend their reward as long 
 as their blocks belongs to the \emph{blockchain} of a state, which is simply the longest chain of blocks in this state. Thus, players face essentially two possibilities: they can put their blocks right after the end of the longest chain (the blockchain), or they can try to \emph{fork} 
 from the longest chain, betting that they will be able to put enough blocks to turn a smaller chain into the blockchain. As the likelihood of 
 mining the next block is directly related to the comparative hash power of a player, it makes sense to model this game as an infinite 
 stochastic game, in which the probability of executing the action of a player $P$ is given by her comparative hash power. 
-We now turn to the formal definition of this game. 
+
+Let us now turn to the formal definition of the game. 
 
 \medskip
 \noindent
@@ -42,8 +47,31 @@ Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a
 
 \medskip
 \noindent
-\textbf{Payoff, probability function and the game}.
-Given a player $p \in \bP$ and a state $q \in \bQ$, the pay-off of player $p$ in $q$ is denoted by $r_p(q)$. Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_0, r_1, \ldots, r_{m-1})$ as the pay-off function of the game.
+\textbf{Payoff}.
+Given a player $p \in \bP$ and a state $q \in \bQ$, the pay-off of player $p$ in $q$ is denoted by $r_p(q)$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. %Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_0, r_1, \ldots, r_{m-1})$ as the pay-off function of the game.
+But how should the function $r_p(q)$ look like? Recall that one of the rules of bitcoin is that the money can only 
+be spent when it is given in blocks that are part of the blockchain. Thus, the first idea that comes into mind is to reward 
+reward players every time they put a block in the blockchain. However, this is not a good function, as it does not encourage miners to try to maintain their blocks in the blockchain. 
+
+\begin{myex} 
+An example showing that I should want to try to compete when some other player forks on my blocks. 
+\end{myex} 
+
+So how do we put incentives both on putting new blocks in the blockchain and maintaining them there? As it turns, this is not a trivial question. Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting. 
+What we do instead is to use a heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. Furthermore, whenever the blockchain is contested by two or more paths of equal length, we only reward players for the blocks that they own prior to the meet of these paths. 
+
+\juan{Compare and put forward links to the comparison with other options when we have something}.
+
+We also consider a function where the reward for each new block in the blockchain decreases by a constant factor $\alpha$. We will formally define our payoff functions in the following sections. 
+
+%The other issue is what to do when the blockchain is contested, and there are at least two paths sharing the maximal length. A simple solution 
+%would be to declare that players receive no pay-off when this happens. But again, this would lead to strange behaviours in which players with several blocks buried deep in the blockchain would receive no reward for this blocks because of a contest in the newer parts of the blockchain. 
+%In order to avoid this scenario, we choose to maintain the reward for blocks buried deep in the blockchain even when there is a contest, 
+%and formalise this as follows. 
+
+\medskip
+\noindent
+\textbf{Probability function and the game}.
 
 As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every $q \in \bQ$ and $\ba = (a_0, a_1, \ldots, a_{m-1})$ in $\bA$:
 \begin{eqnarray*}\label{eq-prop}
@@ -129,73 +157,6 @@ A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from the state 
 Along the paper we will also consider games ending in a finite number of steps. For these games we redefine the notion of $\beta$-discounted utilities by summing up the rewards only up to $n$, and define the notion of a $\beta$-discounted equilibrium accordingly. 
 
 \marcelo{In these definitions we are assuming that $u_p(\bs \mid q_0)$ is defined, which could not be the case if the series diverges. We should say something about this.}
-
-\subsection{Pay-off functions}
-
-The last item we discuss is the different pay-off functions we use. Recall that one of the rules of bitcoin is that the money can only 
-be spent when it is given in blocks that are part of the blockchain. Thus, the first idea that comes into mind is to reward 
-reward players every time they put a block in the blockchain. This clearly incentivises miners to continue putting blocks in the blockchain, 
-but as a pay-off function is incomplete, as it does not encourage miners to try to maintain their blocks in the blockchain. 
-
-\begin{myex} 
-An example showing that I should want to try to compete when some other player forks on my blocks. 
-\end{myex} 
-
-So how do we put incentives both on putting new blocks in the blockchain and maintaining them there? As it turns, this is not a trivial question. Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting. 
-What we do instead is to use a heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. 
-
-\juan{Compare and put forward links to the comparison with other options when we have something}.
-
-The other issue is what to do when the blockchain is contested, and there are at least two paths sharing the maximal length. A simple solution 
-would be to declare that players receive no pay-off when this happens. But again, this would lead to strange behaviours in which players with several blocks buried deep in the blockchain would receive no reward for this blocks because of a contest in the newer parts of the blockchain. 
-In order to avoid this scenario, we choose to maintain the reward for blocks buried deep in the blockchain even when there is a contest, 
-and formalise this as follows. 
-
-Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$  when considered as strings. Then we define: 
-\begin{eqnarray*}
-\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
-\meet(q) & = & {\displaystyle \max_{\preceq} \ \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}}
-\end{eqnarray*}
-Intuitively, $\longest(q)$ contains the leaves of all branches in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ corresponds to the last block for which all these branches agree on. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$.
-
-We need a formal definition of $\meet(q)$ as the pay-off functions considered in this document keep rewarding each player for her blocks in the path from the genesis block to $\meet(q)$. Thus, in the definition of these functions we need to identify who is the owner of each one of these blocks, which is done by considering a function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$ and $i \in \{1, \ldots, |b|\}$, we have that:
-%First, for a player $p$, define the indicator function $\chi_p : \bB \to \{0,1\}$ as follows:
-\begin{eqnarray*}
-\chi_p(b,i) & = & 
-\begin{cases}
-1 & \text{the } i\text{-th symbol in } b \text{ is } p\\
-0 & \text{otherwise}
-\end{cases}
-\end{eqnarray*}
-We have all the necessary ingredients to define the pay-off functions considered in this paper:
-\begin{itemize}
-\item {\bf Constant reward.} The pay-off of a player $p \in \bP$ is defined as:
-\begin{eqnarray*}
-r_p(q) & = & 
-{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \chi_p(\meet(q),i)} 
-\end{eqnarray*}
-where $c$ is a positive real number. 
-%Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
-% and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
-
-\item {\bf $\alpha$-discounted reward.} The pay-off of a player $p \in \bP$ is defined as:
-\begin{eqnarray*}
-r_p(q) & = & 
-{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\meet(q),i)} \end{eqnarray*}
-where $c$ is a positive real number and $\alpha \in (0,1]$.
-% and $d \in \mathbb{N}$. 
-
-\item {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
-\begin{multline*}
-r_p(q) \ = \
-{\displaystyle c \cdot \bigg(
-\sum_{i=1}^{\lfloor\frac{|\meet(q)|}{k}\rfloor-1}
-\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\meet(q),j)
-\ +}\\
-{\displaystyle \alpha^{\lfloor\frac{|\meet(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\meet(q)|}{k}\rfloor \cdot k + 1}^{|\meet(q)|}  \chi_p(\meet(q),j)\bigg)}
-\end{multline*}
-where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
-\end{itemize}
 
 
 
