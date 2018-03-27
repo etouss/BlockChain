@@ -336,12 +336,25 @@ Notice that in this definition, the set $\{ b' \in q \mid \longest(q,p) \preceq 
 \end{cases}
 \end{eqnarray*}
 
+\item {\bf Forking repeatedly.} Given a player $p \in \bP$, we call this strategy $\fr_{p}$, and we define it as $\mine(p, \longest(q,p), q)$ for every state $q \in \bQ$.
 
-%\item {\bf Forking repeatedly with give up time.} Given a player $p \in \bP$ and a natural number $k \geq 1$, we call this strategy $\fr_{p,k}$, and we define it as follows for a state $q \in \bQ$:
+\item {\bf Forking repeatedly with give up time.} Given a player $p \in \bP$ and a natural number $k \geq 1$, we call this strategy $\fr_{p,k}$, and we define it as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fr_{p,k}(q) & = &
+\begin{cases}
+\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
+\mine(p,\longest(q,p),q) & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+
 %\begin{eqnarray*}
 %\fr_{p,k}(q) & = &
 %\begin{cases}
-%\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
+%\mine(p,b,q) & \text{if } \length(q,1-p) - \length(q,p) > k, \text{ where}\\
+%& \hspace{20pt} {\displaystyle b = \max_{\preceq}\, \{ b' \in q \mid b' \preceq \bchain(q) \text{ and } b' = \varepsilon \text{ or } 
+%
+%\owner(b') = p \text{ and } \length(q,1-p)
 %\fg_p(q) &   \text{otherwise}
 %\end{cases}
 %\end{eqnarray*}
