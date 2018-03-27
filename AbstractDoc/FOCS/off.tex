@@ -102,23 +102,23 @@ Hence
 	\begin{eqnarray*}
 		u_p(\bs \mid q)& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{\bs}(q' \mid q) \\ 
 		& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \cdot \pr^{\bs}(q' \mid q) \\
-		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-|\meet(q,p)|)  }] \cdot \pr^{\bs}(q' \mid q) \\
 	\end{eqnarray*}
 Moreover $$ \sum_{q' \in \bQ \,:\, q \subseteq q \,:\, |q'| =k}  \pr^{\bs}(q' \mid q) = 1$$
 So 
 	\begin{eqnarray*}
 		u_p(\bs \mid q) & = & \sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \\
-		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i-(|\meet(q,p)|+1)} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-|\meet(q,p)|)  }] \cdot \pr^{\bs}(q' \mid q) \\
 	\end{eqnarray*}
 
 Therefore
 \begin{eqnarray*}
 	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & [\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \\
-	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) ]\\ 
+	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-|\meet(q,p)|)  }] \cdot \pr^{\bs}(q' \mid q) ]\\ 
 	&- &[\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \\
-	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs'}(q' \mid q) ]\\ 
-	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) \\ 
-	& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs'}(q' \mid q) \\
+	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-|\meet(q,p)|)  }] \cdot \pr^{\bs'}(q' \mid q) ]\\ 
+	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-|\meet(q,p)|)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+	& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-|\meet(q,p)|)  }] \cdot \pr^{\bs'}(q' \mid q) \\
 \end{eqnarray*}
 Clearly we have $|meet(q')| = |meet(q,p)| + |\subbody(\meet(q'),\meet(q,p))| $ hence 
 \begin{eqnarray*}
