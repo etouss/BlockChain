@@ -63,13 +63,79 @@ Section under construction, mostly to share my preliminary results with you.
 \fi
 \begin{mylem}
 	Let $s = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
-	Then there is a $\beta$ discounted stationary equilibrium such that $u_p(s \mid q_0) = u_p(s' \mid q_0)$ for 
-	any player $p$ and for every pair $q$ and $q'$ of 
-	bodies of knowledge in which $\subbody(q,\mid(q,p)) = \subbody(q',\mid(q',p))$ we have that 
-	$s_p(q) = s_p(q')$. 
+	Then the combined strategy $s'$ such that for any player $p$  and for every $q$ body of knowledge such that $\subbody(q,\meet(q,p)) = q$ then $s'_p(q) = s_p(q)$,
+	and for every pair $q$ and $q'$ of 
+	bodies of knowledge in which $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that 
+	$s'_p(q) = s'_p(q')$ is a $\beta$ discounted stationary equilibrium and $u_p(s \mid q_0) = u_p(s' \mid q_0)$
+\end{mylem}
+\etienne{While formally writing the proof we have some maybe useless but pretty properties over the s' we can build, if s doesnt "directly satisfies" the lemma then s' can be construct using any of the action over all the "equivalent" state, i dont really know how to formally write that down but it is fun. This property also implies that if we are able to show that there exits a dominant strategy for any p over the base cases then there exists also a unique equilibrium over the full game.} 
+
+\begin{proof} 
+\begin{mylem}
+	\label{lem-meet}
+	Let $\bs, \bs'$ greedy stationary strategies. for every pair $q$ and $q'$ of bodies of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ then $meet(q,p) \preceq meet(q')$
+\end{mylem}	
+\begin{proof}
+By induction : 
+We just have to prove : 
+\begin{itemize}
+	\item $\forall b \in longest(s_1(q)), b^q_{min} \textit{ prefix of } b $
+	\item $\forall b \in longest(s_2(q)), b^q_{min} \textit{ prefix of } b $
+\end{itemize}
+Which is trivial as $s_1$ and $s_2$ are greedy.
+\end{proof}
+	
+\begin{mylem}
+	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that $u_p(\bs \mid q) - u_p(\bs' \mid q) > 0 \Rightarrow u_p(\bs \mid \subbody(q,\meet(q,p))) - u_p(\bs' \mid \subbody(q,\meet(q,p))) > 0$
 \end{mylem}
 
 \begin{proof}
+	By lemma \ref{lem-meet} we have $meet(q,p) \preceq meet(q')$ therefore
+	\begin{eqnarray*}
+		r_p(q') & = &{\displaystyle c \cdot \sum_{i=1}^{|\meet(q')|} \alpha^i \cdot \chi_p(\meet(q'),i)} \\
+		& = & {\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) } \\
+		&&	+ {\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }   \\
+	\end{eqnarray*}
+Hence 
+	\begin{eqnarray*}
+		u_p(\bs \mid q)& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{\bs}(q' \mid q) \\ 
+		& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \cdot \pr^{\bs}(q' \mid q) \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) \\
+	\end{eqnarray*}
+Moreover $$ \sum_{q' \in \bQ \,:\, q \subseteq q \,:\, |q'| =k}  \pr^{\bs}(q' \mid q) = 1$$
+So 
+	\begin{eqnarray*}
+		u_p(\bs \mid q) & = & \sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i-(|\meet(q,p)|+1)} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) \\
+	\end{eqnarray*}
+
+Therefore
+\begin{eqnarray*}
+	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & [\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \\
+	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) ]\\ 
+	&- &[\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\meet(q,p)|} \alpha^i \cdot \chi_p(\meet(q,p),i) }] \\
+	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs'}(q' \mid q) ]\\ 
+	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+	& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|\meet(q,p)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i-(|\meet(q,p)|+1))  }] \cdot \pr^{\bs'}(q' \mid q) \\
+\end{eqnarray*}
+Clearly we have $|meet(q')| = |meet(q,p)| + |\subbody(\meet(q'),\meet(q,p))| $ hence 
+\begin{eqnarray*}
+	 \alpha^{|\meet(q,p)|+1} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),\meet(q,p))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+	& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),\meet(q,p))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),\meet(q,p)),i)  }] \cdot \pr^{\bs'}(q' \mid q) \\
+	\alpha^{|\meet(q,p)|+1} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & u_p(\bs \mid \subbody(q,\meet(q,p))) - u_p(\bs' \mid \subbody(q,\meet(q,p))) \\
+\end{eqnarray*}
+\end{proof}
+
+
+
+By absurd assume exists $s''_p$ a strategy for player $p$ and exists $q$ a $q$ body of knowledge such that $u_p ((\bs'_{-p},s''_p) \mid q) > u_p(\bs' \mid q)$.
+
+By lemma 6 we have, $u_p((\bs'_{-p},s''_p) \mid \subbody(q,\meet(q,p))) - u_p(\bs' \mid \subbody(q,\meet(q,p))) > 0$. 
+Moreover as $\subbody(q,\meet(q,p)) = \subbody(\subbody(q,\meet(q,p)),\meet(\subbody(q,\meet(q,p)),p))$ and by definition of $\bs'$ we have $s'_p(\subbody(q,\meet(q,p)) = s'_p(\subbody(q,\meet(q,p))$. Hence $u_p((\bs'_{-p},s''_p) \mid \subbody(q,\meet(q,p))) > u_p(\bs \mid \subbody(q,\meet(q,p)))$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium, which is absurd.
+
+
+	
+\iffalse	
 	Let $\bs = (s_1,s_2)$ a combined greedy strategy. 
 	Let $q$ a state, such that $\pr^{\bs}(q \mid q_0) \neq 0$. 
 	Then either $\subbody(q,\mid(q,p_1)) \subseteq \subbody(q,\mid(q,p_2))$ or $\subbody(q,\mid(q,p_2)) \subseteq \subbody(q,\mid(q,p_1))$ by definition of $\mid(q,p)$.
@@ -140,19 +206,34 @@ Then
 
 And it is done ! (As the difference of utility doesn't rely on the state before $b^q_{min}$ and by definition we have : 
 $q'_{max} = q_{max} \Rightarrow s_p(q) = s_p(q')$. Which is not exactly the lemma but by application of greedy actions rule we obtain it.
-
+\fi
 \end{proof}
 
+\iffalse
 \etienne{What i am currently working on : }
 \begin{myprop}
 	Let $\bs = (s_1,s_2)$ a $\beta$ discounted nash equilibrium then $\bs$ is greedy.
 \end{myprop}
 \begin{proof}
+	Let $q$ a state. Let $L \in q$ a list. We denote by $\#(p1,L)$ the number of block own by $p1$ in $L$. Notice that  $\#(p1,L) + \#(p2,L) = |L|$.
+	
+	By absurd, let $q$ a state such that $s_1(q) = L$ and exists a state $q'$ such that $s_1(q)(q) \subseteq q'$ and $|s_1(q')| < |L|$.
+	Let $q'$ one of the first, hence a element such that for all $q''$ , $q'' \subseteq q'$ implies that $s_1(q'') \geq |L|$ .
+	
+	Hence we have that $\#(p_1, L' \cap q) = \#(p_1, L')$
+	\begin{itemize}
+		\item suppose that $\#(p_1, L') \geq \#(p_1, L)$ 
+		\item suppose that $\#(p_1, L') > \#(p_1, L)$ 
+			Then $\#(p_2, L') \leq \#(p_2, L)$
+		So $p_2$ will not mine on it, and i exclude it too (next step of the proof)
+	\end{itemize}
+
 	\begin{mylem}
-		Let $\bs = (s_1,s_2)$ a $\beta$ discounted nash equilibrium such that $s_1$ is greedy then $s_2$ is greedy.
+		Let $s_1,s_2$ a pair of strategy.
+		Let $q$ a state such that $s_1(q) = L$ and exists $L' \in q$ such that $\#(p_1, L') \geq \#(p_1, L)$ and $|L'| \geq |L|$ then exists $s$ such that $u_1((s,s_2),q_0) > u_1((s_1,s_2),q_0)$
 	\end{mylem}
 \end{proof}
-
+\fi
 
 
 
