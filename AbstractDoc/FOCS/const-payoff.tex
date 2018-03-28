@@ -1,9 +1,6 @@
 %!TEX root = focs.tex
-
-\section{The Equilibrium in a Two Players Game}
-\label{sec-twoplayers}
-
 \section{Games with Constant Payoff}
+\label{sec-constant}
 
 The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. In order to define this function we need 
 some notation. 
@@ -34,6 +31,74 @@ where $c$ is a positive real number.
 %Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
 % and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
  
+ 
+ \subsection{A normal form for states}
+%In this section we will only consider games with two players, that is, $\bP = \{0,1\}$. Our main objective is to show the Lemma we have informally stated above; to do so 
+%we need some terminology. 
+Given a player $p \in \bP$ and a state $q \in \bQ$, define:
+\begin{multline*}
+\longest(q,p) \ = \ \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p,\\
+\text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
+\end{multline*}
+Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
+\begin{mydef}\label{def-greedy}
+Given $p \in \bP$, $b \in \bB$ and $q \in \bQ$,  an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
+
+Moreover, a combined strategy $\bs = (s_0, s_1, \ldots, s_{m-1})$ is {\em greedy} if for every $p \in \bP$ and  $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $s_p(q)$ is a greedy action.
+\end{mydef}
+From now on, we only consider greedy strategies. 
+
+Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block.
+%, or their latest block in the blockchain. 
+The consequence of using 
+greedy strategies is that every state a game under greedy strategies cannot have more than $m$ paths contesting for the blockchain. This is captured b the following 
+technical lemma: 
+\begin{mylem}\label{lem-length-greedy}
+Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
+\begin{enumerate}
+\item For every $p \in \bP$$:$ $|\longest(q,p)| = 1$ 
+
+\item There exists $\emptyset \subsetneq I \subsetneq \bP$ such that$:$
+\begin{eqnarray*}
+\longest(q) & = & \bigcup_{p \in I} \longest(q,p).
+\end{eqnarray*}
+\end{enumerate}
+\end{mylem}
+
+\begin{proof}
+Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
+\begin{itemize}
+\item $\{\varepsilon\} \in S$.
+
+\item If $p \in \bP$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
+\end{itemize}
+Hence, we have an inductive definition of $S$, and we can prove the lemma by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \{ \varepsilon \}$ and $\longest(q,p) = \{ \varepsilon \}$ for every $p \in \bP$. Thus, we have that  the two conditions in the lemma hold since $|\longest(q,p)| = 1$ for every $p \in \bP$, and $\longest(q) = \longest(q,0)$. Assume that the property holds for $q \in S$, and assume that $p \in \bP$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$.
+
+Given that $\mine(p,b,q)$ is a greedy action, we know that $\length(q,p) \leq |b| < |b \cdot p|$. Thus, we have that $\longest(q',p) = \{b \cdot p\}$ and, hence, $|\longest(q',p)| = 1$. Moreover, we have that for every $p' \in \bP$ such that $p' \neq p$, it holds that $\longest(q',p') = \longest(q,p')$ and, hence, $|\longest(q',p')| = 1$. Therefore, the first condition of the lemma is satisfied. To prove that the second condition in the lemma is satisfied, we consider two cases.
+\begin{itemize}
+\item Assume that $b \in \longest(q)$. Then we have that $\longest(q') = \{ b \cdot p \}$ and, hence, the second condition in the lemma is satisfied since $\longest(q') = \longest(q',p)$.
+
+\item Assume that $b \not\in \longest(q)$. By induction hypothesis we know that:
+\begin{eqnarray*}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q,p').
+\end{eqnarray*}
+Given that $b \not\in \longest(q)$, we have that $p \not\in I$. Therefore,  for every $p' \in I$ we have that $\longest(q,p') = \longest(q',p')$. Hence, we deduce that:
+\begin{eqnarray}\label{eq-lem-length-greedy}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray}
+Let $k$ be the length of an arbitrary element in $\longest(q)$ (all the elements of this set have the same length). If $|p \cdot b| < k$, then $\longest(q') = \longest(q)$. Thus, from \eqref{eq-lem-length-greedy} we conclude that the second condition of the lemma is satisfies since:
+\begin{eqnarray*}
+\longest(q') & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray*}
+Assume now that $|p \cdot b| = k$. In this case, we have that $\longest(q') = \longest(q) \cup \{p \cdot b\}$. Thus,  from \eqref{eq-lem-length-greedy} and the fact that $\longest(q',p) = \{b \cdot p\}$, we conclude that:
+\begin{eqnarray*}
+\longest(q') & = & \bigg(\bigcup_{p' \in I} \longest(q',p')\bigg) \cup \longest(q',p)\\
+& = & \bigcup_{p' \in I \cup \{p\}} \longest(q',p').
+\end{eqnarray*}
+Hence, the second condition of the lemma holds if $|p \cdot b| = k$, which conclude the proof of the lemma. 
+\end{itemize}
+\end{proof}
+
 \subsection{When no player forks}
 
 Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
@@ -52,53 +117,6 @@ games for two players, as all the players distinct from $p$ can be combined into
 The key lemma we use to prove this result (and several others) is the fact that, in our game, the optimal strategies for a player $p$ are determined only by the portion 
 of blocks that appear after the last block owned by $p$ in the blockchain. This is what we show in the following section. 
 
-\subsection{A normal form for states under two-player games} 
-
-In this section we will only consider games with two players, that is, $\bP = \{0,1\}$. Our main objective is to show the Lemma we have informally stated above; to do so 
-we need some terminology. Given a player $p \in \{0,1\}$ and a state $q \in \bQ$, define:
-\begin{multline*}
-\longest(q,p) \ = \ \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p,\\
-\text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
-\end{multline*}
-Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
-\begin{mydef}\label{def-greedy}
-Given $p \in \{0,1\}$, $b \in \bB$ and $q \in \bQ$,  an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
-
-Moreover, a strategy $\bs = (s_0, s_1)$ is {\em greedy} if for every $p \in \{0,1\}$ and  $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $s_p(q)$ is a greedy action.
-\end{mydef}
-From now on, we only consider greedy strategies. 
-
-Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block, or their latest block in the blockchain. The consequence of using 
-greedy strategies is that every state in a two-player game under greedy strategies cannot have more than two paths contesting for the blockchain. This is captured b the following 
-technical lemma: 
-\begin{mylem}\label{lem-length-greedy}
-Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
-\begin{enumerate}
-\item For every $p \in \{0,1\}$: $|\longest(q,p)| = 1$ 
-
-\item $1 \leq |\longest(q)| \leq 2$
-
-\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,0) \cup \longest(q,1)$
-\end{enumerate}
-\end{mylem}
-
-\begin{proof}
-Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
-\begin{itemize}
-\item $\{\varepsilon\} \in S$.
-
-\item If $p \in \{0,1\}$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
-\end{itemize}
-Hence, we have an inductive definition of $S$, and we can prove the proposition by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the proposition hold since $|\longest(q)| = |\longest(q,0)| = |\longest(q,1)| = 1$. Assume that the property holds for $q \in S$, and assume that $p \in \{0,1\}$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the proposition hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
-\begin{itemize}
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0,b_1\}$, and without loss of generality assume that $p = 0$. Given that $|b_0| = |b_1|$ and $\mine(p,b,q)$ is a greedy action, we have that either $b = b_0$ or $b = b_1$. If $b = b_0$, then it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$.  If $b = b_1$, then it holds $b_1 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_1 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_1 \cdot 0\}$.
-
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0\}$, so that $|b_1| < |b_0|$. Notice that if $p =0$, then we have that $b=b_0$ since $\mine(p,b,q)$ is a greedy action. Hence, it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$. Therefore, assume that $p = 1$, from which we have that  $|b_1| \leq |b|$ and $|b| \leq |b_0|$, since $\mine(p,b,q)$ is a greedy action and $\longest(q) = \{b_0\}$. Thus, given that $b \cdot 1 \in q'$, we conclude that $\longest(q',0) = \{b_0\}$ and $\longest(q',1) = \{b \cdot 1\}$. 
-Moreover, if $|b \cdot 1| < |b_0|$, then it holds that $\longest(q') = \{b_0\}$ and the three conditions of the proposition are satisfied. If $|b \cdot 1| = |b_0|$, then we have that $\longest(q') = \{b_0, b \cdot 1\}$, from which we conclude that the three conditions of the proposition are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',0) \cup \longest(q',1)$. Finally, if $|b \cdot 1| > |b_0|$ (that is, if $b = b_0$), then $\longest(q') = \{b \cdot 1\}$ and again the three conditions of the proposition are satisfied.
-
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_1\}$. This case is analogous to the previous case, which concludes the proof of the proposition.
-\end{itemize}
-\end{proof}
 
 \paragraph{Longest blocks and optimal strategies.}
 For a state $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the state
