@@ -1,8 +1,8 @@
-\documentclass{article}
+\documentclass[11pt]{article}
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
-\usepackage{fullpage}
 \usepackage[english]{babel}
-\usepackage{color}
+\usepackage{xcolor}
+\usepackage[letterpaper, margin=1in]{geometry}
 
 \allowdisplaybreaks
 
@@ -34,11 +34,15 @@
 % \sloppy
 % \maketitle
 
+\input{introduction}
 \input{formalization-fd}
+\input{const-payoff}
+\input{dec-payoff}
 \input{twoplayers}
+\input{old}
 
 \appendix
 
 \input{appendix}
-
+\input{off}
 \end{document}
