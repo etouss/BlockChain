@@ -39,8 +39,9 @@ the \emph{default} strategy, as is it reflects the desired behaviour of the mine
 by $\df_p$, and consider the combined strategy $\df = (\df_1,\dots,\df_p)$. 
 
 We can easily calculate the utility of player $p$ under $\df$: we can think that player $p$ receives a fraction $h_p$ of the next block in the blockchain, and thus his 
-total utility amounts to $$u_p(\bs \mid q_0) = c\cdot h \cdot \sum_{i=0}^{n}i \cdot \beta^{i}$$ (recall that $q_0$ is the genesis block). 
+total utility amounts to $$u_p(\bs \mid q_0) = c\cdot h \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i}$$ (recall that $q_0$ is the genesis block). 
 
+\juan{we need a lemma here with the analytic form}
 Can any player do better? Not really, or at least not if we assume that the rest of the players will behave according to $\df$. In the remainder of the section we 
 will prove the fact that $\df$ is a $\beta$-discounted stationary equilibrium, under a very mild assumption on the set of strategies available to each player. 
 To prove this fact we need to show that the utility of player $p$ under any strategy $(\df_{-p},s)$ is not higher than the utility under $\df$. Note that we only need to focus on 
