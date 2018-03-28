@@ -3,50 +3,6 @@
 \section{OLD SECTION (still need to move a lot of material): Full Disclosure Scenario and Two Players}
 \label{sec-fd&2p}
 
-
-In this section, we consider a two-players game, that is, $\bP = \{0,1\}$. To describe the different strategies for these players, we need to introduce some terminology.  Given a player $p \in \{0,1\}$ and a state $q \in \bQ$, define:
-\begin{multline*}
-\longest(q,p) \ = \ \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p,\\
-\text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
-\end{multline*}
-Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
-\begin{mydef}\label{def-greedy}
-Given $p \in \{0,1\}$, $b \in \bB$ and $q \in \bQ$,  an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
-
-Moreover, a strategy $\bs = (s_0, s_1)$ is {\em greedy} if for every $p \in \{0,1\}$ and  $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $s_p(q)$ is a greedy action.
-\end{mydef}
-From now on, we only consider greedy strategies. 
-
-%\etienne{I love what you did here, it was basically what i was doing but better ... Btw do we need a proof that we are allowed (From a game theory perspective) to only consider non-receding action: something like a proof that any strat in a B discounted equilibrium have to be composed of non receding actions ?} \marcelo{Strictly speaking we don't need to have a proof that the set of greedy (non-receding) actions is the right set of actions, we can provide some arguments for this. But obviously it would be great if we could provide some theoretical justification. In particular, it would be great if we could prove what you are suggesting.}
-
-\begin{myprop}\label{prop-length-greedy}
-Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
-\begin{enumerate}
-\item For every $p \in \{0,1\}$: $|\longest(q,p)| = 1$ 
-
-\item $1 \leq |\longest(q)| \leq 2$
-
-\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,0) \cup \longest(q,1)$
-\end{enumerate}
-\end{myprop}
-
-\begin{proof}
-Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
-\begin{itemize}
-\item $\{\varepsilon\} \in S$.
-
-\item If $p \in \{0,1\}$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
-\end{itemize}
-Hence, we have an inductive definition of $S$, and we can prove the proposition by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the proposition hold since $|\longest(q)| = |\longest(q,0)| = |\longest(q,1)| = 1$. Assume that the property holds for $q \in S$, and assume that $p \in \{0,1\}$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the proposition hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
-\begin{itemize}
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0,b_1\}$, and without loss of generality assume that $p = 0$. Given that $|b_0| = |b_1|$ and $\mine(p,b,q)$ is a greedy action, we have that either $b = b_0$ or $b = b_1$. If $b = b_0$, then it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$.  If $b = b_1$, then it holds $b_1 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_1 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_1 \cdot 0\}$.
-
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0\}$, so that $|b_1| < |b_0|$. Notice that if $p =0$, then we have that $b=b_0$ since $\mine(p,b,q)$ is a greedy action. Hence, it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$. Therefore, assume that $p = 1$, from which we have that  $|b_1| \leq |b|$ and $|b| \leq |b_0|$, since $\mine(p,b,q)$ is a greedy action and $\longest(q) = \{b_0\}$. Thus, given that $b \cdot 1 \in q'$, we conclude that $\longest(q',0) = \{b_0\}$ and $\longest(q',1) = \{b \cdot 1\}$. 
-Moreover, if $|b \cdot 1| < |b_0|$, then it holds that $\longest(q') = \{b_0\}$ and the three conditions of the proposition are satisfied. If $|b \cdot 1| = |b_0|$, then we have that $\longest(q') = \{b_0, b \cdot 1\}$, from which we conclude that the three conditions of the proposition are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',0) \cup \longest(q',1)$. Finally, if $|b \cdot 1| > |b_0|$ (that is, if $b = b_0$), then $\longest(q') = \{b \cdot 1\}$ and again the three conditions of the proposition are satisfied.
-
-\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_1\}$. This case is analogous to the previous case, which concludes the proof of the proposition.
-\end{itemize}
-\end{proof}
 We can use Proposition \ref{prop-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \{0,1\}$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
 \begin{itemize}
 \item If $\bchain(q)$ is defined, then $|\longest(q,p)| \leq |b|  \leq \bchain(q)$. In particular, if $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and, thus, $p$ attempts to mine in the last block in the blockchain as this block is hers).
