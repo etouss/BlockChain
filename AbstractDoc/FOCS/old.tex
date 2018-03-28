@@ -6,17 +6,6 @@
 
 Then for the mining game, we consider the following strategies:
 \begin{itemize}
-\item {\bf The default strategy.}  The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Given a player $p \in \{0,1\}$, we call this strategy $\df_p$, and we define it as follows for a state $q \in \bQ$:
-\begin{eqnarray*}
-\df_p(q) & = &
-\begin{cases}
-\mine(p,\bchain(q),q) & \text{if } \bchain(q) \text{ is defined}\\
-\mine(p,\longest(q,p),q) & \text{if } \bchain(q) \text{ is not defined and} \\
-& \hspace{40pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
-\mine(p,\longest(q,1-p),q) & \text{if } \bchain(q) \text{ is not defined and}\\
-& \hspace{40pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
-\end{cases}
-\end{eqnarray*}
 
 \item {\bf Fork on the genesis.} Given a player $p \in \bP$, we call this strategy $\fg_p$, and we define it as follows for a state $q \in \bQ$:
 %\begin{eqnarray*}
