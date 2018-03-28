@@ -116,21 +116,16 @@ if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and
 \subsection{When no player forks}
 
 Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
-the \emph{default} strategy, as is it reflects the desired behaviour of the miners participating in the Bitcoin network. 
+the \emph{default} strategy, as is it reflects the desired behaviour of the miners participating in the Bitcoin network. Formally, for a player $p \in \bP$,  we denote this strategy 
+by $\df_p$, and we define it as follows for a state $q \in \bQ$:
 \begin{eqnarray*}
-\df_p(q) & = &
-\begin{cases}
-\mine(p,\bchain(q),q) & \text{if } \bchain(q) \text{ is defined}\\
-\mine(p,\longest(q,p),q) & \text{if } \bchain(q) \text{ is not defined and} \\
-& \hspace{40pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
-\mine(p,\longest(q,1-p),q) & \text{if } \bchain(q) \text{ is not defined and}\\
-& \hspace{40pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
-\end{cases}
+\df_p(q) & = & \mine(p,\longest(q,p^\star),q),
 \end{eqnarray*}
-
-
-For a player $p \in \bP$, let us denote this strategy 
-by $\df_p$, which is defined as follows for a state $q \in \bQ$:
+where 
+\begin{eqnarray*}
+p^\star & = & \min \, \argmax_{\{p' \in \bP \, \mid \, \length(q,p') = |\longest(q)|\}} \, r_{p}(\longest(q,p'))
+\end{eqnarray*}
+Notice that if $\bchain(q)$ is defined, then $\{p' \in \bP \, \mid \, \length(q,p') = |\longest(q)|\}$ is a singleton set. Thus, we have that $p^\star$ is the element in this set and $\longest(q,p^\star) = \bchain(q)$, so that in this case player $p$ tries to mine in the last block of the blockchain. On the other hand, assume that $\{p' \in \bP \, \mid \, \length(q,p') = |\longest(q)|\}$ is not a singleton set. In this case, we look for the player $p'$ in this set for which the value $r_{p}(\longest(q,p'))$ is a maximun, and then player $p$ tries to mine in $\longest(q,p')$.
 
 
   The first strategy we describe will be called $\df$, and it will reflect the desired behaviour of the miners participating in the Bitcoin network. Intuitively, in a state $q$, a player following this strategy will try to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Given a player $p \in \{0,1\}$, we call this strategy $\df_p$, and we define it as follows for a state $q \in \bQ$:
