@@ -1,0 +1,131 @@
+%!TEX root = focs.tex
+
+\section{Games with Constant Payoff}
+\label{sec-constant}
+The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. In order to define this function we need 
+some notation. 
+
+Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$  when considered as strings. Then we define: 
+\begin{eqnarray*}
+\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
+\meet(q) & = & {\displaystyle \max_{\preceq} \ \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}}
+\end{eqnarray*}
+Intuitively, $\longest(q)$ contains the leaves of all branches in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ corresponds to the last block for which all these branches agree on. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$.
+
+We need a formal definition of $\meet(q)$ as the pay-off functions considered in this document keep rewarding each player for her blocks in the path from the genesis block to $\meet(q)$. Thus, in the definition of these functions we need to identify who is the owner of each one of these blocks, which is done by considering a function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$ and $i \in \{1, \ldots, |b|\}$, we have that:
+%First, for a player $p$, define the indicator function $\chi_p : \bB \to \{0,1\}$ as follows:
+\begin{eqnarray*}
+\chi_p(b,i) & = & 
+\begin{cases}
+1 & \text{the } i\text{-th symbol in } b \text{ is } p\\
+0 & \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+We can finally define the payoff function we consider in this section, which we call the \textbf{constant reward}. For a player $p$, we define it as 
+\begin{eqnarray*}
+r_p(q) & = & 
+{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \chi_p(\meet(q),i)} 
+\end{eqnarray*}
+where $c$ is a positive real number. 
+%Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
+% and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
+ 
+\subsection{When no player forks}
+
+Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
+the \emph{default} strategy, as is it reflects the desired behaviour of the miners participating in the Bitcoin network. For a player $p$, let us denote this strategy 
+by $\df_p$, and consider the combined strategy $\df = (\df_1,\dots,\df_p)$. 
+
+We can easily calculate the utility of player $p$ under $\df$: we can think that player $p$ receives a fraction $h_p$ of the next block in the blockchain, and thus his 
+total utility amounts to $$u_p(\bs \mid q_0) = c\cdot h \cdot \sum_{i=0}^{n}i \cdot \beta^{i}$$ (recall that $q_0$ is the genesis block). 
+
+Can any player do better? Not really, or at least not if we assume that the rest of the players will behave according to $\df$. In the remainder of the section we 
+will prove the fact that $\df$ is a $\beta$-discounted stationary equilibrium, under a very mild assumption on the set of strategies available to each player. 
+To prove this fact we need to show that the utility of player $p$ under any strategy $(\df_{-p},s)$ is not higher than the utility under $\df$. Note that we only need to focus on 
+games for two players, as all the players distinct from $p$ can be combined into a single player with their combined hash power. 
+
+The key lemma we use to prove this result (and several others) is the fact that, in our game, the optimal strategies for a player $p$ are determined only by the portion 
+of blocks that appear after the last block owned by $p$ in the blockchain. This is what we show in the following section. 
+
+\subsection{A normal form for states under two-player games} 
+
+In this section we will only consider games with two players, that is, $\bP = \{0,1\}$. Our main objective is to show the Lemma we have informally stated above; to do so 
+we need some terminology. Given a player $p \in \{0,1\}$ and a state $q \in \bQ$, define:
+\begin{multline*}
+\longest(q,p) \ = \ \{ b \in q \mid b = \varepsilon \text{ or } \owner(b) = p,\\
+\text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
+\end{multline*}
+Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
+\begin{mydef}\label{def-greedy}
+Given $p \in \{0,1\}$, $b \in \bB$ and $q \in \bQ$,  an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
+
+Moreover, a strategy $\bs = (s_0, s_1)$ is {\em greedy} if for every $p \in \{0,1\}$ and  $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $s_p(q)$ is a greedy action.
+\end{mydef}
+From now on, we only consider greedy strategies. 
+
+Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block, or their latest block in the blockchain. The consequence of using 
+greedy strategies is that every state in a two-player game under greedy strategies cannot have more than two paths contesting for the blockchain. This is captured b the following 
+technical lemma: 
+\begin{mylem}\label{lem-length-greedy}
+Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
+\begin{enumerate}
+\item For every $p \in \{0,1\}$: $|\longest(q,p)| = 1$ 
+
+\item $1 \leq |\longest(q)| \leq 2$
+
+\item If $|\longest(q)| = 2$, then $\longest(q) = \longest(q,0) \cup \longest(q,1)$
+\end{enumerate}
+\end{mylem}
+
+\begin{proof}
+Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
+\begin{itemize}
+\item $\{\varepsilon\} \in S$.
+
+\item If $p \in \{0,1\}$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
+\end{itemize}
+Hence, we have an inductive definition of $S$, and we can prove the proposition by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \longest(q,1) = \longest(q,2) = \{ \varepsilon \}$ and, thus, we have that  the three conditions in the proposition hold since $|\longest(q)| = |\longest(q,0)| = |\longest(q,1)| = 1$. Assume that the property holds for $q \in S$, and assume that $p \in \{0,1\}$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the proposition hold for $q ' = q \cup \{b \cdot p \}$, for which we consider the following cases.
+\begin{itemize}
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0,b_1\}$, and without loss of generality assume that $p = 0$. Given that $|b_0| = |b_1|$ and $\mine(p,b,q)$ is a greedy action, we have that either $b = b_0$ or $b = b_1$. If $b = b_0$, then it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$.  If $b = b_1$, then it holds $b_1 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_1 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_1 \cdot 0\}$.
+
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_0\}$, so that $|b_1| < |b_0|$. Notice that if $p =0$, then we have that $b=b_0$ since $\mine(p,b,q)$ is a greedy action. Hence, it holds $b_0 \cdot 0 \in q'$, from which we conclude that the three conditions of the proposition hold since $\longest(q',0) = \{b_0 \cdot 0\}$, $\longest(q',1) = \{b_1\}$ and $\longest(q') = \{b_0 \cdot 0\}$. Therefore, assume that $p = 1$, from which we have that  $|b_1| \leq |b|$ and $|b| \leq |b_0|$, since $\mine(p,b,q)$ is a greedy action and $\longest(q) = \{b_0\}$. Thus, given that $b \cdot 1 \in q'$, we conclude that $\longest(q',0) = \{b_0\}$ and $\longest(q',1) = \{b \cdot 1\}$. 
+Moreover, if $|b \cdot 1| < |b_0|$, then it holds that $\longest(q') = \{b_0\}$ and the three conditions of the proposition are satisfied. If $|b \cdot 1| = |b_0|$, then we have that $\longest(q') = \{b_0, b \cdot 1\}$, from which we conclude that the three conditions of the proposition are satisfied since $|\longest(q')| = 2$ and $\longest(q') = \longest(q',0) \cup \longest(q',1)$. Finally, if $|b \cdot 1| > |b_0|$ (that is, if $b = b_0$), then $\longest(q') = \{b \cdot 1\}$ and again the three conditions of the proposition are satisfied.
+
+\item Assume that $\longest(q,0) = \{b_0\}$,  $\longest(q, 1) = \{b_1\}$ and $\longest(q) = \{b_1\}$. This case is analogous to the previous case, which concludes the proof of the proposition.
+\end{itemize}
+\end{proof}
+
+\paragraph{Longest blocks and optimal strategies.}
+For a state $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the state
+given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
+$\epsilon$ and all its descendants are renamed accordingly. 
+
+%Furthermore, let us denote by $\meet(q,p)$ the greatest block in the set $\{b \in q \mid b$ is a prefix all nodes in $\longest(q)\}$, the greatest common block owned by $p$ that is a prefix of all 
+%blocks in $\longest(q)$. 
+
+The following Lemma tells us that an optimal strategy for player $p$ can only differentiate the portion of 
+a state that goes after $\meet(q,p)$: 
+
+\begin{mylem}
+Let $s = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
+Then there is a $\beta$ discounted stationary equilibrium such that $u_p(s \mid q_0) = u_p(s' \mid q_0)$ for 
+any player $p$ and for every pair $q$ and $q'$ of 
+bodies of knowledge in which $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that 
+$s_p(q) = s_p(q')$. 
+\end{mylem}
+
+\begin{proof}
+\end{proof}
+
+\subsection{Equilibrium}
+
+We can now formally state and prove our first main result
+
+\begin{mythm}
+For any $0 \leq \beta \leq 1$, the strategy $\df$ is a $\beta$-discounted stationary equilibrium under greedy strategies. 
+\end{mythm} 
+
+\begin{proof}
+recall two players, greedy, use lemma above. 
+\end{proof}

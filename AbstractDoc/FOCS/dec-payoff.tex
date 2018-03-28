@@ -1,0 +1,85 @@
+%!TEX root = focs.tex
+
+\section{Decreasing Payoff}
+\label{sec-constant}
+
+While interesting, readers could argue that the payoff function considered before is not completely modelling bitcoin, because in bitcoin 
+the reward given for mining blocks is reduced by half every 200.000 blocks or so. Thus the natural question, do the results above continue to hold under these 
+circumstances? Our answer is a resounding no, and now forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
+
+For simplicity, we model the diminishing rewards in bitcoin as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
+we use the following pay-off function $r_p$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
+\begin{eqnarray*}
+r_p(q) & = & 
+{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\meet(q),i)} \end{eqnarray*}
+where $c$ is a positive real number and $\alpha \in (0,1]$.
+
+\medskip
+
+(say that the approach we use is the same as above: we consider a two player game and group a bunch of well behaved players 
+into a single player. Also state that the subtree lemma holds also for this payoff)
+
+\subsection{When is forking a good strategy}
+
+(probably say this is a very interesting open question in the literature). 
+
+In order to understand when forking could be a good strategy, let us consider again the two player game in which player $p$ has just mined a block in the blockchain. 
+Now, if player $(1-p)$ wins the next block, player $p$ faces two different options. She could continue mining on the blockchain, playing according to $\df$, or she 
+could fork, mining instead upon her previously won block. Which strategy is better? To answer this question, we need to calculate the utility in both cases. For 
+simplicity, and without loss of generality (due to Lemma [?]), we will focus on this question when the game is just starting, in the genesis block, and we will assume that 
+player $p$ resumes the default strategy (mining upon the blockchain) as soon as she wins the fork. 
+
+More precisely, we will calculate the utility of the combined strategy $(\df_{1-p},\fg_p)$, where $\fg_p$ is the \textbf{Fork on the genesis} 
+strategy, defined as follows for a state $q \in \bQ$:
+%\begin{eqnarray*}
+%\fg_p(q) & = &
+%\begin{cases}
+%\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
+%\mine(p,\bchain(q),q) &  \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q)\\
+%\mine(p,b,q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q,\ p \not\preceq \bchain(q)
+%\text{ and}\\
+%&  \hspace{50pt} {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}\\
+%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \in q \text{ and}\\
+%& \hspace{50pt} p \not\preceq \longest(q,1-p)\\
+%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \preceq \longest(q,1-p) \text{ and}\\
+%& \hspace{50pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
+%\mine(p,\longest(q,1-p),q) &  \text{if } \bchain(q) \text{ is not defined},\  p \preceq \longest(q,1-p) \text{ and}\\
+%& \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
+%\end{cases}
+%\end{eqnarray*}
+\begin{eqnarray*}
+\fg_p(q) & = &
+\begin{cases}
+\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
+\df_p(q) & \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q) \text{ or}\\
+& \hspace{70pt} \bchain(q) \text{ is not defined and } p \preceq \longest(q,1-p)\\
+\mine(p,b,q) &  \text{otherwise, where } {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}
+\end{cases}
+\end{eqnarray*}
+Notice that in this definition, the set $\{ b' \in q \mid \longest(q,p) \preceq b'\}$ has a maximum element under the partial order $\preceq$ as all the elements in this set are of the form $\longest(q,p) \cdot (1-p)^\ell$ with $\ell \geq 0$.
+
+(show how to compute the utility, put graphics, compare. 
+
+\subsection{More complicated cases}
+
+Speak of $m$-fork as a refinement of the previous strateegy, put give-up time if we have it as well. Graphics, compare, etc. 
+
+\subsection{Stationary equilibrium}
+
+Need to fill this up! 
+
+
+
+% and $d \in \mathbb{N}$. 
+
+% {\bf $\alpha$-discounted $k$-block reward.} The pay-off of a player $p \in \bP$ is defined as:
+%\begin{multline*}
+%r_p(q) \ = \
+%{\displaystyle c \cdot \bigg(
+%\sum_{i=1}^{\lfloor\frac{|\meet(q)|}{k}\rfloor-1}
+%\alpha^i \cdot \sum_{j=i \cdot k}^{(i+1) \cdot k -1} \chi_p(\meet(q),j)
+%\ +}\\
+%{\displaystyle \alpha^{\lfloor\frac{|\meet(q)|}{k}\rfloor} \cdot \sum_{j= \lfloor\frac{|\meet(q)|}{k}\rfloor \cdot k + 1}^{|\meet(q)|}  \chi_p(\meet(q),j)\bigg)}
+%\end{multline*}
+%where $c$ is a positive real number, $\alpha \in (0,1]$ and $k$ is a natural number greater than 0.
+%\end{itemize}
