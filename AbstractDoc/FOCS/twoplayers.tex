@@ -168,17 +168,15 @@ For the mining game we will consider the following strategies:
 
 \item {\bf Fork on the $k$th block from the end of the blockchain.} If we assume two players, one of them playing the default strategy, and the other will fork only once, this means that the fork will happen in some state where the blockchain is defined. This strategy says that the player that will fork, does this by mining on a block that is $k$ blocks away from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. $k=\infty$ means fork on genesis. 
 
-\francisco{I think this needs to be rephrased. And maybe separate the case $k=\infty$ as a different strategy altogether, for two reasons: 1) it represents a Satoshi-gate, the motivation behind it is more than just stealing blocks, and 2) the case $k=\infty$ is way easier to compute (just Catalan numbers) and it is good to introduce the finite $k$ case (trapezoidal Dyck paths). }
-
 \item {\bf Fork on the $k$th block belonging to me counting from the end of the blockchain.} Similar to the previous strategy, but this time the player will mine on the $k$th block belonging to her, counting from $\last(\bchain(q))$. Following this, the player always mines on the last block of this chain. With $k=1$ the player are forking on her ultimate block in the blockchain, and with $k=\infty$ in the genesis.
 
 \item {\bf Give up time $g$.} This can be a parameter in any of the above strategies. Once forked, if the branch belonging to the non forking player is $g$ block ahead of the forking branch, the game continues on this branch with no more forks.
 \end{itemize}
 
 
-\francisco{Some results follow, only for the $\alpha$ discounted utility, without delay. Should we compute this for other utilities or rewards? Should we put the proof into the appendix?}
-\subsection{Utility of default strategy}
-In this section, players $\{1,2\}$ play according to the default strategy, defined in section \ref{sec-fd&2p}. For any state $q$ of the game, $\mathcal{T}(q)$ consists of a single branch and therefore \bchain$(q)$ is always defined. Moreover, given the behavior of players we can write $q$ uniquely as a binary sequence $w\in\{0,1\}^{\mid q\mid }$ encoding the chronological history of the game until $q$ is reached, where $1$ stands for ``player 1 appends a block'' and $0$ stands for ``player 2 appends a block''. In other words, there is a bijection $ \bQ \simeq\bchain(\bQ)\simeq \{0,1\}^\ast$. This encoding proves useful as we have
+\francisco{This should be moved and rephrased to section 4}
+\subsection{Utility of the default strategy}
+In this section, players $\{0,1\}$ play according to the default strategy, defined in section \ref{sec-defstrategy}. For any state $q$ of the game, $\mathcal{T}(q)$ consists of a single branch and therefore \bchain$(q)$ is always defined. Moreover, given the behavior of players we can write $q$ uniquely as a binary sequence $w\in\{0,1\}^{\mid q\mid }$ encoding the chronological history of the game until $q$ is reached, where $p\in\{0,1\}$ stands for ``player $p$ appends a block''. In other words, there are bijections $ \bQ \simeq\bchain(\bQ)\simeq \{0,1\}^\ast$. This encoding proves useful as we have
 \begin{eqnarray*}
 	r_p(w) &=&	c\cdot \sum_{j=1}^{\mid w\mid}w[j] \alpha^j  \\
 	\pr^{\df}(w \mid \varepsilon) &=&	h^{H(w)}(1-h)^{|w|-H(w)}
@@ -208,8 +206,7 @@ yielding the result, where we used the facts that ownership of different blocks 
 
 \subsection{Utility of the genesis fork}
 \label{sec-genfork}
-Suppose player 2 follows the default strategy, and player 1 attempts to fork once at the genesis block $\varepsilon$, as described in section \ref{sec-fd&2p} (case $k=\infty$).
-\francisco{TBH I dislike the previous notation} As a result of this behavior, for any state of the game $\cT(q)$ consists in a rooted tree in $\varepsilon$ with at most two branches. We can naturally refer to these as the original branch (the one player 2 is mining until the forks succeeds) and the new branch. Note that in this scenario we also have a bijection $\bQ\simeq \{0,1\}^\ast$, since the chronological history of mined blocks allows to uniquely determine any state of the game. Hence, we encode any state $q\in Q$ as a binary string with the instructions 0 (player 2 appends a block) and 1 (player 1 appends a block). For any binary string $x$, let $\Delta(x)$ denote the amount of zeros minus the amount of ones in $x$.
+Suppose player 0 follows the default strategy, and player 1 attempts to fork once at the genesis block $\varepsilon$, as described in section \ref{sec-forkingstrategies}. As a result of this behavior, for any state of the game $\cT(q)$ consists in a rooted tree in $\varepsilon$ with at most two branches. We can naturally refer to these as the original branch (the one player 0 is mining until the forks succeeds) and the new branch. Note that in this scenario we also have a bijection $\bQ\simeq \{0,1\}^\ast$, since the chronological history of mined blocks allows to uniquely determine any state of the game. Hence, we encode any state $q\in Q$ as a binary string with the instructions 0 (player 0 appends a block) and 1 (player 1 appends a block). For any binary string $x$, let $\Delta(x)$ denote the amount of zeros minus the amount of ones in $x$.
 
 \begin{mydef}
  A Dyck draw is a binary string $d$ such that $\Delta(d)=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')\leq 0$. We denote by $\Dyck_{2n}$ the set of Dyck draws of length $2n$ and $\Dyck^\ast$ the set of all Dyck draws.
@@ -225,25 +222,25 @@ With this, we can prove the following.
 \begin{myprop*}
 	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
-		u_1^\infty(\gf) =\frac{h\beta}{(1-\alpha)(1-\beta)}c(\beta^2h(1-h))+\frac{h\alpha\beta(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}c(\alpha\beta^2h(1-h))
+		u_1^\infty(\fg) =K_1c(\beta^2h(1-h))+K_2c(\alpha\beta^2h(1-h))
 	\end{eqnarray*}
-where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
+where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers, and $K_1,K_2$ are constants depending on $\alpha,\beta,h$.
 \end{myprop*}
 
 
 \begin{proof}
 	First note that for $d\in \Dyck^\ast$ and $w\in\bstring$, $r(d1w)=\sum_{i=0}^{|d|/2}\alpha^i + \alpha^{|d|/2}\sum_{j=1}^{|w|}w[j]\alpha^j.$ We compute directly
 	\begin{eqnarray*}
-		u^\infty_1(\gf)&=& \sum_{q\in Q}\beta^{|q|}r_1(q)\pr^{\gf}(q|\varepsilon) \\
-    	               &=& \sum_{q\in \Dyck^\ast 1\bstring } \beta^{|q|}r_1(q)\pr^{\gf}(q|\varepsilon) \\
-    	               &=& \sum_{d\in \Dyck^\ast}\sum_{w\in\bstring}\beta^{|d|+1+|w|}r(d1w)\pr^\gf (d1w|\varepsilon)\\
-       	               &=& \sum_{d\in \Dyck^\ast}\beta ^{|d|+1}\pr^\gf (d1|\varepsilon) \bigg(\sum_{w\in\bstring}\beta^{|w|}r(d1w)\pr^\gf (w|d1)\bigg)\\
-       	               &=& \sum_{d\in \Dyck^\ast}\beta ^{|d|+1}\pr^\gf (d1|\varepsilon) \cdot S(d),
+		u^\infty_1(\fg)&=& \sum_{q\in Q}\beta^{|q|}r_1(q)\pr^{\fg}(q|\varepsilon) \\
+    	               &=& \sum_{q\in \Dyck^\ast 1\bstring } \beta^{|q|}r_1(q)\pr^{\fg}(q|\varepsilon) \\
+    	               &=& \sum_{d\in \Dyck^\ast}\sum_{w\in\bstring}\beta^{|d|+1+|w|}r(d1w)\pr^\fg (d1w|\varepsilon)\\
+       	               &=& \sum_{d\in \Dyck^\ast}\beta ^{|d|+1}\pr^\fg (d1|\varepsilon) \bigg(\sum_{w\in\bstring}\beta^{|w|}r(d1w)\pr^\fg (w|d1)\bigg)\\
+       	               &=& \sum_{d\in \Dyck^\ast}\beta ^{|d|+1}\pr^\fg (d1|\varepsilon) \cdot S(d),
 	\end{eqnarray*}
-where $S(d):=\sum_{w\in \bstring}\beta^{|w|}r(d1w)\pr^{\gf}(w|d1)$. Note that $\pr^\gf(w|d1)$ is independent of $d$. Counting on the length of $w$ yields 
+where $S(d):=\sum_{w\in \bstring}\beta^{|w|}r(d1w)\pr^{\fg}(w|d1)$. Note that $\pr^\fg(w|d1)$ is independent of $d$. Counting on the length of $w$ yields 
 \begin{eqnarray*}
-S(d)      &=& \sum_{l=0}^{\infty}\sum_{w\in \{0,1\}^l}\beta^{|w|}r_A(d1w)\pr^{\gf}(w|d1)\\
-		  &=& \sum_{l=0}^{\infty}\beta^{l}\sum_{w\in \{0,1\}^l}\left(\sum_{j=0}^{|d|/2}\alpha^j + \alpha^{|d|/2}\sum_{i=1}^{l}\alpha^iw_i\right)\pr^{\gf}(w|d1)\\
+S(d)      &=& \sum_{l=0}^{\infty}\sum_{w\in \{0,1\}^l}\beta^{|w|}r_A(d1w)\pr^{\fg}(w|d1)\\
+		  &=& \sum_{l=0}^{\infty}\beta^{l}\sum_{w\in \{0,1\}^l}\left(\sum_{j=0}^{|d|/2}\alpha^j + \alpha^{|d|/2}\sum_{i=1}^{l}\alpha^iw_i\right)\pr^{\fg}(w|d1)\\
           &=& \sum_{l=0}^{\infty}\beta^{l}\left(\sum_{j=0}^{|d|/2}\alpha^j + h\alpha^{|d|/2}\sum_{i=1}^{l}\alpha^i\right),
 \end{eqnarray*}
 Simplifying and rearranging terms we have
@@ -251,53 +248,60 @@ Simplifying and rearranging terms we have
 S(d)      &=& \frac{1}{1-\beta}\left(\sum_{j=0}^{|d|/2}\alpha^j\right) + \frac{h\beta}{(1-\beta)(1-\alpha\beta)}\alpha^{|d|/2+1}\\
 &=& \frac{1}{(1-\alpha)(1-\beta)}+\frac{\alpha(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\alpha^{|d|/2}.
 \end{eqnarray*}
-Parsing $S(d)=K_1(\alpha,\beta)+K_2(h,\alpha,\beta)\alpha^{|d|/2}$ yields
+Parsing $S(d)=K_1'+K_2'\alpha^{|d|/2}$ yields
 \begin{eqnarray*}
-u_A^s &=& \sum_{e\in \Dyck^\ast}\beta^{|d|+1}\pr^{\gf}(d1|\varepsilon)\left(K_1+K_2\alpha^{|d|/2}\right).
+u_A^s &=& \sum_{e\in \Dyck^\ast}\beta^{|d|+1}\pr^{\fg}(d1|\varepsilon)\left(K_1'+K_2'\alpha^{|d|/2}\right).
 \end{eqnarray*}
-It is widely known that the number of Dyck draws of length $2n$ is $C_n$, the $n$-th Catalan number. Also, recall that $\Dyck^\ast = \bigcup_{n=0}^{\infty} \Dyck_{2n}$ and $\pr^{\gf}(d1|\varepsilon)=h^{|d|/2+1}(1-h)^{|d|/2}$, therefore
+It is widely known that the number of Dyck draws of length $2n$ is $C_n$, the $n$-th Catalan number. Also, recall that $\Dyck^\ast = \bigcup_{n=0}^{\infty} \Dyck_{2n}$ and $\pr^{\fg}(d1|\varepsilon)=h^{|d|/2+1}(1-h)^{|d|/2}$, therefore
 \begin{eqnarray*}
-	u^\infty_1(\gf) &=& \sum_{n=0}^{\infty}\sum_{d\in \Dyck_{2n}}\beta^{2n+1}h^{n+1}(1-h)^{n}\left(K_1+K_2\alpha^{n}\right)\\
-	&=& \sum_{n=0}^{\infty}(\#  \Dyck_{2n})\cdot\beta^{2n+1}h^{n+1}(1-h)^{n}\left(K_1+K_2\alpha^{n}\right)\\
-	&=& h\beta K_1\sum_{n=0}^{\infty}C_n\cdot (\beta^{2}h(1-h))^{n} + h\beta K_2\sum_{n=0}^{\infty}C_n\cdot (\alpha\beta^{2}h(1-h))^{n}\\
-    &=& h\beta K_1c(\beta^2 h(1-h)) + h\beta K_2c(\alpha \beta^2 h(1-h)),
+	u^\infty_1(\fg) &=& \sum_{n=0}^{\infty}\sum_{d\in \Dyck_{2n}}\beta^{2n+1}h^{n+1}(1-h)^{n}\left(K_1'+K_2'\alpha^{n}\right)\\
+	&=& \sum_{n=0}^{\infty}(\#  \Dyck_{2n})\cdot\beta^{2n+1}h^{n+1}(1-h)^{n}\left(K_1'+K_2'\alpha^{n}\right)\\
+	&=& h\beta K_1'\sum_{n=0}^{\infty}C_n\cdot (\beta^{2}h(1-h))^{n} + h\beta K_2'\sum_{n=0}^{\infty}C_n\cdot (\alpha\beta^{2}h(1-h))^{n}\\
+    &=& K_1c(\beta^2 h(1-h)) +  K_2c(\alpha \beta^2 h(1-h)),
 \end{eqnarray*}
-as claimed. Remark also that $h(1-h)\leq 1/4$ so $c$ hence the values are well-defined. \end{proof}
+as claimed. Remark also that $h(1-h)\leq 1/4$ hence the expression is well defined for all parameters $0\leq \alpha\leq 1,0\leq \beta\leq 1$. 
+\end{proof}
 
 \begin{myprop*}
 Suppose player 1 plays with the genesis fork strategy and player 2 follows the default strategy. Let $h$ be the hash power of player 1. Then
 \begin{eqnarray*}
-	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n} \bigg( \sum_{\substack{2k+1+l=i\\k\geq 0,l\geq 0}} C_k\cdot \beta^{i} \cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k} \bigg)
+	u_1^n(\fg \mid \varepsilon) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}C_k \cdot h^{k+1}(1-h)^{k}\cdot \beta^{2k+1}\cdot P_k(\alpha,\beta)
 \end{eqnarray*}
-where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $S_{l,k}(\alpha,h)=\frac{1}{1-\alpha}(1+\alpha^{k+1}(h-1)-h\alpha^{l+k+1})$. In particular,
-\begin{eqnarray*}
-	u_1^\infty(\gf \mid \varepsilon) & = & K_1 c(\alpha\beta^2h(1-h))+K_2 c(\beta^2h(1-h))
-\end{eqnarray*}
-for some constants $K_1,K_2$ where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
-
+where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $P_{k}(\alpha,\beta)$ is a polynomial in $\alpha$ and $\beta$.
 \end{myprop*}
-\begin{proof} Every state of positive reward $q\in\bQ'$ is of the form $d1w$ for a Dyck draw $d$ and $w\in \{0,1\}^\ast$. Denote $w[i]$ the $i$-th bit of $w$, with $i=1,\dots,|w|$. Note that
+\begin{proof} As before, note that every state of positive reward $q\in\bQ'$ is of the form $d1w$ for a Dyck draw $d$ and $w\in \{0,1\}^\ast$. Denote $w[i]$ the $i$-th bit of $w$, with $i=1,\dots,|w|$. Note that
 
 \begin{eqnarray*}
-r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=0}^{|d|-1}\alpha^i \bigg)+\alpha^{|d|}+\alpha^{|d|+1}\bigg(\sum_{i=0}^{|w|-1}\alpha^i w[i]\bigg)\bigg),\\
-\pr^{\gf}(d1w|\varepsilon) &=& h^{|d|/2+1+H(w)}(1-h)^{|d|/2+|w|-H(w)}.
+r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=0}^{|d|/2-1}\alpha^i \bigg)+\alpha^{|d|/2}+\alpha^{|d|/2}\bigg(\sum_{i=1}^{|w|}\alpha^i w[i]\bigg)\bigg),\\
+\pr^{\fg}(d1w|\varepsilon) &=& h^{|d|/2+1+H(w)}(1-h)^{|d|/2+|w|-H(w)}.
 \end{eqnarray*} 
 With this we can compute 
 \begin{eqnarray*}
-	u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
-	\pr^{\gf}(q \mid \varepsilon)\bigg)\\
+	u_1^n(\fg \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
+	\pr^{\fg}(q \mid \varepsilon)\bigg)\\
 								& = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i}\sum_{\substack{d\in \Dyck_{2k}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
-	\pr^{\gf}(d1w \mid \varepsilon)\bigg).
+	\pr^{\fg}(d1w \mid \varepsilon)\bigg).
 \end{eqnarray*}
-First note that in the inner sum, the expressions $r(d1w)$ and $\pr^{\gf}(d1w|\varepsilon)$ depend only in $k,l$. Define
-$$S_{k,l}(\alpha,h)=\sum_{w\in\{0,1\}^l}r(d1w)\cdot \pr^{\gf}(w|d1)$$
-and compute $S_{k,l}(\alpha,h)$ using the facts $\pr^{\gf}(\{0,1\}^l|d1)=1$ and $\expected(w[i])=h$ for every $i=1,\dots,l$, obtaining the claimed expression. We have
+First note that in the inner sum, the expressions $r(d1w)$ and $\pr^{\fg}(d1w|\varepsilon)$ depend only in $k,l$. Define
+$$S_{k,l}(\alpha,h)=\sum_{w\in\{0,1\}^l}r(d1w)\cdot \pr^{\fg}(w|d1)$$
+and compute $S_{k,l}(\alpha,h)$ using the facts $\pr^{\fg}(\{0,1\}^l|d1)=1$ and $\expected(w[i])=h$ for every $i=1,\dots,l$, obtaining 
+$$S_{k,l}(\alpha,h)=\frac{1}{1-\alpha}\bigg(1+(h-1)\alpha^{k+1}-h\alpha^{k+1+l}\bigg).$$
+We have
 \begin{eqnarray*}
-u_1^n(\gf \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i} \#(\Dyck_{2k})\cdot S_{l,k}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg).
+u_1^n(\fg \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i} \#(\Dyck_{2k})\cdot S_{k,l}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg)\\
+							& = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{k=0}^{\lfloor\frac{i-1}{2}\rfloor} C_k\cdot S_{k,i-2k-1}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg)\\
+							& = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}C_k \cdot h^{k+1}(1-h)^{k}\cdot \beta^{2k+1}\cdot\bigg(\sum_{i=0}^{n-2k-1}\beta^i\cdot  S_{k,i}(\alpha,h)\bigg)
 \end{eqnarray*}
-It is widely known that $\Dyck_{2k}=C_k$, where $C_k$ is the $k$-th Catalan number, yielding the result. \francisco{TODO: Exact constants, $n=\infty$ case, references to Catalan (Stanley's book)}
+Finally, define
+\begin{eqnarray*}	
+P_k(\alpha,\beta) &=& \sum_{i=0}^{n-2k-1}\beta^i\cdot  S_{k,i}(\alpha,h)\\
+&=&\frac{1}{(1-\alpha)(1-\beta)}\bigg(1+(1-h)\alpha^{k+1}\beta^{n-2k}-(1-h)\alpha^{k+1}-\beta^{n-2k}\bigg)\\
+				 & &+\frac{h}{(1-\alpha)(1-\alpha\beta)}\bigg(\alpha^{k+1}(\alpha\beta)^{n-2k}-\alpha^{k+1}\bigg).
+\end{eqnarray*}
+
 \end{proof}
 
+\francisco{TODO: resolve conflict between $c$ (amount earned per block) and $c(x)$... and $c$ of the following section...}
 
 \subsection{Utility of the $m$-fork strategy}
 
@@ -339,14 +343,14 @@ for some constants $K_1,K_2$.
 	The reward and probability of a state $q=d1w\in \bQ'$ with $d\in\Dyck_{2k,m}$ and $w\in\{0,1\}^l$ are given by
 \begin{eqnarray*}
 	r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=-m}^{k-1}\alpha^i \bigg)+\alpha^{k}+\alpha^{k}\bigg(\sum_{i=1}^{l}\alpha^i w[i]\bigg)\bigg),\\
-	\pr^{\gf}(d1w|\varepsilon) &=& h^{k+m+1+H(w)}(1-h)^{k+l-H(w)}.
+	\pr^{\fg}(d1w|\varepsilon) &=& h^{k+m+1+H(w)}(1-h)^{k+l-H(w)}.
 \end{eqnarray*} 
 We now compute
 \begin{eqnarray*}
 	u_1^n(\mfork \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
-	\pr^{\gf}(q \mid \varepsilon)\bigg)\\
+	\pr^{\fg}(q \mid \varepsilon)\bigg)\\
 								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i}\sum_{\substack{d\in \Dyck_{2k,m}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
-	\pr^{\gf}(d1w \mid \varepsilon)\bigg)\\
+	\pr^{\fg}(d1w \mid \varepsilon)\bigg)\\
 								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \#(\Dyck_{2k,m})\cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
 \end{eqnarray*}
 where
