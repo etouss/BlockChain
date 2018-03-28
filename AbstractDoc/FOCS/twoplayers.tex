@@ -216,6 +216,51 @@ Denote by $\bQ'\subsetneq \bQ$ the states in which player 1 has a positive rewar
 $$\bQ'\simeq \bigcup_{k=0}^\infty \{d1w,d\in \Dyck^{2k},w\in \{0,1\}^\ast\}$$
 
 With this, we can prove the following.
+
+
+
+\begin{myprop*}
+	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. Let $h$ be the hash power of player 1. Then
+	\begin{eqnarray*}
+		u_1^\infty(\gf) =\frac{h\beta}{(1-\alpha)(1-\beta)}c(\beta^2h(1-h))+\frac{h\alpha\beta(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}c(\alpha\beta^2h(1-h))
+	\end{eqnarray*}
+where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
+\end{myprop*}
+
+
+\begin{proof}
+	First note that for $d\in \Dyck^\ast$ and $w\in\bstring$, $r(d1w)=\sum_{i=0}^{|d|/2}\alpha^i + \alpha^{|d|/2}\sum_{j=1}^{|w|}w[j]\alpha^j.$ We compute directly
+	\begin{eqnarray*}
+		u^\infty_1(\gf)&=& \sum_{q\in Q}\beta^{|q|}r_1(q)\pr^{\gf}(q|\varepsilon) \\
+    	               &=& \sum_{q\in \Dyck^\ast 1\bstring } \beta^{|q|}r_1(q)\pr^{\gf}(q|\varepsilon) \\
+    	               &=& \sum_{d\in \Dyck^\ast}\sum_{w\in\bstring}\beta^{|d|+1+|w|}r(d1w)\pr^\gf (d1w|\varepsilon)\\
+       	               &=& \sum_{d\in \Dyck^\ast}\beta ^{|d|+1}\pr^\gf (d1|\varepsilon) \bigg(\sum_{w\in\bstring}\beta^{|w|}r(d1w)\pr^\gf (w|d1)\bigg)\\
+       	               &=& \sum_{d\in \Dyck^\ast}\beta ^{|d|+1}\pr^\gf (d1|\varepsilon) \cdot S(d),
+	\end{eqnarray*}
+where $S(d):=\sum_{w\in \bstring}\beta^{|w|}r(d1w)\pr^{\gf}(w|d1)$. Note that $\pr^\gf(w|d1)$ is independent of $d$. Counting on the length of $w$ yields 
+\begin{eqnarray*}
+S(d)      &=& \sum_{l=0}^{\infty}\sum_{w\in \{0,1\}^l}\beta^{|w|}r_A(d1w)\pr^{\gf}(w|d1)\\
+		  &=& \sum_{l=0}^{\infty}\beta^{l}\sum_{w\in \{0,1\}^l}\left(\sum_{j=0}^{|d|/2}\alpha^j + \alpha^{|d|/2}\sum_{i=1}^{l}\alpha^iw_i\right)\pr^{\gf}(w|d1)\\
+          &=& \sum_{l=0}^{\infty}\beta^{l}\left(\sum_{j=0}^{|d|/2}\alpha^j + h\alpha^{|d|/2}\sum_{i=1}^{l}\alpha^i\right),
+\end{eqnarray*}
+Simplifying and rearranging terms we have
+\begin{eqnarray*}
+S(d)      &=& \frac{1}{1-\beta}\left(\sum_{j=0}^{|d|/2}\alpha^j\right) + \frac{h\beta}{(1-\beta)(1-\alpha\beta)}\alpha^{|d|/2+1}\\
+&=& \frac{1}{(1-\alpha)(1-\beta)}+\frac{\alpha(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\alpha^{|d|/2}.
+\end{eqnarray*}
+Parsing $S(d)=K_1(\alpha,\beta)+K_2(h,\alpha,\beta)\alpha^{|d|/2}$ yields
+\begin{eqnarray*}
+u_A^s &=& \sum_{e\in \Dyck^\ast}\beta^{|d|+1}\pr^{\gf}(d1|\varepsilon)\left(K_1+K_2\alpha^{|d|/2}\right).
+\end{eqnarray*}
+It is widely known that the number of Dyck draws of length $2n$ is $C_n$, the $n$-th Catalan number. Also, recall that $\Dyck^\ast = \bigcup_{n=0}^{\infty} \Dyck_{2n}$ and $\pr^{\gf}(d1|\varepsilon)=h^{|d|/2+1}(1-h)^{|d|/2}$, therefore
+\begin{eqnarray*}
+	u^\infty_1(\gf) &=& \sum_{n=0}^{\infty}\sum_{d\in \Dyck_{2n}}\beta^{2n+1}h^{n+1}(1-h)^{n}\left(K_1+K_2\alpha^{n}\right)\\
+	&=& \sum_{n=0}^{\infty}(\#  \Dyck_{2n})\cdot\beta^{2n+1}h^{n+1}(1-h)^{n}\left(K_1+K_2\alpha^{n}\right)\\
+	&=& h\beta K_1\sum_{n=0}^{\infty}C_n\cdot (\beta^{2}h(1-h))^{n} + h\beta K_2\sum_{n=0}^{\infty}C_n\cdot (\alpha\beta^{2}h(1-h))^{n}\\
+    &=& h\beta K_1c(\beta^2 h(1-h)) + h\beta K_2c(\alpha \beta^2 h(1-h)),
+\end{eqnarray*}
+as claimed. Remark also that $h(1-h)\leq 1/4$ so $c$ hence the values are well-defined. \end{proof}
+
 \begin{myprop*}
 Suppose player 1 plays with the genesis fork strategy and player 2 follows the default strategy. Let $h$ be the hash power of player 1. Then
 \begin{eqnarray*}
