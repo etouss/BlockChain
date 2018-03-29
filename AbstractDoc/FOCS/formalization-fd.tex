@@ -43,7 +43,7 @@ Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a
 \medskip
 \noindent
 \textbf{Payoff}.
-Given a player $p \in \bP$ and a state $q \in \bQ$, the pay-off of player $p$ in $q$ is denoted by $r_p(q)$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. %Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_0, r_1, \ldots, r_{m-1})$ as the pay-off function of the game.
+Given a player $p \in \bP$ and a state $q \in \bQ$, the pay-off of player $p$ in $q$ is denoted by $r_p(q)$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. %Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_0, r_1, \ldots, r_{m-1})$ as the pay-off function of the game. 
 But how should the function $r_p(q)$ look like? Recall that one of the rules of bitcoin is that the money can only 
 be spent when it is given in blocks that are part of the blockchain. Thus, the first idea that comes into mind is to reward 
 reward players every time they put a block in the blockchain. However, this is not a good function, as it does not encourage miners to try to maintain their blocks in the blockchain. 
@@ -53,7 +53,7 @@ An example showing that I should want to try to compete when some other player f
 \end{myex} 
 
 So how do we put incentives both on putting new blocks in the blockchain and maintaining them there? As it turns, this is not a trivial question. Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting. 
-What we do instead is to use a heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. Furthermore, whenever the blockchain is contested by two or more paths of equal length, we only reward players for the blocks that they own prior to the meet of these paths. 
+What we do instead is to use a heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. 
 
 \juan{Compare and put forward links to the comparison with other options when we have something}.
 
