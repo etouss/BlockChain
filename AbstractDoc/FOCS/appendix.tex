@@ -1,7 +1,81 @@
 %!TEX root = focs.tex
 
-\section{Proofs and intermediate results}
+\section{Additional Material and Proofs}
 \label{sec-appendix}
+
+\subsection{Combined strategies in Section \ref{sec-dec}}
+In section \ref{sec-dec}, we calculate the utility of the following combined strategies.
+\begin{itemize}
+\item {\bf Fork on the genesis.} In this case, we consider the combined strategy $\fg = (\fg_0, \df_1$, $\ldots$, $\df_{m-1})$, where $\fg_0$ is defined as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_0(q) & = &
+\begin{cases}
+\mine(0,\varepsilon,q) & \text{if } 0 \not\in q\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and } 0 \preceq \bchain(q)\\
+\mine(0,\longest(q,0),q) &  \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+\item {\bf Fork on the genesis with give up time.} Given a natural number $k \geq 1$, in this case, we consider the combined strategy $\fg_k = (\fg_{0,k}, \df_1$, $\ldots$, $\df_{m-1})$, where $\fg_{0,k}$ is defined as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_{0,k}(q) & = &
+\begin{cases}
+\mine(0,\varepsilon,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| \leq k\\
+\mine(0,b,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| > k\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and } 0 \preceq \bchain(q)\\
+\mine(0,\longest(q,0),q) &  \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\fg_{0,k}(q) & = &
+\begin{cases}
+\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
+\fg_p(q) &   \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+\end{itemize}
+
+
+\subsection{Proof of Lemma \ref{lem-length-greedy}}
+Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
+\begin{itemize}
+\item $\{\varepsilon\} \in S$.
+
+\item If $p \in \bP$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
+\end{itemize}
+Hence, we have an inductive definition of $S$, and we can prove the lemma by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \{ \varepsilon \}$ and $\longest(q,p) = \{ \varepsilon \}$ for every $p \in \bP$. Thus, we have that  the two conditions in the lemma hold since $|\longest(q,p)| = 1$ for every $p \in \bP$, and $\longest(q) = \longest(q,0)$. Assume that the property holds for $q \in S$, and assume that $p \in \bP$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$.
+
+Given that $\mine(p,b,q)$ is a greedy action, we know that $\length(q,p) \leq |b| < |b \cdot p|$. Thus, we have that $\longest(q',p) = \{b \cdot p\}$ and, hence, $|\longest(q',p)| = 1$. Moreover, we have that for every $p' \in \bP$ such that $p' \neq p$, it holds that $\longest(q',p') = \longest(q,p')$ and, hence, $|\longest(q',p')| = 1$. Therefore, the first condition of the lemma is satisfied. To prove that there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds, we consider two cases.
+\begin{itemize}
+\item Assume that $b \in \longest(q)$. Then we have that $\longest(q') = \{ b \cdot p \}$ and, hence, there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds since $\longest(q') = \longest(q',p)$.
+
+\item Assume that $b \not\in \longest(q)$. By induction hypothesis we know that:
+\begin{eqnarray*}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q,p').
+\end{eqnarray*}
+Given that $b \not\in \longest(q)$, we have that $p \not\in I$. Therefore,  for every $p' \in I$ we have that $\longest(q,p') = \longest(q',p')$. Hence, we deduce that:
+\begin{eqnarray}\label{eq-lem-length-greedy}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray}
+Let $k$ be the length of an arbitrary element in $\longest(q)$ (all the elements of this set have the same length). If $|p \cdot b| < k$, then $\longest(q') = \longest(q)$. Thus, from \eqref{eq-lem-length-greedy} we conclude that there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds since:
+\begin{eqnarray*}
+\longest(q') & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray*}
+Assume now that $|p \cdot b| = k$. In this case, we have that $\longest(q') = \longest(q) \cup \{p \cdot b\}$. Thus,  from \eqref{eq-lem-length-greedy} and the fact that $\longest(q',p) = \{b \cdot p\}$, we conclude that:
+\begin{eqnarray*}
+\longest(q') & = & \bigg(\bigcup_{p' \in I} \longest(q',p')\bigg) \cup \longest(q',p)\\
+& = & \bigcup_{p' \in I \cup \{p\}} \longest(q',p').
+\end{eqnarray*}
+Hence, in the case that $|p \cdot b| = k$, there also exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds.
+\end{itemize}
+To conclude the proof of the lemma, we assume that $q' \neq \{\varepsilon\}$ and prove that there exists a unique $I \subseteq \bP$ such that \eqref{eq-max-set} holds. For the sake of contradiction, assume that there exist distinct $I_1, I_2 \subseteq \bP$ such that 
+$\longest(q') = \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$. 
+Without loss of generality, assume that there exists $p_1 \in I_1$ such that $p_1 \not\in I_2$. Given that $q' \neq \{\varepsilon\}$, we have that $\varepsilon \not\in \longest(q')$. 
+Let $b \in \longest(q',p_1)$. Given that $p_1 \in I_1$, we have that $b \neq \varepsilon$, from which we conclude that $\owner(b) = p_1$. Given that 
+$ \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$ and $p_1 \not\in I_2$, we conclude that there exists $p_2 \neq p_1$ such that $p_2 \in I_2$ and $b \in \longest(q',p_2)$, which leads to a contradiction since $b \neq \varepsilon$ and $\owner(b) \neq p_2$. This concludes the proof of the lemma.
+
+
 
 
 %\begin{mylem}\label{lem-dist-1}
