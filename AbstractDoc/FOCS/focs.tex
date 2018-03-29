@@ -3,6 +3,8 @@
 \usepackage[english]{babel}
 \usepackage{xcolor}
 \usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{automata, graphs,positioning,chains,arrows,decorations.pathmorphing}
 
 \allowdisplaybreaks
 
@@ -37,6 +39,7 @@
 \input{introduction}
 \input{formalization-fd}
 \input{const-payoff}
+\input{constant_payoff}
 \input{dec-payoff}
 \input{twoplayers}
 \input{old}
@@ -45,6 +48,7 @@
 \bibliography{bibliography}
 \appendix
 
+\input{appendix-constant_reward}
 \input{appendix}
 \input{off}
 \end{document}
