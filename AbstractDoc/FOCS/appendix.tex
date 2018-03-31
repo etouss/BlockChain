@@ -1,7 +1,135 @@
 %!TEX root = focs.tex
 
-\section{Proofs and intermediate results}
+\section{Additional Material and Proofs}
 \label{sec-appendix}
+
+\subsection{Full definition of default strategies and proofs for Section \ref{sec-const_rew}}  
+
+\subsubsection*{State and actions of the game under greedy actions}
+
+Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block.
+%, or their latest block in the blockchain. 
+The consequence of using 
+greedy strategies is that every state a game under greedy strategies cannot have more than $m$ paths contesting for the blockchain. This is captured b the following 
+technical lemma: 
+\begin{mylem}\label{lem-length-greedy}
+Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
+\begin{enumerate}
+\item For every $p \in \bP$$:$ $|\longest(q,p)| = 1$ 
+
+\item There exists $I \subseteq \bP$ such that$:$
+\begin{eqnarray}\label{eq-max-set}
+\longest(q) & = & \bigcup_{p \in I} \longest(q,p).
+\end{eqnarray}
+Moreover, if $q \neq \{\varepsilon\}$, then there exists a unique $I \subseteq \longest(q,p)$ such that \eqref{eq-max-set} holds.
+\end{enumerate}
+\end{mylem}
+
+\begin{proof}
+Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
+\begin{itemize}
+\item $\{\varepsilon\} \in S$.
+
+\item If $p \in \bP$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
+\end{itemize}
+Hence, we have an inductive definition of $S$, and we can prove the lemma by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \{ \varepsilon \}$ and $\longest(q,p) = \{ \varepsilon \}$ for every $p \in \bP$. Thus, we have that  the two conditions in the lemma hold since $|\longest(q,p)| = 1$ for every $p \in \bP$, and $\longest(q) = \longest(q,0)$. Assume that the property holds for $q \in S$, and assume that $p \in \bP$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$.
+
+Given that $\mine(p,b,q)$ is a greedy action, we know that $\length(q,p) \leq |b| < |b \cdot p|$. Thus, we have that $\longest(q',p) = \{b \cdot p\}$ and, hence, $|\longest(q',p)| = 1$. Moreover, we have that for every $p' \in \bP$ such that $p' \neq p$, it holds that $\longest(q',p') = \longest(q,p')$ and, hence, $|\longest(q',p')| = 1$. Therefore, the first condition of the lemma is satisfied. To prove that there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds, we consider two cases.
+\begin{itemize}
+\item Assume that $b \in \longest(q)$. Then we have that $\longest(q') = \{ b \cdot p \}$ and, hence, there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds since $\longest(q') = \longest(q',p)$.
+
+\item Assume that $b \not\in \longest(q)$. By induction hypothesis we know that:
+\begin{eqnarray*}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q,p').
+\end{eqnarray*}
+Given that $b \not\in \longest(q)$, we have that $p \not\in I$. Therefore,  for every $p' \in I$ we have that $\longest(q,p') = \longest(q',p')$. Hence, we deduce that:
+\begin{eqnarray}\label{eq-lem-length-greedy}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray}
+Let $k$ be the length of an arbitrary element in $\longest(q)$ (all the elements of this set have the same length). If $|p \cdot b| < k$, then $\longest(q') = \longest(q)$. Thus, from \eqref{eq-lem-length-greedy} we conclude that there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds since:
+\begin{eqnarray*}
+\longest(q') & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray*}
+Assume now that $|p \cdot b| = k$. In this case, we have that $\longest(q') = \longest(q) \cup \{p \cdot b\}$. Thus,  from \eqref{eq-lem-length-greedy} and the fact that $\longest(q',p) = \{b \cdot p\}$, we conclude that:
+\begin{eqnarray*}
+\longest(q') & = & \bigg(\bigcup_{p' \in I} \longest(q',p')\bigg) \cup \longest(q',p)\\
+& = & \bigcup_{p' \in I \cup \{p\}} \longest(q',p').
+\end{eqnarray*}
+Hence, in the case that $|p \cdot b| = k$, there also exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds.
+\end{itemize}
+To conclude the proof of the lemma, we assume that $q' \neq \{\varepsilon\}$ and prove that there exists a unique $I \subseteq \bP$ such that \eqref{eq-max-set} holds. For the sake of contradiction, assume that there exist distinct $I_1, I_2 \subseteq \bP$ such that 
+$\longest(q') = \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$. 
+Without loss of generality, assume that there exists $p_1 \in I_1$ such that $p_1 \not\in I_2$. Given that $q' \neq \{\varepsilon\}$, we have that $\varepsilon \not\in \longest(q')$. 
+Let $b \in \longest(q',p_1)$. Given that $p_1 \in I_1$, we have that $b \neq \varepsilon$, from which we conclude that $\owner(b) = p_1$. Given that 
+$ \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$ and $p_1 \not\in I_2$, we conclude that there exists $p_2 \neq p_1$ such that $p_2 \in I_2$ and $b \in \longest(q',p_2)$, which leads to a contradiction since $b \neq \varepsilon$ and $\owner(b) \neq p_2$. This concludes the proof of the lemma.
+
+\end{proof}
+
+
+
+
+We can use Lemma \ref{lem-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \bP$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
+\begin{itemize}
+\item If $\bchain(q)$ is defined, then $|\longest(q,p)| \leq |b|  \leq |\bchain(q)|$. In particular, 
+if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and, thus, $p$ attempts to mine either in the genesis block if the game is starting or in the last block of the blockchain as in this case this block is hers).
+
+
+
+\item If $\bchain(q)$ is not defined, then there exists a unique $I$ such that \eqref{eq-max-set} holds, and we have that $b = \longest(q,p)$ for some $p \in I$.
+\end{itemize}
+
+\subsubsection{Formal definition of the default strategy}
+
+The following is the definition of strategy $\df_p$ for a player $p \in \bP$. If $\bchain(q)$ is defined, then $\df_p(q) = \mine(p,\bchain(q),q)$. Otherwise, by Lemma \ref{lem-length-greedy} we know that there exists a unique $I \subseteq \bP$ such that $\longest(q) = \bigcup_{p \in I} \longest(q,p)$. For each element $p' \in I$, let $v_{p'}$ be the reward for player $p$ in the chain from the genesis block to the block $\longest(q,p')$, that is,
+\begin{eqnarray*}
+v_{p'} & = & r_p(\{b \in q \mid b \preceq \longest(q,p')\}).
+\end{eqnarray*}
+Moreover, let $p^\star$ be the element in $I$ maximising the values $v_{p'}$ (if more than one such values exist, then $p^\star$  is defined as the first of such elements in the usual order for the integers). Then we have that $\df_p(q) = \mine(p,\longest(q,p^\star),q)$.
+Thus, a player following the default strategy tries to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Finally, define the combined strategy $\df$ as $(\df_0,\df_1,\dots,\df_{m-1})$. 
+
+\subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
+
+\subsubsection{Proof of Theorem \ref{thm-conts_equlibria}}
+
+
+
+\subsection{Combined strategies in Section \ref{sec-dec}}
+In section \ref{sec-dec}, we calculate the utility of the following combined strategies.
+\begin{itemize}
+\item {\bf Fork on the genesis.} In this case, we consider the combined strategy $\fg = (\fg_0, \df_1$, $\ldots$, $\df_{m-1})$, where $\fg_0$ is defined as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_0(q) & = &
+\begin{cases}
+\mine(0,\varepsilon,q) & \text{if } 0 \not\in q\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and } 0 \preceq \bchain(q)\\
+\mine(0,\longest(q,0),q) &  \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+\item {\bf Fork on the genesis with give up time.} Given a natural number $k \geq 1$, in this case, we consider the combined strategy $\fg_k = (\fg_{0,k}, \df_1$, $\ldots$, $\df_{m-1})$, where $\fg_{0,k}$ is defined as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_{0,k}(q) & = &
+\begin{cases}
+\mine(0,\varepsilon,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| \leq k\\
+\mine(0,b,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| > k\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and } 0 \preceq \bchain(q)\\
+\mine(0,\longest(q,0),q) &  \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\fg_{0,k}(q) & = &
+\begin{cases}
+\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
+\fg_p(q) &   \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+\end{itemize}
+
+
+\subsection{Aditonal notation}
+
+
 
 
 %\begin{mylem}\label{lem-dist-1}
