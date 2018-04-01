@@ -89,7 +89,101 @@ Thus, a player following the default strategy tries to mine upon the final block
 
 \subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
 
-\subsubsection{Proof of Theorem \ref{thm-conts_equlibria}}
+For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the body of knowledge 
+given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
+$\epsilon$ and all its descendants are renamed accordingly. 
+
+\begin{mylem}
+\label{lem-meet}
+Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a strategy $s'_p$ such that $s'_p(q) = s'_p(q')$ 
+for every pair of states $q$ and $q'$ with $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ and where 
+$u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of strategies. 
+\end{mylem}
+\begin{proof}[sketch]
+For every state $q$ where $p$ has no blocks in the blockchain, find the action $s(q')$ amongst all states $q'$ with 
+$q = \subbody(q',\meet(q',p))$ that maximizes the utility for $u_p((s_{-p},s^*_p) \mid q)$, where $s^*_p$ is the strategy that mimics 
+$s$ except for those states $q'$. Show that $u_p((s_{-p},s^*_p) \mid q) \geq u_p((s_{-p},s_p) \mid q$. Do that for each such $q$, 
+and we end up with a strategy that fulfils the conditions of the Lemma. 
+\end{proof}
+
+\subsubsection{Proof of Theorem \ref{thm-conts_equlibria}} 
+
+Let $p \in \bP$ a player and $s_p$ a greedy strategy for player $p$. We need to show that 
+$u_p(\df \mid \varepsilon) \geq u_p( (\df_{-p},s_p) \mid \varepsilon)$. The first remark is that without loss of generality we can consider 
+$m = 2$, because when comparing these two strategies we can bundle together all the remaining players, behaving according to $\df$ 
+under the combined hashpower given by the sum of all the $h_j$'s for $j \neq p$. We thus focus on the strategies 
+$\df = (\df_0,\df_1)$ and $s = (\df_0,s_p)$ (again, for readability we assume that $p$ is player $1$). 
+
+Now, by Lemma \ref{lem-meet}, we can also assume that $s_p$ satisfies the properties of this Lemma, that is, for every 
+pair of states $q$ and $q'$ such that $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that $s(q) = s(q')$. If not, there is a strategy with even higher utility that satisfies it. 
+
+Assume for the sake of contradiction that $u_p(\df \mid \varepsilon) < u_p( (\df_{-p},s_p) \mid \varepsilon)$. Then there must be at least one 
+state $q$ such that $s_p(q) \neq \df(q)$, the probability $\pr^s(q \mid \epsilon)$ of eventually reaching this state is greater than $0$, and such that $u_p(\df \mid q) < u_p( (\df_{-p},s_p) \mid q)$. 
+
+
+Now, because of Lemma \ref{lem-meet}, we assume without loss of generality that in state $q$, player $p$ has $0$ blocks on the blockchain. Further, from all such states satisfying all these requirements, we take the one with the fewer number of blocks. Because our actions are greedy, we know that state $q$ has the shape of a line of $m$ blocks, all owned by player $0$. 
+
+Let us now do some calculations on both $u_p(\df \mid q)$ and $u_p( (\df_{-p},s_p) \mid q)$. 
+\medskip
+
+First, note that the payoff for player $p$ on $q$ is $0$, and it will continue to be $0$ until player $p$ manages to put at least one block in the blockchain. To that extent, let $s = (\df_{-p},s_p)$, and define the set 
+$Q_p = \{q^* \in \bQ \mid \pr^s(q^* \mid q) > 0, $ and player $p$ has at least a block in the blockchain of $q^* \}$, 
+and let $Q^*_p=\{q^* \in Q_p \mid$ for every other state $q' \in Q_p, \pr^s(q^* \mid q')=0 \}$ be the set of minimal states from $Q_p$; 
+the idea is that states in $Q^*_p$ represent the first states, going from $q$, where $p$ has at least one block in the blockchain 
+(it may be more than one block, if $p$ forked and the chain of the forking branch just became the blockchain). 
+As mentioned, the reward for any block reachable from $q$ but not in $Q_p$ is $0$, and therefore we can rewrite the utility as
+
+$$u_p( s \mid q) = \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} u_p(s \mid q^*) * \pr^s(q^* \mid q), $$
+and since the blockchain was just won in $q^*$, %(and by Lemma \ref{lem-meet} and because the strategies are greedy), 
+this is equivalent to 
+$$ \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} r_p(q^*) u_p(s \mid \varepsilon) \pr^s(q^* \mid q), $$
+this is again by Lemma \ref{lem-meet}: for the strategy we just need to consider the subtree rooted in the last block of the blockchain of $p$, and 
+because the strategies are greedy (and our definition of reward), the difference in reward will always be given by $s_p(q^*)$. 
+
+What will now map states from $Q^*_p$ to states reachable from $q$ but by using $\df_p$. We do it by constructing the following assignment $\sigma$.
+Let $Q^\df$ be the states $q'$ such that $\pr^\df(q' \mid q) > 0$. 
+
+Now for each state $q^* \in Q^*_p$, enumerate all distinct paths $\pi = q^*_0,\dots,q_n^*$ such that $q_{i+1}^*$ can be reached from 
+$q_i^*$ in one step, $q = q_0^*$ and $q^* = q_n^*$. For each such path $\pi$, we can associate an $n$-bit string $a_1,\dots,a_n$, 
+where $a_i = 1$ if the action to go from $q_{i-1}^*$ to $q_i^*$ was that player $1$ mined, and $0$ in case the action was that $0$ mined. 
+Next, for each such path $\pi = a_1,\dots,a_n$, let $q_\pi$ be the state given by $q$, followed by a chain of $n$ blocks, where block $i$ is 
+owned by player $a_i$. Then $\sigma(q^*) = \{q_{\pi_1},\dots,q_{\pi_\ell}\}$, where $\pi_1,\dots,\pi_\ell$ is an enumeration of the aforementioned paths. 
+
+It is not hard to verify that $\sigma$ is well defined, and that none of 
+the states in the image of this assignment can be reached from another. 
+
+We then have that 
+$$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \sum_{q' \in \sigma(q^*)} 
+u_p(\df \mid q')  \pr^\df(q' \mid q), $$
+
+and by the same calculation that before, the right hand side of this inequality is 
+$$\sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \sum_{q' \in \sigma(q^*)}  r_p(q') u_p(\df \mid \varepsilon) \pr^\df(q' \mid q).$$
+
+The reward for each block in $\sigma(q^*)$ in our case is the number of blocks in $q^*$, which is the maximum reward that a state could give. This means that $r_p(q') \geq r_p(q^*)$ for any state $q' \in \sigma(q^*)$. 
+Furthermore,  by construction we have that 
+$\sum_{q' \in \sigma(q^*)} \pr^\df(q' \mid q) = \pr^s(q^* \mid q)$, and thus 
+$$\sum_{q' \in \sigma(q^*)} r_p(q') u_p(\df \mid \varepsilon) \pr^\df(q' \mid q) \geq r_p(q^*) u_p(\df \mid \varepsilon) \pr^s(q^* \mid q).$$ 
+Summing up, we obtain: 
+
+$$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} r_p(q^*) u_p(\df \mid \varepsilon)  \pr^s(q^* \mid q).$$
+
+Let us now define $\df'_p$ as the strategy that imitates $\df$ until a state in the image of $\sigma(Q^*_p)$ is reached, after which 
+we continue as with $s_p$. Let $s' = (\df_{-p},\df'_p)$. By the same calculations as before, 
+
+$$u_p(s' \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} r_p(q^*) u_p(s \mid \varepsilon)  \pr^s(q^* \mid q), $$
+and the right hand side of this inequality is precisely $u_p(s \mid q)$. This means that the utility for strategy $\df'_p$ is not lower than the utility of strategy $s_p$, for player $p$, assuming the rest of the players play according to $\df$. 
+
+We can now repeat the same argument we have used but now starting with strategy $\df'_p$, which by our initial assumption must yield 
+a bigger utility than $\df_p$. Note also that $\df_p(q) = \df_p'(q)$. 
+Now, by cutting and pasting $\df'_p$ over and over again using the same argument as before, we end up with the fact that $\df_p$ yields 
+a utility at least as big as $s_p$, which contradicts our initial assumption. 
+
+
+
+%New idea: for the proof of the other equilibrium, explain that utility of cow covers all cases with positive reward of any other utility forking. 
+%for the equlibrium, we first do utility of doing a strategy over and over again by solving a recurrence relation. That is an over approximation for the utility of a player, see if anything can be done with that (previously we had an under aproximation). Regardless, it is good to calculate the utility of the complete strategy, not just forking once. 
+
+
 
 
 
