@@ -3,9 +3,19 @@
 \section{Additional Material and Proofs}
 \label{sec-appendix}
 
-\subsection{Full definition of default strategies and proofs for Section \ref{sec-const_rew}}  
+\subsection{Formal definition of the default strategy}
+\label{sec-def-default}
 
-\subsubsection*{State and actions of the game under greedy actions}
+The following is the definition of strategy $\df_p$ for a player $p \in \bP$. If $\bchain(q)$ is defined, then $\df_p(q) = \mine(p,\bchain(q),q)$. Otherwise, by Lemma \ref{lem-length-greedy} we know that there exists a unique $I \subseteq \bP$ such that $\longest(q) = \bigcup_{p \in I} \longest(q,p)$. For each element $p' \in I$, let $v_{p'}$ be the reward for player $p$ in the chain from the genesis block to the block $\longest(q,p')$, that is,
+\begin{eqnarray*}
+v_{p'} & = & r_p(\{b \in q \mid b \preceq \longest(q,p')\}).
+\end{eqnarray*}
+Moreover, let $p^\star$ be the element in $I$ maximising the values $v_{p'}$ (if more than one such values exist, then $p^\star$  is defined as the first of such elements in the usual order for the integers). Then we have that $\df_p(q) = \mine(p,\longest(q,p^\star),q)$.
+Thus, a player following the default strategy tries to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Finally, define the combined strategy $\df$ as $(\df_0,\df_1,\dots,\df_{m-1})$. 
+
+
+\subsection{A characterization of states under greedy strartegies}
+\label{sec-char-states-greedy}
 
 Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block.
 %, or their latest block in the blockchain. 
@@ -78,14 +88,7 @@ if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and
 \item If $\bchain(q)$ is not defined, then there exists a unique $I$ such that \eqref{eq-max-set} holds, and we have that $b = \longest(q,p)$ for some $p \in I$.
 \end{itemize}
 
-\subsubsection{Formal definition of the default strategy}
 
-The following is the definition of strategy $\df_p$ for a player $p \in \bP$. If $\bchain(q)$ is defined, then $\df_p(q) = \mine(p,\bchain(q),q)$. Otherwise, by Lemma \ref{lem-length-greedy} we know that there exists a unique $I \subseteq \bP$ such that $\longest(q) = \bigcup_{p \in I} \longest(q,p)$. For each element $p' \in I$, let $v_{p'}$ be the reward for player $p$ in the chain from the genesis block to the block $\longest(q,p')$, that is,
-\begin{eqnarray*}
-v_{p'} & = & r_p(\{b \in q \mid b \preceq \longest(q,p')\}).
-\end{eqnarray*}
-Moreover, let $p^\star$ be the element in $I$ maximising the values $v_{p'}$ (if more than one such values exist, then $p^\star$  is defined as the first of such elements in the usual order for the integers). Then we have that $\df_p(q) = \mine(p,\longest(q,p^\star),q)$.
-Thus, a player following the default strategy tries to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Finally, define the combined strategy $\df$ as $(\df_0,\df_1,\dots,\df_{m-1})$. 
 
 \subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
 
@@ -205,21 +208,15 @@ In section \ref{sec-dec}, we calculate the utility of the following combined str
 \fg_{0,k}(q) & = &
 \begin{cases}
 \mine(0,\varepsilon,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| \leq k\\
-\mine(0,b,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| > k\\
-\df_0(q) & \text{if } \bchain(q) \text{ is defined and } 0 \preceq \bchain(q)\\
+\mine(0,b,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined, } |\bchain(q)| > k \text{ and }\\
+& \hspace{51pt} b \preceq \bchain(q) \text{ such that } |b| = |\bchain(q)|-k+1\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and}\\
+& \hspace{9pt} \text{there exists } i \in \{1, \ldots, m\} \text{ such that } \bchain(q)[i] = 0\\
 \mine(0,\longest(q,0),q) &  \text{otherwise}
 \end{cases}
 \end{eqnarray*}
 
-\begin{eqnarray*}
-\fg_{0,k}(q) & = &
-\begin{cases}
-\mine(p,\longest(q,1-p),q) & \text{if } \length(q,1-p) - \length(q,p) > k\\
-\fg_p(q) &   \text{otherwise}
-\end{cases}
-\end{eqnarray*}
 \end{itemize}
-
 
 \subsection{Aditonal notation}
 
