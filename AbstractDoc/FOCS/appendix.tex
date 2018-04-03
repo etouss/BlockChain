@@ -139,9 +139,9 @@ As mentioned, the reward for any block reachable from $q$ but not in $Q_p$ is $0
 $$u_p( s \mid q) = \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} u_p(s \mid q^*) * \pr^s(q^* \mid q), $$
 and since the blockchain was just won in $q^*$, %(and by Lemma \ref{lem-meet} and because the strategies are greedy), 
 this is equivalent to 
-$$ \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} r_p(q^*) u_p(s \mid \varepsilon) \pr^s(q^* \mid q), $$
+$$ \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(s \mid \varepsilon) \big) \pr^s(q^* \mid q), $$
 this is again by Lemma \ref{lem-meet}: for the strategy we just need to consider the subtree rooted in the last block of the blockchain of $p$, and 
-because the strategies are greedy (and our definition of reward), the difference in reward will always be given by $s_p(q^*)$. 
+because the strategies are greedy (and our definition of reward), the difference in reward will always be given by $r_p(q^*)$. 
 
 What will now map states from $Q^*_p$ to states reachable from $q$ but by using $\df_p$. We do it by constructing the following assignment $\sigma$.
 Let $Q^\df$ be the states $q'$ such that $\pr^\df(q' \mid q) > 0$. 
@@ -160,26 +160,28 @@ $$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |
 u_p(\df \mid q')  \pr^\df(q' \mid q), $$
 
 and by the same calculation that before, the right hand side of this inequality is 
-$$\sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \sum_{q' \in \sigma(q^*)}  r_p(q') u_p(\df \mid \varepsilon) \pr^\df(q' \mid q).$$
+$$\sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \sum_{q' \in \sigma(q^*)}  \big(\sum_{j = 0}^\infty \beta^j r_p(q') + u_p(\df \mid \varepsilon)\big) \pr^\df(q' \mid q).$$
 
 The reward for each block in $\sigma(q^*)$ in our case is the number of blocks in $q^*$, which is the maximum reward that a state could give. This means that $r_p(q') \geq r_p(q^*)$ for any state $q' \in \sigma(q^*)$. 
 Furthermore,  by construction we have that 
 $\sum_{q' \in \sigma(q^*)} \pr^\df(q' \mid q) = \pr^s(q^* \mid q)$, and thus 
-$$\sum_{q' \in \sigma(q^*)} r_p(q') u_p(\df \mid \varepsilon) \pr^\df(q' \mid q) \geq r_p(q^*) u_p(\df \mid \varepsilon) \pr^s(q^* \mid q).$$ 
+$$\sum_{q' \in \sigma(q^*)} \big(\sum_{j = 0}^\infty \beta^j r_p(q') + u_p(\df \mid \varepsilon)\big) \pr^\df(q' \mid q) \geq \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(\df \mid \varepsilon)\big) \pr^s(q^* \mid q).$$ 
 Summing up, we obtain: 
 
-$$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} r_p(q^*) u_p(\df \mid \varepsilon)  \pr^s(q^* \mid q).$$
+$$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(\df \mid \varepsilon)\big)  \pr^s(q^* \mid q).$$
 
 Let us now define $\df'_p$ as the strategy that imitates $\df$ until a state in the image of $\sigma(Q^*_p)$ is reached, after which 
 we continue as with $s_p$. Let $s' = (\df_{-p},\df'_p)$. By the same calculations as before, 
 
-$$u_p(s' \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} r_p(q^*) u_p(s \mid \varepsilon)  \pr^s(q^* \mid q), $$
+$$u_p(s' \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(s \mid \varepsilon)\big)  \pr^s(q^* \mid q), $$
 and the right hand side of this inequality is precisely $u_p(s \mid q)$. This means that the utility for strategy $\df'_p$ is not lower than the utility of strategy $s_p$, for player $p$, assuming the rest of the players play according to $\df$. 
 
 We can now repeat the same argument we have used but now starting with strategy $\df'_p$, which by our initial assumption must yield 
 a bigger utility than $\df_p$. Note also that $\df_p(q) = \df_p'(q)$. 
 Now, by cutting and pasting $\df'_p$ over and over again using the same argument as before, we end up with the fact that $\df_p$ yields 
 a utility at least as big as $s_p$, which contradicts our initial assumption. 
+
++++ to show: the utility of this sequence converges to the utility of the default strategy +++
 
 
 
