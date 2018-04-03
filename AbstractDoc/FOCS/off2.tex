@@ -1,0 +1,300 @@
+%!TEX root = focs.tex
+
+
+\section{Off}
+\begin{mylem}
+	\label{lemsup}
+	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that :  $$(u_p(\bs \mid q) > u_p(\bs' \mid q))  \Leftrightarrow  u_p(\bs \mid base(q)) > u_p(\bs' \mid base(q))$$ 
+\end{mylem}
+
+\begin{mylem}
+	Let $\bs = (s_0,s_1)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
+	Let $s^q_0$ a greedy strategy such that for any $q' \neq q$, $s^q_0(q') = s_0(q')$, and $s^q_0(q) = meet(q,\bP) . s_0(base(q))$
+	Let $s^{-q}_0$ a greedy strategy such that for any $q' \neq base(q)$, $s^{-q}_0(q') = s_0(q')$, and $meet(q,\bP).s^{-q}_0(base(q)) =  s_0(q)-$
+	Then the combined strategies $\bs^q = (s^q_0,s_1)'$ and $\bs^{-q} = (s^q_0,s_1)'$  are $\beta$ discounted stationary equilibriums.
+\end{mylem}
+
+\begin{proof}
+	
+	If $s^q_0 = s_0$ and  $s^{-q}_0 = s_0$ it is trivial.
+	
+	For now on assume $s^q_0 \neq s_0$ and $s^{-q}_0 \neq s_0$ then $s_0(q) \neq meet(q,\bP) . s_0(base(q))$ so we have :
+	\begin{itemize}
+		\item $meet(q,\bP) \neq \varepsilon$ otherwise $base(q) = q$
+		\item $longest(q,p) \notin longest(q)$ otherwise there is only one greedy action available.
+	\end{itemize}
+
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid q_0)  & = & u_0^{|q|}((s_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_0((s_0,s_1) \mid q') \cdot \pr^{(s_0,s_1)}(q' \mid q_0) \\
+\end{eqnarray*}
+By definition of $s^{q}_0$, for any $q'\in \bQ$ such that $|q'| \leq |q|$ we have:
+\begin{eqnarray*}
+	u_0^{|q'|}((s^{q}_0,s_1) \mid q_0) & = & u_0^{|q'|}((s_0,s_1) \mid q_0) \\ 
+	\pr^{(s^{q}_0,s_1)}(q' \mid q_0) & = & \pr^{(s_0,s_1)}(q' \mid q_0)
+\end{eqnarray*}
+And for any $q'\in \bQ$ such that $|q'| = |q|$ and $q \neq q'$:
+\begin{eqnarray*}
+	u_0(s^{q}_0,s_1) \mid q') & = & u_0((s_0,s_1) \mid q') \\ 
+\end{eqnarray*}
+Therefore : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid q_0) -  u_0((s^p_0,s_1) \mid q_0) & = & u_0((s_0,s_1) \mid q) -  u_0((s^p_0,s_1) \mid q)
+\end{eqnarray*}
+
+By definition of $s^{q}_0$, for any $q'\in \bQ$ such that $|q'| > |q|$ we have:
+\begin{eqnarray*}
+	u_0((s^{q}_0,s_1) \mid q') & = & u_0((s_0,s_1) \mid q') \\ 
+\end{eqnarray*}
+
+Therefore
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid q) -  u_0((s^p_0,s_1) \mid q) & = & \beta^{|q|} \cdot [u_0((s_0,s_1) \mid s_0(q)) - u_0((s^p_0,s_1) \mid s^p_0(q))] \\ 
+	& = & \beta^{|q|}\cdot [u_0((s_0,s_1) \mid s_0(q)) - u_0((s_0,s_1) \mid s^p_0(q))] \\ 
+\end{eqnarray*}
+Similarly : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid base(q)) -  u_0((s^{-p}_0,s_1) \mid base(q)) 
+	& = & \beta^{|base(q)|} \cdot[ u_0((s_0,s_1) \mid s_0(base(q))) - u_0((s_0,s_1) \mid s^{-p}_0(base(q)))] \\ 
+\end{eqnarray*}
+
+
+Assume $u_0((s_0,s_1) \mid s_0(q)) - u_0((s_0,s_1) \mid s^p_0(q)) \neq 0$. 
+\\ If $u_0((s_0,s_1) \mid s_0(q)) < u_0((s_0,s_1) \mid s^p_0(q)) $ then $\bs$ is not a $\beta$ discounted stationary equilibrium, which is absurd.
+\\ If $u_0((s_0,s_1) \mid s_0(q)) > u_0((s_0,s_1) \mid s^p_0(q)) $ then :
+\begin{eqnarray*}
+u_0((s_0,s_1) \mid s_0(q)) &>& u_0((s_0,s_1) \mid s^p_0(q)) \\
+u_0((s_0,s_1) \mid s^{-q}_0(q)) &>&  u_0((s_0,s_1) \mid s^p_0(q)) \\
+u_0((s_0,s_1) \mid meet(q,\bP).s^{-q}_0(base(q))) &>& u_0((s_0,s_1) \mid meet(q,\bP) . s_0(base(q))) \\
+\end{eqnarray*}
+by lemma \ref{lemsup} we have : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid base(meet(q,\bP).s^{-q}_0(base(q)))) &>& u_0((s_0,s_1) \mid base(meet(q,\bP) . s_0(base(q)))) \\
+	u_0((s_0,s_1) \mid base(s^{-q}_0(base(q)))) &>& u_0((s_0,s_1) \mid base(s_0(base(q)))) \\
+\end{eqnarray*}
+by lemma \ref{lemsup} we have : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid s^{-q}_0(base(q))) &>& u_0((s_0,s_1) \mid s_0(base(q))) \\
+\end{eqnarray*}
+
+
+
+
+
+
+
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid base(q)) -  u_0((s^{-p}_0,s_1) \mid base(q)) 
+	& = & \beta^{|base(q)|} \cdot[ u_0((s_0,s_1) \mid s_0(base(q))) - u_0((s_0,s_1) \mid s^{-p}_0(base(q)))] \\ 
+\end{eqnarray*}
+
+
+
+
+\end{proof}
+
+\iffalse
+Moreover by lemma \ref{lemsup}
+\begin{eqnarray*}
+	\alpha^{|meet(q,\bP)|} \cdot [u_0((s_0,s_1) \mid q) -  u_0((s^p_0,s_1) \mid q)] & = & u_0((s_0,s_1) \mid base(q)) -  u_0((s^p_0,s_1) \mid base(q))
+\end{eqnarray*}
+
+
+Assume $u_0((s_0,s_1) \mid s_0(q)) - u_0((s_0,s_1) \mid s^p_0(q)) \neq 0$. 
+\\ If $u_0((s_0,s_1) \mid s_0(q)) < u_0((s_0,s_1) \mid s^p_0(q)) $ then $\bs$ is not a $\beta$ discounted stationary equilibrium, which is absurd.
+\\ If $u_0((s_0,s_1) \mid s_0(q)) > u_0((s_0,s_1) \mid s^p_0(q)) $ then by lemma \ref{lemsup} we have $u_0((s_0,s_1) \mid base(s_0(q))) > u_0((s_0,s_1) \mid base(s^p_0(q)))) $
+Similarly : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid base(q)) -  u_0((s^{-p}_0,s_1) \mid base(q)) 
+	& = & \beta^{|base(q)|} \cdot[ u_0((s_0,s_1) \mid s_0(base(q))) - u_0((s_0,s_1) \mid s^{-p}_0(base(q)))] \\ 
+\end{eqnarray*}
+
+
+
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid q_0)  & = & u_0^{|q|}((s_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|+1} u_0((s_0,s_1) \mid q') \cdot \pr^{(s_0,s_1)}(q' \mid q_0) \\
+	& = & u_0^{|q|}((s_0,s_1) \mid q_0) \\
+	&& + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|+1} u_0((s_0,s_1) \mid q') \cdot [\sum_{q_0 \subseteq q''}^{|q''| = |q|} \pr^{(s_0,s_1)}(q'' \mid q_0) \cdot \pr(q'',\bs(q''),q')] \\
+\end{eqnarray*}
+
+Moreover we have:
+\begin{eqnarray*}
+	u_0((s^{q}_0,s_1) \mid q_0)  & = & u_0^{|q|}((s^{q}_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|+1} u_0((s_0,s_1) \mid q') \cdot \pr^{(s^{q}_0,s_1)}(q' \mid q_0) \\
+	& = & u_0^{|q|}((s^{q}_0,s_1) \mid q_0) \\
+	&& + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|+1} u_0((s^{q}_0,s_1) \mid q') \cdot [\sum_{q_0 \subseteq q''}^{|q''| = |q|} \pr^{(s^{q}_0,s_1)}(q'' \mid q_0) \cdot \pr(q'',\bs(q''),q')] \\
+\end{eqnarray*}
+
+By definition of $s^{q}_0$, for any $q'' \subseteq q$ we have:
+\begin{eqnarray*}
+	u_0^{|q''|}((s^{q}_0,s_1) \mid q_0) & = & u_0^{|q''|}((s_0,s_1) \mid q_0) \\ 
+	\pr^{(s^{q}_0,s_1)}(q'' \mid q_0) & = & \pr^{(s_0,s_1)}(q'' \mid q_0)
+\end{eqnarray*}
+Therefore : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid q_0) - u_0((s^{q}_0,s_1) \mid q_0)  & = & \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|+1} u_0((s_0,s_1) \mid q') \cdot [\sum_{q_0 \subseteq q''}^{|q''| = |q|} \pr^{(s_0,s_1)}(q'' \mid q_0) \cdot \pr(q'',\bs(q''),q')] \\ 
+	& - & \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|+1} u_0((s^{q}_0,s_1) \mid q') \cdot [\sum_{q_0 \subseteq q''}^{|q''| = |q|} \pr^{(s_0,s_1)}(q'' \mid q_0) \cdot \pr(q'',((s^q_0,s_1))(q''),q')] \\
+\end{eqnarray*}
+
+
+
+
+
+	
+	As $\bs$ is a $\beta$ discounted stationary equilibrium we have :
+	\begin{eqnarray*}
+		u_0((s_0,s_1) \mid q) & \geq &u_0((s^{q}_0,s_1) \mid q) \\
+		u_0((s_0,s_1) \mid base(q)) & \geq &u_0((s^{-q}_0,s_1) \mid base(q)) \\
+	\end{eqnarray*}
+
+
+
+
+
+Moreover by definition of $s^{q}_0$, $u_0((s^{q}_0,s_1) \mid s_1(q)) = u_0((s_0,s_1) \mid s_1(q))$ and by definition of $s^{q}_0$, $u_0((s^{-q}_0,s_1) \mid s_1(base(q))) = u_0((s_0,s_1) \mid s_1(base((q)))$
+\end{proof}
+
+Therefore:
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid s_0(q)) & \geq & u_0((s^{q}_0,s_1) \mid s^{q}_0(q)) \\
+	u_0((s_0,s_1) \mid s_0(base(q))) & \geq & u_0((s^{-q}_0,s_1) \mid s^{-q}_0(base(q))) \\
+\end{eqnarray*}
+
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid s_0(q)) & \geq & u_0((s^{q}_0,s_1) \mid q \cup \{meet(q,\bP) . s_0(base(q)).0\}) \\
+	u_0((s_0,s_1) \mid s_0(base(q))) & \geq & u_0((s^{-q}_0,s_1) \mid s^{-q}_0(base(q))) \\
+\end{eqnarray*}
+
+
+ $ u_0((s_0,s_1) \mid s_0(q)) \geq u_0((s^{q}_0,s_1) \mid s^{q}_0(q)) $
+
+
+
+
+Suppose that $s^q_0(q) \neq longest(q,p)$ and $s_0(q) \neq longest(q,p)$ 
+
+\fi
+
+
+
+
+
+
+
+
+\iffalse
+By induction we show that for any $n \geq 0$ , for any $q'$ and for any $s'_p$ we have
+ $$u_p^n((\bs_{-p},s'_p) \mid q') = u_p^n( (\bs^q_{-p},s'_p) \mid q')$$.
+\\Let $n = 0$
+\begin{eqnarray*}
+	u_p^0((\bs_{-p},s'_p) \mid q') & = & r_p(q') \\
+	u_p^0( (\bs^q_{-p},s'_p) \mid q') & = & r_p(q') \\
+\end{eqnarray*}
+Suppose there exists $N$ such that for any $n \leq N$ and $q'$ we have $u_p^n((\bs_{-p},s'_p) \mid q') = u_p^n( (\bs^q_{-p},s'_p) \mid q')$.
+
+
+\begin{eqnarray*}
+	u_p^{n+1}((\bs_{-p},s'_p) \mid q') & = & u_p^1((\bs_{-p},s'_p) \mid q') + \sum_{q'' \in \bQ \,:\, q' \subset q''}^{|q''| = |q'|+1} \beta^{|q'|+1} \cdot  u_p^{n}((\bs_{-p},s'_p) \mid q'') \cdot \pr^{(\bs_{-p},s'_p)}(q'' \mid q') \\
+	u_p^{n+1}( (\bs_{-p},s'_p) \mid q') & = & u_p^1((\bs_{-p},s'_p) \mid q') \\
+	&& +  \beta^{|q'|+1} \cdot  u_p^{n}((\bs_{-p},s'_p) \mid s'_p(q')(q')) \cdot h_p \\
+	&&+ \beta^{|q'|+1} \cdot  u_p^{n}((\bs_{-p},s'_p) \mid s_{1-p}(q')(q')) \cdot h_{1-p} \\
+	u_p^{n+1}( (\bs_{-p},s'_p) \mid q') & = & u_p^1((\bs^q_{-p},s'_p) \mid q') \\
+	&& +  \beta^{|q'|+1} \cdot  u_p^{n}((\bs^q_{-p},s'_p) \mid s'_p(q')(q')) \cdot h_p \\
+	&&+ \beta^{|q'|+1} \cdot  u_p^{n}((\bs^q_{-p},s'_p) \mid s_{1-p}(q')(q')) \cdot h_{1-p} \\
+	\iffalse
+	u_p^{n+1}( (\bs_{-p},s'_p) \mid q') & = & u_p^{n+1}( (\bs^q_{-p},s'_p) \mid q') \\
+	\fi
+\end{eqnarray*}
+\end{proof}
+
+$$u_p^{n}((\bs^q_{-p},s'_p) \mid s_{1-p}(q')(q')) = u_p^{n}((\bs^q_{-p},s'_p) \mid s^p_{1-p}(q')(q')) ?$$
+if $p = 0$ then trivial as $s^q_1(q)= s_1(q)$
+$$u_1^{n}((s^q_{0},s'_1) \mid s_{0}(q')(q')) = u_1^{n}((s^q_{0},s'_1) \mid s^p_{0}(q')(q')) ?$$
+if $q' \neq q$ then trivial as $s^q_0(q)= s_0(q)$.
+$$u_1^{n}((s^q_{0},s'_1) \mid s_{0}(q)(q)) = u_1^{n}((s^q_{0},s'_1) \mid s^p_{0}(q)(q)) ?$$
+
+\begin{mylem}
+	$$u_1^{n}((s_{0},s'_1) \mid s^q_{0}(q)(q)) = u_1^{n}((s_{0},s'_1) \mid s_{0}(q)(q))$$
+\end{mylem}
+\begin{proof}
+	I need to use the fact that $\bs$ is a nash equi and the reward definition.
+	
+	Suppose $$u_1^{n}((s_{0},s'_1) \mid s_{0}(q)(q)) > u_1^{n}((s_{0},s'_1) \mid s^q_{0}(q)(q))  $$
+\end{proof}
+
+\fi
+
+\iffalse
+For now on assume $\sigma_1$ a \textbf{greedy} strategy such that : $$u_1((s^{q}_0,\sigma_1) \mid q_0) >  u_1((s^{q}_0,s_1) \mid q_0)$$
+
+\begin{mylem}
+	We have $\bs$ a $\beta$ discounted stationary equilibrium only if :
+	\begin{eqnarray*}
+		u_1((s_0^q,\sigma_1) \mid s^q_0(q))  & > & u_1((s_0^q,s_1) \mid s_0^q(q))\\ 
+	\end{eqnarray*}
+\end{mylem}
+\begin{proof}
+	$$u_1((s_0,\sigma_1) \mid q_0) \geq u_1((s_0^q,\sigma_1) \mid q_0) >  u_1((s^{q}_0,s_1) \mid q_0)   \\ $$ 
+	
+\end{proof}
+
+
+
+
+\end{proof}
+
+
+Assume $u_1((s_0^q,\sigma_1) \mid s^q_0(q))   \leq  u_1((s_0^q,s_1) \mid s_0^q(q))\\ $
+We have
+\begin{eqnarray*}
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s^q_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s^q_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q' ; q'\neq q}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
++ && \beta^{|q|} [  u_p((s^{q}_0,\sigma_1) \mid q) \cdot \pr^{(s^{q}_0,\sigma_1)}(q \mid q_0) ]\\
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s^q_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q' ; q'\neq q}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
++ && \beta^{|q+1|}[  (u_p((s^{q}_0,\sigma_1) \mid s^q_0(q))\cdot h_0 + u_p((s^{q}_0,\sigma_1) \mid \sigma_1(q))\cdot h_1  ) \cdot \pr^{(s^{q}_0,\sigma_1)}(q \mid q_0)] \\
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q' ; q'\neq q}^{|q'|=|q|} u_p((s_0,\sigma_1) \mid q') \cdot \pr^{(s_0,\sigma_1)}(q' \mid q_0) \\
++ && \beta^{|q+1|}[  (u_p((s^{q}_0,\sigma_1) \mid s^q_0(q))\cdot h_0 + u_p((s_0,\sigma_1) \mid \sigma_1(q))\cdot h_1  ) \cdot \pr^{(s_0,\sigma_1)}(q \mid q_0)] \\
+\end{eqnarray*}
+Hence we have 
+\begin{eqnarray*}
+u_1((s_0,\sigma_1) \mid q_0) & = & u_1((s^{q}_0,\sigma_1) \mid q_0) + \beta^{|q+1|}\cdot h_0 \cdot u_p((s_0,\sigma_1) \mid s_0(q)) - \beta^{|q+1|}\cdot h_0 \cdot  u_p((s^{q}_0,\sigma_1) \mid s^q_0(q)) \\
+u_1((s_0,\sigma_1) \mid q_0) & \geq & u_1((s^{q}_0,\sigma_1) \mid q_0) + \beta^{|q+1|}\cdot h_0 \cdot u_p((s_0,\sigma_1) \mid s_0(q)) - \beta^{|q+1|}\cdot h_0 \cdot  u_1((s_0^q,s_1) \mid s_0^q(q)) \\
+\end{eqnarray*}
+
+$$u_1((s_0^q,\sigma_1) \mid s_0(q)) -  u_1((s_0^q,s_1) \mid s_0^q(q))$$
+
+
+We have
+\begin{eqnarray*}
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s^q_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s^q_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q' ; q'\neq q}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
++ && \beta^{|q|} [  u_p((s^{q}_0,\sigma_1) \mid q) \cdot \pr^{(s^{q}_0,\sigma_1)}(q \mid q_0) ]\\
+u_1((s^{q}_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s^q_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q' ; q'\neq q}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
++ && \beta^{|q+1|}[  (u_p((s^{q}_0,\sigma_1) \mid s^q_0(q))\cdot h_0 + u_p((s^{q}_0,\sigma_1) \mid \sigma_1(q))\cdot h_1  ) \cdot \pr^{(s^{q}_0,\sigma_1)}(q \mid q_0)] \\
+\end{eqnarray*}
+
+
+
+
+
+And 
+\begin{eqnarray*}	
+u_1((s_0,\sigma_1) \mid q_0) &= & u_1^{|q|}((s_0,\sigma_1) \mid q_0) \\
++ && \beta^{|q|} \sum_{q_0 \subseteq q' ; q'\neq q}^{|q'|=|q|} u_p((s_0,\sigma_1) \mid q') \cdot \pr^{(s_0,\sigma_1)}(q' \mid q_0) \\
++ && \beta^{|q+1|}[  (u_p((s_0,\sigma_1) \mid s_0(q))\cdot h_0 + u_p((s^{q}_0,\sigma_1) \mid \sigma_1(q))\cdot h_1  ) \cdot \pr^{(s_0,\sigma_1)}(q \mid q_0)] \\
+\end{eqnarray*}
+Therefore
+\begin{eqnarray*}	
+u_1((s^{q}_0,\sigma_1) \mid q_0)- u_1((s_0,\sigma_1) \mid q_0)  & = & \beta^{|q+1|}\cdot h_0 \cdot [u_p((s^{q}_0,\sigma_1) \mid s^q_0(q)) - u_p((s_0,\sigma_1) \mid s_0(q))] \\
+\end{eqnarray*}
+Assume $u_1((s_0^q,\sigma_1) \mid s^q_0(q))  \leq  u_1((s_0^q,s_1) \mid s_0^q(q))\\ $
+\begin{eqnarray*}	
+u_1((s^{q}_0,\sigma_1) \mid q_0)- u_1((s_0,\sigma_1) \mid q_0)  & \leq & \beta^{|q+1|}\cdot h_0 \cdot [u_1((s_0^q,s_1) \mid s_0^q(q)) - u_p((s_0,\sigma_1) \mid s_0(q))] \\
+u_1((s^{q}_0,\sigma_1) \mid q_0)- u_1((s_0,\sigma_1) \mid q_0)  & \leq & \beta^{|q+1|}\cdot h_0 \cdot [u_1((s_0,s_1) \mid s_0^q(q)) - u_p((s_0,\sigma_1) \mid s_0(q))] \\
+\end{eqnarray*}
+\fi

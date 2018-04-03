@@ -1,0 +1,325 @@
+%!TEX root = focs.tex
+
+
+\section{Off}
+
+\begin{myprop}
+	Let $\sigma_0$ a strategy, then there exists $s_0$ a greedy strategy  such that for any $\sigma_1$ strategy, we have $u_0(\sigma_0,s_1) \leq < u_0(s_0,s_1)$ 
+\end{myprop}
+\etienne{That the property marcelo and I need to work on, i have to think about strict or not inequalities.}
+
+$$\meet(q,p)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid  \text{for every } b' \in \longest(q,p): b \preceq b'\}}$$
+
+For any $q$ body knowledge we denote
+$meet(q,\bP)$ the value $$\meet(q,\bP)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid \text{for every } p\in \bP \text{ and for every } b' \in \longest(q,p): b \preceq b'\}}$$
+
+Moreover we denote $base(q) = sub-body(q,meet(q,\bP))$ and $base(q,q_b) = sub-body(q,meet(q_b,\bP))$. Finally we denote $base(\bQ) = \{q \in \bQ \mid q = base(q)\}$.
+
+\begin{mylem}
+	\label{lem-meet}
+	Let $\bs$ greedy stationary strategies. for every pair $q$ and $q'$ of bodies of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ then $meet(q,\bP) \preceq meet(q')$
+\end{mylem}	
+\begin{proof}
+	By induction : 
+	\\Clearly we have $meet(q,\bP) \preceq meet(q)$.
+	\\Assume $q'$ a body of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ and $meet(q,\bP) \preceq meet(q')$. So we also have that $meet(q,\bP) \preceq meet(q',\bP)$. Moreover $\bs$ is a greedy stationary strategies so $meet(q',\bP) \preceq meet(s_p(q')(q'),\bP)$. Hence $meet(q,\bP) \preceq meet(s_p(q')(q'),\bP)$.
+	
+\end{proof}
+
+
+\begin{mylem}
+	\label{lem2}
+	Let $q \in base(\bQ)$ then for any $q'$ such that $\pr^{\bs}(q' \mid q) \neq 0$ we have that $q' \in base(\bQ)$.
+\end{mylem}
+\begin{proof}
+\end{proof}
+
+\begin{mylem}
+	\label{lem3}
+	Let $\bs$ greedy stationary strategies,
+	For any $q$, and $q'$ such that $|q'| = |q \setminus base(q)|$
+	$$\pr^{\bs}(q \mid q') \neq 0 \Leftrightarrow q' = q \setminus base(q)$$
+\end{mylem}
+\begin{proof}
+	Let $\bs$ greedy stationary strategies, If $q' \neq q \setminus base(q)$ there exits $b \in base(q) \cap q'$ and there exits $b' \in q \setminus base(q)$ such that $b' \notin q'$ therefore by definition of greedy action $b'$ can not be mined.
+\end{proof}
+
+\begin{mylem}
+	Let $\bs$ greedy stationary strategies,
+	For any $q$, there exit a finite sequence $(q_i)_{n}$ such that $q_n = q$, and $q_{i-1} = q_i \setminus base(q_i)$.
+	$$\pr^{\bs}(q \mid q_0) = \prod_{i = 1}^{n}\pr^{\bs}(q_i \mid q_{i} \setminus base(q_{i}))$$
+\end{mylem}
+For now on we denote $q_n$ the previous finite sequence of $q$.
+\begin{proof}
+	By induction and by previous lemma.
+\begin{eqnarray*}
+	\pr^{\sigma_0,\sigma_1}(q \mid q_0) & = & \sum_{q_c \in \bQ, q_c \subseteq q}^{|q_c| = |q \setminus base(q)|} \pr^{\sigma_0,\sigma_1}(q \mid q_c) \cdot  	\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)	\\
+	&=& \pr^{\sigma_0,\sigma_1}(q \mid q \setminus base(q)) \cdot \pr^{\sigma_0,\sigma_1}(q \setminus base(q) \mid q_0) \\
+\end{eqnarray*}
+
+\end{proof}
+
+\begin{myprop}
+	Let $\bs$ a $\beta $discounted  equilibrium, let $\bsigma$ such that for any $q$ , $\bsigma(q) = \bs(base(q))$ is a $\beta $discounted  equilibrium.
+\end{myprop}
+\etienne{The theorem is proven if and only if we only consider  greedy strategy I was confused yesterday sorry about that. We need even more than before the other property.}
+\begin{proof}
+	
+	Assume there exists $x_0$ a strategy such that $u_0(x_0,\sigma_1 \mid q_0) > u_0(\bsigma \mid q_0)$.
+	
+	We denote $k^{\bs}_p(q,q_0) = r_0(q)\cdot \pr^{\bs}(q \mid q_0)$.
+	Notice that $$u_0(\bs \mid q_0) = \sum_{q \in \bQ} \beta^{|q|} k^{\bs}_p(q,q_0)$$
+	
+	\begin{mylem}
+		\label{newx}
+		There exits $x_0'$ such that $u_0(x_0',\sigma_1 \mid q_0) > u_0(\bsigma \mid q_0)$ and $$\sum_{q \in base(\bQ)} k^{x_0',\sigma_1}_p(q,q_0) >  \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
+	\end{mylem}
+	\begin{proof}
+	Suppose $$\sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) \leq  \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
+	As $$\sum_{q \in\bQ} k^{x_0,\sigma_1}_p(q,q_0) >  \sum_{q \in \bQ} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
+	We have $$\sum_{q \notin base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) >  \sum_{q \notin base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
+	
+	
+	
+	Let $q_n$ such that $k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0)$ and for any $i < n$ :  $k^{x_0,\sigma_1}_p(q_{i},q_0) \leq k^{\sigma_0,\sigma_1}_p(q_{i},q_0)$
+	
+	
+	
+	\begin{eqnarray*}
+		k^{\bs}_p(q_n,q_0) & = & r_0(q)  
+		\cdot \prod_{i=1}^{n} \pr^{\bs}(q_{i} \mid q_{i} \setminus base(q_{i}))\\
+		k^{\bs}_p(q_n,q_0) & = & r_0(q)  
+		\cdot [\prod_{i=1}^{n-1} \pr^{\bs}(q_{i} \mid q_{i} \setminus base(q_{i}))] \cdot \pr^{\bs}(q_n \mid q_n \setminus base(q_n)) \\
+	\end{eqnarray*}
+By lemma \ref{lem-meet}
+\begin{eqnarray*}
+k^{\bs}_p(q_n,q_0) & = & [r_0(q_{n-1})+\alpha^{|meet(q,\bP)|}r_0(base(q))]  
+\cdot [\prod_{i=1}^{n-1} \pr^{\bs}(q_{i} \mid q_{i} \setminus base(q_{i}))] \cdot \pr^{\bs}(q_n \mid q \setminus base(q_n)) \\
+k^{\bs}_p(q_n,q_0) & = & r_0(q_{n-1})   
+\cdot [\prod_{i=1}^{n-1} \pr^{\bs}(q_{i} \mid q_{i} \setminus base(q_{i}))] \\
+&& + r_0(q_{n-1}) \cdot \pr^{\bs}(q_n \mid q \setminus base(q_n)) \\
+&&+\alpha^{|meet(q_n,\bP)|}r_0(base(q)) \cdot   
+[\prod_{i=1}^{n-1} \pr^{\bs}(q_{i} \mid q_{i} \setminus base(q_{i}))] \\
+&& + \alpha^{|meet(q_n,\bP)|}r_0(base(q)) \cdot \pr^{\bs}(q_n \mid q_n \setminus base(q_n)) \\
+\end{eqnarray*}
+	Hence  :
+	\begin{eqnarray*}
+		k^{\bs}_p(q_n,q_0) & = & k^{\bs}_p(q_{n-1},q_0)  + r_0(q _n) \cdot \pr^{\bs}(q_n \mid q_{n-1})  + \alpha^{|meet(q,\bP)|}r_0(base(q_n)) \cdot \pr^{\bs}(q_{n-1}\mid q_0)\\
+	\end{eqnarray*}
+Therefore
+\begin{eqnarray*}
+	k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0) & \Leftrightarrow & \alpha^{|meet(q_n,\bP)|}r_0(base(q_n)) \cdot  [\pr^{x_0,\sigma_1}(q_{n-1} \mid q_0) -  \pr^{\sigma_0,\sigma_1}(q_{n-1} \mid q_0)] \\
+	\\ &&+ r_0(q _n) \cdot [\pr^{x_0,\sigma_1}(q_n \mid q_{n-1})) -  \pr^{\sigma_0,\sigma_1}(q_n \mid q_{n-1})] > 0\\
+\end{eqnarray*}
+Moreover $\pr^{x_0,\sigma_1}(q_{n-1} \mid q_0) \leq \pr^{\sigma_0,\sigma_1}(q_{n-1} \mid q_0)$ so we have :
+\begin{eqnarray*}
+	k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0) & \Leftrightarrow & k^{x_0,\sigma_1}_p(q_n,q_{n-1}) > k^{\sigma_0,\sigma_1}_p(q_n,q_{n-1}) \\
+	k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0) & \Leftrightarrow & k^{x_0,\sigma_1}_p(q_n,q_{n-1}) > k^{\sigma_0,\sigma_1}_p(base(q_n),q_{0}) \\
+\end{eqnarray*}
+
+We build $x'_0$ such that for any $q$ if there exits $q_n$, for which $k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0)$ and exists  $i < n $ such that $q_i \subseteq q \subseteq q_{i+1}$ then $x'_0(base(q)) = x_0(q)$. Otherwise. $x_0'(q) = \sigma_0(q)$ 
+
+Thanks to last result $x'_0$ verify : $u_0(x_0',\sigma_1 \mid q_0) > u_0(\bsigma \mid q_0)$ and $$\sum_{q \in base(\bQ)} k^{x_0',\sigma_1}_p(q,q_0) >  \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
+
+
+	\end{proof}
+	
+	By lemma \ref{newx} we know assume $$\sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) >  \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
+	We build a strategy $y_0$ such that for all $q \in base(\bQ)$ we have $y_0(q) = x_0(q)$ and $y_0(q) = s_0(q)$ otherwise.
+	
+	Then thanks to lemma \ref{lem2} we have :
+	
+	\begin{eqnarray*}
+		\sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & [\sum_{q \notin base(\bQ)} k^{s_0,s_1}_p(q,q_0) + 	\sum_{q \in base(\bQ)} k^{s_0,s_1}_p(q,q_0)]\\
+		 && - [\sum_{q \notin base(\bQ)} k^{y_0,s_1}_p(q,q_0) + \sum_{q \in base(\bQ)} k^{y_0,s_1}_p(q,q_0)]\\
+		 \sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & [\sum_{q \notin base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) + 	\sum_{q \in base(\bQ)} k^{s_0,s_1}_p(q,q_0)]\\
+		 && - [\sum_{q \notin base(\bQ)} k^{s_0,s_1}_p(q,q_0) + \sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0)]\\
+		 \sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) -\sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) \\
+	\end{eqnarray*}
+
+Therefore $\bs$ is not an equilibrium either.
+	
+	\iffalse
+
+	For any $q \in base(\bQ)$ we have: 
+	\begin{eqnarray*}
+		k^{x_0,\sigma_1}_p(q,q_0) & =  &k^{x_0,s_1}_p(q,q_0) \\
+		k^{x_0,\sigma_1}_p(q,q_0) & =  &k^{y_0,s_1}_p(q,q_0)
+	\end{eqnarray*}
+	
+	Assume that we have $k^{x_0,\sigma_1}_p(q,q_0) = k^{y_0,s_1}_p(q,q_0)$. 
+	
+	If $q \in base(\bQ)$, as $s_1(q) = \sigma_1(q)$ and $x_0(q) = y_0(q)$ we have:
+	\begin{eqnarray*}
+		k^{x_0,\sigma_1}_p(s_1(q),q_0) & =  &k^{x_0,s_1}_p(s_1(q),q_0) \\
+		k^{x_0,\sigma_1}_p(x_0(q),q_0) &= & k^{y_0,s_1}_p(y_0(q),q_0) \\
+		k^{x_0,\sigma_1}_p(\sigma_1(q),q_0) &= &k^{y_0,s_1}_p(s_1(q),q_0) \\
+	\end{eqnarray*}
+	
+	If $q \notin base(\bQ)$, as $y_0(q) = s_0(q)$ we have :
+	\begin{eqnarray*}
+		k^{y_0,s_1}_p(y_0(q),q_0) &= & k^{s_0,s_1}_p(y_0(q),q_0) \\
+	\end{eqnarray*}
+	
+	
+	Therefore:
+	\begin{eqnarray*}
+		u_0(x_0,\sigma_1 \mid q_0) &=& \sum_{q \in \bQ} \beta^{|q|} k^{x_0,\sigma_1}_p(q,q_0) \\
+		u_0(x_0,\sigma_1 \mid q_0) &=& \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(x_0(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(x_0(q),q_0) \\
+		u_0(x_0,\sigma_1 \mid q_0) &=& \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(x_0(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{x_0,s_1}_p(s_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{x_0,s_1}_p(x_0(q),q_0) \\
+	\end{eqnarray*}
+	And : 
+	\begin{eqnarray*}
+		u_0(\bsigma \mid q_0) &=& \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{\sigma_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{\sigma_0,\sigma_1}_p(\sigma_0(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{\sigma_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{\sigma_0,\sigma_1}_p(\sigma_0(q),q_0) \\
+		u_0(\bsigma \mid q_0) &=& \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{\sigma_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{\sigma_0,\sigma_1}_p(\sigma_0(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{s_0,s_1}_p(s_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{s_0,s_1}_p(s_0(q),q_0) \\
+		u_0(\bsigma \mid q_0) &=& \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(\sigma_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \notin base(\bQ)} \beta^{|q|+1} k^{x_0,\sigma_1}_p(\sigma_0(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{s_0,s_1}_p(s_1(q),q_0) \\
+		&& +  \sum_{q \in \bQ}^{q \in base(\bQ)} \beta^{|q|+1} k^{s_0,s_1}_p(s_0(q),q_0) \\
+	\end{eqnarray*}
+
+Then 	\begin{eqnarray*}
+	u_0(\bsigma \mid q_0) - u_0(x_0,\sigma_1 \mid q_0) &=& 
+\end{eqnarray*}
+
+	We build a strategy $y_0$ such that for all $q \in base(\bQ)$ we have $y_0(q) = x_0(q)$ and $y_0(q) = s_0(q)$ otherwise.
+\begin{mylem}
+	Let $q \in base(\bQ)$ then  $\pr^{\bs}(q \mid q_0) = \pr^{\bsigma}(q \mid q_0)$. And $\pr^{x_0,\sigma_1}(q \mid q_0) = \pr^{y_0,s_1}(q \mid q_0)$
+\end{mylem}
+\begin{proof}
+\end{proof}
+	
+		\begin{mylem}
+		For any $q$, and $n \leq |q|$
+		$$\pr^{\sigma_0,\sigma_1}(q \mid q_0) = \sum_{q_b \notin \bQ, q_b \subseteq q}^{|q_b| = n} \pr^{\sigma_0,\sigma_1}(base(q,q_b) \mid base(q_b)) \cdot \pr^{\sigma_0,\sigma_1}(q_b \mid q_0)$$
+	\end{mylem}
+	\begin{proof}
+		By induction over $n$, if $n = 1$ it is trivial.
+		
+		Assume :
+		\begin{eqnarray*}
+			\pr^{\sigma_0,\sigma_1}(q \mid q_0) &=& \sum_{q_b \in \bQ, q_b \subseteq q}^{|q_b| = n} \pr^{\sigma_0,\sigma_1}(base(q,q_b) \mid base(q_b)) \cdot \pr^{\sigma_0,\sigma_1}(q_b \mid q_0) \\
+			\pr^{\sigma_0,\sigma_1}(q \mid q_0) &=& \sum_{q_b \in \bQ, q_b \subseteq q}^{|q_b| = n} \pr^{\sigma_0,\sigma_1}(base(q,q_b) \mid base(q_b)) \cdot [ \sum_{q_c \in \bQ, q_c \subseteq q_b}^{|q_c| = n-1}\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)\cdot \pr(q_c, \sigma, q_b)]\\
+			\pr^{\sigma_0,\sigma_1}(q \mid q_0) &=& \sum_{q_b \in \bQ, q_b \subseteq q}^{|q_b| = n} \pr^{\sigma_0,\sigma_1}(base(q,q_b) \mid base(q_b)) \cdot [ \sum_{q_c \in \bQ, q_c \subseteq q_b}^{|q_c| = n-1}\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)\cdot \pr(base(q_c), \sigma, base(q_b,q_c))]\\
+			\pr^{\sigma_0,\sigma_1}(q \mid q_0) &=& \sum_{q_b \in \bQ, q_b \subseteq q}^{|q_b| = n} [ \sum_{q_c \in \bQ, q_c \subseteq q_b}^{|q_c| = n-1}\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)\cdot \pr(base(q_c), \sigma, base(q_b,q_c)) \cdot \pr^{\sigma_0,\sigma_1}(base(q,q_b) \mid base(q_b))]\\
+			\pr^{\sigma_0,\sigma_1}(q \mid q_0) &=& \sum_{q_b \in \bQ, q_b \subseteq q}^{|q_b| = n} [ \sum_{q_c \in \bQ, q_c \subseteq q_b}^{|q_c| = n-1}\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)\cdot  \pr^{\sigma_0,\sigma_1}(base(q,q_c) \mid base(q_c))]\\
+			\pr^{\sigma_0,\sigma_1}(q \mid q_0) &=& 
+			\sum_{q_c \in \bQ, q_c \subseteq q_b}^{|q_c| = n-1}\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)\cdot  \pr^{\sigma_0,\sigma_1}(base(q,q_c) \mid base(q_c)) \\
+		\end{eqnarray*}
+	\end{proof}
+
+	\begin{mylem}
+	For any $q$, and $q'$ such that $|q'| = |q \setminus base(q)|$
+	$$\pr^{\sigma}(q \mid q') \neq 0 \Leftrightarrow q' = q \setminus base(q)$$
+\end{mylem}
+\begin{proof}
+	If $q' \neq q \setminus base(q)$ there exits $b \in base(q) \cap q'$ and there exits $b' \in q \setminus base(q)$ such that $b' \notin q'$ therefore by definition of greedy action $b'$ can not be mined.
+\end{proof}
+
+\begin{eqnarray*}
+	k^{\sigma_0,\sigma_1}_p(q,q_0) & = & r_0(q)\cdot \pr^{\sigma_0,\sigma_1}(q \mid q_0) \\	
+	k^{\sigma_0,\sigma_1}_p(q,q_0) & = & r_0(q)\cdot \pr^{\sigma_0,\sigma_1}(q \mid q_0) \\	
+	k^{\sigma_0,\sigma_1}_p(q,q_0) & = & [r_0(meet(q,\bP))+\alpha^{|meet(q,\bP)|}\cdot r_0(base(q))]  \\ 
+	&& \cdot \sum_{q_c \in \bQ, q_c \subseteq q}^{|q_c| = |q \setminus base(q)|}\pr^{\sigma_0,\sigma_1}(q_c \mid q_0)  \cdot  \pr^{\sigma_0,\sigma_1}(base(q,q_c) \mid base(q_c)) \\		
+\end{eqnarray*}
+
+
+
+
+
+
+
+
+
+\begin{eqnarray*}
+	k^{\sigma_0,\sigma_1}_p(q,q_0) & = & [r_0(meet(q,\bP))+\alpha^{|meet(q,\bP)|}\cdot r_0(base(q))]  \\ 
+	&& \cdot \pr^{\sigma_0,\sigma_1}(q \setminus base(q) \mid q_0)  \cdot  \pr^{\sigma_0,\sigma_1}(base(q,q \setminus base(q)) \mid base(q \setminus base(q))) \\	
+	k^{\sigma_0,\sigma_1}_p(q,q_0) & = & [r_0(meet(q,\bP))+\alpha^{|meet(q,\bP)|}\cdot r_0(base(q))]  \\ 
+	&& \cdot \pr^{\sigma_0,\sigma_1}(q \setminus base(q) \mid q_0)  \cdot  \pr^{\sigma_0,\sigma_1}(base(q) \mid q_0) \\		
+\end{eqnarray*}
+	
+	Hence:
+	\begin{eqnarray*}
+		k^{\sigma_0,\sigma_1}_p(q,q_0) -  k^{x_0',\sigma_1}_p(q,q_0)& =& r_0(q)  
+		\cdot (\prod \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i-1}) - \pr^{x_0',\sigma_1}(q_{i} \mid q_{i-1}))  \\
+		k^{\sigma_0,\sigma_1}_p(q,q_0) -  k^{x_0',\sigma_1}_p(q,q_0)& =&  
+		\cdot \prod r_0(q) \cdot [\pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i-1}) - \pr^{x_0',\sigma_1}(q_{i} \mid q_{i-1})]  \\
+	\end{eqnarray*}
+	By lemma \ref{lem-meet} we have $meet(q,\bP) \preceq meet(q)$
+	\begin{eqnarray*}
+		k^{\sigma_0,\sigma_1}_p(q,q_0) -  k^{x_0',\sigma_1}_p(q,q_0)& =&  
+		\cdot \prod [r_0(q_{i}) + \sum_{k=i}^{n-1}  + \alpha^{|meet(q_k,\bP)|} r_0(base(q_{k+1}))] \cdot [\pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i-1}) - \pr^{x_0',\sigma_1}(q_{i} \mid q_{i-1})]  \\
+		k^{\sigma_0,\sigma_1}_p(q,q_0) -  k^{x_0',\sigma_1}_p(q,q_0)& =&  
+		\cdot \prod [\sum_{k=i}^{n-1}  + \alpha^{|meet(q_k,\bP)|} r_0(base(q_{k+1}))] \cdot [k^{\sigma_0,\sigma_1}_p(q_{i}, q_{i-1}) - k^{x_0,\sigma_1}_p(q_{i}, q_{i-1})]  \\
+	\end{eqnarray*}
+	
+	
+	By definition of $\bsigma$, for any $q_b$: $$\pr^{\sigma_0,\sigma_1}(q \mid q_b) =  \pr^{\sigma_0,\sigma_1}(base(q,q_b) \mid base(q_b))$$
+	\begin{eqnarray*}
+		k^{\sigma_0,\sigma_1}_p(q,q_0) -  k^{x_0',\sigma_1}_p(q,q_0)& =& r_0(q)  
+		\cdot (\prod \pr^{\sigma_0,\sigma_1}(base(q,q_i) \mid base(q_{i-1})) - \pr^{x_0',\sigma_1}(q_{i} \mid q_{i-1}))  \\
+	\end{eqnarray*}		
+	
+	We have $meet(q,\bP) \preceq meet(q)$ therefore
+	\begin{eqnarray*}
+		r_p(q') & = &{\displaystyle c \cdot \sum_{i=1}^{|\meet(q')|} \alpha^i \cdot \chi_p(\meet(q'),i)} \\
+		& = & {\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) } \\
+		&&	+ {\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-(|meet(q,\bP)|+1))  }   \\
+	\end{eqnarray*}
+	
+	I have to use the reward at some point otherwise it is not true !!
+	\begin{eqnarray*}
+		k^{\sigma_0,\sigma_1}_p(q,q_0) & = & r_0(q)  
+		\cdot \prod \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i} \setminus base(q_{i}))\\
+		k^{\sigma_0,\sigma_1}_p(q,q_0)& =&  
+		\cdot \prod [r_0(q_{i}) + \sum_{k=i}^{n-1}  + \alpha^{|meet(q_k,\bP)|} r_0(base(q_{k+1}))] \cdot \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i-1}) \\
+		k^{\sigma_0,\sigma_1}_p(q,q_0) )& =&  
+		\cdot \prod [\sum_{k=i}^{n-1}  + \alpha^{|meet(q_k,\bP)|} r_0(base(q_{k+1}))] \cdot k^{\sigma_0,\sigma_1}_p(q_{i}, q_{i-1})  \\
+	\end{eqnarray*}
+	
+	\begin{eqnarray*}
+		k^{\sigma_0,\sigma_1}_p(q,q_0) & = & r_0(q)  
+		\cdot \prod_{i=1}^{n} \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i} \setminus base(q_{i}))\\
+		k^{\sigma_0,\sigma_1}_p(q,q_0) & = & r_0(q)  
+		\cdot [\prod_{i=1}^{n-1} \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i} \setminus base(q_{i}))] \cdot \pr^{\sigma_0,\sigma_1}(q \mid q \setminus base(q)) \\
+		k^{\sigma_0,\sigma_1}_p(q,q_0) & = & [r_0(q_{n-1})+\alpha^{|meet(q,\bP)|}r_0(base(q))]  
+		\cdot [\prod_{i=1}^{n-1} \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i} \setminus base(q_{i}))] \cdot \pr^{\sigma_0,\sigma_1}(q \mid q \setminus base(q)) \\
+		k^{\sigma_0,\sigma_1}_p(q_n,q_0) & = & r_0(q_{n-1})   
+		\cdot [\prod_{i=1}^{n-1} \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i} \setminus base(q_{i}))] \\
+		&& + r_0(q_{n-1}) \cdot \pr^{\sigma_0,\sigma_1}(q_n \mid q \setminus base(q_n)) \\
+		&&+\alpha^{|meet(q_n,\bP)|}r_0(base(q)) \cdot   
+		\cdot [\prod_{i=1}^{n-1} \pr^{\sigma_0,\sigma_1}(q_{i} \mid q_{i} \setminus base(q_{i}))] \\
+		&& + \alpha^{|meet(q_n,\bP)|}r_0(base(q)) \cdot \pr^{\sigma_0,\sigma_1}(q_n \mid q_n \setminus base(q_n)) \\
+		k^{\sigma_0,\sigma_1}_p(q_n,q_0) & = &  k^{\sigma_0,\sigma_1}_p(q_{n-1},q_0)\\
+		&& + r_0(q_{n-1}) \cdot \pr^{\sigma_0,\sigma_1}(base(q_n) \mid q_{0}) \\
+		&&+\alpha^{|meet(q_n,\bP)|}r_0(base(q_n)) \cdot   
+		\pr^{\sigma_0,\sigma_1}(q_{n-1} \mid q_0 ) \\
+		&& + \alpha^{|meet(q_n,\bP)|} \cdot k^{\sigma_0,\sigma_1}_p(base(q_n),q_0)\\
+		k^{\sigma_0,\sigma_1}_p(q_n,q_0) & = &  \sum_{i = 1}^{n}
+		[\alpha^{|meet(q_i,\bP)|} \cdot k^{\sigma_0,\sigma_1}_p(base(q_i),q_0)   \\
+		&&\ \ \ \ \ +r_0(q_{i-1}) \cdot \pr^{\sigma_0,\sigma_1}(base(q_i) \mid q_{0})  \\
+		&&\ \  \ \ \ +\alpha^{|meet(q_i,\bP)|}r_0(base(q_i)) \cdot   
+		\pr^{\sigma_0,\sigma_1}(q_{i-1} \mid q_0 ) ]
+		\\
+		
+		k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0) & \Leftrightarrow & \sum_{i = 1}^{n} (r_0(meet(q_i,\bP))+\alpha^{|meet(q_i,\bP)|}r_0(base(q_i)))) \cdot [\pr^{x_0,\sigma_1}(q_i \mid q_i \setminus base(q_i)) -  \pr^{\sigma_0,\sigma_1}(base(q_i) \mid q_0)] > 0\\
+		k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0) & \Leftrightarrow & \sum_{i = 1}^{n} \alpha^{|meet(q_i,\bP)|}r_0(base(q_i)) \cdot [\pr^{x_0,\sigma_1}(q_i \mid q_i \setminus base(q_i)) -  \pr^{\sigma_0,\sigma_1}(base(q_i) \mid q_0)]  \\
+		&& + \sum_{i = 1}^{n} r_0(meet(q_i,\bP)) \cdot [\pr^{x_0,\sigma_1}(q_i \mid q_i \setminus base(q_i)) -  \pr^{\sigma_0,\sigma_1}(base(q_i) \mid q_0)] > 0\\
+		k^{x_0,\sigma_1}_p(q_n,q_0) > k^{\sigma_0,\sigma_1}_p(q_n,q_0) & \Leftrightarrow & \sum_{i = 1}^{n} k^{x_0,\sigma_1}_p((q_i , q_i \setminus base(q_i)) >\sum_{i = 1}^{n} k^{\sigma_0,\sigma_1}_p(base(q_i),q_0) \\
+	\end{eqnarray*}
+\fi
+
+	
+\end{proof}
