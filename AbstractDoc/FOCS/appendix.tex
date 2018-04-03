@@ -1,7 +1,228 @@
 %!TEX root = focs.tex
 
-\section{Proofs and intermediate results}
+\section{Additional Material and Proofs}
 \label{sec-appendix}
+
+\subsection{Formal definition of the default strategy}
+\label{sec-def-default}
+
+The following is the definition of strategy $\df_p$ for a player $p \in \bP$. If $\bchain(q)$ is defined, then $\df_p(q) = \mine(p,\bchain(q),q)$. Otherwise, by Lemma \ref{lem-length-greedy} we know that there exists a unique $I \subseteq \bP$ such that $\longest(q) = \bigcup_{p \in I} \longest(q,p)$. For each element $p' \in I$, let $v_{p'}$ be the reward for player $p$ in the chain from the genesis block to the block $\longest(q,p')$, that is,
+\begin{eqnarray*}
+v_{p'} & = & r_p(\{b \in q \mid b \preceq \longest(q,p')\}).
+\end{eqnarray*}
+Moreover, let $p^\star$ be the element in $I$ maximising the values $v_{p'}$ (if more than one such values exist, then $p^\star$  is defined as the first of such elements in the usual order for the integers). Then we have that $\df_p(q) = \mine(p,\longest(q,p^\star),q)$.
+Thus, a player following the default strategy tries to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Finally, define the combined strategy $\df$ as $(\df_0,\df_1,\dots,\df_{m-1})$. 
+
+
+\subsection{A characterization of states under greedy strartegies}
+\label{sec-char-states-greedy}
+
+Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block.
+%, or their latest block in the blockchain. 
+The consequence of using 
+greedy strategies is that every state a game under greedy strategies cannot have more than $m$ paths contesting for the blockchain. This is captured b the following 
+technical lemma: 
+\begin{mylem}\label{lem-length-greedy}
+Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
+\begin{enumerate}
+\item For every $p \in \bP$$:$ $|\longest(q,p)| = 1$ 
+
+\item There exists $I \subseteq \bP$ such that$:$
+\begin{eqnarray}\label{eq-max-set}
+\longest(q) & = & \bigcup_{p \in I} \longest(q,p).
+\end{eqnarray}
+Moreover, if $q \neq \{\varepsilon\}$, then there exists a unique $I \subseteq \longest(q,p)$ such that \eqref{eq-max-set} holds.
+\end{enumerate}
+\end{mylem}
+
+\begin{proof}
+Let $S = \{ q \in \bQ \mid \pr^{\bs}(q \mid \varepsilon) > 0 \}$. Then we have that $S$ is the smallest subset of $\bQ$ satisfying the following conditions:
+\begin{itemize}
+\item $\{\varepsilon\} \in S$.
+
+\item If $p \in \bP$, $b \in \bB$, $q \in S$ and $\mine(p,b,q)$ is a greedy action, then $q \cup \{ b \cdot p\} \in S$.
+\end{itemize}
+Hence, we have an inductive definition of $S$, and we can prove the lemma by induction on the structure of this set of states. If $q = \{ \varepsilon \}$, then we have that $\longest(q) = \{ \varepsilon \}$ and $\longest(q,p) = \{ \varepsilon \}$ for every $p \in \bP$. Thus, we have that  the two conditions in the lemma hold since $|\longest(q,p)| = 1$ for every $p \in \bP$, and $\longest(q) = \longest(q,0)$. Assume that the property holds for $q \in S$, and assume that $p \in \bP$, $b \in \bB$ and $\mine(p,b,q)$ is a greedy action. Then we need to prove that the conditions in the lemma hold for $q ' = q \cup \{b \cdot p \}$.
+
+Given that $\mine(p,b,q)$ is a greedy action, we know that $\length(q,p) \leq |b| < |b \cdot p|$. Thus, we have that $\longest(q',p) = \{b \cdot p\}$ and, hence, $|\longest(q',p)| = 1$. Moreover, we have that for every $p' \in \bP$ such that $p' \neq p$, it holds that $\longest(q',p') = \longest(q,p')$ and, hence, $|\longest(q',p')| = 1$. Therefore, the first condition of the lemma is satisfied. To prove that there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds, we consider two cases.
+\begin{itemize}
+\item Assume that $b \in \longest(q)$. Then we have that $\longest(q') = \{ b \cdot p \}$ and, hence, there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds since $\longest(q') = \longest(q',p)$.
+
+\item Assume that $b \not\in \longest(q)$. By induction hypothesis we know that:
+\begin{eqnarray*}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q,p').
+\end{eqnarray*}
+Given that $b \not\in \longest(q)$, we have that $p \not\in I$. Therefore,  for every $p' \in I$ we have that $\longest(q,p') = \longest(q',p')$. Hence, we deduce that:
+\begin{eqnarray}\label{eq-lem-length-greedy}
+\longest(q) & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray}
+Let $k$ be the length of an arbitrary element in $\longest(q)$ (all the elements of this set have the same length). If $|p \cdot b| < k$, then $\longest(q') = \longest(q)$. Thus, from \eqref{eq-lem-length-greedy} we conclude that there exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds since:
+\begin{eqnarray*}
+\longest(q') & = & \bigcup_{p' \in I} \longest(q',p').
+\end{eqnarray*}
+Assume now that $|p \cdot b| = k$. In this case, we have that $\longest(q') = \longest(q) \cup \{p \cdot b\}$. Thus,  from \eqref{eq-lem-length-greedy} and the fact that $\longest(q',p) = \{b \cdot p\}$, we conclude that:
+\begin{eqnarray*}
+\longest(q') & = & \bigg(\bigcup_{p' \in I} \longest(q',p')\bigg) \cup \longest(q',p)\\
+& = & \bigcup_{p' \in I \cup \{p\}} \longest(q',p').
+\end{eqnarray*}
+Hence, in the case that $|p \cdot b| = k$, there also exists $I \subseteq \bP$ such that \eqref{eq-max-set} holds.
+\end{itemize}
+To conclude the proof of the lemma, we assume that $q' \neq \{\varepsilon\}$ and prove that there exists a unique $I \subseteq \bP$ such that \eqref{eq-max-set} holds. For the sake of contradiction, assume that there exist distinct $I_1, I_2 \subseteq \bP$ such that 
+$\longest(q') = \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$. 
+Without loss of generality, assume that there exists $p_1 \in I_1$ such that $p_1 \not\in I_2$. Given that $q' \neq \{\varepsilon\}$, we have that $\varepsilon \not\in \longest(q')$. 
+Let $b \in \longest(q',p_1)$. Given that $p_1 \in I_1$, we have that $b \neq \varepsilon$, from which we conclude that $\owner(b) = p_1$. Given that 
+$ \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$ and $p_1 \not\in I_2$, we conclude that there exists $p_2 \neq p_1$ such that $p_2 \in I_2$ and $b \in \longest(q',p_2)$, which leads to a contradiction since $b \neq \varepsilon$ and $\owner(b) \neq p_2$. This concludes the proof of the lemma.
+
+\end{proof}
+
+
+
+
+We can use Lemma \ref{lem-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \bP$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
+\begin{itemize}
+\item If $\bchain(q)$ is defined, then $|\longest(q,p)| \leq |b|  \leq |\bchain(q)|$. In particular, 
+if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and, thus, $p$ attempts to mine either in the genesis block if the game is starting or in the last block of the blockchain as in this case this block is hers).
+
+
+
+\item If $\bchain(q)$ is not defined, then there exists a unique $I$ such that \eqref{eq-max-set} holds, and we have that $b = \longest(q,p)$ for some $p \in I$.
+\end{itemize}
+
+
+
+\subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
+
+For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the body of knowledge 
+given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
+$\epsilon$ and all its descendants are renamed accordingly. 
+
+\begin{mylem}
+\label{lem-meet}
+Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a strategy $s'_p$ such that $s'_p(q) = s'_p(q')$ 
+for every pair of states $q$ and $q'$ with $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ and where 
+$u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of strategies. 
+\end{mylem}
+\begin{proof}[sketch]
+For every state $q$ where $p$ has no blocks in the blockchain, find the action $s(q')$ amongst all states $q'$ with 
+$q = \subbody(q',\meet(q',p))$ that maximizes the utility for $u_p((s_{-p},s^*_p) \mid q)$, where $s^*_p$ is the strategy that mimics 
+$s$ except for those states $q'$. Show that $u_p((s_{-p},s^*_p) \mid q) \geq u_p((s_{-p},s_p) \mid q$. Do that for each such $q$, 
+and we end up with a strategy that fulfils the conditions of the Lemma. 
+\end{proof}
+
+\subsubsection{Proof of Theorem \ref{thm-conts_equlibria}} 
+
+Let $p \in \bP$ a player and $s_p$ a greedy strategy for player $p$. We need to show that 
+$u_p(\df \mid \varepsilon) \geq u_p( (\df_{-p},s_p) \mid \varepsilon)$. The first remark is that without loss of generality we can consider 
+$m = 2$, because when comparing these two strategies we can bundle together all the remaining players, behaving according to $\df$ 
+under the combined hashpower given by the sum of all the $h_j$'s for $j \neq p$. We thus focus on the strategies 
+$\df = (\df_0,\df_1)$ and $s = (\df_0,s_p)$ (again, for readability we assume that $p$ is player $1$). 
+
+Now, by Lemma \ref{lem-meet}, we can also assume that $s_p$ satisfies the properties of this Lemma, that is, for every 
+pair of states $q$ and $q'$ such that $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that $s(q) = s(q')$. If not, there is a strategy with even higher utility that satisfies it. 
+
+Assume for the sake of contradiction that $u_p(\df \mid \varepsilon) < u_p( (\df_{-p},s_p) \mid \varepsilon)$. Then there must be at least one 
+state $q$ such that $s_p(q) \neq \df(q)$, the probability $\pr^s(q \mid \epsilon)$ of eventually reaching this state is greater than $0$, and such that $u_p(\df \mid q) < u_p( (\df_{-p},s_p) \mid q)$. 
+
+
+Now, because of Lemma \ref{lem-meet}, we assume without loss of generality that in state $q$, player $p$ has $0$ blocks on the blockchain. Further, from all such states satisfying all these requirements, we take the one with the fewer number of blocks. Because our actions are greedy, we know that state $q$ has the shape of a line of $m$ blocks, all owned by player $0$. 
+
+Let us now do some calculations on both $u_p(\df \mid q)$ and $u_p( (\df_{-p},s_p) \mid q)$. 
+\medskip
+
+First, note that the payoff for player $p$ on $q$ is $0$, and it will continue to be $0$ until player $p$ manages to put at least one block in the blockchain. To that extent, let $s = (\df_{-p},s_p)$, and define the set 
+$Q_p = \{q^* \in \bQ \mid \pr^s(q^* \mid q) > 0, $ and player $p$ has at least a block in the blockchain of $q^* \}$, 
+and let $Q^*_p=\{q^* \in Q_p \mid$ for every other state $q' \in Q_p, \pr^s(q^* \mid q')=0 \}$ be the set of minimal states from $Q_p$; 
+the idea is that states in $Q^*_p$ represent the first states, going from $q$, where $p$ has at least one block in the blockchain 
+(it may be more than one block, if $p$ forked and the chain of the forking branch just became the blockchain). 
+As mentioned, the reward for any block reachable from $q$ but not in $Q_p$ is $0$, and therefore we can rewrite the utility as
+
+$$u_p( s \mid q) = \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} u_p(s \mid q^*) * \pr^s(q^* \mid q), $$
+and since the blockchain was just won in $q^*$, %(and by Lemma \ref{lem-meet} and because the strategies are greedy), 
+this is equivalent to 
+$$ \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(s \mid \varepsilon) \big) \pr^s(q^* \mid q), $$
+this is again by Lemma \ref{lem-meet}: for the strategy we just need to consider the subtree rooted in the last block of the blockchain of $p$, and 
+because the strategies are greedy (and our definition of reward), the difference in reward will always be given by $r_p(q^*)$. 
+
+What will now map states from $Q^*_p$ to states reachable from $q$ but by using $\df_p$. We do it by constructing the following assignment $\sigma$.
+Let $Q^\df$ be the states $q'$ such that $\pr^\df(q' \mid q) > 0$. 
+
+Now for each state $q^* \in Q^*_p$, enumerate all distinct paths $\pi = q^*_0,\dots,q_n^*$ such that $q_{i+1}^*$ can be reached from 
+$q_i^*$ in one step, $q = q_0^*$ and $q^* = q_n^*$. For each such path $\pi$, we can associate an $n$-bit string $a_1,\dots,a_n$, 
+where $a_i = 1$ if the action to go from $q_{i-1}^*$ to $q_i^*$ was that player $1$ mined, and $0$ in case the action was that $0$ mined. 
+Next, for each such path $\pi = a_1,\dots,a_n$, let $q_\pi$ be the state given by $q$, followed by a chain of $n$ blocks, where block $i$ is 
+owned by player $a_i$. Then $\sigma(q^*) = \{q_{\pi_1},\dots,q_{\pi_\ell}\}$, where $\pi_1,\dots,\pi_\ell$ is an enumeration of the aforementioned paths. 
+
+It is not hard to verify that $\sigma$ is well defined, and that none of 
+the states in the image of this assignment can be reached from another. 
+
+We then have that 
+$$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \sum_{q' \in \sigma(q^*)} 
+u_p(\df \mid q')  \pr^\df(q' \mid q), $$
+
+and by the same calculation that before, the right hand side of this inequality is 
+$$\sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \sum_{q' \in \sigma(q^*)}  \big(\sum_{j = 0}^\infty \beta^j r_p(q') + u_p(\df \mid \varepsilon)\big) \pr^\df(q' \mid q).$$
+
+The reward for each block in $\sigma(q^*)$ in our case is the number of blocks in $q^*$, which is the maximum reward that a state could give. This means that $r_p(q') \geq r_p(q^*)$ for any state $q' \in \sigma(q^*)$. 
+Furthermore,  by construction we have that 
+$\sum_{q' \in \sigma(q^*)} \pr^\df(q' \mid q) = \pr^s(q^* \mid q)$, and thus 
+$$\sum_{q' \in \sigma(q^*)} \big(\sum_{j = 0}^\infty \beta^j r_p(q') + u_p(\df \mid \varepsilon)\big) \pr^\df(q' \mid q) \geq \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(\df \mid \varepsilon)\big) \pr^s(q^* \mid q).$$ 
+Summing up, we obtain: 
+
+$$u_p( \df \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(\df \mid \varepsilon)\big)  \pr^s(q^* \mid q).$$
+
+Let us now define $\df'_p$ as the strategy that imitates $\df$ until a state in the image of $\sigma(Q^*_p)$ is reached, after which 
+we continue as with $s_p$. Let $s' = (\df_{-p},\df'_p)$. By the same calculations as before, 
+
+$$u_p(s' \mid q) \geq \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} \big(\sum_{j = 0}^\infty \beta^j r_p(q^*) + u_p(s \mid \varepsilon)\big)  \pr^s(q^* \mid q), $$
+and the right hand side of this inequality is precisely $u_p(s \mid q)$. This means that the utility for strategy $\df'_p$ is not lower than the utility of strategy $s_p$, for player $p$, assuming the rest of the players play according to $\df$. 
+
+We can now repeat the same argument we have used but now starting with strategy $\df'_p$, which by our initial assumption must yield 
+a bigger utility than $\df_p$. Note also that $\df_p(q) = \df_p'(q)$. 
+Now, by cutting and pasting $\df'_p$ over and over again using the same argument as before, we end up with the fact that $\df_p$ yields 
+a utility at least as big as $s_p$, which contradicts our initial assumption. 
+
++++ to show: the utility of this sequence converges to the utility of the default strategy +++
+
+
+
+%New idea: for the proof of the other equilibrium, explain that utility of cow covers all cases with positive reward of any other utility forking. 
+%for the equlibrium, we first do utility of doing a strategy over and over again by solving a recurrence relation. That is an over approximation for the utility of a player, see if anything can be done with that (previously we had an under aproximation). Regardless, it is good to calculate the utility of the complete strategy, not just forking once. 
+
+
+
+
+
+\subsection{Combined strategies in Section \ref{sec-dec}}
+In section \ref{sec-dec}, we calculate the utility of the following combined strategies.
+\begin{itemize}
+\item {\bf Fork on the genesis.} In this case, we consider the combined strategy $\fg = (\fg_0, \df_1$, $\ldots$, $\df_{m-1})$, where $\fg_0$ is defined as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_0(q) & = &
+\begin{cases}
+\mine(0,\varepsilon,q) & \text{if } 0 \not\in q\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and } 0 \preceq \bchain(q)\\
+\mine(0,\longest(q,0),q) &  \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+\item {\bf Fork on the genesis with give up time.} Given a natural number $k \geq 1$, in this case, we consider the combined strategy $\fg_k = (\fg_{0,k}, \df_1$, $\ldots$, $\df_{m-1})$, where $\fg_{0,k}$ is defined as follows for a state $q \in \bQ$:
+\begin{eqnarray*}
+\fg_{0,k}(q) & = &
+\begin{cases}
+\mine(0,\varepsilon,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined and } |\bchain(q)| \leq k\\
+\mine(0,b,q) & \text{if } 0 \not\in q,\ \bchain(q) \text{ is defined, } |\bchain(q)| > k \text{ and }\\
+& \hspace{51pt} b \preceq \bchain(q) \text{ such that } |b| = |\bchain(q)|-k+1\\
+\df_0(q) & \text{if } \bchain(q) \text{ is defined and}\\
+& \hspace{9pt} \text{there exists } i \in \{1, \ldots, m\} \text{ such that } \bchain(q)[i] = 0\\
+\mine(0,\longest(q,0),q) &  \text{otherwise}
+\end{cases}
+\end{eqnarray*}
+
+\end{itemize}
+
+\subsection{Aditonal notation}
+
+
 
 
 %\begin{mylem}\label{lem-dist-1}
