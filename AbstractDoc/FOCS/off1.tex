@@ -1,0 +1,23 @@
+%!TEX root = focs.tex
+
+
+\section{Off}
+First notice that if $|longest(q,p)| = |longest(q,1-p)|$ then $meet(q,p) = meet(q,1-p) = meet(q,\bP)$. Moreover if $meet(q,p) \neq meet(q,\bP)$ then $meet(q,p) = longest(q,p) = longest(q)$
+
+Assume that $meet(q,\bP) \neq meet(q,p)$:
+\\Then $meet(q,p) = longest(q)$ therefore by definition there is only one available greedy action for player $p$, therefore $s'_p(q) = s_p(q) = mine(p,longest(q),q)$. 
+
+Assume that $meet(q,\bP) = meet(q,p)$,
+by absurd assume exists $s''_p$ a strategy for player $p$ such that $u_p ((\bs'_{-p},s''_p) \mid q) > u_p(\bs' \mid q)$.
+\\By lemma \ref{lemsup} we have, $u_p((\bs'_{-p},s''_p) \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP))) > 0$. 
+\\As $\subbody(q,meet(q,\bP)) = \subbody(\subbody(q,meet(q,\bP)),\meet(\subbody(q,meet(q,\bP)),p))$ and by definition of $\bs'$ we have $s'_p(\subbody(q,\meet(q,p)) = s_p(\subbody(q,\meet(q,p))$. Hence $u_p((\bs'_{-p},s''_p) \mid \subbody(q,\meet(q,p))) > u_p(\bs \mid \subbody(q,\meet(q,p)))$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium, which is absurd.cp 
+
+\begin{mylem}
+	Let $\bs$ a strategies we have  
+	\begin{eqnarray*}
+		u_p^n(\bs \mid q) & = & u_p^k(\bs \mid q) + \sum_{q' \in \bQ \,:\, q \subseteq q'}^{|q'| = |q|+k} \beta^{|q|+k} \cdot  u_p^{n-k}(\bs \mid q') \cdot \pr^{\bs}(q' \mid q) \\
+	\end{eqnarray*}
+\end{mylem}
+
+
+

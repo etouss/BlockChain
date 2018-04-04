@@ -2,38 +2,193 @@
 
 
 \section{Off}
+\begin{mylem}
+	Let $\bs$ a $\beta$ stationary strategies, then $\bs$ is a $\beta $discounted stationary equilibrium if and only if for every $q$ such that $\pr^{\bs}(q \mid q_0) \neq 0$ and every strategy $s'_p$ we have $u_p(\bs \mid q) \geq u_p((\bs_{-p},s'_p) \mid q)$.
+\end{mylem}
+\begin{proof}
+	Especially $\pr^{\bs}(q_0 \mid q_0) = 1$ therefore for every strategy $s'_p$ we have $u_p(\bs \mid q_0) \geq u_p((\bs_{-p},s'_p) \mid q_0)$ so $\bs$ is a $\beta $discounted stationary equilibrium.
+	
+	Suppose that $\bs$ is a $\beta$ discounted stationary equilibrium and exists $q$ such that $\pr^{\bs}(q \mid q_0) \neq 0$ and a strategy $s'_p$ for which $u_p(\bs \mid q) < u_p((\bs_{-p},s'_p) \mid q)$.
+	Then we build the strategy $s''_p$ such that for each $q'$ if $\pr^{(\bs_{-p},s'_p)}(q' \mid q) \neq 0$ then $s''_p(q') = s'_p(q')$ and $s''_p(q') = s_p(q')$ otherwise. Clearly we have that $u_p(\bs \mid q_0) < u_p((\bs_{-p},s''_p) \mid q_0)$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium.
+\end{proof}
+
 The definition of $meet(q,p)$ has disappear from the paper here is mine :  
 $$\meet(q,p)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid  \text{for every } b' \in \longest(q,p): b \preceq b'\}}$$
 
-Section under construction, mostly to share my preliminary results with you.
-
-\begin{mylem}
-	Let $s = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
-	Then the combined strategy $s'$ such that for any player $p$  and for every $q$ body of knowledge such that $\subbody(q,\meet(q,p)) = q$ then $s'_p(q) = s_p(q)$,
-	and for every pair $q$ and $q'$ of 
-	bodies of knowledge in which $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that 
-	$s'_p(q) = s'_p(q')$ is a $\beta$ discounted stationary equilibrium and $u_p(s \mid q_0) = u_p(s' \mid q_0)$
-\end{mylem}
-\etienne{While formally writing the proof we have some maybe useless but pretty properties over the s' we can build, if s doesnt "directly satisfies" the lemma then s' can be construct using any of the action over all the "equivalent" state, i dont really know how to formally write that down but it is fun. This property also implies that if we are able to show that there exits a dominant strategy for any p over the base cases then there exists also a unique equilibrium over the full game.} 
-
-\begin{proof} 
 For any $q$ body knowledge we denote
-	$meet(q,\bP)$ the value $$\meet(q,\bP)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid \text{for every } p\in \bP \text{ and for every } b' \in \longest(q,p): b \preceq b'\}}$$
-	
+$meet(q,\bP)$ the value $$\meet(q,\bP)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid \text{for every } p\in \bP \text{ and for every } b' \in \longest(q,p): b \preceq b'\}}$$
+
 \begin{mylem}
 	\label{lem-meet}
 	Let $\bs$ greedy stationary strategies. for every pair $q$ and $q'$ of bodies of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ then $meet(q,\bP) \preceq meet(q')$
 \end{mylem}	
 \begin{proof}
-By induction : 
-\\Clearly we have $meet(q,\bP) \preceq meet(q)$.
-\\Assume $q'$ a body of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ and $meet(q,\bP) \preceq meet(q')$. So we also have that $meet(q,\bP) \preceq meet(q',\bP)$. Moreover $\bs$ is a greedy stationary strategies so $meet(q',\bP) \preceq meet(s_p(q')(q'),\bP)$. Hence $meet(q,\bP) \preceq meet(s_p(q')(q'),\bP)$.
-
+	By induction : 
+	\\Clearly we have $meet(q,\bP) \preceq meet(q)$.
+	\\Assume $q'$ a body of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ and $meet(q,\bP) \preceq meet(q')$. So we also have that $meet(q,\bP) \preceq meet(q',\bP)$. Moreover $\bs$ is a greedy stationary strategies so $meet(q',\bP) \preceq meet(s_p(q')(q'),\bP)$. Hence $meet(q,\bP) \preceq meet(s_p(q')(q'),\bP)$.
+	
 \end{proof}
+
+\begin{mylem}
+	Let $\bs$ a strategies we have  
+	\begin{eqnarray*}
+		u_p^n(\bs \mid q) & = & u_p^k(\bs \mid q) + \sum_{q' \in \bQ \,:\, q \subseteq q'}^{|q'| = |q|+k} \beta^{|q|+k} \cdot  u_p^{n-k}(\bs \mid q') \cdot \pr^{\bs}(q' \mid q) \\
+	 \end{eqnarray*}
+\end{mylem}
+\begin{proof}
+	A bit of math i hope it is working (it should)
+\end{proof}
+
+\begin{mylem}
+	Let $\bs = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
+	Then the combined strategy $\bs'$ such that for any player $p$  and for every $q$ body of knowledge such that $\subbody(q,\meet(q,p)) = q$ then $s'_p(q) = s_p(q)$,
+	and for every pair $q$ and $q'$ of 
+	bodies of knowledge in which $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that 
+	$s'_p(q) = s'_p(q')$ is a $\beta$ discounted stationary equilibrium and $u_p(\bs \mid q_0) = u_p(\bs' \mid q_0)$
+\end{mylem}
+\etienne{While formally writing the proof we have some maybe useless but pretty properties over the s' we can build, if s doesnt "directly satisfies" the lemma then s' can be construct using any of the action over all the "equivalent" state, i dont really know how to formally write that down but it is fun. This property also implies that if we are able to show that there exits a dominant strategy for any p over the base cases then there exists also a unique equilibrium over the full game.} 
+
+\begin{proof} 
 	
 \begin{mylem}
+	\label{lemrew}
+	For any player $p$ and any body of knowledge $q$ we have $r_p(s_p(q)(q)) =r_p(s'_p(q)(q))$ and $r_p(s_{1-p}(q)(q)) =r_p(s'_{1-p}(q)(q))$
+\end{mylem}
+\begin{proof}
+	\iffalse	By induction :
+	
+	As for any $p$, $s_p(q_0) = s'_p(q_0)$ we have $r_p(s_p(q_0)(q_0)) =r_p(s'_p(q_0)(q_0))$ and $r_p(s_{1-p}(q_0)(q_0)) =r_p(s'_{1-p}(q_0)(q_0))$.
+	
+	Suppose that there exists $n$ such that for any $q$ with $|q| \leq n$ then $r_p(s_p(q)(q)) =r_p(s'_p(q)(q))$ and $r_p(s_{1-p}(q)(q)) =r_p(s'_{1-p}(q)(q))$
+	\fi
+	
+	Let $a$ a greedy action then
+	\begin{eqnarray*}
+		r_p(a(q)) &= & {\displaystyle c \cdot \sum_{i=1}^{|\meet(a(q))|} \alpha^i \cdot \chi_p(\meet(a(q)),i)} \ \\
+		r_p(a(q)) &= & {\displaystyle c \cdot \sum_{i=1}^{|\meet(q,\bP)|} \alpha^i \cdot \chi_p(\meet(q,\bP),i)} \ \\
+		&&+ {\displaystyle c \cdot \sum_{i=|\meet(q,\bP)|+1}^{|\meet(a(q))|} \alpha^i \cdot \chi_p(meet(a(q)),i)} \ \\
+		r_p(a(q)) &= & r_p(\meet(q,\bP)) \ \\
+		&&+ \alpha^{|\meet(q,\bP)|} \cdot {\displaystyle c \cdot \sum_{i=1}^{|meet(\subbody(a(q),\meet(q,\bP)))|} \alpha^i \cdot \chi_p(meet(\subbody(a(q),\meet(q,\bP))),i)} \ \\
+		r_p(a(q)) &= & r_p(\meet(q,\bP)) + \alpha^{|\meet(q,\bP)|} \cdot r_p(\subbody(a(q),\meet(q,\bP))) \\
+	\end{eqnarray*}
+
+	\begin{mylem}
+		\begin{eqnarray*}
+		\subbody(s'_p(q)(q),\meet(q,\bP)) & = & s'_p(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP))) \\
+		\subbody(s'_{1-p}(q)(q),\meet(q,\bP)) & = & s'_{1-p}(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP))) \\
+		\end{eqnarray*}
+	\end{mylem}
+\begin{proof}
+	Trivial by def of s'
+\end{proof}
+
+Therefore we have :
+\begin{eqnarray*}
+	r_p(s'_p(q)(q)) &= & r_p(\meet(q,\bP)) + \alpha^{|\meet(q,\bP)|} \cdot r_p(s'_p(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP)))) \\
+	r_p(s'_p(q)(q)) &= & r_p(\meet(q,\bP)) + \alpha^{|\meet(q,\bP)|} \cdot r_p(s_p(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP)))) \\
+\end{eqnarray*}
+
+\begin{mylem}
+	\begin{eqnarray*}
+	r_p(s_p(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP)))) &=& r_p(\subbody(s_p(q)(q),\meet(q,\bP)))\\
+	r_p(s_{1-p}(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP)))) &=& r_p(\subbody(s_{1-p}(q)(q),\meet(q,\bP)))\\
+\end{eqnarray*}
+\end{mylem}
+\begin{proof}
+	Notice that for any $q$, $r_p(q) + r_{1-p}(q) = C \cdot |meet(q)|$, therefore we only have to demonstrate that $r_p(s_p(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP)))) = r_p(\subbody(s_p(q)(q),\meet(q,\bP)))$.
+	
+	If exists $q$ such that $r_p(s_p(\subbody(q,\meet(q,\bP)))(\subbody(q,\meet(q,\bP)))) > r_p(\subbody(s_p(q)(q),\meet(q,\bP)))$ ,
+	consider $s''_p$ such that for any $q' \neq q$, $s''_p(q') = s_p(q)$  and $s''_p(q) = s_p(\subbody(q,\meet(q,\bP))$.
+	
+
+	\begin{eqnarray*}
+		u_p(\bs \mid \subbody(q,\meet(q,\bP)) & = & u_p^{|q|-|\subbody(q,\meet(q,\bP)|}(\bs \mid \subbody(q,\meet(q,\bP)) \\
+		&& + \beta^{|q|} \cdot \sum_{q' \in \bQ \,:\, q_0 \subseteq q}^{|q'| = |q|} u_p(\bs \mid q') \cdot \pr^{\bs}(q' \mid \subbody(q,\meet(q,\bP)) \\ 
+	\end{eqnarray*}
+	\begin{eqnarray*}
+		u_p((\bs_{-p},s''_p) \mid \subbody(q,\meet(q,\bP)) & = & u_p^{|q|-|\subbody(q,\meet(q,\bP)|}((\bs_{-p},s''_p) \mid \subbody(q,\meet(q,\bP)) \\
+		&& + \beta^{|q|} \cdot \sum_{q' \in \bQ \,:\, q_0 \subseteq q}^{|q'| = |q|} u_p((\bs_{-p},s''_p) \mid q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid \subbody(q,\meet(q,\bP)) \\ 
+	\end{eqnarray*}
+\begin{eqnarray*}
+	u_p(\bs \mid \subbody(q,\meet(q,\bP)) - u_p((\bs_{-p},s''_p) \mid \subbody(q,\meet(q,\bP)) & = & u_p(\bs \mid q)- u_p((\bs_{-p},s''_p)  \mid q)\\
+\end{eqnarray*}
+\end{proof}
+	
+	Finnaly we have :
+	\begin{eqnarray*}
+		r_p(s'_p(q)(q)) &= & r_p(\meet(q,\bP)) + \alpha^{|\meet(q,\bP)|} \cdot r_p(s_p(\subbody(q,\meet(q,\bP)))) \\
+		r_p(s'_p(q)(q)) &= & r_p(s_p(q)(q))
+	\end{eqnarray*}
+Similarly we have $r_p(s'_{1-p}(q)(q)) =  r_p(s_{1-p}(q)(q))$
+\end{proof}
+
+By induction we show that for any $q$ and for any $s''_p$ we have $u_p( (\bs_{-p},s''_p) \mid q) = u_p( (\bs'_{-p},s''_p) \mid q)$.
+
+\begin{eqnarray*}
+	u_p^{1}( (\bs_{-p},s''_p) \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q'}^{|q'| \leq |q|+1} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\ 
+	& = &  \beta^{|q|} \cdot  r_p(q) + \sum_{q' \in \bQ \,:\, q \subseteq q'}^{|q'| = |q|+1} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q)\\ 
+	& = & \beta^{|q|} \cdot  r_p(q) + \beta^{|q|+1} \cdot  r_p(s''_p(q)(q)) \cdot h_p + \beta^{|q|+1} \cdot  r_p(s_{1-p}(q)(q)) \cdot h_{1-p}\\
+	& = & \beta^{|q|} \cdot  r_p(q) + \beta^{|q|+1} \cdot  r_p(s''_p(q)(q)) \cdot h_p + \beta^{|q|+1} \cdot  r_p(s'_{1-p}(q)(q)) \cdot h_{1-p} \textit{ by lemma \ref{lemrew}}  \\
+	& = & u_p^{1}( (\bs'_{-p},s''_p) \mid q)
+\end{eqnarray*}
+Suppose there exists $N$ such that for any $n \leq N$ and $q$ we have $u_p^n( (\bs_{-p},s''_p) \mid q) = u_p^n( (\bs'_{-p},s''_p) \mid q)$.
+\begin{eqnarray*}
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q) & = & u_p^1((\bs_{-p},s''_p) \mid q) + \sum_{q' \in \bQ \,:\, q \subseteq q'}^{|q'| = |q|+1} \beta^{|q|+1} \cdot  u_p^{n}((\bs_{-p},s''_p) \mid q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q) & = & u_p^1((\bs_{-p},s''_p) \mid q) \\
+	&& +  \beta^{|q|+1} \cdot  u_p^{n}((\bs_{-p},s''_p) \mid s''_p(q)(q)) \cdot h_p \\
+	&&+ \beta^{|q|+1} \cdot  u_p^{n}((\bs_{-p},s''_p) \mid s_{1-p}(q)(q)) \cdot h_{1-p} \\
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q) & = & u_p^1((\bs'_{-p},s''_p) \mid q) \\
+	&& +  \beta^{|q|+1} \cdot  u_p^{n}((\bs'_{-p},s''_p) \mid s''_p(q)(q)) \cdot h_p \\
+	&&+ \beta^{|q|+1} \cdot  u_p^{n}((\bs'_{-p},s''_p) \mid s_{1-p}(q)(q)) \cdot h_{1-p} \\
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q) & = & u_p^{n+1}( (\bs'_{-p},s''_p) \mid q) \\
+\end{eqnarray*}
+
+
+
+
+\begin{mylem}
 	\label{lemsup}
-	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that $u_p(\bs \mid q) - u_p(\bs' \mid q) > 0 \Rightarrow u_p(\bs \mid \subbody(q,\meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP))) > 0$
+	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that :  $$\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q))  =  u_p(\bs \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP)))$$ 
+\end{mylem}
+
+\end{proof}
+
+\iffalse
+
+\begin{mylem}
+	Let $\bs$ a $\beta$ stationary strategies, then $\bs$ is a $\beta $discounted stationary equilibrium if and only if for every $q$ such that $\pr^{\bs}(q \mid q_0) \neq 0$ and every strategy $s'_p$ we have $u_p(\bs \mid q) \geq u_p((\bs_{-p},s'_p) \mid q)$.
+\end{mylem}
+\begin{proof}
+	Especially $\pr^{\bs}(q_0 \mid q_0) = 1$ therefore for every strategy $s'_p$ we have $u_p(\bs \mid q_0) \geq u_p((\bs_{-p},s'_p) \mid q_0)$ so $\bs$ is a $\beta $discounted stationary equilibrium.
+	
+	Suppose that $\bs$ is a $\beta$ discounted stationary equilibrium and exists $q$ such that $\pr^{\bs}(q \mid q_0) \neq 0$ and a strategy $s'_p$ for which $u_p(\bs \mid q) < u_p((\bs_{-p},s'_p) \mid q)$.
+	Then we build the strategy $s''_p$ such that for each $q'$ if $\pr^{(\bs_{-p},s'_p)}(q' \mid q) \neq 0$ then $s''_p(q') = s'_p(q')$ and $s''_p(q') = s_p(q')$ otherwise. Clearly we have that $u_p(\bs \mid q_0) < u_p((\bs_{-p},s''_p) \mid q_0)$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium.
+\end{proof}
+
+The definition of $meet(q,p)$ has disappear from the paper here is mine :  
+$$\meet(q,p)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid  \text{for every } b' \in \longest(q,p): b \preceq b'\}}$$
+
+Section under construction, mostly to share my preliminary results with you.
+
+For any $q$ body knowledge we denote
+$meet(q,\bP)$ the value $$\meet(q,\bP)  =  {\displaystyle \max_{\preceq} \ \{b \in meet(q) \mid \text{for every } p\in \bP \text{ and for every } b' \in \longest(q,p): b \preceq b'\}}$$
+
+
+
+\begin{mylem}
+	\label{lem-meet}
+	Let $\bs$ greedy stationary strategies. for every pair $q$ and $q'$ of bodies of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ then $meet(q,\bP) \preceq meet(q')$
+\end{mylem}	
+\begin{proof}
+	By induction : 
+	\\Clearly we have $meet(q,\bP) \preceq meet(q)$.
+	\\Assume $q'$ a body of knowledge such that $\pr^{\bs'}(q' \mid q) \neq 0$ and $meet(q,\bP) \preceq meet(q')$. So we also have that $meet(q,\bP) \preceq meet(q',\bP)$. Moreover $\bs$ is a greedy stationary strategies so $meet(q',\bP) \preceq meet(s_p(q')(q'),\bP)$. Hence $meet(q,\bP) \preceq meet(s_p(q')(q'),\bP)$.
+	
+\end{proof}
+
+\begin{mylem}
+	\label{lemsup}
+	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that :  $$\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q))  =  u_p(\bs \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP)))$$ 
 \end{mylem}
 
 \begin{proof}
@@ -43,35 +198,48 @@ By induction :
 		& = & {\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) } \\
 		&&	+ {\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-(|meet(q,\bP)|+1))  }   \\
 	\end{eqnarray*}
-Hence 
+	Hence 
 	\begin{eqnarray*}
 		u_p(\bs \mid q)& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{\bs}(q' \mid q) \\ 
 		& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \cdot \pr^{\bs}(q' \mid q) \\
 		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\
 	\end{eqnarray*}
-Moreover $$ \sum_{q' \in \bQ \,:\, q \subseteq q \,:\, |q'| =k}  \pr^{\bs}(q' \mid q) = 1$$
-So 
+	Moreover $$ \sum_{q' \in \bQ \,:\, q \subseteq q \,:\, |q'| =k}  \pr^{\bs}(q' \mid q) = 1$$
+	So 
 	\begin{eqnarray*}
 		u_p(\bs \mid q) & = & \sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
 		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\
 	\end{eqnarray*}
-
-Therefore
-\begin{eqnarray*}
-	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & [\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
-	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) ]\\ 
-	&- &[\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
-	&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs'}(q' \mid q) ]\\ 
-	u_p(\bs \mid q) - u_p(\bs' \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
-	& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs'}(q' \mid q) \\
-\end{eqnarray*}
-Clearly we have $|meet(q')| = |meet(q,\bP)| + |\subbody(\meet(q'),\meet(q,\bP))| $ hence 
-\begin{eqnarray*}
-	 \alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
-	& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs'}(q' \mid q) \\
-	\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & u_p(\bs \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP))) \\
-\end{eqnarray*}
+	
+	Therefore
+	\begin{eqnarray*}
+		u_p(\bs \mid q) - u_p(\bs' \mid q) & = & [\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) ]\\ 
+		&- &[\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs'}(q' \mid q) ]\\ 
+		u_p(\bs \mid q) - u_p(\bs' \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+		& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs'}(q' \mid q) \\
+	\end{eqnarray*}
+	Clearly we have $|meet(q')| = |meet(q,\bP)| + |\subbody(\meet(q'),\meet(q,\bP))| $ hence 
+	\begin{eqnarray*}
+		\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+		& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs'}(q' \mid q) \\
+		\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & u_p(\bs \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP))) \\
+	\end{eqnarray*}
 \end{proof}
+\fi
+
+	
+
+\iffalse
+Suppose there exists $n$ such that $u_p^n( (\bs_{-p},s''_p) \mid q_0) = u_p^n( (\bs'_{-p},s''_p) \mid q_0)$. 
+\begin{eqnarray*}
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q_0) & = & \sum_{q' \in \bQ \,:\, q \subseteq q}^{|q'| \leq n+1} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\ 
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q_0) & = & \sum_{q' \in \bQ \,:\, q \subseteq q}^{|q'| \leq n } \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\
+	&& +   \sum_{q' \in \bQ \,:\, q \subseteq q}^{|q'| = n+1 } \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q_0) & = & u_p^{n}( (\bs_{-p},s''_p) +   \sum_{q' \in \bQ \,:\, q \subseteq q}^{|q'| = n+1 } \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\
+	u_p^{n+1}( (\bs_{-p},s''_p) \mid q_0) & = & u_p^{n}( (\bs'_{-p},s''_p) +   \sum_{q' \in \bQ \,:\, q \subseteq q}^{|q'| = n+1 } \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{(\bs_{-p},s''_p)}(q' \mid q) \\
+\end{eqnarray*}
 
 First notice that if $|longest(q,p)| = |longest(q,1-p)|$ then $meet(q,p) = meet(q,1-p) = meet(q,\bP)$. Moreover if $meet(q,p) \neq meet(q,\bP)$ then $meet(q,p) = longest(q,p) = longest(q)$
 
@@ -79,87 +247,18 @@ Assume that $meet(q,\bP) \neq meet(q,p)$:
 \\Then $meet(q,p) = longest(q)$ therefore by definition there is only one available greedy action for player $p$, therefore $s'_p(q) = s_p(q) = mine(p,longest(q),q)$. 
 
 Assume that $meet(q,\bP) = meet(q,p)$,
-by absurd assume exists $s''_p$ a strategy for player $p$ and exists $q$ a $q$ body of knowledge such that $u_p ((\bs'_{-p},s''_p) \mid q) > u_p(\bs' \mid q)$.
+by absurd assume exists $s''_p$ a strategy for player $p$ such that $u_p ((\bs'_{-p},s''_p) \mid q) > u_p(\bs' \mid q)$.
 \\By lemma \ref{lemsup} we have, $u_p((\bs'_{-p},s''_p) \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP))) > 0$. 
-\\Then $\subbody(q,meet(q,\bP)) = \subbody(\subbody(q,meet(q,\bP)),\meet(\subbody(q,meet(q,\bP)),p))$ and by definition of $\bs'$ we have $s'_p(\subbody(q,\meet(q,p)) = s'_p(\subbody(q,\meet(q,p))$. Hence $u_p((\bs'_{-p},s''_p) \mid \subbody(q,\meet(q,p))) > u_p(\bs \mid \subbody(q,\meet(q,p)))$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium, which is absurd.
-
-
-
-	
-\iffalse	
-	Let $\bs = (s_1,s_2)$ a combined greedy strategy. 
-	Let $q$ a state, such that $\pr^{\bs}(q \mid q_0) \neq 0$. 
-	Then either $\subbody(q,\mid(q,p_1)) \subseteq \subbody(q,\mid(q,p_2))$ or $\subbody(q,\mid(q,p_2)) \subseteq \subbody(q,\mid(q,p_1))$ by definition of $\mid(q,p)$.
-	
-	Then we  can define $q_{max} = \underset{p \in \{p_1,p_2\}}{max}\subbody(q,\mid(q,p))$
-	
-	We also define $b^q_{min} = max\{b \mid b \textit{ strict prefix} \mid(q,p_1) \land b \textit{ strict prefix} \mid(q,p_2) \}$
-	
-	Note that $longest(q) = b^q_{min}.longest(q_{max})$
-	
-	\begin{mylem}
-	Let $q'$ a state, such that $\pr^{\bs}(q' \mid q) \neq 0$. 
-	Then  $\forall b \in longest(q'), b^q_{min} \textit{ prefix of } b$
-	\end{mylem}
-	\begin{proof}
-		by induction : 
-		We just have to prove : 
-		\begin{itemize}
-		\item $\forall b \in longest(s_1(q)), b^q_{min} \textit{ prefix of } b $
-		\item $\forall b \in longest(s_2(q)), b^q_{min} \textit{ prefix of } b $
-		\end{itemize}
-	Which is trivial as $s_1$ and $s_2$ are greedy.
-	\end{proof}
-
-Especially the previous lemma means that $\forall q'$ such that $\pr^{\bs}(q' \mid q) \neq 0$ and $bc(q')$ is defined then $b^q_{min}$ is a prefix of $bc(q')$
-
-
-\etienne{Here it is not true yet because of the definition of reward i will fix it later, but i need to move on for now and the logic behind is the same it just simplified notation and cases. (I dont care about d-delayed and stuff)}
+\\As $\subbody(q,meet(q,\bP)) = \subbody(\subbody(q,meet(q,\bP)),\meet(\subbody(q,meet(q,\bP)),p))$ and by definition of $\bs'$ we have $s'_p(\subbody(q,\meet(q,p)) = s_p(\subbody(q,\meet(q,p))$. Hence $u_p((\bs'_{-p},s''_p) \mid \subbody(q,\meet(q,p))) > u_p(\bs \mid \subbody(q,\meet(q,p)))$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium, which is absurd.
 
 \begin{mylem}
-	Let $q'$ a state, such that $\pr^{\bs}(q' \mid q) \neq 0$, let $b$ such that $bc(q') = b^q_{min}.b$ ($b$ exists by previous lemma.) then there exits a function $f_{b^q_{min}}$ such that :
-	Then  $$r_p(q') = r_p(b^q_{min}) + f_{b^q_{min}}(r_p(b))$$
+	Let $\bs = (s_1,s_2)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players.  And $\bs' = (s'_1,s'_2)$ greedy strategies. Such that for any $p$, 
+	$u_p((s'_1,s_2) \mid q_0) = u_p((s_1,s_2) \mid q_0)$ and $u_p((s_1,s'_2) \mid q_0) = u_p((s_1,s_2) \mid q_0)$ then $\bs'$ is a $\beta$ discounted stationary equilibrium and for any $p$, $u_p(\bs \mid q_0) = u_p(\bs' \mid q_0)$.
 \end{mylem}
 \begin{proof}
-	I have to consider every reward for instance:  $\alpha$ discounted reward: 
-	$r_p(q') = r_p(b^q_{min}) + \alpha^{|b^q_{min}|}r_p(b)$
+	By absurd assume exists $s''_1$ a strategy  such that $u_1((s''_1,s'_2) \mid q_0) > u_1((s'_1,s'_2) \mid q_0)$. As $\bs$ is a  $\beta$ discounted stationary equilibrium, we have $u_1((s_1,s_2)\mid q_0) \geq u_1((s''_1,s_2)\mid q_0)$. Moreover over as $u_1((s_1,s_2)\mid q_0) = u_1((s_1,s'_2)\mid q_0)$ we have, $u_1((s_1,s'_2)\mid q_0) \geq u_1((s''_1,s_2)\mid q_0)$
 \end{proof}
-
-Moreover
-\begin{eqnarray*}
-	u_p(\bs \mid q) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}} r_p(q') \cdot 
-	\pr^{\bs}(q' \mid q)\bigg)
-\end{eqnarray*}
-
-By the two previous lemma (as either $\pr^{\bs}(q' \mid q) = 0$ or true) 
-
-\begin{eqnarray*}
-	u_p(\bs \mid q) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}} [r_p(b^q_{min}) + f_{b^q_{min}}(r_p(b))] \cdot 
-	\pr^{\bs}(q' \mid q)\bigg) \\ 
-	& = & \sum_{i=0}^{\infty}\beta^{i} \cdot  r_p(b^q_{min})  \\ 
-	&&+ \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}}  f_{b^q_{min}}(r_p(b)) \cdot 
-	\pr^{\bs}(q' \mid q)\bigg) \\ 
-\end{eqnarray*}
-
-Let $\bs' = (s_1',s_2')$ a combined greedy strategy. 
-Then 
-
-\begin{eqnarray*}
-	u_p(\bs \mid q) - u_p(\bs' \mid q)& = & \sum_{i=0}^{\infty}\beta^{i} \cdot  r_p(b^q_{min})  \\ 
-	&&+ \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}}  f_{b^q_{min}}(r_p(b)) \cdot 
-	\pr^{\bs}(q' \mid q)\bigg) \\ 
-	&& -  \sum_{i=0}^{\infty}\beta^{i} \cdot  r_p(b^q_{min})  \\ 
-	&& - \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}}  f_{b^q_{min}}(r_p(b)) \cdot 
-	\pr^{\bs'}(q' \mid q)\bigg) \\ 	
-	& = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i}} f_{b^q_{min}}(r_p(b)) \cdot 
-	[\pr^{\bs}(q' \mid q)-\pr^{\bs'}(q' \mid q)]\bigg) \\
-\end{eqnarray*}
-
-And it is done ! (As the difference of utility doesn't rely on the state before $b^q_{min}$ and by definition we have : 
-$q'_{max} = q_{max} \Rightarrow s_p(q) = s_p(q')$. Which is not exactly the lemma but by application of greedy actions rule we obtain it.
 \fi
-\end{proof}
-
 \iffalse
 \etienne{What i am currently working on : }
 \begin{myprop}

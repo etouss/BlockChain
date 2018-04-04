@@ -1,0 +1,242 @@
+%!TEX root = focs.tex
+
+
+\section{Off}
+
+\begin{myprop}
+	Let $\bs = (s_0,s_1)$ be a $\beta$ discounted stationary equilibrium in an infinite mining game with two players. 
+	Let $s^q_0$ a greedy strategy such that for any $q' \neq q$, $s^q_0(q') = s_0(q')$, and $s^q_0(q) = meet(q,\bP) . s_0(base(q))$
+	Let $s^{-q}_0$ a greedy strategy such that for any $q' \neq base(q)$, $s^{-q}_0(q') = s_0(q')$, and $meet(q,\bP).s^{-q}_0(base(q)) =  s_0(q)-$
+	Then the combined strategies $\bs^q = (s^q_0,s_1)'$ and $\bs^{-q} = (s^q_0,s_1)'$  are $\beta$ discounted stationary equilibriums.
+\end{myprop}
+
+\begin{proof}
+	
+\begin{mylem}
+	\label{lemsup}
+	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that :  $$(u_p(\bs \mid q) > u_p(\bs' \mid q))  \Leftrightarrow  u_p(\bs \mid base(q)) > u_p(\bs' \mid base(q))$$ 
+\end{mylem}
+\begin{proof}
+\end{proof}	
+	
+If $s^q_0 = s_0$ and  $s^{-q}_0 = s_0$ it is trivial.
+
+For now on assume $s^q_0 \neq s_0$ and $s^{-q}_0 \neq s_0$ then $s_0(q) \neq meet(q,\bP) . s_0(base(q))$ so we have :
+\begin{itemize}
+	\item $meet(q,\bP) \neq \varepsilon$ otherwise $base(q) = q$
+	\item $longest(q,p) \notin longest(q)$ otherwise there is only one greedy action available.
+	\item for any $\sigma_1$ greedy strategy, $\sigma_1(q) = longest(q,p)\in longest(p)$ 
+	\item for any $\sigma_1$ greedy strategy, $\sigma_1(q) =  longest(q,p)\in longest(q)$ 
+	%\item for any $\sigma_1$ greedy strategy, $\sigma_1(q) = \sigma_1(s_0^q(q)) =  \sigma_1(s_0(q)) = longest(q,p)\in longest(q)$ 
+\end{itemize}
+
+
+\begin{mylem}
+	\label{lemintermediary}
+	For any strategy $\sigma_1$ :
+	\\$u_p((s^q_0,\sigma_1) \mid q_0) = u_p((s_0,\sigma_1) \mid q_0)$ if and only if:
+	$$u_p((s_0,\sigma_1) \mid s_0(q)) = u_p((s_0,\sigma_1) \mid s^p_0(q))$$ 
+	$u_p((s^{-q}_0,\sigma_1) \mid q_0) = u_p((s_0,\sigma_1) \mid q_0)$ if and only if:
+	$$u_p((s_0,\sigma_1) \mid s_0(base(q))) = u_p((s_0,\sigma_1) \mid s^{-p}_0(base(q)))]$$ 
+\end{mylem}
+
+\begin{proof}
+	\begin{eqnarray*}
+		u_p((s^{q}_0,\sigma_1)\mid q_0) & = & u_p^{|q|}((s^{q}_0,\sigma_1)\mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s^{q}_0,\sigma_1) \mid q') \cdot \pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) \\
+	\end{eqnarray*}
+	By definition of $s^{q}_0$, for any $q'\in \bQ$ such that $|q'| \leq |q|$ and for any $\sigma_1$:
+	\begin{eqnarray*}
+		u_p^{|q'|}((s^{q}_0,\sigma_1) \mid q_0) & = & u_p^{|q'|}((s_0,\sigma_1) \mid q_0) \\ 
+		\pr^{(s^{q}_0,\sigma_1)}(q' \mid q_0) & = & \pr^{(s_0,\sigma_1)}(q' \mid q_0)
+	\end{eqnarray*}
+	And for any $q'\in \bQ$ such that $|q'| = |q|$ and $q \neq q'$:
+	\begin{eqnarray*}
+		u_p(s^{q}_0,\sigma_1) \mid q') & = & u_p((s_0,\sigma_1) \mid q') \\ 
+	\end{eqnarray*}
+	Therefore : 
+	\begin{eqnarray*}
+		u_p((s_0,\sigma_1) \mid q_0) =  u_p((s^p_0,\sigma_1) \mid q_0) & \Leftrightarrow & u_p((s_0,\sigma_1) \mid q) =  u_p((s^p_0,\sigma_1) \mid q)
+	\end{eqnarray*}
+	
+	By definition of $s^{q}_0$, for any $q'\in \bQ$ such that $|q'| > |q|$ we have:
+	\begin{eqnarray*}
+		u_p((s^{q}_0,\sigma_1) \mid q') & = & u_p((s_0,s_1) \mid q') \\ 
+	\end{eqnarray*}
+	
+	Therefore
+	\begin{eqnarray*}
+		u_p((s_0,\sigma_1) \mid q_0) =  u_p((s^p_0,\sigma_1) \mid q_0) & \Leftrightarrow & u_p((s_0,\sigma_1) \mid q) =  u_p((s^p_0,\sigma_1) \mid q) \\
+		 & \Leftrightarrow &  u_p((s_0,\sigma_1) \mid s_0(q)) = u_p((s^p_0,\sigma_1) \mid s^p_0(q))\\ 
+		& \Leftrightarrow & u_p((s_0,\sigma_1) \mid s_0(q)) = u_p((s_0,\sigma_1) \mid s^p_0(q)) \\ 
+	\end{eqnarray*}
+	Similary we have : 
+	\begin{eqnarray*}
+		u_p((s_0,\sigma_1) \mid q_0) =  u_p((s^{-p}_0,\sigma_1) \mid q_0) 
+		& \Leftrightarrow &  u_p((s_0,\sigma_1) \mid s_0(base(q))) = u_p((s_0,\sigma_1) \mid s^{-p}_0(base(q))) \\ 
+	\end{eqnarray*}
+\end{proof}
+
+
+	
+
+
+\textbf{ Part 1 : For any strategy $\sigma_0$,  $$u_0((s^q_0,s_1) \mid q_0) = u_0((s^{-q}_0,s_1) \mid q_0) = u_0((s_0,s_1) \mid q_0) \geq u_0((\sigma_0,s_1) \mid q_0)$$ }\
+
+\begin{mylem}
+	We have $\bs$ a $\beta$ discounted stationary equilibrium only if :
+	\begin{eqnarray*}
+		u_0((s_0,s_1) \mid s_0(q)) & \geq & u_0((s_0,s_1) \mid s^p_0(q))\\ 
+		u_0((s_0,s_1) \mid s_0(base(q))) & \geq & u_0((s_0,s_1) \mid s^{-p}_0(base(q))) \\ 
+	\end{eqnarray*}
+\end{mylem}
+\begin{proof}
+	
+	Assume $u_0((s_0,s_1) \mid s_0(q))  <  u_0((s_0,s_1) \mid s^p_0(q))$,
+	then  $u_0((s_0,s_1) \mid q_0) < u_0((s^p_0,s_1) \mid q_0)$.
+	\\Assume $u_0((s_0,s_1) \mid s_0(base(q))) < u_0((s_0,s_1) \mid s^{-p}_0(base(q)))$,
+	then  $u_0((s_0,s_1) \mid q_0) < u_0((s^{-p}_0,s_1) \mid q_0)$.
+	
+\end{proof}
+
+	
+
+Assume $u_0((s_0,s_1) \mid s_0(q)) > u_0((s_0,s_1) \mid s^p_0(q)) $ then :
+\begin{eqnarray*}
+u_0((s_0,s_1) \mid s_0(q)) &>& u_0((s_0,s_1) \mid s^p_0(q)) \\
+u_0((s_0,s_1) \mid s^{-q}_0(q)) &>&  u_0((s_0,s_1) \mid s^p_0(q)) \\
+u_0((s_0,s_1) \mid meet(q,\bP).s^{-q}_0(base(q))) &>& u_0((s_0,s_1) \mid meet(q,\bP) . s_0(base(q))) \\
+\end{eqnarray*}
+by lemma \ref{lemsup} we have : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid base(meet(q,\bP).s^{-q}_0(base(q)))) &>& u_0((s_0,s_1) \mid base(meet(q,\bP) . s_0(base(q)))) \\
+	u_0((s_0,s_1) \mid base(s^{-q}_0(base(q)))) &>& u_0((s_0,s_1) \mid base(s_0(base(q)))) \\
+\end{eqnarray*}
+by lemma \ref{lemsup} we have : 
+\begin{eqnarray*}
+	u_0((s_0,s_1) \mid s^{-q}_0(base(q))) &>& u_0((s_0,s_1) \mid s_0(base(q))) \\
+\end{eqnarray*}
+Therefore by lemma \ref{lemintermediary}, $\bs$ can not be a $\beta$ discounted stationary equilibrium, which is absurd. 
+
+Hence $u_0((s^{-q}_0,s_1) \mid q_0) = u_0((s_0,s_1) \mid q_0)$ similarly we have $u_0((s^q_0,s_1) \mid q_0) = u_0((s_0,s_1) \mid q_0)$.
+
+So for any strategy $\sigma_0$,  $$u_0((s^q_0,s_1) \mid q_0) = u_0((s^{-q}_0,s_1) \mid q_0) = u_0((s_0,s_1) \mid q_0) \geq u_0((\sigma_0,s_1) \mid q_0)$$ 
+
+
+\textbf{ Part 2 : }
+
+\begin{mylem}
+	Let $\bs$ a $\beta$ stationary strategies, then $\bs$ is a $\beta $discounted stationary equilibrium if and only if for every $q$ such that $\pr^{\bs}(q \mid q_0) \neq 0$ and every strategy $s'_p$ we have $u_p(\bs \mid q) \geq u_p((\bs_{-p},s'_p) \mid q)$.
+\end{mylem}
+\begin{proof}
+	Especially $\pr^{\bs}(q_0 \mid q_0) = 1$ therefore for every strategy $s'_p$ we have $u_p(\bs \mid q_0) \geq u_p((\bs_{-p},s'_p) \mid q_0)$ so $\bs$ is a $\beta$ discounted stationary equilibrium.
+	
+	Suppose that $\bs$ is a $\beta$ discounted stationary equilibrium and exists $q$ such that $\pr^{\bs}(q \mid q_0) \neq 0$ and a strategy $s'_p$ for which $u_p(\bs \mid q) < u_p((\bs_{-p},s'_p) \mid q)$.
+	Then we build the strategy $s''_p$ such that for each $q'$ if $\pr^{(\bs_{-p},s'_p)}(q' \mid q) \neq 0$ then $s''_p(q') = s'_p(q')$ and $s''_p(q') = s_p(q')$ otherwise. Clearly we have that $u_p(\bs \mid q_0) < u_p((\bs_{-p},s''_p) \mid q_0)$ therefore $\bs$ is not a $\beta$ discounted stationary equilibrium.
+\end{proof}
+
+
+For now on assume $\sigma_1$ a \textbf{GREEDY} strategy such that : $$u_1((s^{q}_0,\sigma_1) \mid q_0) >  u_1((s^{q}_0,s_1) \mid q_0)$$
+\begin{mylem}
+	\label{lemq}
+	For any $q'$ such that $|q'| \geq |q|$, 
+	$$u_1((s^{q}_0,\sigma_1) \mid q') \leq  u_1((s^{q}_0,s_1) \mid q')$$
+\end{mylem}
+\begin{proof}
+
+Suppose there exists $q'$ such that $|q'| \geq |q|$ and $q' \neq q$ where $$u_1((s^{q}_0,\sigma_1) \mid q') >  u_1((s^{q}_0,s_1) \mid q')$$
+Therefore 
+$$u_1((s^{q}_0,\sigma_1) \mid q') =  u_1((s_0,\sigma_1) \mid q') >  u_1((s^{q}_0,s_1) \mid q') = u_1((s_0,s_1) \mid q')$$ which is absurd. 
+
+Hence for any $q'$ such that $|q'| \geq |q|$ and $q' \neq q$ : $$u_1((s^{q}_0,\sigma_1) \mid q') \leq  u_1((s^{q}_0,s_1) \mid q')$$ \label{result}
+
+Suppose  $$u_1((s^{q}_0,\sigma_1) \mid q) >  u_1((s^{q}_0,s_1) \mid q)$$
+\begin{eqnarray*}
+	u_1((s^{q}_0,\sigma_1) \mid q) & > & u_1((s^{q}_0,s_1) \mid q) \\ 
+	u_1((s^{q}_0,\sigma_1) \mid s^{q}_0(q))\cdot h_0 + u_1((s^{q}_0,\sigma_1) \mid \sigma_1(q))\cdot h_1&  > & u_1((s^{q}_0,s_1) \mid s^{q}_0(q))\cdot h_0 + u_1((s^{q}_0,s_1) \mid s_1(q))\cdot h_1 \\
+	h_0\cdot [u_1((s^{q}_0,\sigma_1) \mid s^{q}_0(q)) - u_1((s^{q}_0,s_1) \mid s^{q}_0(q)) ] &  > & h_1 \cdot  [u_1((s^{q}_0,s_1) \mid s_1(q))- u_1((s^{q}_0,\sigma_1) \mid \sigma_1(q)) ] \\
+\end{eqnarray*}
+Therefore by previous result \ref{result} : 
+\begin{eqnarray*}
+	u_1((s^{q}_0,\sigma_1) \mid \sigma_1(q)) &  > & u_1((s^{q}_0,s_1) \mid s_1(q)) \\
+	u_1((s_0,\sigma_1) \mid \sigma_1(q)) &  > & u_1((s_0,s_1) \mid s_1(q)) \\
+\end{eqnarray*}
+But as $\sigma_1$ and $s_1$ are greedy, $\sigma_1(q) = s_1(q)$.
+So $ u_1((s_0,\sigma_1) \mid s_1(q))  >  u_1((s_0,s_1) \mid s_1(q)) \\ $ which is absurd by previous  \ref{result}.
+\end{proof}
+Let $\sigma_1'$ a greedy strategy such that for any $q'$  if  $|q'| < |q|$ then $\sigma_1'(q') = \sigma_1(q')$ and $\sigma'_1(q') = s_1(q') $ otherwise.
+
+
+\end{proof}
+
+
+\begin{eqnarray*}
+	u_1((s^{q}_0,\sigma_1) \mid q) \leq  u_1((s^{q}_0,s_1) \mid q) & \Leftrightarrow & u_1((s^{q}_0,\sigma_1) \mid base(q)) \leq  u_1((s^{q}_0,s_1) \mid base(q)) \\
+\end{eqnarray*}
+
+$$u_1((s^{q}_0,\sigma_1) \mid q_0) >  u_1((s^{q}_0,s_1) \mid q_0)$$
+
+
+\begin{proof}
+	By lemma \ref{lem-meet} we have $meet(q,\bP) \preceq meet(q')$ therefore
+	\begin{eqnarray*}
+		r_p(q') & = &{\displaystyle c \cdot \sum_{i=1}^{|\meet(q')|} \alpha^i \cdot \chi_p(\meet(q'),i)} \\
+		& = & {\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) } \\
+		&&	+ {\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-(|meet(q,\bP)|+1))  }   \\
+	\end{eqnarray*}
+	Hence 
+	\begin{eqnarray*}
+		u_p(\bs \mid q)& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  r_p(q') \cdot \pr^{\bs}(q' \mid q) \\ 
+		& = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \cdot \pr^{\bs}(q' \mid q) \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\
+	\end{eqnarray*}
+	Moreover $$ \sum_{q' \in \bQ \,:\, q \subseteq q \,:\, |q'| =k}  \pr^{\bs}(q' \mid q) = 1$$
+	So 
+	\begin{eqnarray*}
+		u_p(\bs \mid q) & = & \sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\
+	\end{eqnarray*}
+	
+	Therefore
+	\begin{eqnarray*}
+		u_p(\bs \mid q) - u_p(\bs' \mid q) & = & [\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) ]\\ 
+		&- &[\sum_{k = |q|}^{\infty} \beta^{k} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|meet(q,\bP)|} \alpha^i \cdot \chi_p(meet(q,\bP),i) }] \\
+		&+ & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs'}(q' \mid q) ]\\ 
+		u_p(\bs \mid q) - u_p(\bs' \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i)} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+		& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=|meet(q,\bP)|+1}^{|\meet(q')|} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i-|meet(q,\bP)|)  }] \cdot \pr^{\bs'}(q' \mid q) \\
+	\end{eqnarray*}
+	Clearly we have $|meet(q')| = |meet(q,\bP)| + |\subbody(\meet(q'),\meet(q,\bP))| $ hence 
+	\begin{eqnarray*}
+		\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs}(q' \mid q) \\ 
+		& - & \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs'}(q' \mid q) \\
+		\alpha^{|meet(q,\bP)|} (u_p(\bs \mid q) - u_p(\bs' \mid q)) & = & u_p(\bs \mid \subbody(q,meet(q,\bP))) - u_p(\bs' \mid \subbody(q,meet(q,\bP))) \\
+	\end{eqnarray*}
+
+$$ \sum_{q' \in \bQ \,:\, q \subseteq q} \beta^{|q'|} \cdot  [{\displaystyle c \cdot \sum_{i=1}^{|\subbody(\meet(q'),meet(q,\bP))} \alpha^{i} \cdot \chi_p(\subbody(\meet(q'),meet(q,\bP)),i)  }] \cdot \pr^{\bs'}(q' \mid q) \\$$
+\end{proof}
+
+
+\begin{mylem}
+	\label{lemsup}
+	Let $\bs, \bs'$ greedy stationary strategies. Then for any player $p$ and for every $q$ body of knowledge we have that :  $$(u_p(\bs \mid q) > u_p(\bs' \mid q))  \Leftrightarrow  u_p(\bs \mid base(q)) > u_p(\bs' \mid base(q))$$ 
+\end{mylem}
+
+
+\iffalse
+
+\begin{eqnarray*}
+	u_1((s_0,s_1) \mid q_0) & \geq & u_1((s_0,\sigma_1') \mid q_0) \\
+	u_1^{|q|}((s_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0,s_1) \mid q') \cdot \pr^{(s_0,s_1)}(q' \mid q_0) & \geq & u_1^{|q|}((s_0,\sigma_1') \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0,\sigma_1') \mid q') \cdot \pr^{(s_0,\sigma_1')}(q' \mid q_0)\\
+	u_1^{|q|}((s_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0,s_1) \mid q') \cdot \pr^{(s_0,s_1)}(q' \mid q_0) & \geq & u_1^{|q|}((s_0,\sigma_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0,s_1) \mid q') \cdot \pr^{(s_0,\sigma_1)}(q' \mid q_0)\\
+	u_1^{|q|}((s_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0,s_1) \mid q') \cdot \pr^{(s_0,s_1)}(q' \mid q_0) & \geq & u_1^{|q|}((s_0^q,\sigma_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0^q,s_1) \mid q') \cdot \pr^{(s_0^q,\sigma_1)}(q' \mid q_0)\\
+\end{eqnarray*}
+By lemma \ref{lemq}
+\begin{eqnarray*}
+	u_1^{|q|}((s_0,s_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0,s_1) \mid q') \cdot \pr^{(s_0,s_1)}(q' \mid q_0) & \geq & u_1^{|q|}((s_0^q,\sigma_1) \mid q_0) + \beta^{|q|} \sum_{q_0 \subseteq q'}^{|q'|=|q|} u_p((s_0^q,\sigma_1) \mid q') \cdot \pr^{(s_0^q,\sigma_1)}(q' \mid q_0)\\
+	u_1((s_0,s_1) \mid q_0) & \geq & u_1((s_0^q,\sigma_1) \mid q_0) \\
+\end{eqnarray*}
+
+
+\fi
+
+

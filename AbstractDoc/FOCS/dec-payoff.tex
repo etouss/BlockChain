@@ -3,67 +3,132 @@
 \section{Decreasing Payoff}
 \label{sec-dec}
 
-While interesting, readers could argue that the payoff function considered before is not completely modelling bitcoin, because in bitcoin 
-the reward given for mining blocks is reduced by half every 200.000 blocks or so. Thus the natural question, do the results above continue to hold under these 
-circumstances? Our answer is a resounding no, and now forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
+%While interesting, readers could argue that the payoff function considered before is not completely modelling bitcoin, because in bitcoin 
+%the reward given for mining blocks is reduced by half every 200.000 blocks or so. Thus the natural question, do the results above continue to hold under these 
+%circumstances? Our answer is a resounding no, and now forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
 
-For simplicity, we model the diminishing rewards in bitcoin as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
-we use the following pay-off function $r_p$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
+While interesting, readers could argue that the constant reward considered in the previous section is not a faithful model of the Bitcoin protocol, where the reward diminishes over time. Thus, it is natural to ask whether  mining on top of the existing blockchain continues to be an  optimal strategy under these 
+circumstances? Our answer is a resounding no, and as we show in this section, when the reward decreases over time, forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
+
+For simplicity, we model the diminishing rewards in Bitcoin as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
+we use the following pay-off function $\rpa$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
 \begin{eqnarray*}
-r_p(q) & = & 
+\rpa(q) & = & 
 {\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\meet(q),i)} \end{eqnarray*}
-where $c$ is a positive real number and $\alpha \in (0,1]$.
+where $c$ is a positive real number and $\alpha \in (0,1]$. Notice that in the case of Bitcoin, $\alpha$ has to make the reward halve approximately every 200.000 blocks, and is therefore very close to 1.
 
-\medskip
+%\medskip
+%
+%(say that the approach we use is the same as above: we consider a two player game and group a bunch of well behaved players 
+%into a single player. Also state that the subtree lemma holds also for this payoff)
 
-(say that the approach we use is the same as above: we consider a two player game and group a bunch of well behaved players 
-into a single player. Also state that the subtree lemma holds also for this payoff)
-
-\subsection{When is forking a good strategy}
+\subsection{When is forking a good strategy?}
 \label{sec-forkingstrategies}
-(probably say this is a very interesting open question in the literature). 
 
-In order to understand when forking could be a good strategy, let us consider again the two player game in which player $p$ has just mined a block in the blockchain. 
-Now, if player $(1-p)$ wins the next block, player $p$ faces two different options. She could continue mining on the blockchain, playing according to $\df$, or she 
-could fork, mining instead upon her previously won block. Which strategy is better? To answer this question, we need to calculate the utility in both cases. For 
-simplicity, and without loss of generality (due to Lemma [?]), we will focus on this question when the game is just starting, in the genesis block, and we will assume that 
-player $p$ resumes the default strategy (mining upon the blockchain) as soon as she wins the fork. 
+To calculate when forking is a viable option, we will consider a scenario when one of our $m$ players is trying to deviate from the default strategy, while the remaining players all follow the default strategy. This is similar the question a miner with a lot of hash power is likely to ask, sine she would like to determine whether it suites her to try and force a fork in order to own more blocks in the new blockchain. Notice that in this case we can reduce the $m$ player game to a two player game, where all the players following the default strategy are represented by the single player with the behaving as the protocol dictates. Therefore  in this section we will consider that the mining game is played by two players 0 and 1, where 0 represents the miners behaving according to the default strategy, and 1 the miner trying to determine whether doing a fork is more economically viable than mining on the existing blockchain. In what follows we will assume that the player 1 has hash power $h$, while 0 has hash power $1-h$.
 
-More precisely, we will calculate the utility of the combined strategy $(\df_{1-p},\fg_p)$, where $\fg_p$ is the \textbf{Fork on the genesis} 
-strategy, defined as follows for a state $q \in \bQ$:
+In order to determine whether there is an incentive for player 1 to do a fork, we first need to determine her utility when she is playing according to the default strategy $\df = (\df_0,\df_1)$. It can be shown (see Proposition \ref{ADD_REFERECE}) that the utility of player 1 when the strategy is $\df$ is:
+$$u_1(\df\mid\varepsilon) = h\cdot c\cdot\frac{\alpha\beta}{(1-\beta)(1-\alpha\beta)},$$
+which, as in the case of constant reward, corresponds to $h$ times the utility of winning all the blocks in the single blockchain generated by this strategy.
+
+
+\paragraph{Forking in the genesis block.}
+The first forking strategy we models the case when 0 has won the ultimate block. The question 1 wants to answer in this situation is whether she should continue mining on the blockchain, playing according to $\df$, or should she fork, mining instead upon her previously won block? Since by the proof of Theorem \ref{thm-conts_equlibria} we know that optimal strategies for 1 depend only on the blocks following her last block in each state, we can focus on this question when the game is just starting, that is, when 1 wants to decide whether to fork in the genesis block. We will denote by $\fg_1$ the strategy in which player 1 is trying to win the first block following genesis, and once this branch becomes the new blockchain, continues mining using the default strategy. We denote by $\fg = (\df_0,\fg_1)$ the strategy where 1 tries to win the first block in the final blockchain, and 0 mines using the default strategy. A depiction of this strategy is given in Figure \ref{fig-fork_genesis}. When player 1 uses this strategy, we can compute her utility as follows.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (1) {$1$};
+	\node [state] at (1.5,-0.75) (0) {$0$};
+	\node [state] at (3,-0.75) (00) {$00$};
+	
+	\node [state] at (3,0.75) (11) {$11$};		
+	\node [state] at (4.6,0.75) (111) {$111$};
+	\node [state] at (6.4,0.75) (1110) {$1110$};
+			
+
+	
+	% Graph edges
+	\path[->]
+	(R) edge (1)
+	(R) edge (0)
+	(0) edge (00)
+	;  	
+	
+	\path[->,dashed]
+	(1) edge (11)
+	(11) edge (111)
+	(111) edge (1110)
+	;
+
+
+\end{tikzpicture} 
+\end{center}
+\caption{Following the block 00 player 1 tries to win a fork starting at $\varepsilon$. Dashed edges show the case in which she succeeds, after which both players mine on top of the new blockchain.}
+\label{fig-fork_genesis}
+\end{figure}
+
+\begin{myprop}
+%	\label{prop-utilityofgenesisinfinite}
+	\label{prop:utility_gen_fork}
+%	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. 
+Let $h$ be the hash power of player 1. Then
+	\begin{eqnarray*}
+		u_1^\infty(\fg) =K_1\cdot Cat(\beta^2h(1-h))+K_2\cdot Cat(\alpha\beta^2h(1-h))
+	\end{eqnarray*}
+where $Cat:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers \cite{ADD_CITATION}, and $K_1,K_2$ are constants depending on $\alpha,\beta$ and $h$.
+\end{myprop}
+
+The intuition behind the appearance of Catalan numbers in this result is that for each fixed $n$, the number of states where two chains of length $n$ are being tied for blockchain equals the $n$th Catalan number. Since such states dictate when 1 will win the desired fork, and no reward can be won by 1 before this occurs (note that the two branches in this game have only $\varepsilon$ in common), they tell us what the utility of player 1 will be.
+
+\paragraph{Forking $m$ blocks from the end of the blockchain.}
+
+%(probably say this is a very interesting open question in the literature). 
+%
+%In order to understand when forking could be a good strategy, let us consider again the two player game in which player $p$ has just mined a block in the blockchain. 
+%Now, if player $(1-p)$ wins the next block, player $p$ faces two different options. She could continue mining on the blockchain, playing according to $\df$, or she 
+%could fork, mining instead upon her previously won block. Which strategy is better? To answer this question, we need to calculate the utility in both cases. For 
+%simplicity, and without loss of generality (due to Lemma [?]), we will focus on this question when the game is just starting, in the genesis block, and we will assume that 
+%player $p$ resumes the default strategy (mining upon the blockchain) as soon as she wins the fork. 
+%
+%More precisely, we will calculate the utility of the combined strategy $(\df_{1-p},\fg_p)$, where $\fg_p$ is the \textbf{Fork on the genesis} 
+%strategy, defined as follows for a state $q \in \bQ$:
+%%\begin{eqnarray*}
+%%\fg_p(q) & = &
+%%\begin{cases}
+%%\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
+%%\mine(p,\bchain(q),q) &  \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q)\\
+%%\mine(p,b,q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q,\ p \not\preceq \bchain(q)
+%%\text{ and}\\
+%%&  \hspace{50pt} {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}\\
+%%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \in q \text{ and}\\
+%%& \hspace{50pt} p \not\preceq \longest(q,1-p)\\
+%%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \preceq \longest(q,1-p) \text{ and}\\
+%%& \hspace{50pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
+%%\mine(p,\longest(q,1-p),q) &  \text{if } \bchain(q) \text{ is not defined},\  p \preceq \longest(q,1-p) \text{ and}\\
+%%& \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
+%%\end{cases}
+%%\end{eqnarray*}
 %\begin{eqnarray*}
 %\fg_p(q) & = &
 %\begin{cases}
 %\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
-%\mine(p,\bchain(q),q) &  \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q)\\
-%\mine(p,b,q) &  \text{if } \bchain(q) \text{ is defined},\  p \in q,\ p \not\preceq \bchain(q)
-%\text{ and}\\
-%&  \hspace{50pt} {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}\\
-%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \in q \text{ and}\\
-%& \hspace{50pt} p \not\preceq \longest(q,1-p)\\
-%\mine(p,\longest(q,p),q) &  \text{if } \bchain(q) \text{ is not defined},\ p \preceq \longest(q,1-p) \text{ and}\\
-%& \hspace{50pt} r_p(\longest(q,p)) \geq r_p(\longest(q,1-p))\\
-%\mine(p,\longest(q,1-p),q) &  \text{if } \bchain(q) \text{ is not defined},\  p \preceq \longest(q,1-p) \text{ and}\\
-%& \hspace{50pt} r_p(\longest(q,p)) < r_p(\longest(q,1-p))
+%\df_p(q) & \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q) \text{ or}\\
+%& \hspace{70pt} \bchain(q) \text{ is not defined and } p \preceq \longest(q,1-p)\\
+%\mine(p,b,q) &  \text{otherwise, where } {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}
 %\end{cases}
 %\end{eqnarray*}
-\begin{eqnarray*}
-\fg_p(q) & = &
-\begin{cases}
-\mine(p,\varepsilon,q) & \text{if } p \not\in q\\
-\df_p(q) & \text{if } \bchain(q) \text{ is defined and } p \preceq \bchain(q) \text{ or}\\
-& \hspace{70pt} \bchain(q) \text{ is not defined and } p \preceq \longest(q,1-p)\\
-\mine(p,b,q) &  \text{otherwise, where } {\displaystyle b = \max_{\preceq} \, \{ b' \in q \mid \longest(q,p) \preceq b'\}}
-\end{cases}
-\end{eqnarray*}
-Notice that in this definition, the set $\{ b' \in q \mid \longest(q,p) \preceq b'\}$ has a maximum element under the partial order $\preceq$ as all the elements in this set are of the form $\longest(q,p) \cdot (1-p)^\ell$ with $\ell \geq 0$.
-
-(show how to compute the utility, put graphics, compare. 
-
-\subsection{More complicated cases}
-
-Speak of $m$-fork as a refinement of the previous strateegy, put give-up time if we have it as well. Graphics, compare, etc. 
-
-\subsection{Stationary equilibrium}
-
-Need to fill this up! 
+%Notice that in this definition, the set $\{ b' \in q \mid \longest(q,p) \preceq b'\}$ has a maximum element under the partial order $\preceq$ as all the elements in this set are of the form $\longest(q,p) \cdot (1-p)^\ell$ with $\ell \geq 0$.
+%
+%(show how to compute the utility, put graphics, compare. 
+%
+%\subsection{More complicated cases}
+%
+%Speak of $m$-fork as a refinement of the previous strateegy, put give-up time if we have it as well. Graphics, compare, etc. 
+%
+%\subsection{Stationary equilibrium}
+%
+%Need to fill this up! 
