@@ -116,7 +116,7 @@ we make the same move on any pairs of state $q$ and $q'$ with the same $\base$:
 ---------- weaker version --------------
 A strategy is \emph{basic} if $s(q) = s(q')$ whenever $\base(q) = \base(q')$. 
 \begin{mylem}
-\label{lem-meet}
+\label{lem-basic}
 Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a basic strategy $s'_p$ such that $u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of basic greedy strategies.  
 \end{mylem}
 \begin{proof}
@@ -141,14 +141,14 @@ $m = 2$, because when comparing these two strategies we can bundle together all 
 under the combined hashpower given by the sum of all the $h_j$'s for $j \neq p$. We thus focus on the strategies 
 $\df = (\df_0,\df_1)$ and $s = (\df_0,s_p)$ (again, for readability we assume that $p$ is player $1$). 
 
-Now, by Lemma \ref{lem-meet}, we can also assume that $s_p$ satisfies the properties of this Lemma, that is, for every 
+Now, by Lemma \ref{lem-basic}, we can also assume that $s_p$ satisfies the properties of this Lemma, that is, for every 
 pair of states $q$ and $q'$ such that $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that $s(q) = s(q')$. If not, there is a strategy with even higher utility that satisfies it. 
 
 Assume for the sake of contradiction that $u_p(\df \mid \varepsilon) < u_p( (\df_{-p},s_p) \mid \varepsilon)$. Then there must be at least one 
 state $q$ such that $s_p(q) \neq \df(q)$, the probability $\pr^s(q \mid \epsilon)$ of eventually reaching this state is greater than $0$, and such that $u_p(\df \mid q) < u_p( (\df_{-p},s_p) \mid q)$. 
 
 
-Now, because of Lemma \ref{lem-meet}, we assume without loss of generality that in state $q$, player $p$ has $0$ blocks on the blockchain. Further, from all such states satisfying all these requirements, we take the one with the fewer number of blocks. Because our actions are greedy, we know that state $q$ has the shape of a line of $m$ blocks, all owned by player $0$. 
+Now, because of Lemma \ref{lem-basic}, we assume without loss of generality that in state $q$, player $p$ has $0$ blocks on the blockchain. Further, from all such states satisfying all these requirements, we take the one with the fewer number of blocks. Because our actions are greedy, we know that state $q$ has the shape of a line of $m$ blocks, all owned by player $0$. 
 
 Let us now do some calculations on both $u_p(\df \mid q)$ and $u_p( (\df_{-p},s_p) \mid q)$. 
 \medskip
