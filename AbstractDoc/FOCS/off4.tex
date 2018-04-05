@@ -1,7 +1,5 @@
 %!TEX root = focs.tex
 
-\newcommand{\ameet}{\text{\rm all-meet}}
-\newcommand{\base}{\text{\rm base}}
 
 \section{Off}
 
@@ -140,6 +138,11 @@ Thanks to last result $x'_0$ verify : $u_0(x_0',\sigma_1 \mid q_0) > u_0(\bsigma
 	By lemma \ref{newx} we know assume $$\sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) >  \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
 	We build a strategy $y_0$ such that for all $q \in base(\bQ)$ we have $y_0(q) = x_0(q)$ and $y_0(q) = s_0(q)$ otherwise.
 	
+	We denote $base_{\neq}(\bQ) = \{q \notin base(\bQ) \mid \exists q' \in base(\bQ), |q'|=|q|-1 \land q' \subseteq q  \}$
+
+Then
+$$\sum_{q \in base_{\neq}(\bQ)} r_0(q) \cdot [\pr^{s_0,s_1}(q \mid q_0) -  \pr^{y_0,s_1}(q \mid q_0)] < 0 $$
+
 	Then thanks to lemma \ref{lem2} we have :
 	
 	\begin{eqnarray*}

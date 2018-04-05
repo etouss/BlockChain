@@ -92,22 +92,47 @@ if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and
 
 \subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
 
-For a body of knowledge $q$ and a block $b \in q$, let us denote by $\subbody(q,b)$ the body of knowledge 
-given by $\{u \mid b\cdot u$ is a block in $q\}$, that is, the subtree of $q$ rooted at $b$, but in which $b$ is renamed 
-$\epsilon$ and all its descendants are renamed accordingly. 
+Given a state $q \in \bQ$, we define $\ameet(q)$ as follows:
+%\begin{eqnarray*}
+%\ameet(q)  & =  & \max_{\preceq} \ \{b \in q \mid \text{for every } p\in \bP \text{ and for every } b' \in \longest(q,p): b \preceq b'\}.
+%\end{eqnarray*}
+\begin{eqnarray*}
+\ameet(q)  & =  & \max_{\preceq} \ \{b \in q \mid \text{for every } p\in \bP \text{ and for every } b' \text{ such that } |b'| \geq \length(q,p): b \preceq b'\}.
+\end{eqnarray*}
 
+Moreover, given a block $b \in q$, we define $\subbody(q,b)$ as the following state:
+\begin{eqnarray*}
+\subbody(q,b) & = & \{ b' \in \bB \mid b \cdot b' \in q\}.
+\end{eqnarray*}
+Finally, 
+%given states $q_1, q_2 \in \bQ$ such that $q_2 \subseteq q_1$, we define $\base(q_1, q_2) = \subbody(q_1,\ameet(q_2))$, $\base(q_1) = \base(q_1,q_1)$
+%$\base(q) = \subbody(q,\ameet(q))$ and $\base(q,q_b) = sub-body(q,meet(q_b,\bP))$. Finally we denote 
+we define $\base(q) = \subbody(q,\ameet(q))$ 
+and $\base(\bQ) = \{q \in \bQ \mid q = \base(q)\} = \{q \in \bQ \mid \ameet(q) = \varepsilon \}$.
+
+The following Lemma states that optimal strategies (at least from the point of view of a single player) must be very regular, in the sense that 
+we make the same move on any pairs of state $q$ and $q'$ with the same $\base$: 
+
+---------- weaker version --------------
+A strategy is \emph{basic} if $s(q) = s(q')$ whenever $\base(q) = \base(q')$. 
 \begin{mylem}
 \label{lem-meet}
-Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a strategy $s'_p$ such that $s'_p(q) = s'_p(q')$ 
-for every pair of states $q$ and $q'$ with $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ and where 
-$u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of strategies. 
+Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a strategy $s'_p$ such that $s'_p(q) = s'_p(\base(q)$ and where 
+$u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of basic greedy strategies.  
 \end{mylem}
-\begin{proof}[sketch]
-For every state $q$ where $p$ has no blocks in the blockchain, find the action $s(q')$ amongst all states $q'$ with 
-$q = \subbody(q',\meet(q',p))$ that maximizes the utility for $u_p((s_{-p},s^*_p) \mid q)$, where $s^*_p$ is the strategy that mimics 
-$s$ except for those states $q'$. Show that $u_p((s_{-p},s^*_p) \mid q) \geq u_p((s_{-p},s_p) \mid q$. Do that for each such $q$, 
-and we end up with a strategy that fulfils the conditions of the Lemma. 
+\begin{proof}
+
+First we prove that we can build a strategy that is the same with respect to the base of states. 
+
+Suppose there is a strategy $s_p$ and states $q_a$ and $q_b$ such that $\base(q_a) = \base(q_b)$ but 
+$s_p(q_a) \neq s_p(q_b)$. Now if the strategy that sets $s(q_b) = s(q_a)$ (or the other way around) fulfils the property then 
+we are done, so we assume it is not the case. 
+Then for the strategy $s_p^a$ given by 
 \end{proof}
+
+
+
+
 
 \subsubsection{Proof of Theorem \ref{thm-conts_equlibria}} 
 
@@ -222,7 +247,9 @@ In section \ref{sec-dec}, we calculate the utility of the following combined str
 
 \subsection{Aditonal notation}
 
-
+\begin{mylem}\label{lem-new-state}
+Let $q$ a state and $q' = \subbody(\meet(q,p),q)$. 
+\end{mylem}
 
 
 %\begin{mylem}\label{lem-dist-1}
