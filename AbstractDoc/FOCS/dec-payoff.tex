@@ -77,14 +77,60 @@ The first forking strategy we models the case when 0 has won the ultimate block.
 %	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. 
 Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
-		u_1^\infty(\fg) =K_1\cdot Cat(\beta^2h(1-h))+K_2\cdot Cat(\alpha\beta^2h(1-h))
+		u_1(\fg\mid\varepsilon) =K_1\cdot Cat(\beta^2h(1-h))+K_2\cdot Cat(\alpha\beta^2h(1-h))
 	\end{eqnarray*}
 where $Cat:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers \cite{ADD_CITATION}, and $K_1,K_2$ are constants depending on $\alpha,\beta$ and $h$.
 \end{myprop}
 
-The intuition behind the appearance of Catalan numbers in this result is that for each fixed $n$, the number of states where two chains of length $n$ are being tied for blockchain equals the $n$th Catalan number. Since such states dictate when 1 will win the desired fork, and no reward can be won by 1 before this occurs (note that the two branches in this game have only $\varepsilon$ in common), they tell us what the utility of player 1 will be.
+The intuition behind the appearance of Catalan numbers in this result is that for each fixed $n$, the number of states where two chains of length $n$ are being tied for blockchain equals the $n$th Catalan number (more precisely, they correspond to Dyck paths of length $n$). Since such states dictate when 1 will win the desired fork, and no reward can be won by 1 before this occurs (note that the two branches in this game have only $\varepsilon$ in common), they tell us what the utility of player 1 will be. Notice that since $\beta \leq 1$, and the maximum of the function $h\mapsto h(1-h)$ is $\frac{1}{4}$, for $h\in [0,1]$, the value $Cat(\beta^2h(1-h))$ is always well defined. For the sake of completion, in Appendix \ref{appendix-gen_fork}, we also show what is the utility of $\fg$ for player 1 at each step $n$ of the mining game.
 
-\paragraph{Forking $m$ blocks from the end of the blockchain.}
+\paragraph{Forking $m$ blocks from the end of the blockchain.} The second forking strategy we consider works similarly as $\fg$, but now player 1 considers forking after losing $m$ consecutive blocks, for some fixed $m$. In this case, 1 will fork $m$ blocks from the end of the current blockchain, all of these $m$ block being owned by 0. This situation is depicted in Figure \ref{fig-fork_m}. Once player 1 wins the fork, and this branch becomes the new blockchain, she will continue mining according to $\df_1$. We denote this strategy of player 1 by $\forkm{m}_1$, and denote with $\forkm{m}=(\df_0,\forkm{m}_1)$ the strategy where 1 uses $\forkm{m}_1$, and 0 plays according to the default strategy.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1.5,0) (0) {$0$};
+	\node [state] at (3,0) (01) {$01$};
+	\node [state] at (4.6,0) (010) {$010$};
+	\node [state] at (6.4,0) (0100) {$0100$};
+	
+	\node [state] at (4.6,0.75) (011) {$011$};					
+	
+	% Graph edges
+	\path[->]
+	(R) edge (0)
+	(0) edge (01)
+	(01) edge (010)
+	(010) edge (0100)	
+	;  	
+	
+	\path[->,dashed]
+	(01) edge (011)
+	;
+
+
+\end{tikzpicture} 
+\end{center}
+\caption{If playing $\forkm{2}_1$, player 1 will try to fork after losing two consecutive blocks at position 0100. Should she manage to make the dashed branch into a blockchain, both her and player 1 continue to mine on this branch using $\df$.}
+\label{fig-fork_m}
+\end{figure}
+
+When computing the utility of $\forkm{m}$ starting in some state $q_0$, we take into account that player 1 is only interested whether her utility will increase in the case she decides to fork. That is, since the blocks before her fork will always have the same constant contribution to her reward in either branch, we will not count them in the utility. With this in mind, the utility of $\forkm{m}$ starting in the state $q_0$ in which 0 has the ultimate $m$ blocks in the (up to now unique) blockchain is given as follows.
+
+\begin{myprop}\label{prop-fork_m}
+	Let $h$ be the hash power of player 1. Then
+	\begin{eqnarray*}
+		u_1(\mfork|q_0) =K_{1}Cat(\beta^2h(1-h))^{m+1}+K_{2}Cat(\alpha\beta^2h(1-h))^{m+1}
+	\end{eqnarray*}
+	where Cat is as in Proposition \ref{prop:utility_gen_fork}, and $K_1,K_2$ are constants depending on $\alpha,\beta,h$ and $m$.
+\end{myprop}
+
+As before, Catalan numbers help us account for all states where 1 wins the fork. Of course, now player 1 is starting with a handicap of $m$ steps, so the winning states for 1 will be characterized by staircase walks that stay inside the trapezoid $\{(0,0),(m,0),(m+n,n),(0,n)\}$, for some number $n$. The proof of this proposition is given in Appendix \ref{appendix-fork_m}.
+
+\paragraph{When to fork?} Having the utilities of the two forking strategies, we can now compare them to that of the default strategy in order to answer whether 1 should fork or not. Analysing the curves defined by the game parameters ($\alpha,\beta$ and $h$ for $\fg$, and additionally $m$ for $\forkm{m}$), it can be seen that when $h>50\%$, and $\alpha>\beta$, then it is always convenient for 1 to fork, based on the utility resulting from either $\fg$ or (irrespective of $m$) $\forkm{m}$. This confirms the intuition that the player with the majority of hash power can sway the game in her favour, but we can also see that there are several cases when it is convenient to fork even with much lower hash power. This happens in cases when $\alpha$ is significantly bigger than $\beta$, which can be explained by the fact that ???
 
 %(probably say this is a very interesting open question in the literature). 
 %
