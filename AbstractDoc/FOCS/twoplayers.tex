@@ -368,9 +368,9 @@ where we used the fact that the generating function of $k\mapsto \#D_{2k,m}$ is 
 \begin{myprop*}
 If players 1 and 2 follow $\mfork$ and \df strategies respectively, $h\in [0,1]$ is the hash power of player 1 and an initial state $q_0$ has a blockchain with at least $m$ blocks, then
 \begin{eqnarray*}
-	u_1^n(\mfork \mid q_0) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}\frac{m+1}{m+k+1}{m+2k\choose m+k}\beta^{2k+m+1}  \cdot S_{l,k,m}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k}
+	u_1^n(\mfork \mid q_0) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}\frac{m+1}{m+k+1}{m+2k\choose m+k}\beta^{2k+m+1}  \cdot R_{k,m}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k}
 \end{eqnarray*}
-for some rational function $S_{l,k,m}(\alpha,\beta,h)$.
+for some rational function $R_{k,m}(\alpha,\beta,h)$.
 
 \end{myprop*}
 \begin{proof}
@@ -387,12 +387,13 @@ We now compute
 	\pr^{\mfork}(q \mid \varepsilon)\bigg)\\
 								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i}\sum_{\substack{d\in \Dyck_{2k,m}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
 	\pr^{\mfork}(d1w \mid \varepsilon)\bigg)\\
-								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \#(\Dyck_{2k,m})\cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
+								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{k=0}^{\lfloor\frac{i-m+1}{2}\rfloor} \#(\Dyck_{2k,m})\cdot S'_{i-2k-1-m,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
 \end{eqnarray*}
 where
 $$S'_{l,k,m}=\sum_{w\in\{0,1\}^l}r(d1w)\pr^\mfork(w|d1)$$
-can be computed as in section $\ref{sec-genfork}$. Finally, use proposition \ref{prop-trapezoidcardinality} to establish the result.
-\end{proof}
+can be computed as in section $\ref{sec-genfork}$. Now change the order of summation and compute 
+$$R_{k,m}(h,\alpha,\beta)=\sum_{i=0}^{n-2k-1-m}\beta^{i}S'_{i-2k-1-m,k,m}(\alpha,h)$$ 
+to establish the result.\end{proof}
 
 \subsection{Utility of $\mfork$ with give-up time $g$}
 
@@ -402,6 +403,54 @@ Consider the $\mfork$ strategy as before, but in the more realistic case that pl
 	A Dyck draw of disadvantage $m\in\NN$ and give-up time $g\geq m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$ and $\Delta(d')\geq -g$. We denote by $\Dyck_{2n,m,g}$ the set of Dyck draws of disadvantage $m$ and give-up time $g$ of length $2n+m$ and $\Dyck^\ast_{m,g}$ the set of all Dyck draws of disadvantage $m$ and give-up time $g$.
 \end{mydef}
 
+ 
+ \section{Trapezoidal Dyck paths}
+ \label{appendix-trapezoid}
+ 
+ For nonnegative integers $a,b$, let $\mathcal L_{a,b}$ be the trapezoid in $\ZZ^2$ whose vertices are
+ $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ Also, let $\mathcal D_{a,b}$ the set of one step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside $\mathcal L_{a,b}$, and $\sigma_{a,b}=\# \mathcal D_{a,b}$ the amount of possible paths. Finally, let $C_n$ denote the $n$-th Catalan number. 
+ \begin{myprop*}
+ 	The sequence $\sigma:\NN^2\to \NN$ verifies the following
+ 	$$\begin{cases}
+ 	\sigma_{a,b}=\sum_{i=0}^b\sigma_{a-1,i}C_{b-i}& \mbox{ for }a\geq 1,b\in \NN,\\
+ 	\sigma_{x,0}=1 & \mbox{ for }x\in \NN,\\
+ 	\sigma_{0,y}=C_y & \mbox{ for }y\in \NN.
+ 	\end{cases}$$
+ \end{myprop*}
+ \begin{proof}
+ 	To prove this, we write $\mathcal D_{a,b}$ as a union of disjoint sets. As a first remark, note that every path in $\mathcal D_{a,b}$ touches the line $l=\overline{(a,0)(a+b,b)}$ at least once. For $i\in \{0,\dots,b\}$, let $P_i$ be the point $(a+i,i)\in l$ and $\mathcal D_{a,b}^{(i)}$ all paths in $\mathcal D_{a,b}$ that touch the line $l$ for the first time at $P_i$. We have the disjoint union
+ 	$$\mathcal D_{a,b}=\bigcup_{i=0}^b \mathcal D_{a,b}^{(i)}.$$
+ 	Also, note that a path in $\mathcal D_{a,b}$ touches $l$ for the first time in $P_i$ if and only if it passed through the point $P_i-(1,0)$ without exiting $\mathcal D_{a-1,i}$, followed by an east step and any path from $P_i$ to $(a+b,b)$. This yields
+ 	\begin{eqnarray*}
+ 		\sigma_{a,b}=\sum_{i=0}^{b}\mbox{(paths from $(0,0)$ to $P_i-(0,1))$}\cdot \mbox{(paths from $P_i$ to $(a+b,b))$}
+ 	\end{eqnarray*}
+ 	Note that the amount of paths from $P_i$ to $(a+b,b)$ is $C_{b-i}$, since both points belong to $l$, proving that $\sigma_{a,b}$ verifies the recurrence equation. The border cases $\sigma_{0,\cdot},\sigma_{\cdot,0}$ are straightforward to prove.
+ \end{proof}
+ 
+ Now let us define the sequence of generating functions with respect to the second variable of $\sigma_{\cdot,\cdot}$ as follows:
+ $$\begin{array}{cl}
+ \phi_a:&\RR\to \RR\\
+ &x\mapsto \displaystyle \sum_{j=0}^{\infty}\sigma_{a,j}x^j
+ \end{array}$$
+ 
+ \begin{myprop*}
+ 	For $x\in [-1/4,1/4]$ and $a\in \NN$ 
+ 	$$\phi_a(x)=c(x)^{a+1},$$
+ 	where $c(x):=\frac{1-\sqrt{1-4x}}{2x}$ is the generating function of the Catalan numbers.
+ \end{myprop*}
+ \begin{proof}
+ 	We have $\sigma_{a,\cdot}=\sigma_{a-1,\cdot}\star C_\cdot$, where $\star$ is the convolution operator, therefore $\phi_a(x)=\phi_{a-1}(x)c(x)$. The result follows noting that $\phi_0(x)=c(x)$.
+ \end{proof}
+ 
+ \begin{myprop*}
+ 	For $(a,b)\in\NN^2$,
+ 	$$\sigma_{a,b}=\frac{(a+b)(a+2b)!}{b!(a+b+1)!}=\frac{a+1}{a+b+1}{a+2b\choose a+b}.$$
+ \end{myprop*}
+ \begin{proof}
+ 	Extract the sequence from the Taylor series of $\phi_a(x)$ around 0 and prove by induction.
+ \end{proof}
+ 
+ \francisco{@Juan: It would be nice to include your reflection argument as a second (or first!) proof.}
  
 
 =======

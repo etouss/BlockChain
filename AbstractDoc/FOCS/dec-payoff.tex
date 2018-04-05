@@ -77,9 +77,12 @@ The first forking strategy we models the case when 0 has won the ultimate block.
 %	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. 
 Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
-		u_1(\fg\mid\varepsilon) =K_1\cdot Cat(\beta^2h(1-h))+K_2\cdot Cat(\alpha\beta^2h(1-h))
+		u_1^\infty(\fg\mid\varepsilon) =K_1\cdot Cat(\beta^2h(1-h))+K_2\cdot Cat(\alpha\beta^2h(1-h))
 	\end{eqnarray*}
-where $Cat:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers \cite{ADD_CITATION}, and $K_1,K_2$ are constants depending on $\alpha,\beta$ and $h$.
+where $Cat:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers \cite{ADD_CITATION}, and 
+	\begin{eqnarray*}
+		K_1 =\frac{\alpha\beta h}{(1-\alpha)(1-\beta)},\quad	K_2 =\frac{\alpha^2\beta h(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}.	
+	\end{eqnarray*}
 \end{myprop}
 
 The intuition behind the appearance of Catalan numbers in this result is that for each fixed $n$, the number of states where two chains of length $n$ are being tied for blockchain equals the $n$th Catalan number (more precisely, they correspond to Dyck paths of length $n$). Since such states dictate when 1 will win the desired fork, and no reward can be won by 1 before this occurs (note that the two branches in this game have only $\varepsilon$ in common), they tell us what the utility of player 1 will be. Notice that since $\beta \leq 1$, and the maximum of the function $h\mapsto h(1-h)$ is $\frac{1}{4}$, for $h\in [0,1]$, the value $Cat(\beta^2h(1-h))$ is always well defined. For the sake of completion, in Appendix \ref{appendix-gen_fork}, we also show what is the utility of $\fg$ for player 1 at each step $n$ of the mining game.
@@ -125,7 +128,11 @@ When computing the utility of $\forkm{m}$ starting in some state $q_0$, we take 
 	\begin{eqnarray*}
 		u_1(\mfork|q_0) =K_{1}Cat(\beta^2h(1-h))^{m+1}+K_{2}Cat(\alpha\beta^2h(1-h))^{m+1}
 	\end{eqnarray*}
-	where Cat is as in Proposition \ref{prop:utility_gen_fork}, and $K_1,K_2$ are constants depending on $\alpha,\beta,h$ and $m$.
+	where Cat is as in Proposition \ref{prop:utility_gen_fork}, and 
+	\begin{eqnarray*}
+		K_{1,m} = \frac{(\beta h)^{m+1}}{(1-\alpha)(1-\beta)\alpha^{m-1}},\quad K_{2,m} =	\frac{\alpha^{2}(\beta h)^{m+1}(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}.
+	\end{eqnarray*}
+
 \end{myprop}
 
 As before, Catalan numbers help us account for all states where 1 wins the fork. Of course, now player 1 is starting with a handicap of $m$ steps, so the winning states for 1 will be characterized by staircase walks that stay inside the trapezoid $\{(0,0),(m,0),(m+n,n),(0,n)\}$, for some number $n$. The proof of this proposition is given in Appendix \ref{appendix-fork_m}.
