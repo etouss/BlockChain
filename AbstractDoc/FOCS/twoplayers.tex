@@ -172,6 +172,7 @@ For the mining game we will consider the following strategies:
 
 \francisco{This should be moved and rephrased to section 4}
 \subsection{Utility of the default strategy}
+\label{sec-defaultutility}
 In this section, players $\{0,1\}$ play according to the default strategy, defined in section \ref{sec-defstrategy}. For any state $q$ of the game, $\mathcal{T}(q)$ consists of a single branch and therefore \bchain$(q)$ is always defined. Moreover, given the behavior of players we can write $q$ uniquely as a binary sequence $w\in\{0,1\}^{\mid q\mid }$ encoding the chronological history of the game until $q$ is reached, where $p\in\{0,1\}$ stands for ``player $p$ appends a block''. In other words, there are bijections $ \bQ \simeq\bchain(\bQ)\simeq \{0,1\}^\ast$. This encoding proves useful as we have
 \begin{eqnarray*}
 	r_p(w) &=&	c\cdot \sum_{j=1}^{\mid w\mid}w[j] \alpha^j  \\
@@ -182,7 +183,7 @@ where $H(x)$ denotes the Hamming weight of integer $x$, defined as the amount of
 
 \begin{myprop*}
 Let $h$ denote the hash power of player 1. Then 
-$$u_1^n(\df\mid\varepsilon) = \frac{\alpha\beta(\alpha\beta^{n+1}+\alpha(1-\beta)(\alpha\beta)^{n}-\beta^{n}+(1-\alpha)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\cdot h c.$$
+$$u_1^n(\df\mid\varepsilon) = \frac{\alpha\beta(\alpha\beta^{n+1}+\alpha(1-\beta)(\alpha\beta)^{n}-\beta^{n}+(1-\alpha))}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\cdot h c.$$
 In particular,
 $$u_1^\infty(\df\mid\varepsilon) = \frac{\alpha\beta}{(1-\beta)(1-\alpha\beta)}hc.$$
 \end{myprop*}
@@ -215,7 +216,10 @@ Suppose player 0 follows the default strategy, and player 1 attempts to fork onc
 \end{mydef}
 
 
-With this, we can prove the following.
+The motivation of introducing Dyck draws is the following:
+\begin{mylem}
+Why Dyck draws.
+\end{mylem}
 
 
 
@@ -233,7 +237,7 @@ where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catala
 	Denote by $\bQ'\subsetneq \bQ$ the states in which player 1 has a positive reward. We can write $\bQ'$ as a disjoint union as follows. First note that before the new branch becomes $\bchain(q)$ for some state $q$ in the game, player 1 receives no reward, (\ie $q\notin \bQ'$). On the other hand, if $\bchain(q)$ includes the new branch for a state $q\in Q$, then $q$ contains an initial string of the form $d1$ where $d\in \Dyck^\ast$:
 	$$\bQ'\simeq \bigcup_{k=0}^\infty \{d1w,d\in \Dyck^{2k},w\in \{0,1\}^\ast\}.$$
 
-	Therefore, every state $q$ of positive reward can be written as $q=d1w$ for some $d\in \Dyck^\ast$ and $w\in\bstring$. Moreover, we have $r(d1w)=\sum_{i=0}^{|d|/2}\alpha^i + \alpha^{|d|/2}\sum_{j=1}^{|w|}w[j]\alpha^j.$ We compute the utility from the definition,
+	Therefore, every state $q$ of positive reward can be written as $q=d1w$ for some $d\in \Dyck^\ast$ and $w\in\bstring$. Moreover, we have $r(d1w)=\sum_{i=1}^{|d|/2+1}\alpha^i + \alpha^{|d|/2+1}\sum_{j=1}^{|w|}w[j]\alpha^j.$ We compute the utility from the definition,
 	\begin{eqnarray*}
 		u^\infty_1(\fg)&=&  \sum_{q\in \Dyck^\ast 1\bstring } \beta^{|q|}r_1(q)\pr^{\fg}(q|\varepsilon) \\
     	               &=& \sum_{d\in \Dyck^\ast}\sum_{w\in\bstring}\beta^{|d|+1+|w|}r(d1w)\pr^\fg (d1w|\varepsilon)
@@ -247,16 +251,16 @@ $$S(d):=\sum_{w\in \bstring}\beta^{|w|}r(d1w)\pr^{\fg}(w|d1).$$
 and note that $\pr^\fg(w|d1)$ is independent of $d$. Counting now in the length of $w$ yields 
 \begin{eqnarray*}
 %S(d)      &=& \sum_{l=0}^{\infty}\sum_{w\in \{0,1\}^l}\beta^{|w|}r_A(d1w)\pr^{\fg}(w|d1)\\
-	S(d)	  &=& \sum_{l=0}^{\infty}\beta^{l}\sum_{w\in \{0,1\}^l}\left(\sum_{j=0}^{|d|/2}\alpha^j + \alpha^{|d|/2}\sum_{i=1}^{l}\alpha^iw_i\right)\pr^{\fg}(w|d1)\\
-          &=& \sum_{l=0}^{\infty}\beta^{l}\left(\sum_{j=0}^{|d|/2}\alpha^j + h\alpha^{|d|/2}\sum_{i=1}^{l}\alpha^i\right),
+	S(d)	  &=& \sum_{l=0}^{\infty}\beta^{l}\sum_{w\in \{0,1\}^l}\left(\sum_{j=1}^{|d|/2+1}\alpha^j + \alpha^{|d|/2+1}\sum_{i=1}^{l}\alpha^iw_i\right)\pr^{\fg}(w|d1)\\
+          &=& \alpha\sum_{l=0}^{\infty}\beta^{l}\left(\sum_{j=0}^{|d|/2}\alpha^j + h\alpha^{|d|/2}\sum_{i=1}^{l}\alpha^i\right),
 \end{eqnarray*}
 Simplifying and rearranging terms we have
 \begin{eqnarray*}
-S(d)    &=& \frac{1}{(1-\alpha)(1-\beta)}+\frac{\alpha(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\alpha^{|d|/2}.
+S(d)    &=& \frac{\alpha}{(1-\alpha)(1-\beta)}+\frac{\alpha^2(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\alpha^{|d|/2}.
 \end{eqnarray*}
 Parsing $S(d)=K_1'+K_2'\alpha^{|d|/2}$, 
 \begin{eqnarray*}
-u_A^s &=& \sum_{e\in \Dyck^\ast}\beta^{|d|+1}\pr^{\fg}(d1|\varepsilon)\left(K_1'+K_2'\alpha^{|d|/2}\right).
+u^\infty_1(\fg) &=& \sum_{e\in \Dyck^\ast}\beta^{|d|+1}\pr^{\fg}(d1|\varepsilon)\left(K_1'+K_2'\alpha^{|d|/2}\right).
 \end{eqnarray*}
 It is widely known that the number of Dyck draws of length $2n$ is $C_n$, the $n$-th Catalan number. Also, recall that $\Dyck^\ast = \bigcup_{n=0}^{\infty} \Dyck_{2n}$ and $\pr^{\fg}(d1|\varepsilon)=h^{|d|/2+1}(1-h)^{|d|/2}$, therefore
 \begin{eqnarray*}
@@ -271,26 +275,26 @@ as claimed. Remark also that $h(1-h)\leq 1/4$ hence the expression is well defin
 \begin{myprop*}
 Suppose player 1 plays with the genesis fork strategy and player 2 follows the default strategy. Let $h$ be the hash power of player 1. Then
 \begin{eqnarray*}
-	u_1^n(\fg \mid \varepsilon) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}C_k \cdot h^{k+1}(1-h)^{k}\cdot \beta^{2k+1}\cdot P_k(\alpha,\beta)
+	u_1^n(\fg \mid \varepsilon) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}C_k \cdot h^{k+1}(1-h)^{k}\cdot \beta^{2k+1}\cdot P_k(h,\alpha,\beta)
 \end{eqnarray*}
 where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $P_{k}(\alpha,\beta)$ is a polynomial in $\alpha$ and $\beta$.
 \end{myprop*}
 \begin{proof} As before, note that every state of positive reward $q\in\bQ'$ is of the form $d1w$ for a Dyck draw $d$ and $w\in \{0,1\}^\ast$. Denote $w[i]$ the $i$-th bit of $w$, with $i=1,\dots,|w|$. Note that
 \begin{eqnarray*}
-r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=0}^{|d|/2-1}\alpha^i \bigg)+\alpha^{|d|/2}+\alpha^{|d|/2}\bigg(\sum_{i=1}^{|w|}\alpha^i w[i]\bigg)\bigg),\\
+r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=1}^{|d|/2}\alpha^i \bigg)+\alpha^{|d|/2+1}+\alpha^{|d|/2+1}\bigg(\sum_{i=1}^{|w|}\alpha^i w[i]\bigg)\bigg),\\
 \pr^{\fg}(d1w|\varepsilon) &=& h^{|d|/2+1+H(w)}(1-h)^{|d|/2+|w|-H(w)}.
 \end{eqnarray*} 
 With this we can compute 
 \begin{eqnarray*}
 	u_1^n(\fg \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
 	\pr^{\fg}(q \mid \varepsilon)\bigg)\\
-								& = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i}\sum_{\substack{d\in \Dyck_{2k}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
+								& = &  \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i}\sum_{\substack{d\in \Dyck_{2k}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
 	\pr^{\fg}(d1w \mid \varepsilon)\bigg).
 \end{eqnarray*}
 First note that in the inner sum, the expressions $r(d1w)$ and $\pr^{\fg}(d1w|\varepsilon)$ depend only in $k,l$. Define
 $$S_{k,l}(\alpha,h)=\sum_{w\in\{0,1\}^l}r(d1w)\cdot \pr^{\fg}(w|d1)$$
 and compute $S_{k,l}(\alpha,h)$ using the facts $\pr^{\fg}(\{0,1\}^l|d1)=1$ and $\expected(w[i])=h$ for every $i=1,\dots,l$, obtaining 
-$$S_{k,l}(\alpha,h)=\frac{1}{1-\alpha}\bigg(1+(h-1)\alpha^{k+1}-h\alpha^{k+1+l}\bigg).$$
+$$S_{k,l}(\alpha,h)=\frac{\alpha}{1-\alpha}\bigg(1+(h-1)\alpha^{k+1}-h\alpha^{k+1+l}\bigg).$$
 We have
 \begin{eqnarray*}
 u_1^n(\fg \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l=i} \#(\Dyck_{2k})\cdot S_{k,l}(\alpha,h)\cdot h^{k+1}(1-h)^{k}\bigg)\\
@@ -300,22 +304,21 @@ And changing the order of summation gives
 \begin{eqnarray*}
 	u_1^n(\fg \mid \varepsilon)	& = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}C_k \cdot h^{k+1}(1-h)^{k}\cdot \beta^{2k+1}\cdot\bigg(\sum_{i=0}^{n-2k-1}\beta^i\cdot  S_{k,i}(\alpha,h)\bigg)
 \end{eqnarray*}
-Finally, define
-\begin{eqnarray*}	
-P_k(\alpha,\beta) &=& \sum_{i=0}^{n-2k-1}\beta^i\cdot  S_{k,i}(\alpha,h)\\
-&=&\frac{1}{(1-\alpha)(1-\beta)}\bigg(1+(1-h)\alpha^{k+1}\beta^{n-2k}-(1-h)\alpha^{k+1}-\beta^{n-2k}\bigg)\\
-				 & &+\frac{h}{(1-\alpha)(1-\alpha\beta)}\bigg(\alpha^{k+1}(\alpha\beta)^{n-2k}-\alpha^{k+1}\bigg).
+Finally, define $P_k(h,\alpha,\beta) = \sum_{i=0}^{n-2k-1}\beta^i\cdot  S_{k,i}(\alpha,h)$
+which evaluates to
+\begin{eqnarray*}
+\frac{\alpha}{(1-\alpha)}\bigg(\frac{1}{1-\beta}(1+(1-h)\alpha^{k+1}\beta^{n-2k}-(1-h)\alpha^{k+1}-\beta^{n-2k})+\frac{h}{1-\alpha\beta}(\alpha^{k+1}(\alpha\beta)^{n-2k}-\alpha^{k+1})\bigg).
 \end{eqnarray*}
 
 \end{proof}
 
-\francisco{TODO: resolve conflict between $c$ (amount earned per block) and $c(x)$... and $c$ of the following section...}
+
 
 \subsection{Utility of the $\mfork$ strategy}
+\label{sec-mforkutility}
 
-\francisco{I need a notation for this strategy. For the time being I'll use $\mfork$}
 
-In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $m$ blocks on an already defined blockchain of arbitrary length. In other words, let $q_0$ be the current blockchain of length $|q_0|\geq m$, and let $b_{-m}$ the block at position $|q_0|-m$. We also suppose that $\owner(b_{-m+i})=2$ for all $i=1,\dots,m$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-m}$ (these rewards acting as additive constants). Let us define the following.
+In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $m$ blocks on an already defined blockchain of arbitrary length. In other words, let $q_0$ be the current blockchain of length $|q_0|\geq m$, and let $b_{-m}$ the block at position $|q_0|-m$. As we consider greedy strategies only, we also assume that $\owner(b_{-m+i})=2$ for all $i=1,\dots,m$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-m}$ (these rewards acting as additive constants). Let us define the following.
 \begin{mydef}
 	A Dyck draw of disadvantage $m\in\NN$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$. We denote by $\Dyck_{2n,m}$ the set of Dyck draws of disadvantage $m$ of length $2n+m$ and $\Dyck^\ast_{m}$ the set of all Dyck draws of disadvantage $m$.
 \end{mydef}
@@ -341,7 +344,7 @@ Now, as before note that every state of positive reward for player 1 is a state 
 \begin{proof}
 The proof is analogous to the proof of proposition \ref{prop-utilityofgenesisinfinite}, replacing $\Dyck^\ast$ by $\Dyck_{m}^\ast$ and correcting the reward of each state. More precisely, for any $d\in \Dyck_{2k,m}$ and $w\in \{0,1\}^l$ we have
 \begin{eqnarray*}
- r(d1w) &=& \bigg(\sum_{i=-m}^{k}\alpha^i\bigg)+\alpha^k\bigg(\sum_{j=1}^{l}w[j]\alpha^j\bigg),\\
+ r(d1w) &=& \bigg(\sum_{i=-m+1}^{k+1}\alpha^i\bigg)+\alpha^{k+1}\bigg(\sum_{j=1}^{l}w[j]\alpha^j\bigg),\\
  \pr^{\mfork}(d1w|q_0) &=& h^{m+k+1+H(w)}(1-h)^{k+l-H(w)}.
 \end{eqnarray*}
 This gives
@@ -351,7 +354,7 @@ This gives
 where, analogously as before, if $|d|=2k+m$,
 \begin{eqnarray*}
 	S_m(d)      &=& \sum_{l=0}^{\infty}\sum_{w\in \{0,1\}^l}\beta^{|w|}r_A(d1w)\pr^{\mfork}(w|d1)\\
-	&=& \frac{\alpha^{-m}}{(1-\alpha)(1-\beta)}+\alpha^{k+1}\bigg(\frac{h\beta}{(1-\beta)(1-\alpha\beta)}-\frac{1}{(1-\alpha)(1-\beta)}\bigg).
+	&=& \frac{\alpha^{-m+1}}{(1-\alpha)(1-\beta)}+\alpha^{k+2}\bigg(\frac{h\beta}{(1-\beta)(1-\alpha\beta)}-\frac{1}{(1-\alpha)(1-\beta)}\bigg).
 \end{eqnarray*}
 Parsing $S_m(d)=K_{m,1}+K_{m,2}\alpha^{k}$ and counting on $k$ yields
 \begin{eqnarray*}
@@ -359,18 +362,15 @@ Parsing $S_m(d)=K_{m,1}+K_{m,2}\alpha^{k}$ and counting on $k$ yields
                           &=& (\beta h)^m(K_{m,1}c(\beta^2 h(1-h))^{m+1}+K_{m,2}c(\alpha\beta^2 h (1-h))^{m+1}),
 \end{eqnarray*}
 where we used the fact that the generating function of $k\mapsto \#D_{2k,m}$ is given by $x\mapsto c(x)^{m+1}$. We prove this in appendix \ref{appendix-trapezoid}.
-
 \end{proof}
 
 
-
 \begin{myprop*}
-If players 1 and 2 follow $\mfork$ and \df strategies respectively, and if $h\in [0,1]$ is the hash power of player 1, then
-
+If players 1 and 2 follow $\mfork$ and \df strategies respectively, $h\in [0,1]$ is the hash power of player 1 and an initial state $q_0$ has a blockchain with at least $m$ blocks, then
 \begin{eqnarray*}
-	u_1^n(\mfork \mid \varepsilon) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}\frac{m+1}{m+k+1}{m+2k\choose m+k}\beta^{2k+m+1}  \cdot S_{l,k,m}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k}
+	u_1^n(\mfork \mid q_0) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}\frac{m+1}{m+k+1}{m+2k\choose m+k}\beta^{2k+m+1}  \cdot R_{k,m}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k}
 \end{eqnarray*}
-for some rational function $S_{l,k,m}(\alpha,\beta,h)$.
+for some rational function $R_{k,m}(\alpha,\beta,h)$.
 
 \end{myprop*}
 \begin{proof}
@@ -378,20 +378,80 @@ for some rational function $S_{l,k,m}(\alpha,\beta,h)$.
 	$$\bQ' = \bigcup_{k=0}^\infty \{d1w,\; d\in\Dyck_{2k,m}, w\in\{0,1\}^\ast\}.$$
 	The reward and probability of a state $q=d1w\in \bQ'$ with $d\in\Dyck_{2k,m}$ and $w\in\{0,1\}^l$ are given by
 \begin{eqnarray*}
-	r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=-m}^{k-1}\alpha^i \bigg)+\alpha^{k}+\alpha^{k}\bigg(\sum_{i=1}^{l}\alpha^i w[i]\bigg)\bigg),\\
+	r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=-m+1}^{k}\alpha^i \bigg)+\alpha^{k+1}+\alpha^{k+1}\bigg(\sum_{i=1}^{l}\alpha^i w[i]\bigg)\bigg),\\
 	\pr^{\fg}(d1w|\varepsilon) &=& h^{k+m+1+H(w)}(1-h)^{k+l-H(w)}.
 \end{eqnarray*} 
 We now compute
 \begin{eqnarray*}
 	u_1^n(\mfork \mid \varepsilon) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ' \,: |q| = i}} r_1(q) \cdot 
-	\pr^{\fg}(q \mid \varepsilon)\bigg)\\
+	\pr^{\mfork}(q \mid \varepsilon)\bigg)\\
 								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i}\sum_{\substack{d\in \Dyck_{2k,m}\\w\in\{0,1\}^l}} r_1(d1w) \cdot 
-	\pr^{\fg}(d1w \mid \varepsilon)\bigg)\\
-								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{2k+1+l+m=i} \#(\Dyck_{2k,m})\cdot S'_{l,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
+	\pr^{\mfork}(d1w \mid \varepsilon)\bigg)\\
+								   & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{k=0}^{\lfloor\frac{i-m+1}{2}\rfloor} \#(\Dyck_{2k,m})\cdot S'_{i-2k-1-m,k,m}(\alpha,h)\cdot h^{k+1+m}(1-h)^{k}\bigg).
 \end{eqnarray*}
 where
 $$S'_{l,k,m}=\sum_{w\in\{0,1\}^l}r(d1w)\pr^\mfork(w|d1)$$
-can be computed as in section $\ref{sec-genfork}$. Finally, use proposition \ref{prop-trapezoidcardinality} to establish the result.
-\end{proof}
+can be computed as in section $\ref{sec-genfork}$. Now change the order of summation and compute 
+$$R_{k,m}(h,\alpha,\beta)=\sum_{i=0}^{n-2k-1-m}\beta^{i}S'_{i-2k-1-m,k,m}(\alpha,h)$$ 
+to establish the result.\end{proof}
+
+\subsection{Utility of $\mfork$ with give-up time $g$}
+
+Consider the $\mfork$ strategy as before, but in the more realistic case that player gives up on the new branch if the original one is $g\geq m$ blocks longer, switching to the original branch and adopting the default strategy. Computations of utility are similar to the previous case, with two considerations. First, the states of positive reward consist in both the cases when the player succeeds the fork, and the cases where the player gave up but has won some blocks in the afterward default game. Second, combinatorics in the race with disadvantage and give-up time are more complex, more precisely we need to count north-east paths inside an irregular pentagon, but in fact there is a closed form to express the underlying cardinality. Let us define the following
+
+\begin{mydef}
+	A Dyck draw of disadvantage $m\in\NN$ and give-up time $g\geq m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$ and $\Delta(d')\geq -g$. We denote by $\Dyck_{2n,m,g}$ the set of Dyck draws of disadvantage $m$ and give-up time $g$ of length $2n+m$ and $\Dyck^\ast_{m,g}$ the set of all Dyck draws of disadvantage $m$ and give-up time $g$.
+\end{mydef}
+
+ 
+ \section{Trapezoidal Dyck paths}
+ \label{appendix-trapezoid}
+ 
+ For nonnegative integers $a,b$, let $\mathcal L_{a,b}$ be the trapezoid in $\ZZ^2$ whose vertices are
+ $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ Also, let $\mathcal D_{a,b}$ the set of one step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside $\mathcal L_{a,b}$, and $\sigma_{a,b}=\# \mathcal D_{a,b}$ the amount of possible paths. Finally, let $C_n$ denote the $n$-th Catalan number. 
+ \begin{myprop*}
+ 	The sequence $\sigma:\NN^2\to \NN$ verifies the following
+ 	$$\begin{cases}
+ 	\sigma_{a,b}=\sum_{i=0}^b\sigma_{a-1,i}C_{b-i}& \mbox{ for }a\geq 1,b\in \NN,\\
+ 	\sigma_{x,0}=1 & \mbox{ for }x\in \NN,\\
+ 	\sigma_{0,y}=C_y & \mbox{ for }y\in \NN.
+ 	\end{cases}$$
+ \end{myprop*}
+ \begin{proof}
+ 	To prove this, we write $\mathcal D_{a,b}$ as a union of disjoint sets. As a first remark, note that every path in $\mathcal D_{a,b}$ touches the line $l=\overline{(a,0)(a+b,b)}$ at least once. For $i\in \{0,\dots,b\}$, let $P_i$ be the point $(a+i,i)\in l$ and $\mathcal D_{a,b}^{(i)}$ all paths in $\mathcal D_{a,b}$ that touch the line $l$ for the first time at $P_i$. We have the disjoint union
+ 	$$\mathcal D_{a,b}=\bigcup_{i=0}^b \mathcal D_{a,b}^{(i)}.$$
+ 	Also, note that a path in $\mathcal D_{a,b}$ touches $l$ for the first time in $P_i$ if and only if it passed through the point $P_i-(1,0)$ without exiting $\mathcal D_{a-1,i}$, followed by an east step and any path from $P_i$ to $(a+b,b)$. This yields
+ 	\begin{eqnarray*}
+ 		\sigma_{a,b}=\sum_{i=0}^{b}\mbox{(paths from $(0,0)$ to $P_i-(0,1))$}\cdot \mbox{(paths from $P_i$ to $(a+b,b))$}
+ 	\end{eqnarray*}
+ 	Note that the amount of paths from $P_i$ to $(a+b,b)$ is $C_{b-i}$, since both points belong to $l$, proving that $\sigma_{a,b}$ verifies the recurrence equation. The border cases $\sigma_{0,\cdot},\sigma_{\cdot,0}$ are straightforward to prove.
+ \end{proof}
+ 
+ Now let us define the sequence of generating functions with respect to the second variable of $\sigma_{\cdot,\cdot}$ as follows:
+ $$\begin{array}{cl}
+ \phi_a:&\RR\to \RR\\
+ &x\mapsto \displaystyle \sum_{j=0}^{\infty}\sigma_{a,j}x^j
+ \end{array}$$
+ 
+ \begin{myprop*}
+ 	For $x\in [-1/4,1/4]$ and $a\in \NN$ 
+ 	$$\phi_a(x)=c(x)^{a+1},$$
+ 	where $c(x):=\frac{1-\sqrt{1-4x}}{2x}$ is the generating function of the Catalan numbers.
+ \end{myprop*}
+ \begin{proof}
+ 	We have $\sigma_{a,\cdot}=\sigma_{a-1,\cdot}\star C_\cdot$, where $\star$ is the convolution operator, therefore $\phi_a(x)=\phi_{a-1}(x)c(x)$. The result follows noting that $\phi_0(x)=c(x)$.
+ \end{proof}
+ 
+ \begin{myprop*}
+ 	For $(a,b)\in\NN^2$,
+ 	$$\sigma_{a,b}=\frac{(a+b)(a+2b)!}{b!(a+b+1)!}=\frac{a+1}{a+b+1}{a+2b\choose a+b}.$$
+ \end{myprop*}
+ \begin{proof}
+ 	Extract the sequence from the Taylor series of $\phi_a(x)$ around 0 and prove by induction.
+ \end{proof}
+ 
+ \francisco{@Juan: It would be nice to include your reflection argument as a second (or first!) proof.}
+ 
+
 =======
 >>>>>>> eeee1606b14138465872c5835ded1c59ae15d7ef
