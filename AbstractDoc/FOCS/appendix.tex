@@ -114,22 +114,156 @@ The following Lemma states that optimal strategies (at least from the point of v
 we make the same move on any pairs of state $q$ and $q'$ with the same $\base$: 
 
 ---------- weaker version --------------
-A strategy is \emph{basic} if $s(q) = s(q')$ whenever $\base(q) = \base(q')$. 
+A strategy is \emph{basic} if $\base(s(q)) = \base(s(q'))$ whenever $\base(q) = \base(q')$. 
 \begin{mylem}
 \label{lem-basic}
 Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a basic strategy $s'_p$ such that $u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of basic greedy strategies.  
 \end{mylem}
 \begin{proof}
 
-First we prove that we can build a strategy that is the same with respect to the base of states. 
+\newcommand{\succes}{\text{succ}}
+\newcommand{\cut}{\text{cut}}
+\newcommand{\replace}{\text{replace}}
 
-Suppose there is a strategy $s_p$ and states $q_a$ and $q_b$ such that $\base(q_a) = \base(q_b)$ but 
-$s_p(q_a) \neq s_p(q_b)$. Now if the strategy that sets $s(q_b) = s(q_a)$ (or the other way around) fulfils the property then 
-we are done, so we assume it is not the case. 
-Then for the strategy $s_p^a$ given by 
+Let us denote by $\cut(q,\ameet(q))$ the set $\{b \mid b \in q, \ameet(q) \not \preceq b\}$, i.e., the result of 
+removing from $q$ all states that are successors of $\ameet(q)$, including $\ameet(q)$ itself. 
+
+Consider a strategy $s_p$ and a set $s_{-p}$ of basic strategies. We build $s'_p$ by repeatedly replacing actions as follows. 
+For each state $q_a$ such that $s_p(q_a) \neq s_p(\base(q_a))$, let 
+$s_p[\base \rightarrow a]$ be defined as: 
+$$s_p[\base \rightarrow a](q) = \begin{cases}
+\base(s(q_a)), \text{ if } q = \base(q_a); \\
+s(q) \text{ otherwise }
+\end{cases}
+$$ 
+Moreover, denote by $A$ the set of states given by 
+$\{q \in \bQ \mid \}$
+
+and let $s_p[a \rightarrow \base]$ be defined as: 
+$$s_p[a \rightarrow \base](q) = \begin{cases}
+\cut(q,\ameet(q)) \cup s(\base(q_a)), \text{ if } \base(q) = \base(q_a); \\
+\cut(q,\ameet(q)) \cup s(q_a), \text{ if } \replace(q,\ameet(q),q_a); \\
+s(q) \text{ otherwise }
+\end{cases}
+$$ 
+Define also $\bs[\base \rightarrow a] = 
+(s_{-p}, s_p[\base \rightarrow a])$. 
+
+
+
+%%%% need: replace, read and make better, convergence. 
+
+We have three cases. \textbf{First}, if $u_p(\bs[\base \rightarrow a] \mid \base(q_a)) > u_p(\bs \mid \base(q_a))$. In this case it is easy to see 
+that strategy $\bs[\base \rightarrow a]$ has a higher utility on $\epsilon$ than $\bs$. We then set $s'_p(q') = s_p[\base \rightarrow a]$. 
+
+\textbf{Second}, if $u_p(\bs[\base \rightarrow a] \mid \base(q_a)) < u_p(\bs \mid \base(q_a))$. In this case 
+the strategy $\bs[a \rightarrow \base]$ has a higher utility on $\epsilon$ than $\bs$. To see this, let $\bQ^a$ be the 
+set of all states $q$ such that $\pr^\bs(q \mid q_a) > 0$. Then the utility of 
+
+$$u_p(\bs \mid \epsilon) = \sum_{q \notin \bQ^a} \beta^{|q|} r_p(q) \pr^\bs(q \mid \epsilon) + 
+\beta^{|q_a|} u_p(\bs \mid q_a) \pr^\bs(q_a \mid \epsilon), $$
+and where $u_p(\bs \mid q_a)$ can be rewritten as $r_p(q_a) + \alpha^{|\ameet(q_a)|}u_p(\bs[\base \rightarrow a] \mid \base(q_a))$. 
+
+On the other hand, 
+$$u_p(\bs[a \rightarrow \base] \mid \epsilon) = \sum_{q \notin \bQ^a} \beta^{|q|} r_p(q) \pr^{\bs[a \rightarrow \base]}(q \mid \epsilon) + 
+\beta^{|q_a|} u_p(\bs[a \rightarrow \base] \mid q_a) \pr^{\bs[a \rightarrow \base]}(q_a \mid \epsilon), $$
+and where $u_p(\bs[a \rightarrow \base] \mid q_a)$ can be rewritten as $r_p(q_a) + \alpha^{|\ameet(q_a)|}u_p(\bs \mid \base(q_a))$, 
+which shows our claim  $u_p(\bs[\base \rightarrow a] \mid \base(q_a)) < u_p(\bs \mid \base(q_a))$. 
+
+We then set $s'_p(q') = s_p[a \rightarrow \base]$. 
+
+\textbf{Third}, if $u_p(\bs[\base \rightarrow a] \mid \base(q_a)) = u_p(\bs \mid \base(q_a))$, we do not modify $s'$ for this state. 
+
+Let us note that each modification produces a strategy with an equal or higher utility, and where any state $q$ where 
+$\base(s(q)) \neq \base(s\base(q))$ is farther and farther away from $\epsilon$, in terms of the size of blocks. 
+Then the limit of this modification satisfies the claim 
 \end{proof}
 
 
+
+
+%we claim that 
+%the strategy $\bs[\base \rightarrow a]$ has a higher utility on $\epsilon$ than $\bs$. Let $\bQ'$ contain all states 
+%$q'$ such that $\base(q') = \base(q_a)$ and $\base(s(q')) = \base(s(\base(q_a)))$, and let $\bQ'_{min}$ denote the set of minimal such states, 
+%that is, $\bQ'_{min} = \{q \mid q \in \bQ'$ and for every $q``\in \bQ', \pr^\bs(q \mid q'') = 0\}$. 
+%Finally, $\succ(\bQ'_{min})$ denotes all states that are successors of a state in $\bQ'_{min}$. 
+
+%Now the utility of 
+%$u_p(\bs \mid \epsilon)$ can be written as $\sum_{q \notin \succ(\bQ'_{min})} r_p(q) \pr^\bs(q \mid \epsilon)$ + 
+%$\sum_{i = 0}^\infty \sum_{q \in \bQ'_{min}, |q| = i} u_p( \bs \mid q) \pr^\bs(q \mid \epsilon)$. 
+
+%If we change $\bs$ for $\bs[\base \rightarrow a])$, the first sum above remains the same, and in the second sum 
+%all that changes is $u(\bs \mid q)$ for $u(\bs[\base \rightarrow a] \mid q)$. Thus, all that is left to show is that 
+%$u(\bs \mid q) < u(\bs[\base \rightarrow a] \mid q)$ for $q \in \bQ'_{min}$. 
+
+%Assume first that $\pr^\bs(q \mid q_a) = 0$. Then 
+%$u_p(\bs \mid q) = r_p(q) + \alpha^{\ameet(q)} u_p(\bs \mid \base(q))$, because by our assumption the strategy in 
+%$q$ corresponds to that of $\base(q)$. Furthermore, 
+%$u_p(\bs[\base \rightarrow a] \mid q) = r_p(q) + \alpha^{\ameet(q)} u_p(\bs[\base \rightarrow a] \mid \base(q))$, 
+%and we obtain what we need. 
+
+
+%Assume the contrary: then 
+%$u(\bs \mid q) \geq u(\bs[\base \rightarrow a] \mid q)$
+
+
+%$u_p(\bs[\base \rightarrow a] \mid q_a) > u_p(\bs \mid q_a)$
+
+
+%\newcommand{\cut}{\text{cut}}
+%Now let us denote by $\cut(q,\ameet(q))$ the set $\{b \mid b \in q, \ameet(q) \not \preceq b\}$, i.e., the result of 
+%removing from $q$ all states that are successors of $\ameet(q)$, including $\ameet(q)$ itself. 
+%Since $s_p$ is greedy, Lemma \ref{lem-meet1} and the fact 
+%that $s_{-p}$ are all basic, we can replace $u_p(\bs \mid q)$ for 
+%$r_p(\cut(q,\ameet(q)))+ \alpha^{\ameet(q)}u(\bs \mid \base(q))$.
+
+%So we have that 
+
+%$$u_p(\bs \mid \epsilon) = \sum_{q \notin \succ(\bQ'_{min})} r_p(q) \pr^\bs(q \mid \epsilon) + 
+%\sum_{i = 0}^\infty \sum_{q \in \bQ'_{min}, |q| = i} [r_p(\cut(q,\ameet(q)))+ \alpha^{\ameet(q)}u(\bs \mid \base(q))] \pr^\bs(q \mid \epsilon).$$ 
+
+%Now if we change $\bs$ for $\bs[\base \rightarrow a])$, the first sum above remains the same, and in the second sum 
+%all that changes is $u(\bs \mid \base(q))$ for $u(\bs[\base \rightarrow a] \mid \base(q))$. 
+%Thus, all that is left to show is that $u(\bs \mid \base(q)) < u(\bs[\base \rightarrow a] \mid \base(q))$. 
+
+%are 
+
+% is strictly 
+%greater than $u_p(q' \mid \bs)$. 
+
+%We then set $s'_p(q') = s_p[\base \rightarrow a]$. 
+
+%\smallskip
+
+%Next, if $u_p(\bs[\base \rightarrow a] \mid q_a) > u_p(\bs \mid q_a)$, let $\bs[a \rightarrow \base]$ be the strategy such that 
+%$s_p[a \rightarrow \base](q_a) = s(q)$ 
+
+
+
+
+%Define $\bQ_A = \{q \mid \pr^s(q \mid q_a) > 0\}$ 
+
+%Now $$u_p( s \mid q) = \sum_{i=0}^\infty \beta^i \sum_{q^* \in Q^*_p, |q^*| = |q| + i} u_p(s \mid q^*) * \pr^s(q^* \mid q), $$
+
+
+
+%We need a first few key results. First is an easy observation about the meet of states. 
+%\begin{mylem}
+%	\label{lem-meet1}
+%	Let $\bs$ be a combined greedy strategy. Then for every pair $q$ and $q'$ of states such that 
+%	$\pr^{\bs'}(q' \mid q) \neq 0$ we have that $\ameet(q) \preceq \meet(q')$
+%\end{mylem}	
+%\begin{proof}
+%Since for any state $q$ it holds that $\ameet(q) \preceq \meet(q)$, it suffices to show that $\ameet(q) \preceq \ameet(q')$. 
+%The proof is by induction on the number of extra blocks in $q'$. 
+
+%Take a state $q'$ such that $\pr^{\bs'}(q' \mid q) \neq 0$, and consider the state $q''$ such that $q' = s_p(q'')$, for some player 
+%$p$ (such state must exist because $\pr^{\bs'}(q' \mid q) \neq 0$). By induction we have that 
+%$\ameet(q) \preceq \ameet(q'')$, and since $s_p$ is greedy, the only valid actions involve mining something after $\ameet(q'')$, so that 
+%$\ameet(q) \preceq \ameet(s_p(q''))$.
+%\end{proof}
+
+%With this lemma, we can
 
 
 
