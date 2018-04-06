@@ -110,7 +110,7 @@ a strategy $s$ for a player $p$ is \emph{basic} if for every pair of states $q, 
 
 \begin{mylem}
 \label{lem-basic}
-Let $p \in \{1, \ldots, m\}$ and $\bs$ be a combined greedy strategy such that $s_q$ is a basic strategy for every player $q \neq p$. Then there exists a basic strategy $s'_p$ for player $p$ such that $(\bs_{-p}, s'_p)$ is a greedy combined strategy and $u_p((\bs_{-p},s'_p) \mid \varepsilon) \geq u_p((\bs_{-p},s_p) \mid \varepsilon)$.
+Let $p \in \{1, \ldots, m\}$ and $\bs$ be a combined greedy strategy such that $s_j$ is a basic strategy for every player $j \neq p$. Then there exists a basic strategy $s'_p$ for player $p$ such that $(\bs_{-p}, s'_p)$ is a greedy combined strategy and $u_p((\bs_{-p},s'_p) \mid \varepsilon) \geq u_p((\bs_{-p},s_p) \mid \varepsilon)$.
 \end{mylem}
 
 \newcommand{\succes}{\text{succ}}
@@ -256,21 +256,73 @@ Then the limit of this modification satisfies the claim
 
 %With this lemma, we can
 
+\subsection{A basic property of the utility function}
+
+\begin{mylem}\label{lem-dist-k}
+Given $p \in \bP$, a combined strategy $\bs$, a state $q_0 \in \bQ$ and $k \geq 1$, it holds that:
+\begin{multline*}
+u_p(\bs \mid q_0) \ = \  
+\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}}
+r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
+\beta^k \cdot 
+\bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}}
+\pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)\bigg).
+\end{multline*}
+\end{mylem}
+
+\begin{proof} We have that $u_p(\bs \mid \ q_0)$ is equal to:
+\begin{align*}
+&\sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
+\pr^{\bs}(q \mid q_0)\bigg) \ =\\
+&\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}}
+r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) + 
+\sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
+\pr^{\bs}(q \mid q_0)\bigg)\ = \\
+&  \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
+& \hspace{15pt} \sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(
+\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot
+\bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i-k}} r_p(q') \cdot 
+\pr^{\bs}(q' \mid q)\bigg)\bigg)\ = \\
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
+& \hspace{15pt}
+\beta^k \cdot \sum_{i=k}^{\infty}\beta^{i-k} \cdot  \bigg(
+\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot
+\bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i-k}} r_p(q') \cdot 
+\pr^{\bs}(q' \mid q)\bigg)\bigg)\ = \\
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
+& \hspace{15pt} \beta^k \cdot \sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(
+\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot
+\bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = j}} r_p(q') \cdot 
+\pr^{\bs}(q' \mid q)\bigg)\bigg)\ = \\
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
+& \hspace{15pt}
+ \beta^k \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot \bigg(\sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = j}} r_p(q') \cdot 
+\pr^{\bs}(q' \mid q)\bigg)\bigg)\bigg)\ = \\
+& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) +  \beta^k \cdot 
+\bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}}
+\pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)\bigg).
+\end{align*}
+\end{proof}
 
 
 \subsection{Proof of Theorem \ref{thm-conts_equlibria}} 
 
 Let $p \in \bP$ a player and $s_p$ a greedy strategy for player $p$. We need to show that 
-$u_p(\df \mid \varepsilon) \geq u_p( (\df_{-p},s_p) \mid \varepsilon)$. The first remark is that without loss of generality we can consider 
-$m = 2$, because when comparing these two strategies we can bundle together all the remaining players, behaving according to $\df$ 
-under the combined hashpower given by the sum of all the $h_j$'s for $j \neq p$. We thus focus on the strategies 
-$\df = (\df_0,\df_1)$ and $s = (\df_0,s_p)$ (again, for readability we assume that $p$ is player $1$). 
+$u_p(\bdf \mid \varepsilon) \geq u_p( (\df_{-p},s_p) \mid \varepsilon)$. The first remark is that without loss of generality we can consider 
+$m = 2$, because when comparing these two strategies we can bundle together all the remaining players, behaving according to the default strategy
+under the combined hash power given by the sum of all the $h_j$'s for $j \neq p$. We thus focus on the strategies 
+$\bdf = (\df_0,\df_1)$ and $\bs = (\df_0,s_p)$, and for readability we assume that $p = 1$, so that $\bs = (\df_0,s_1)$.
+Moreover, by Lemma \ref{lem-basic}, we can also assume that $s_1$ is a basic strategy, 
+%satisfies the properties of this Lemma, 
+that is, for every  pair of states $q$ and $q'$ such that $\base(q) = \base(q')$ we have that $s_1(q) = s_1(q')$.
 
-Now, by Lemma \ref{lem-basic}, we can also assume that $s_p$ satisfies the properties of this Lemma, that is, for every 
-pair of states $q$ and $q'$ such that $\subbody(q,\meet(q,p)) = \subbody(q',\meet(q',p))$ we have that $s(q) = s(q')$. If not, there is a strategy with even higher utility that satisfies it. 
+Assume for the sake of contradiction that $u_1(\bdf \mid \varepsilon) < u_1( \bs \mid \varepsilon)$. Then there must be at least one 
+state $q$ such that $s_1(q) \neq \df_1(q)$, the probability $\pr^{\bs}(q \mid \varepsilon)$ of eventually reaching this state is greater than $0$, and $u_1(\bdf \mid q) < u_1(\bs \mid q)$. 
 
-Assume for the sake of contradiction that $u_p(\df \mid \varepsilon) < u_p( (\df_{-p},s_p) \mid \varepsilon)$. Then there must be at least one 
-state $q$ such that $s_p(q) \neq \df(q)$, the probability $\pr^s(q \mid \epsilon)$ of eventually reaching this state is greater than $0$, and such that $u_p(\df \mid q) < u_p( (\df_{-p},s_p) \mid q)$. 
+
+
+
+
 
 
 Now, because of Lemma \ref{lem-basic}, we assume without loss of generality that in state $q$, player $p$ has $0$ blocks on the blockchain. Further, from all such states satisfying all these requirements, we take the one with the fewer number of blocks. Because our actions are greedy, we know that state $q$ has the shape of a line of $m$ blocks, all owned by player $0$. 
@@ -413,53 +465,6 @@ Let $q$ a state and $q' = \subbody(\meet(q,p),q)$.
 %\end{align*}
 %\end{proof}
 
-
-\begin{mylem}\label{lem-dist-k}
-Given $p \in \bP$, a combined strategy $\bs$, $\bq_0 \in \bQ$ and $k \geq 1$, it holds that:
-\begin{multline*}
-u_p(\bs \mid \bq_0) \ = \  
-\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}}
-r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
-\beta^k \cdot 
-\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}}
-\pr^{\bs}(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
-\end{multline*}
-\end{mylem}
-
-\begin{proof} We have that:
-\begin{align*}
-u_p(\bs \mid & \ \bq_0)  \ =  \\
-&\sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
-\pr^{\bs}(\bq \mid \bq_0)\bigg) \ =\\
-&\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}}
-r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) + 
-\sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot 
-\pr^{\bs}(\bq \mid \bq_0)\bigg)\ = \\
-&  \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
-& \hspace{15pt} \sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(
-\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot
-\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-k}} r_p(\bq') \cdot 
-\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
-& \hspace{15pt}
-\beta^k \cdot \sum_{i=k}^{\infty}\beta^{i-k} \cdot  \bigg(
-\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot
-\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = i-k}} r_p(\bq') \cdot 
-\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
-& \hspace{15pt} \beta^k \cdot \sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(
-\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot
-\bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq') \cdot 
-\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) \ + \\
-& \hspace{15pt}
- \beta^k \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}} \pr^{\bs}(\bq \mid \bq_0) \cdot \bigg(\sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(\sum_{\substack{\bq' \in \bQ \,: \\ \bq \subseteq \bq' \text{ {\rm and} } |\bq'| - |\bq| = j}} r_p(\bq') \cdot 
-\pr^{\bs}(\bq' \mid \bq)\bigg)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = i}} r_p(\bq) \cdot \pr^{\bs}(\bq \mid \bq_0)\bigg) +  \beta^k \cdot 
-\bigg(\sum_{\substack{\bq \in \bQ \,: \\ \bq_0 \subseteq \bq \text{ {\rm and} } |\bq| - |\bq_0| = k}}
-\pr^{\bs}(\bq \mid \bq_0) \cdot u_p(\bs \mid \bq)\bigg).
-\end{align*}
-\end{proof}
 
 
 
