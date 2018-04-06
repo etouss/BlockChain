@@ -133,7 +133,7 @@ the mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
 %u_p(\bs \mid q_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
 %\pr^{\bs}(q \mid q_0)\bigg)
-u_p(\bs \mid q_0) & = & \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
+u_p(\bs \mid q_0) & = & \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
 \end{eqnarray*}
 \end{mydef}
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_0,s_1, \ldots, s_{m-1})$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$.

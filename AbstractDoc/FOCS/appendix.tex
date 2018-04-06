@@ -256,9 +256,80 @@ Then the limit of this modification satisfies the claim
 
 %With this lemma, we can
 
-\subsection{A basic property of the utility function}
+\subsection{Some basic properties of the utility function}
+Let $q, q' \in \bQ$ be two states such that $q \subseteq q'$, and let $Q \subseteq \bQ$. We say that a sequence of states $q_1$, $\ldots$, $q_n$ is a path from $q$ to $q'$ if $n \geq 1$, $q_1 = q$, $q_n =q'$, $q_i \subseteq q_{i+1}$ and $|q_{i+1}| - |q_i| = 1$ for every $i \in \{1, \ldots, n-1\}$. Moreover, we say that path $q_1$, $\ldots$, $q_n$ crosses $Q$ if there exists $i \in \{1, \ldots, n\}$ such that $q_i \in Q$. Finally, we define the down- and up-closures of $Q$ as follows:
+\begin{eqnarray*}
+\dcl(Q) &=& \{ q \in \bQ \mid \text{there exists } q' \in Q \text{ such that } q \subseteq q'\},\\
+\ucl(Q) &=& \{ q \in \bQ \mid \text{there exists } q' \in Q \text{ such that } q' \subseteq q\}.
+\end{eqnarray*}
+We use the previous notation to define when a set of states is a cut. More precisely, assuming that $Q \subseteq \bQ$ and $q_0 \in \dcl(Q)$, we say that $Q$ is a cut for $q_0$ if:
+\begin{itemize}
+\item for every $q_1, q_2 \in Q$, it holds that $q_1 \not\subseteq q_2$ and $q_2 \not\subseteq q_1$ (that is, $q_1$ and $q_2$ are incomparable states), and
 
-\begin{mylem}\label{lem-dist-k}
+\item for every $q \in \ucl(Q)$ such that $q \subseteq q'$ and for every path $q_1$, $\ldots$, $q_n$ from $q$ to $q'$, it holds that $q_1$, $\ldots$, $q_n$ crosses $Q$.
+\end{itemize}
+
+\begin{mylem}\label{lem-cut}
+Let $Q \subseteq \bQ$ and $q_0 \in \dcl(Q)$ such that $Q$ is a cut for $q$, and let $\bs$ be a combined strategy. Then for every state $q \in \ucl(Q)$, it holds that:
+\begin{eqnarray*}
+\pr^{\bs}(q \mid q_0) & = & \sum_{q' \in Q} \pr^{\bs}(q \mid q') \cdot \pr^{\bs}(q' \mid q_0).
+\end{eqnarray*}
+\end{mylem}
+
+\begin{proof}
+Direct from the definition of the notion of cut.
+\end{proof}
+
+\begin{mylem}\label{lem-cut-utility}
+Given $p \in \bP$, a combined strategy $\bs$, $q_0 \in \bQ$ and $Q \subseteq \bQ$ such that $Q$ is a cut for $q_0$, it holds that:
+\begin{multline*}
+u_p(\bs \mid q_0) \ = \\
+\sum_{q \in \bQ \smallsetminus \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0) + 
+\sum_{q \in Q \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot \pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)
+\end{multline*}
+\end{mylem}
+
+\begin{proof} We have that: 
+\begin{align*}
+&u_p(\bs \mid q_0) =\\
+&\hspace{10pt} \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0) =\\
+&\hspace{10pt} \sum_{q \in \bQ \smallsetminus \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0) + 
+\sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0)
+\end{align*}
+Given that $Q$ is a cut for $q_0$, we conclude from Lemma \ref{lem-cut} that:
+\begin{align*}
+&\sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0) =\\
+&\hspace{100pt} \sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \bigg(\sum_{q' \in Q} \pr^{\bs}(q \mid q') \cdot \pr^{\bs}(q' \mid q_0)\bigg) =\\
+&\hspace{100pt} \sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q} \bigg(\sum_{q' \in Q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q') \cdot \pr^{\bs}(q' \mid q_0)\bigg) =\\
+&\hspace{100pt}  \sum_{q' \in Q} \pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q')\bigg) 
+\end{align*}
+Moreover, given that $\pr^{\bs}(q_2 \mid q_1) = 0$ if $q_1 \not\subseteq q_2$, we conclude that
+\begin{align*}
+& \sum_{q' \in Q} \pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q')\bigg) =\\
+& \hspace{30pt}\sum_{q' \in Q \,:\, q_0 \subseteq q'} \pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{q \in \bQ \cap \ucl(Q)\,:\, q_0 \subseteq q \text{ and } q' \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q')\bigg)  =\\
+&\hspace{30pt} \sum_{q' \in Q \,:\, q_0 \subseteq q'} \pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{q \in \bQ \cap \ucl(Q)\,:\, q' \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q')\bigg)  =\\
+&\hspace{30pt} \sum_{q' \in Q \,:\, q_0 \subseteq q'} \pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{q \in \bQ \,:\, q' \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q')\bigg)  =\\
+&\hspace{30pt} \sum_{q' \in Q \,:\, q_0 \subseteq q'} \beta^{|q'|-|q_0|} \cdot \pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{q \in \bQ \,:\, q' \subseteq q} \beta^{|q|-|q'|} \cdot r_p(q) \cdot  \pr^{\bs}(q \mid q')\bigg)  =\\
+&\hspace{20pt} \sum_{q' \in Q \,:\, q_0 \subseteq q'} \beta^{|q'|-|q_0|} \cdot \pr^{\bs}(q' \mid q_0) \cdot u_p(\bs \mid q')
+\end{align*}
+Therefore, from the previous calculations we conclude that:
+\begin{multline*}
+u_p(\bs \mid q_0) \ = \\
+\sum_{q \in \bQ \smallsetminus \ucl(Q)\,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0) + 
+\sum_{q \in Q \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot \pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)
+\end{multline*}
+\end{proof}
+From Lemma \ref{lem-cut-utility}, we obtain the following useful corollaries: 
+
+\begin{mycor}\label{cor-cut-1}
+Given $p \in \bP$, a combined strategy $\bs$, $q_0 \in \bQ$ and $Q \subseteq \bQ$ such that $Q$ is a cut for $q_0$, if $\pr^{\bs}(q \mid q_0) = 0$ for every state $q$ such that $q \in \bQ \smallsetminus \ucl(Q)$ and $q_0 \subseteq q$, then it holds that:
+\begin{eqnarray*}
+u_p(\bs \mid q_0) & = &
+\sum_{q \in Q \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot \pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)
+\end{eqnarray*}
+\end{mycor}
+
+\begin{mycor}\label{cor-dist-k}
 Given $p \in \bP$, a combined strategy $\bs$, a state $q_0 \in \bQ$ and $k \geq 1$, it holds that:
 \begin{multline*}
 u_p(\bs \mid q_0) \ = \  
@@ -268,40 +339,10 @@ r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
 \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}}
 \pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)\bigg).
 \end{multline*}
-\end{mylem}
+\end{mycor}
 
-\begin{proof} We have that $u_p(\bs \mid \ q_0)$ is equal to:
-\begin{align*}
-&\sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
-\pr^{\bs}(q \mid q_0)\bigg) \ =\\
-&\sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}}
-r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) + 
-\sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
-\pr^{\bs}(q \mid q_0)\bigg)\ = \\
-&  \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
-& \hspace{15pt} \sum_{i=k}^{\infty}\beta^{i} \cdot  \bigg(
-\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot
-\bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i-k}} r_p(q') \cdot 
-\pr^{\bs}(q' \mid q)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
-& \hspace{15pt}
-\beta^k \cdot \sum_{i=k}^{\infty}\beta^{i-k} \cdot  \bigg(
-\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot
-\bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = i-k}} r_p(q') \cdot 
-\pr^{\bs}(q' \mid q)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
-& \hspace{15pt} \beta^k \cdot \sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(
-\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot
-\bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = j}} r_p(q') \cdot 
-\pr^{\bs}(q' \mid q)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) \ + \\
-& \hspace{15pt}
- \beta^k \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) \cdot \bigg(\sum_{j=0}^{\infty}\beta^{j} \cdot  \bigg(\sum_{\substack{q' \in \bQ \,: \\ q \subseteq q' \text{ {\rm and} } |q'| - |q| = j}} r_p(q') \cdot 
-\pr^{\bs}(q' \mid q)\bigg)\bigg)\bigg)\ = \\
-& \sum_{i=0}^{k-1} \beta^i \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg) +  \beta^k \cdot 
-\bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}}
-\pr^{\bs}(q \mid q_0) \cdot u_p(\bs \mid q)\bigg).
-\end{align*}
+\begin{proof} 
+This result is obtained by considering $Q = \{ q \in \bQ \mid q_0 \subseteq q$ and  $|q| - |q_0| = k \}$ in Lemma \ref{lem-cut-utility}, which is a cut for $q_0$.
 \end{proof}
 
 
