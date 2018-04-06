@@ -77,9 +77,9 @@ The first forking strategy we models the case when 0 has won the ultimate block.
 %	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. 
 Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
-		u_1^\infty(\fg\mid\varepsilon) =K_1\cdot Cat(\beta^2h(1-h))+K_2\cdot Cat(\alpha\beta^2h(1-h))
+		u_1^\infty(\fg\mid\varepsilon) =K_1\cdot \Cat(\beta^2h(1-h))+K_2\cdot \Cat(\alpha\beta^2h(1-h))
 	\end{eqnarray*}
-where $Cat:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers \cite{ADD_CITATION}, and 
+where $\Cat:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers \cite{ADD_CITATION}, and 
 	\begin{eqnarray*}
 		K_1 =\frac{\alpha\beta h}{(1-\alpha)(1-\beta)},\quad	K_2 =\frac{\alpha^2\beta h(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}.	
 	\end{eqnarray*}
@@ -126,12 +126,9 @@ When computing the utility of $\forkm{m}$ starting in some state $q_0$, we take 
 \begin{myprop}\label{prop-fork_m}
 	Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
-		u_1(\mfork|q_0) =K_{1}Cat(\beta^2h(1-h))^{m+1}+K_{2}Cat(\alpha\beta^2h(1-h))^{m+1}
+		u_1(\mfork|q_0) =\bigg(\frac{\beta h}{\alpha}\bigg)^m K_{1}\Cat(\beta^2h(1-h))^{m+1}+(\beta h)^{m}K_{2}\Cat(\alpha\beta^2h(1-h))^{m+1}
 	\end{eqnarray*}
-	where Cat is as in Proposition \ref{prop:utility_gen_fork}, and 
-	\begin{eqnarray*}
-		K_{1,m} = \frac{(\beta h)^{m+1}}{(1-\alpha)(1-\beta)\alpha^{m-1}},\quad K_{2,m} =	\frac{\alpha^{2}(\beta h)^{m+1}(\alpha\beta+h\beta-h\alpha\beta-1)}{(1-\alpha)(1-\beta)(1-\alpha\beta)}.
-	\end{eqnarray*}
+	where $\Cat$ is as in Proposition \ref{prop:utility_gen_fork}, and 
 
 \end{myprop}
 

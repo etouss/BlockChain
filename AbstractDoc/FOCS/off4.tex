@@ -1,12 +1,178 @@
 %!TEX root = focs.tex
 
+\newcommand{\ameet}{\text{\rm all-meet}}
+\newcommand{\base}{\text{\rm base}}
 
 \section{Off}
 
 \begin{myprop}
-	Let $\sigma_0$ a strategy, then there exists $s_0$ a greedy strategy  such that for any $\sigma_1$ strategy, we have $u_0(\sigma_0,s_1) \leq < u_0(s_0,s_1)$ 
+	There exists $\sigma_0$, $\sigma_1$, such that for any greedy strategy $s_0$ we have $u_0(\sigma_0,\sigma_1) > u_0(s_0,\sigma_1)$.
 \end{myprop}
-\etienne{That the property marcelo and I need to work on, i have to think about strict or not inequalities.}
+\begin{proof}
+	Let $q_{min} = \{\epsilon; 1;10;0;00\}$ clearly for any $q \in \bP$ such that $q_{min} \subseteq q$ and $s_0$ greedy strategy $\pr^{s_0,\sigma_1}(q \mid q_0) = 0$.
+	
+	Let $\sigma_1$ be the strategy define such that for any $q \in \bQ$ if $1 \notin q$ then $\sigma_1(q) = mine(1,\epsilon,q)  $,if $q_{min} \not \subseteq q$ then $\sigma_1 = DF_1$ otherwise $\sigma_1(q) = mine(1,b_{q},q)$ where $b_{q} = \underset{|.|}{min}\{ b \mid mine(1,b,q) \textit{ a valid action}\}$
+	
+	Let $\sigma_0$ be the strategy such that for any $q \in \bQ$, if $q_{min} \not \subseteq q$ and if there exists $b_q \in q$ such that $mine(0,b_q,q)$ is a valid action and $b_q \in \{\epsilon; 1;0;0\}$ then $\sigma_0(q) = mine(0,b_q,q)$ otherwise  $\sigma_0(q) = mine(0,longest(q,0),q)$.
+	
+	As $(DF_0,DF_1)$ is a $\beta$ discounted stationary equilibrium there is no better greedy strategy than $(DF_0)$ for player one. And clearly $u(\sigma_0,\sigma_1) > u(DF_0,\sigma_1)$.
+\end{proof}
+
+For any $q$ we denote $$no-greedy(q) = \{ b \in q \mid |b| > |all-meet(q)| \land  b \not \preceq longest(q,p) \}$$
+
+We denote $$step(q) = \{q\} \cup \{ q' \subseteq q \mid \exists q'' \in step(q), q' = q'' \setminus base(q'') \}$$
+
+Finally $$repair(q) = q \setminus \bigcup_{q' \in step(q)} no-greedy(q')$$
+\begin{mydef}\label{def-stable}
+	We say that a strategy $s$ is \textit{stable} if for any $q$, $s(q) = s(repair(q))$.
+\end{mydef}
+Note that for any $\bs$ combined greedy strategy it can be assume without any loose of generality that the strategies are stable too.
+
+
+
+
+\begin{myprop}
+	Let $\sigma_1$ a stable greedy strategy and $\sigma_0$ a strategy, then there exists $s_0$ a greedy strategy such that $u_0(s_0,\sigma_1) \geq u_0(\sigma_0,\sigma_1)$.
+\end{myprop}
+
+\begin{proof}
+	
+	Intuitively we want to build the greedy strategy $s_0$ such that we discard every non-greedy action, however we can not know if the first non-greedy action we meet is really the "bad" action, indeed it might be one of the previous greedy action we have done that were really "poor" (such as stop an high probability wining race). In order to ensure the fact that we keep only the best actions possible we check how the strategy is behaving if it keeps wining. We want to find the first new block that going to to modify the strategy of the opponent therefore the first block that modify the repair of the body. Then it is the action we want to perform and we want to impose to do this action as soon as it is possible (as soon as the block exists). The new resulting strategy has at least one greedy action less. Hence if we iterate the process over all non-greedy action, we obtain a greedy strategy. 
+	
+	Let $s_0 = \sigma_0$
+	
+	Let $q^n$  the smallest body with $s_n(q^n)$ non-greedy, 
+	$$q^n_{max} = \underset{\subseteq}{min}\{q \in \bQ \mid  \pr^{s_n}(q\mid q^n)\neq 0 \land repair(q) \neq q^n \}$$
+	$$q^n_{min} = \underset{\subseteq}{min}\{q \in \bQ \mid  q \subseteq q^n_{max} \land s_n(q) \in repair(q^n_{max}) \}$$
+	
+	
+	Then we have $s_{n+1}$ such that for any $q' \subseteq q^n$ such that $all-meet(q^n_{max}) \in q'$ then $s_{n+1}(q') = s_n(q' \cup q^n_{min})$, and $s_{n+1} = s_n$ otherwise.
+	
+	\begin{mylem}
+		\label{lemmpr}
+		For any $q \in \bQ$: 
+		$$\pr^{s_{\infty},\sigma_1}(q \mid q_0)  = \sum_{q'\in \bQ}^{repair(q') = q} \pr^{\sigma_0,\sigma_1}(q' \mid q_0)$$
+	\end{mylem}
+	\begin{proof}
+		
+		Assume for all $q$ with $|q| \leq n$ then $$\pr^{s_{\infty},\sigma_1}(q \mid q_0)  = \sum_{q'\in \bQ}^{repair(q') = q} \pr^{\sigma_0,\sigma_1}(q' \mid q_0)$$. 
+		
+		Let $q$ with $|q| = n+1$
+		\begin{eqnarray*}
+			\pr^{s_{\infty},\sigma_1}(q \mid q_0)  & =& \sum_{q' \bQ}^{s_{\infty}(q') = q} \pr^{s_{\infty},\sigma_1}(q'\mid q_0) \cdot h_0\\
+			& & + \sum_{q' \bQ}^{\sigma_1(q') = q}  \pr^{s_{\infty},\sigma_1}(q'\mid q_0) \cdot h_1 \\
+			\pr^{s_{\infty},\sigma_1}(q \mid q_0)  & =& \sum_{q' \bQ}^{s_{\infty}(q') = q} [ \sum_{q''\in \bQ}^{repair(q'') = q'} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0)] \cdot h_0\\
+			& & + \sum_{q' \bQ}^{\sigma_1(q') = q}  [ \sum_{q''\in \bQ}^{repair(q'') = q'} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0)] \cdot h_1 \\
+		\end{eqnarray*}
+		
+		As $\sigma_1$ is stable for any $q''$ such that $repair(q'') = q'$ we have $\sigma_1(q'') = \sigma_1(q')$.
+		
+		\begin{eqnarray*}
+			\pr^{s_{\infty},\sigma_1}(q \mid q_0)  & =& \sum_{q' \bQ}^{s_{\infty}(q') = q} [ \sum_{q''\in \bQ}^{repair(q'') = q'} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0)] \cdot h_0\\
+			& & +  \sum_{q''\in \bQ}^{\sigma_1(repair(q'')) = q} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0) \cdot h_1\\
+		\end{eqnarray*}
+		
+		\begin{mylem}
+			\label{lemmarep}
+			For any $q''$ such that $repair(q'') = q'$ either $s_{\infty}(q') = \sigma_0(q'')$ or $\sigma_0(q'')(q'') = repair(q')$ or $\pr^{s_{\infty},\sigma_1}(q'' \mid q_0) = 0$
+		\end{mylem}
+		\begin{proof}
+			
+			\textbf{Assume $repair(q'') = q'  \land \sigma_0(q'')(q'') \neq repair(q') \land \pr^{s_{\infty},\sigma_1}(q'' \mid q_0) \neq 0$}
+			
+			If for all $m$, $s_m(q') = \sigma_0(q')$, then for all $q$ such that $repair(q) = q'$ and $q \neq q'$, we have $\pr^{s_{m},s_1}(q' \mid q_0) = 0$ hence $\pr^{s_{\infty},s_1}(q' \mid q_0) = 0$
+			
+			Let $m = max \{m \in \mathbf{N} \mid s_m(q') = \sigma_0(q') \}$.
+			\\Let $q^m$  the smallest body with $s_m(q^m)$ non-greedy, 
+			
+			$$q^m_{max} = \underset{\subseteq}{min}\{q \in \bQ \mid  \pr^{s_m}(q\mid q^m)\neq 0 \land repair(q) \neq q^m \}$$
+			$$q^m_{min} = \underset{\subseteq}{min}\{q \in \bQ \mid  q \subseteq q^m_{max} \land s_m(q) \in repair(q^m_{max}) \}$$
+			Then we have by definition $s_{m+1}$ such that for any $q \subseteq q_m$ such that $all-meet(q^m_{max}) \in q$ then $s_{m+1}(q) = s_m(q \cup q^m_{min})$, and $s_{m+1} = s_m$ otherwise.
+			
+			
+			
+			By definition of $m$ we have $s_m(q') = \sigma_0(q')$ and $s_{m+1}(q') \neq \sigma_0(q')$ therefore we have $q' \subseteq q_m$ and $all-meet(q^m_{max}) \in q'$ and $q^m_{min} \not \subseteq q'$. 
+			
+			As $repair(q'') = q'$ we have $q' \subseteq q''$ and $\sigma_0(q'')(q'') \neq repair(q'')$.
+			
+			\textbf{Suppose $q^m \not \subseteq q''$.}
+			
+			Then $q^m \not \subseteq repair(q'')$ then as $\pr^{s_{\infty},\sigma_1}(q'' \mid q_0) \neq 0$, $\pr^{s_m,\sigma_1}(q'' \mid q_0) \neq 0$ then there exits $q$ with $|q| < |q^m|$ such that $s_m(q)$ non-greedy. which is absurd.
+			
+			\textbf{Suppose $q^m \subseteq q''$.}
+			
+			Then as $repair(q_m) = q_m$  and $repair(q'') = q'$ and $q' \subseteq q_m$  and because $q_m$ is the smallest body such that $repair(s_m(q_m)) \neq s_m(q_m)$ we have $q_m = q'$ or $q'' = q'$.  
+			But as $\sigma_0(q'')(q'') \neq repair(q')$ if $q'' = q'$ then $\sigma_0(q')(q') \neq repair(q')$ therefore $q_m = q'$.
+			Therefore $q^m_{min} \not \subseteq q_m$ which is absurd by construction of $q^m_{max}$.
+			
+			Then $q_m = q'$ therefore as $repair(q'') = q'$, $\pr^{s_m}(q''\mid q') \neq 0$ therefore $q^m_{max} = q''$ and $q^m_{min} = q''$ therefore by definition of $s_{m+1}$ we have $s_{m+1}(q') = s_{m+1}(q' \cup q^m_{min}) = s_{m+1}(q'') =  \sigma_{0}(q'')$. 
+			
+			\bigskip
+			Similarly we  show that for any $n$, any $q''$ such that $repair(q'') = q'$ either $s_{n+1}(q') = s_{n}(q'')$ or $s_{n}(q'')(q'') = repair(q')$ or $\pr^{s_{n+1},\sigma_1}(q'' \mid q_0) = 0$
+			
+			Therefore we can assume without any loose of generality that $s_{\infty}(q') = \sigma_{0}(q'')$
+			
+			
+			\iffalse
+			As $s_{\infty}(q') \neq \sigma_0(q')$ there exits $n$ such that $s_n(q') \neq \sigma_{0}(q')$
+			
+			Let $n = max \{n \in \mathbf{N} \mid s_{n}(q') \neq \sigma_{0}(q') \}$.
+			
+			Let $q^n$  the smallest body with $s_n(q^n)$ non-greedy, such a body exists otherwise $s_{n+1} = s_{n} = s_{\infty}$.
+			
+			$$q^n_{max} = \underset{\subseteq}{min}\{q \in \bQ \mid  \pr^{s_n}(q\mid q^n)\neq 0 \land repair(q) \neq q^n \}$$
+			$$q^n_{min} = \underset{\subseteq}{min}\{q \in \bQ \mid  q \subseteq q^n_{max} \land s_n(q) \in repair(q^n_{max}) \}$$
+			Then we have by definition $s_{n+1}$ such that for any $q \subseteq q_n$ such that $all-meet(q^n_{max}) \in q$ then $s_{n+1}(q) = s_n(q \cup q^n_{min})$, and $s_{n+1} = s_n$ otherwise.
+			
+			By definition of $n$ we have $s_n(q') = \sigma_0(q')$ and $s_{n+1}(q') \neq \sigma_0(q')$ therefore we have $q' \subseteq q_n$ and $all-meet(q^n_{max}) \in q'$ and $q^n_{min} \not \subseteq q'$. 
+			\fi
+			
+			
+			
+		\end{proof}
+		
+		Therefore by lemma \ref{lemmarep}:
+		
+		\begin{eqnarray*}
+			\pr^{s_{\infty},\sigma_1}(q \mid q_0)  & =& \sum_{q''\in \bQ}^{s_{\infty}(repair(q'')) = q} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0) \cdot h_0\\\\
+			& & +  \sum_{q''\in \bQ}^{\sigma_1(repair(q'')) = q} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0) \cdot h_1\\
+			\pr^{s_{\infty},\sigma_1}(q \mid q_0)  & =& \sum_{q''\in \bQ}^{repair(q'') = q} \pr^{\sigma_0,\sigma_1}(q'' \mid q_0) \\
+		\end{eqnarray*}
+	\end{proof}
+	
+	Recall that : $$u_0(s_{\infty},\sigma_1 \mid q_0) = 	\sum_{q \in \bQ} \beta^{|q|} k^{s_{\infty},\sigma_1}_p(q,q_0) = \sum_{q \in \bQ} \beta^{|q|} \cdot r_0(q)\cdot \pr^{s_{\infty},\sigma_1}(q \mid q_0) $$
+	
+	\begin{eqnarray*}
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ]& = & \sum_{q \in \bQ} \beta^{|q|} \cdot r_0(q)\cdot (\pr^{s_{\infty},\sigma_1}(q \mid q_0)- \pr^{\sigma_0,\sigma_1}(q \mid q_0) )\\
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ] & = & \sum_{q \in \bQ}^{q = repair(q)} \beta^{|q|} \cdot r_0(q)\cdot (\pr^{s_{\infty},\sigma_1}(q \mid q_0)- \pr^{\sigma_0,\sigma_1}(q \mid q_0) )\\
+		&& - \sum_{q \in \bQ}^{q \neq repair(q)} \beta^{|q|} \cdot r_0(q)\cdot\pr^{\sigma_0,\sigma_1}(q \mid q_0) \\
+	\end{eqnarray*}
+	Therefore by lemma \ref{lemmpr}
+	\begin{eqnarray*}
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ] & = & \sum_{q \in \bQ}^{q = repair(q)} \beta^{|q|} \cdot r_0(q)\cdot [(\sum_{q'\in \bQ}^{repair(q') = q} \pr^{\sigma_0,\sigma_1}(q' \mid q_0))- \pr^{\sigma_0,\sigma_1}(q \mid q_0) )]\\
+		&& - \sum_{q \in \bQ}^{q \neq repair(q)} \beta^{|q|} \cdot r_0(q)\cdot\pr^{\sigma_0,\sigma_1}(q \mid q_0) \\
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ] & = & \sum_{q \in \bQ}^{q = repair(q)} \beta^{|q|} \cdot r_0(q)\cdot (\sum_{q'\in \bQ}^{repair(q') = q \land q' \neq q} \pr^{\sigma_0,\sigma_1}(q' \mid q_0))\\
+		&& - \sum_{q \in \bQ}^{q \neq repair(q)} \beta^{|q|} \cdot r_0(q)\cdot\pr^{\sigma_0,\sigma_1}(q \mid q_0) \\
+	\end{eqnarray*}
+	
+	\begin{mylem}
+		For any $q,q'$ such that $repair(q') = q$ then $r_0(q') = r_0(q)$ and $|q'| \leq |q|$.
+	\end{mylem}
+	\begin{proof}
+		Trivial.
+	\end{proof}
+	
+	Therefore
+	\begin{eqnarray*}
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ] & \geq & \sum_{q \in \bQ}^{q = repair(q)}\sum_{q'\in \bQ}^{repair(q') = q \land q' \neq q}  \beta^{|q'|} \cdot r_0(q') \cdot \pr^{\sigma_0,\sigma_1}(q' \mid q_0)\\
+		&& - \sum_{q \in \bQ}^{q \neq repair(q)} \beta^{|q|} \cdot r_0(q)\cdot\pr^{\sigma_0,\sigma_1}(q \mid q_0) \\
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ] & \geq & \sum_{q'\in \bQ}^{repair(q') \neq q }  \beta^{|q'|} \cdot r_0(q') \cdot \pr^{\sigma_0,\sigma_1}(q' \mid q_0)\\
+		&& - \sum_{q \in \bQ}^{q \neq repair(q)} \beta^{|q|} \cdot r_0(q)\cdot\pr^{\sigma_0,\sigma_1}(q \mid q_0) \\
+		\sum_{q \in \bQ} \beta^{|q|} [k^{s_{\infty},\sigma_1}_p(q,q_0)- k^{\sigma_0,\sigma_1}_p(q,q_0) ] & \geq & 0\\
+	\end{eqnarray*}
+	
+	
+\end{proof}
 
 %Given a state $q \in \bQ$ and a player $p \in \bP$, we define $\meet(q,p)$ as follows:
 %\begin{eqnarray*}
@@ -136,26 +302,29 @@ Thanks to last result $x'_0$ verify : $u_0(x_0',\sigma_1 \mid q_0) > u_0(\bsigma
 	\end{proof}
 	
 	By lemma \ref{newx} we know assume $$\sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) >  \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) $$
-	We build a strategy $y_0$ such that for all $q \in base(\bQ)$ we have $y_0(q) = x_0(q)$ and $y_0(q) = s_0(q)$ otherwise.
+	We build a strategy $y_0$ such that for all $q \in base(\bQ)$ with $x_0(q)(q) \in base(\bQ)$ we have $y_0(q) = x_0(q)$ and $y_0(q) = s_0(q)$ otherwise.
+
 	
-	We denote $base_{\neq}(\bQ) = \{q \notin base(\bQ) \mid \exists q' \in base(\bQ), |q'|=|q|-1 \land q' \subseteq q  \}$
-
-Then
-$$\sum_{q \in base_{\neq}(\bQ)} r_0(q) \cdot [\pr^{s_0,s_1}(q \mid q_0) -  \pr^{y_0,s_1}(q \mid q_0)] < 0 $$
-
 	Then thanks to lemma \ref{lem2} we have :
 	
 	\begin{eqnarray*}
 		\sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & [\sum_{q \notin base(\bQ)} k^{s_0,s_1}_p(q,q_0) + 	\sum_{q \in base(\bQ)} k^{s_0,s_1}_p(q,q_0)]\\
 		 && - [\sum_{q \notin base(\bQ)} k^{y_0,s_1}_p(q,q_0) + \sum_{q \in base(\bQ)} k^{y_0,s_1}_p(q,q_0)]\\
-		 \sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & [\sum_{q \notin base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) + 	\sum_{q \in base(\bQ)} k^{s_0,s_1}_p(q,q_0)]\\
-		 && - [\sum_{q \notin base(\bQ)} k^{s_0,s_1}_p(q,q_0) + \sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0)]\\
-		 \sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0) -\sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0) \\
+		 \sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & = & [\sum_{q \notin base(\bQ)} k^{s_0,s_1}_p(q,q_0)  + \sum_{q \in base(\bQ)} k^{\sigma_0,\sigma_1}_p(q,q_0)	]\\
+		 && - [ \sum_{q \notin base(\bQ)} k^{y_0,s_1}_p(q,q_0) + \sum_{q \in base(\bQ)} k^{x_0,\sigma_1}_p(q,q_0)]\\
+		 \sum_{q \in \bQ} k^{s_0,s_1}_p(q,q_0) - \sum_{q \in \bQ} k^{y_0,s_1}_p(q,q_0) & < & \sum_{q \notin base(\bQ)} k^{s_0,s_1}_p(q,q_0)   -  \sum_{q \notin base(\bQ)} k^{y_0,s_1}_p(q,q_0) \\
 	\end{eqnarray*}
+
+\begin{mylem}
+	Suppose there exists $\sum_{q \in \bQ} k^{x_0,\sigma_1}_p(q,q_0) >  \sum_{q \in \bQ} k^{\sigma_0,\sigma_1}_p(q,q_0)$ such that 
+\end{mylem}
+
 
 Therefore $\bs$ is not an equilibrium either.
 	
 	\iffalse
+	
+	
 
 	For any $q \in base(\bQ)$ we have: 
 	\begin{eqnarray*}

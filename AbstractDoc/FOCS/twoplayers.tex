@@ -181,12 +181,12 @@ In this section, players $\{0,1\}$ play according to the default strategy, defin
 where $H(x)$ denotes the Hamming weight of integer $x$, defined as the amount of non-zero bits of $x$. We prove the following.
 
 
-\begin{myprop*}
+\begin{myprop}
 Let $h$ denote the hash power of player 1. Then 
 $$u_1^n(\df\mid\varepsilon) = \frac{\alpha\beta(\alpha\beta^{n+1}+\alpha(1-\beta)(\alpha\beta)^{n}-\beta^{n}+(1-\alpha))}{(1-\alpha)(1-\beta)(1-\alpha\beta)}\cdot h c.$$
 In particular,
 $$u_1^\infty(\df\mid\varepsilon) = \frac{\alpha\beta}{(1-\beta)(1-\alpha\beta)}hc.$$
-\end{myprop*}
+\end{myprop}
 \begin{proof}
 Recall the definition of utility 
 \begin{eqnarray*}
@@ -223,14 +223,14 @@ Why Dyck draws.
 
 
 
-\begin{myprop*}
+\begin{myprop}
 	\label{prop-utilityofgenesisinfinite}
 	Suppose player 1 plays with the genesis fork strategy and player 0 follows the default strategy. Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
 		u_1^\infty(\fg) =K_1c(\beta^2h(1-h))+K_2c(\alpha\beta^2h(1-h))
 	\end{eqnarray*}
 where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers, and $K_1,K_2$ are constants depending on $\alpha,\beta,h$.
-\end{myprop*}
+\end{myprop}
 
 
 \begin{proof}
@@ -272,13 +272,13 @@ u^\infty_1(\fg)	&=& \sum_{n=0}^{\infty}(\#  \Dyck_{2n})\cdot\beta^{2n+1}h^{n+1}(
 as claimed. Remark also that $h(1-h)\leq 1/4$ hence the expression is well defined for all parameters $0\leq \alpha\leq 1,0\leq \beta\leq 1$. 
 \end{proof}
 
-\begin{myprop*}
+\begin{myprop}
 Suppose player 1 plays with the genesis fork strategy and player 2 follows the default strategy. Let $h$ be the hash power of player 1. Then
 \begin{eqnarray*}
 	u_1^n(\fg \mid \varepsilon) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}C_k \cdot h^{k+1}(1-h)^{k}\cdot \beta^{2k+1}\cdot P_k(h,\alpha,\beta)
 \end{eqnarray*}
 where $C_k={2k\choose k}/(k+1)$ is the $n$-th Catalan number and $P_{k}(\alpha,\beta)$ is a polynomial in $\alpha$ and $\beta$.
-\end{myprop*}
+\end{myprop}
 \begin{proof} As before, note that every state of positive reward $q\in\bQ'$ is of the form $d1w$ for a Dyck draw $d$ and $w\in \{0,1\}^\ast$. Denote $w[i]$ the $i$-th bit of $w$, with $i=1,\dots,|w|$. Note that
 \begin{eqnarray*}
 r_1(d1w) &=& c\cdot \bigg(\bigg(\sum_{i=1}^{|d|/2}\alpha^i \bigg)+\alpha^{|d|/2+1}+\alpha^{|d|/2+1}\bigg(\sum_{i=1}^{|w|}\alpha^i w[i]\bigg)\bigg),\\
@@ -318,29 +318,29 @@ which evaluates to
 \label{sec-mforkutility}
 
 
-In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $m$ blocks on an already defined blockchain of arbitrary length. In other words, let $q_0$ be the current blockchain of length $|q_0|\geq m$, and let $b_{-m}$ the block at position $|q_0|-m$. As we consider greedy strategies only, we also assume that $\owner(b_{-m+i})=2$ for all $i=1,\dots,m$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-m}$ (these rewards acting as additive constants). Let us define the following.
+In the same strategy framework as section \ref{sec-genfork}, we now suppose that player 1 attempts to fork once, but instead of mining upon the genesis block, she only goes back $m$ blocks on an already defined blockchain of arbitrary length. In other words, let $q_0$ be the current blockchain of length $|q_0|\geq m$, and let $b_{-m}$ the block at position $|q_0|-m$. As we consider greedy strategies only, we also assume that $\owner(b_{-m+i})=0$ for all $i=1,\dots,m$. Also, for the sake of simplicity and without loss of generality, in the computation of utility we don't count any reward given at blocks before $b_{-m}$ (these rewards acting as additive constants). Let us define the following.
 \begin{mydef}
 	A Dyck draw of disadvantage $m\in\NN$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$. We denote by $\Dyck_{2n,m}$ the set of Dyck draws of disadvantage $m$ of length $2n+m$ and $\Dyck^\ast_{m}$ the set of all Dyck draws of disadvantage $m$.
 \end{mydef}
 
-\begin{myprop*}
+\begin{myprop}
 	\label{prop-trapezoidcardinality}
 	Let $(n,m)\in \NN^2$, then 
 	$$\#\Dyck_{2n,m}=\frac{m+1}{m+n+1}{m+2n\choose m+n}.$$
-\end{myprop*}
+\end{myprop}
 \begin{proof}
-Consider the north-east unitary steps $(\uparrow,\rightarrow)=((1,0),(0,1))$ in $\ZZ^2$, and let $d\in \Dyck_{2n,m}$. The bits in $d$ define a path from $(0,0)$ to $(n+m,n)$ where $0:\uparrow$ and $1:\rightarrow$. Because $d$ is a $m$-disadvantaged Dyck draw, this path stays inside the trapezoid $\{(0,0),(m,0),(m+n,n),(0,n)\}$. We count all such paths in appendix \ref{appendix-trapezoid}, obtaining the claimed expression.
+Consider the north-east unitary steps $(\uparrow,\rightarrow)=((1,0),(0,1))$ in $\ZZ^2$, and let $d\in \Dyck_{2n,m}$. The bits in $d$ define a path from $(0,0)$ to $(n+m,n)$ where $0:\,\uparrow$ and $1:\,\rightarrow$. Because $d$ is a $m$-disadvantaged Dyck draw, this path stays inside the trapezoid $\{(0,0),(m,0),(m+n,n),(0,n)\}$. We count all such paths in appendix \ref{appendix-trapezoid}, obtaining the claimed expression.
 \end{proof}
 Now, as before note that every state of positive reward for player 1 is a state that successfully orphaned blocks from the original chain. The binary encoding can be written as $d1w$, where $d$ is a Dyck draw with disadvantage $m$ and $w\in\{0,1\}^\ast$ represent default playing by both players after the fork succeeds. 
 
 
-\begin{myprop*}
+\begin{myprop}
 	Suppose player 1 plays with the $\mfork$ strategy and player 0 with $\df$. Let $h$ be the hash power of player 1. Then
 	\begin{eqnarray*}
 		u_1^\infty(\mfork|q_0) =K_{m,1}c(\beta^2h(1-h))^{m+1}+K_{m,2}c(\alpha\beta^2h(1-h))^{m+1}
 	\end{eqnarray*}
 	where $c:x\mapsto \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers, and $K_{m,1},K_{m,2}$ are constants depending on $\alpha,\beta,h$.
-\end{myprop*}
+\end{myprop}
 \begin{proof}
 The proof is analogous to the proof of proposition \ref{prop-utilityofgenesisinfinite}, replacing $\Dyck^\ast$ by $\Dyck_{m}^\ast$ and correcting the reward of each state. More precisely, for any $d\in \Dyck_{2k,m}$ and $w\in \{0,1\}^l$ we have
 \begin{eqnarray*}
@@ -365,14 +365,14 @@ where we used the fact that the generating function of $k\mapsto \#D_{2k,m}$ is 
 \end{proof}
 
 
-\begin{myprop*}
+\begin{myprop}
+\label{prop-utilitymforkfinite}
 If players 1 and 2 follow $\mfork$ and \df strategies respectively, $h\in [0,1]$ is the hash power of player 1 and an initial state $q_0$ has a blockchain with at least $m$ blocks, then
 \begin{eqnarray*}
 	u_1^n(\mfork \mid q_0) & = & \sum_{k=0}^{\lfloor\frac{n-1}{2}\rfloor}\frac{m+1}{m+k+1}{m+2k\choose m+k}\beta^{2k+m+1}  \cdot R_{k,m}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k}
 \end{eqnarray*}
 for some rational function $R_{k,m}(\alpha,\beta,h)$.
-
-\end{myprop*}
+\end{myprop}
 \begin{proof}
 	Let $\bQ'\subsetneq \bQ$ the set of states of positive reward for player 1. We have, as before, the disjoint union
 	$$\bQ' = \bigcup_{k=0}^\infty \{d1w,\; d\in\Dyck_{2k,m}, w\in\{0,1\}^\ast\}.$$
@@ -398,25 +398,89 @@ to establish the result.\end{proof}
 \subsection{Utility of $\mfork$ with give-up time $g$}
 
 Consider the $\mfork$ strategy as before, but in the more realistic case that player gives up on the new branch if the original one is $g\geq m$ blocks longer, switching to the original branch and adopting the default strategy. Computations of utility are similar to the previous case, with two considerations. First, the states of positive reward consist in both the cases when the player succeeds the fork, and the cases where the player gave up but has won some blocks in the afterward default game. Second, combinatorics in the race with disadvantage and give-up time are more complex, more precisely we need to count north-east paths inside an irregular pentagon, but in fact there is a closed form to express the underlying cardinality. Let us define the following
+	
+	\begin{mydef}
+		\label{def-dyckdraw-mg}
+		A Dyck draw of disadvantage $m\in\NN$ and give-up time $g\geq m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$ and $\Delta(d')\geq -g$. We denote by $\Dyck_{2n,m,g}$ the set of Dyck draws of disadvantage $m$ and give-up time $g$ of length $2n+m$ and $\Dyck^\ast_{m,g}$ the set of all Dyck draws of disadvantage $m$ and give-up time $g$.
+	\end{mydef}
+	
+As before, consider all states of positive reward. Denote by $\bQ'$ the states when the fork is successful (\ie, player 1 won the branch race with disadvantage $m$ without giving up), and by $\bQ''$ the states in which player 1 already gave up and has some reward in the afterwards default game. All states of positive reward are in $\bQ'\cup\bQ''$, thus we break down computation of utility in each of this sets. Using definition \ref{def-dyckdraw-mg}, we have a nice representation of $\bQ'$. On the other hand, note that every state in $\bQ''$ can be written uniquely as a binary string $q''= y0\in\bstring $ such that $\Delta(y)=-g$ and every initial substring $y'$ of $y$ verifies $\Delta(y')+g\geq 0$ and $\Delta(y')\leq m$. Mapping each such binary string into $\NN^2$ as a north-east path starting from $(0,0)$, all possible states in $\bQ''$ have corresponding paths from $(0,0)$ to $(g+k,k)$ for some $k\in \NN$, such that $0:\,\rightarrow$ and $1:\,\uparrow$ (note the change of coordinates with respect to proposition \ref{prop-trapezoidcardinality}), and that lie inside a pentagon whose vertices are $\{(0,0),(g,0),(g+k,k),(m,k),(0,m))\}$. In other words, the set of such strings is in bijection with $\Dyck_{g,m}^\ast$ (via changing the roles of 1 and 0). Let us denote this set ${}^\perp\Dyck_{g,m}^\ast$. We then have
+$$\bQ' \simeq \Dyck^\ast_{m,g}\{1\}\bstring\mbox{ and }\bQ''\simeq {}^\perp\Dyck^{\ast}_{g,m}\{0\}\bstring.$$
 
-\begin{mydef}
-	A Dyck draw of disadvantage $m\in\NN$ and give-up time $g\geq m$ is a binary string $d\in\{0,1\}^\ast$ such that $\Delta(d)+m=0$ and every initial substring $d'$ of $d$ verifies $\Delta(d')+m\leq 0$ and $\Delta(d')\geq -g$. We denote by $\Dyck_{2n,m,g}$ the set of Dyck draws of disadvantage $m$ and give-up time $g$ of length $2n+m$ and $\Dyck^\ast_{m,g}$ the set of all Dyck draws of disadvantage $m$ and give-up time $g$.
-\end{mydef}
+	\begin{myprop}
+	Let player 1 play with the $\mgfork$ strategy and player 0 with the $\df$ strategy, let $h$ be the hash power of player 1, and suppose that the game begins on a state $q_0$ containing at least $m$ blocks. Then
+	$$ u_1^\infty(\mgfork) =  \sum_{k=0}^{\infty }\bigg((\#(\Dyck_{2k,m,g}) \cdot R'_{k,m,g}(\alpha,\beta,h)+\#({}^\perp\Dyck_{2k,g,m})  \cdot R''_{k,m,g}(\alpha,\beta,h)\bigg)\cdot h^{k+1+m}(1-h)^{k},$$
+	\end{myprop}
+	where $R'_{k,m,g}, R''_{k,m,g}$ are rational functions of $\alpha,\beta,\gamma$.
+ 
+	\begin{proof}
+	First define
+		\begin{eqnarray*}
+			u' &=& \sum_{q\in\bQ'}\beta^{|q|}r(q)\pr^{\mgfork}(q|q_0),\\
+			u''&=& \sum_{q\in\bQ''}\beta^{|q|}r(q)\pr^{\mgfork}(q|q_0).
+		\end{eqnarray*}
+		such that $u_1^\infty(\mgfork)=u'+u''$. As in previous computations we have
+		\begin{eqnarray*}
+			u' &=& \sum_{d\in \Dyck^{\ast}_{m,g}}\sum_{w\in\bstring} \beta^{|d|+1+|w|}\bigg(\sum_{i=-m+1}^{\lfloor\frac{|d|-m}{2}\rfloor+1}\alpha^i+\alpha^{\lfloor\frac{|d|-m}{2}\rfloor+1}\sum_{j=1}^{|w|}w[j]\alpha^j\bigg)\pr^{\mgfork}(q|q_0),\\
+			u'' &=& \sum_{d\in {}^\perp\Dyck^{\ast}_{g,m}}\sum_{w\in\bstring} \beta^{|d|+1+|w|}\alpha^{\lfloor\frac{|d|-m}{2}\rfloor+1}\bigg(\sum_{j=1}^{|w|}w[j]\alpha^j\bigg)\pr^{\mgfork}(q|q_0),\\
+		\end{eqnarray*}
+		Both sums can be carried out as in proof of proposition \ref{prop-utilitymforkfinite}, giving
+		\begin{eqnarray*}
+			u'  & = & \sum_{k=0}^{\infty}(\#(\Dyck_{2k,m,g}))  \cdot R'_{k,m,g}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k},\\
+			u'' & = & \sum_{k=0}^{\infty}(\#({}^\perp\Dyck_{2k,g,m}))  \cdot R''_{k,m,g}(\alpha,\beta,h)\cdot h^{k+1+m}(1-h)^{k},
+		\end{eqnarray*}
+	where $R'_{k,m,g},R''_{k,m,g}$ are rational functions of $\alpha,\beta,h$.
+	\end{proof}
 
+For the sake of completion, we reproduce here a result from lattice path enumeration that allows to compute $\#(\Dyck_{2k,m,g})$ for integers $k,m,g$.
+\begin{mythm}
+Let $a+t\geq b\geq a+s$ and $c+t\geq d\geq c+s$. The number of all (north-east, one step) paths from $(a,b)$ to $(c,d)$ staying weakly below the line $y=x+t$ and above the line $y=x+s$ is given by
+$$\sum_{i\in\ZZ}\bigg({c+d-a-b\choose c-a-i(t-s+2)}-{c+d-a-b\choose c-b-i(t-s+2)+t+1}\bigg).$$
+\end{mythm}
+This is a case of a more general result involving paths staying inside regions bounded by hyperplanes, also proved in \francisco{enumerating lattice paths, Krattenthaler}. Authors also give a finite formula:
+\begin{mythm}
+	Let $a+t\geq b\geq a+s$ and $c+t\geq d\geq c+s$. The number of all (north-east, one step) paths from $(a,b)$ to $(c,d)$ staying weakly below the line $y=x+t$ and above the line $y=x+s$ is given by
+	$$\sum_{j=1}^{\lfloor(t-s+1)/2\rfloor}\frac{4}{t-s+2}\bigg(2\cos\frac{\pi j}{t-s+2}\bigg)^{c+d-a-b}\sin\frac{\pi j(a-b+t+1)}{t-s+2}\sin\frac{\pi j(c-d+t+1)}{t-s+2}$$
+\end{mythm}
+ In our case, we have $(a,b)=(0,0)$, $(c,d)=(m+k,k)$ and $t=g,s=-m$:
+
+\begin{myprop} Let $k,m,g$ be integers. Then
+	\begin{eqnarray*}
+\#(\Dyck_{2k,m,g})&=& \sum_{i\in\ZZ}\bigg({m+2k\choose m+k-k(g+m+2)}-{m+2k\choose m+k-k(g+m+2)+g+1}\bigg)\\
+				  &=& \sum_{j=1}^{\lfloor(g+m+1)/2\rfloor}\frac{4}{g+m+2}\bigg(2\cos\frac{\pi j}{g+m+2}\bigg)^{m+2k}\sin\frac{\pi j(g+1)}{g+m+2}\sin\frac{\pi j(m+g+1)}{g+m+2}.
+	\end{eqnarray*}
+\end{myprop}
+Finally, note that $\#({}^\perp \Dyck_{2k,g,m})=\#(\Dyck_{2k,g,m})$, because both sets count paths in the same irregular pentagon (only changing the roles of 1 and 0).
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  \section{Trapezoidal Dyck paths}
  \label{appendix-trapezoid}
  
  For nonnegative integers $a,b$, let $\mathcal L_{a,b}$ be the trapezoid in $\ZZ^2$ whose vertices are
  $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ Also, let $\mathcal D_{a,b}$ the set of one step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside $\mathcal L_{a,b}$, and $\sigma_{a,b}=\# \mathcal D_{a,b}$ the amount of possible paths. Finally, let $C_n$ denote the $n$-th Catalan number. 
- \begin{myprop*}
+ \begin{myprop}
  	The sequence $\sigma:\NN^2\to \NN$ verifies the following
  	$$\begin{cases}
  	\sigma_{a,b}=\sum_{i=0}^b\sigma_{a-1,i}C_{b-i}& \mbox{ for }a\geq 1,b\in \NN,\\
  	\sigma_{x,0}=1 & \mbox{ for }x\in \NN,\\
  	\sigma_{0,y}=C_y & \mbox{ for }y\in \NN.
  	\end{cases}$$
- \end{myprop*}
+ \end{myprop}
  \begin{proof}
  	To prove this, we write $\mathcal D_{a,b}$ as a union of disjoint sets. As a first remark, note that every path in $\mathcal D_{a,b}$ touches the line $l=\overline{(a,0)(a+b,b)}$ at least once. For $i\in \{0,\dots,b\}$, let $P_i$ be the point $(a+i,i)\in l$ and $\mathcal D_{a,b}^{(i)}$ all paths in $\mathcal D_{a,b}$ that touch the line $l$ for the first time at $P_i$. We have the disjoint union
  	$$\mathcal D_{a,b}=\bigcup_{i=0}^b \mathcal D_{a,b}^{(i)}.$$
@@ -433,25 +497,20 @@ Consider the $\mfork$ strategy as before, but in the more realistic case that pl
  &x\mapsto \displaystyle \sum_{j=0}^{\infty}\sigma_{a,j}x^j
  \end{array}$$
  
- \begin{myprop*}
+ \begin{myprop}
  	For $x\in [-1/4,1/4]$ and $a\in \NN$ 
  	$$\phi_a(x)=c(x)^{a+1},$$
  	where $c(x):=\frac{1-\sqrt{1-4x}}{2x}$ is the generating function of the Catalan numbers.
- \end{myprop*}
+ \end{myprop}
  \begin{proof}
  	We have $\sigma_{a,\cdot}=\sigma_{a-1,\cdot}\star C_\cdot$, where $\star$ is the convolution operator, therefore $\phi_a(x)=\phi_{a-1}(x)c(x)$. The result follows noting that $\phi_0(x)=c(x)$.
  \end{proof}
  
- \begin{myprop*}
+Extracting the sequence from the Taylor series of $\phi_a(x)$ around 0 and proving by induction gives
+ \begin{myprop}
  	For $(a,b)\in\NN^2$,
  	$$\sigma_{a,b}=\frac{(a+b)(a+2b)!}{b!(a+b+1)!}=\frac{a+1}{a+b+1}{a+2b\choose a+b}.$$
- \end{myprop*}
- \begin{proof}
- 	Extract the sequence from the Taylor series of $\phi_a(x)$ around 0 and prove by induction.
- \end{proof}
- 
- \francisco{@Juan: It would be nice to include your reflection argument as a second (or first!) proof.}
- 
+ \end{myprop}
 
 =======
 >>>>>>> eeee1606b14138465872c5835ded1c59ae15d7ef
