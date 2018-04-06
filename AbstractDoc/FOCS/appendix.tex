@@ -3,25 +3,26 @@
 \section{Additional Material and Proofs}
 \label{sec-appendix}
 
-\subsection{Formal definition of the default strategy}
+\subsection{A formal definition of the default strategy}
 \label{sec-def-default}
 
-The following is the definition of strategy $\df_p$ for a player $p \in \bP$. If $\bchain(q)$ is defined, then $\df_p(q) = \mine(p,\bchain(q),q)$. Otherwise, by Lemma \ref{lem-length-greedy} we know that there exists a unique $I \subseteq \bP$ such that $\longest(q) = \bigcup_{p \in I} \longest(q,p)$. For each element $p' \in I$, let $v_{p'}$ be the reward for player $p$ in the chain from the genesis block to the block $\longest(q,p')$, that is,
+The following is the definition of the default strategy $\df_p$ for a player $p \in \bP$. If $\bchain(q)$ is defined, then $\df_p(q) = \mine(p,\bchain(q),q)$. Otherwise, for every block $b \in \longest(q)$, let $v_{b}$ be the reward for player $p$ in the chain from the genesis block to the block $b$, that is,
 \begin{eqnarray*}
-v_{p'} & = & r_p(\{b \in q \mid b \preceq \longest(q,p')\}).
+v_{b} & = & r_p(\{b' \in q \mid b' \preceq b\}).
 \end{eqnarray*}
-Moreover, let $p^\star$ be the element in $I$ maximising the values $v_{p'}$ (if more than one such values exist, then $p^\star$  is defined as the first of such elements in the usual order for the integers). Then we have that $\df_p(q) = \mine(p,\longest(q,p^\star),q)$.
+Moreover, let $b^\star$ be the element in $\longest(q)$ maximising the values $v_{b}$ (if more than one such values exist, then $b^\star$  is defined as the first of such elements in the lexicographic order induced by the order $0 < 1 < \cdots < m-1$). Then we have that $\df_p(q) = \mine(p,b^\star,q)$.
 Thus, a player following the default strategy tries to mine upon the final block that appears in the blockchain of $q$. If the blockchain in state $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player will mine on the final block of one of these paths according to her rewards in them (she will choose the one that maximizes her reward). Finally, define the combined strategy $\df$ as $(\df_0,\df_1,\dots,\df_{m-1})$. 
 
 
-\subsection{A characterization of states under greedy strartegies}
+\subsection{Two properties of greedy strategies}
 \label{sec-char-states-greedy}
 
 Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block.
 %, or their latest block in the blockchain. 
 The consequence of using 
-greedy strategies is that every state a game under greedy strategies cannot have more than $m$ paths contesting for the blockchain. This is captured b the following 
-technical lemma: 
+greedy strategies is that every state 
+%a game 
+under greedy strategies cannot have more than $m$ paths contesting for the blockchain. This is captured by the following lemma.
 \begin{mylem}\label{lem-length-greedy}
 Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
 \begin{enumerate}
@@ -75,51 +76,42 @@ $ \bigcup_{p \in I_1} \longest(q',p) = \bigcup_{p \in I_2} \longest(q',p)$ and $
 
 \end{proof}
 
+%
+%
+%
+%We can use Lemma \ref{lem-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \bP$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
+%\begin{itemize}
+%\item If $\bchain(q)$ is defined, then $|\longest(q,p)| \leq |b|  \leq |\bchain(q)|$. In particular, 
+%if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and, thus, $p$ attempts to mine either in the genesis block if the game is starting or in the last block of the blockchain as in this case this block is hers).
+%
+%
+%
+%\item If $\bchain(q)$ is not defined, then there exists a unique $I$ such that \eqref{eq-max-set} holds, and we have that $b = \longest(q,p)$ for some $p \in I$.
+%\end{itemize}
+%
 
 
+%\subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
 
-We can use Lemma \ref{lem-length-greedy} to simplify the definition of greedy actions. More specifically, assume that $p \in \bP$ and $q \in \bQ$, and from now let $\longest(q,p)$ be a string instead of a singleton set. Then the conditions in Definition \ref{def-greedy} for a valid action $\mine(p,b,q)$ can be restated as follows:
-\begin{itemize}
-\item If $\bchain(q)$ is defined, then $|\longest(q,p)| \leq |b|  \leq |\bchain(q)|$. In particular, 
-if $q = \{\varepsilon\}$ or $\owner(\bchain(q)) = p$, then $b = \bchain(q)$ (and, thus, $p$ attempts to mine either in the genesis block if the game is starting or in the last block of the blockchain as in this case this block is hers).
-
-
-
-\item If $\bchain(q)$ is not defined, then there exists a unique $I$ such that \eqref{eq-max-set} holds, and we have that $b = \longest(q,p)$ for some $p \in I$.
-\end{itemize}
-
-
-
-\subsubsection{Key lemma: optimal strategies only depend on what follows the last block on the blockchain}
-
-Given a state $q \in \bQ$, we define $\ameet(q)$ as follows:
-%\begin{eqnarray*}
-%\ameet(q)  & =  & \max_{\preceq} \ \{b \in q \mid \text{for every } p\in \bP \text{ and for every } b' \in \longest(q,p): b \preceq b'\}.
-%\end{eqnarray*}
-\begin{eqnarray*}
-\ameet(q)  & =  & \max_{\preceq} \ \{b \in q \mid \text{for every } p\in \bP \text{ and for every } b' \text{ such that } |b'| \geq \length(q,p): b \preceq b'\}.
-\end{eqnarray*}
-
-Moreover, given a block $b \in q$, we define $\subbody(q,b)$ as the following state:
+As a second key property of greedy combined strategies, we show that a regular condition can be imposed on equilibria. More precisely, given a state $q \in \bQ$, define $\ameet(q)$ as follows:
+\begin{multline*}
+\ameet(q)  \, =  \, \max_{\preceq} \ \{b \in q \mid \text{for every } p\in \bP \text{ and for every } b' \text{ such that } |b'| \geq \length(q,p): b \preceq b'\}. 
+\end{multline*}
+Moreover, given a block $b \in q$, define $\subbody(q,b)$ as the following state:
 \begin{eqnarray*}
 \subbody(q,b) & = & \{ b' \in \bB \mid b \cdot b' \in q\}.
 \end{eqnarray*}
-Finally, 
-%given states $q_1, q_2 \in \bQ$ such that $q_2 \subseteq q_1$, we define $\base(q_1, q_2) = \subbody(q_1,\ameet(q_2))$, $\base(q_1) = \base(q_1,q_1)$
-%$\base(q) = \subbody(q,\ameet(q))$ and $\base(q,q_b) = sub-body(q,meet(q_b,\bP))$. Finally we denote 
-we define $\base(q) = \subbody(q,\ameet(q))$ 
-and $\base(\bQ) = \{q \in \bQ \mid q = \base(q)\} = \{q \in \bQ \mid \ameet(q) = \varepsilon \}$.
 
-The following Lemma states that optimal strategies (at least from the point of view of a single player) must be very regular, in the sense that 
-we make the same move on any pairs of state $q$ and $q'$ with the same $\base$: 
+Finally, define $\base(q) = \subbody(q,\ameet(q))$.
+%and $\base(\bQ) = \{q \in \bQ \mid q = \base(q)\} = \{q \in \bQ \mid \ameet(q) = \varepsilon \}$.
+Then the following lemma states that optimal strategies (at least from the point of view of a single player) must be regular, in the sense that the same move can be made on any pairs of state $q$ and $q'$ with the same base. More precisely, 
+%---------- weaker version --------------
+a strategy $s$ for a player $p$ is \emph{basic} if for every pair of states $q, q'$ such that $\base(q) = \base(q')$, it holds that $s(q) = s(q')$. Then we have that:
 
----------- weaker version --------------
-A strategy is \emph{basic} if $\base(s(q)) = \base(s(q'))$ whenever $\base(q) = \base(q')$. 
 \begin{mylem}
 \label{lem-basic}
-Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a basic strategy $s'_p$ such that $u_p((s_{-p},s'_p) \mid \epsilon) \geq u_p((s_{-p},s_p) \mid \epsilon)$ for any set $s_{-p}$ of basic greedy strategies.  
+Let $p \in \{1, \ldots, m\}$ and $\bs$ be a combined greedy strategy such that $s_q$ is a basic strategy for every player $q \neq p$. Then there exists a basic strategy $s'_p$ for player $p$ such that $(\bs_{-p}, s'_p)$ is a greedy combined strategy and $u_p((\bs_{-p},s'_p) \mid \varepsilon) \geq u_p((\bs_{-p},s_p) \mid \varepsilon)$.
 \end{mylem}
-\begin{proof}
 
 \newcommand{\succes}{\text{succ}}
 \newcommand{\cut}{\text{cut}}
@@ -177,7 +169,6 @@ We then set $s'_p(q') = s_p[a \rightarrow \base]$.
 Let us note that each modification produces a strategy with an equal or higher utility, and where any state $q$ where 
 $\base(s(q)) \neq \base(s\base(q))$ is farther and farther away from $\epsilon$, in terms of the size of blocks. 
 Then the limit of this modification satisfies the claim 
-\end{proof}
 
 
 
@@ -267,7 +258,7 @@ Then the limit of this modification satisfies the claim
 
 
 
-\subsubsection{Proof of Theorem \ref{thm-conts_equlibria}} 
+\subsection{Proof of Theorem \ref{thm-conts_equlibria}} 
 
 Let $p \in \bP$ a player and $s_p$ a greedy strategy for player $p$. We need to show that 
 $u_p(\df \mid \varepsilon) \geq u_p( (\df_{-p},s_p) \mid \varepsilon)$. The first remark is that without loss of generality we can consider 

@@ -32,18 +32,20 @@
 \newcommand{\zzz}{\textsc{Z3}}
 
 %% Environments
+\newtheorem{mythm}{Theorem}[section]
+\newtheorem{mydef}[mythm]{Definition}
+\newtheorem{myprop}[mythm]{Proposition}
+\newtheorem{mylem}[mythm]{Lemma}
+\newtheorem{myex}[mythm]{Example}
+
 \newtheorem*{myrem}{Remark} %% based on amsthm
-\newtheorem{mydef}{Definition}
-\newtheorem{myex}{Example}
 \newtheorem*{mynota}{Notation}
-\newtheorem{myprop}{Proposition}
-\newtheorem{mylem}{Lemma}
 \newtheorem*{mylem*}{Lemma}
 \newtheorem{myclaim}{Claim}
 \newtheorem*{myclaim*}{Claim}
 \newtheorem*{myprop*}{Proposition}
 \newtheorem*{comp}{Efficiency Study}
-\newtheorem{mythm}{Theorem}
+
 
 \newenvironment{point}[1]
 {\subsection*{#1}}%
