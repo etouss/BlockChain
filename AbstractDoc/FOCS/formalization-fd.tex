@@ -102,7 +102,7 @@ We define $\bS_p$ as the set of all strategies for player $p$, and $\bS = \bS_0 
 As usual, we are interested in understanding which strategies fare better than others, which we capture by the notions of 
 \emph{utility} and \emph{equilibrium}. To define these we need some additional notation. 
 Let $\bs = (s_0, s_1, \ldots, s_{m-1})$ be a strategy in $\bS$. Then given $q \in \bQ$, define $\bs(q)$ as the combined action $(s_0(q), s_1(q), \ldots, s_{m-1}(q))$. Moreover, given an initial state $q_0 \in \bQ$, 
-the probability of reaching state $q \in \bQ$ such that $q_0 \subseteq q$ is recursively defined as follows:
+the probability of reaching state $q \in \bQ$, denoted by $\pr^{\bs}(q \mid q_0)$, is defined as 0 if $q_0 \not\subseteq q$, and otherwise it is recursively defined as follows:
 \begin{eqnarray*}
 \pr^{\bs}(q \mid q_0) & = &
 \begin{cases}
@@ -117,32 +117,19 @@ In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = 
 
 We finally have all the necessary ingredients to define the utility of a player in a mining game given a particular strategy. As is common 
 when looking at personal utilities, we define it as the summation of the expected rewards, and choose 
-to impose a discount for future rewards using a factor $\beta \in [0,1]$. 
+to impose a discount for future rewards using a factor $\beta \in [0,1)$. 
 
 \begin{mydef}
-%Let $p \in \bP$, $q_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in an infinite mining game with $n$ steps, denoted by $u_p^n(\bs \mid q_0)$, is defined as:
-%\begin{eqnarray*}
-%%u_p^n(\bs \mid q_0) & = & \sum_{i=0}^{n}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
-%%\pr^{\bs}(q \mid q_0)\bigg)
-%u_p^n(\bs \mid q_0) & = & \sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ and } |q| - |q_0| \leq n}} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
-%\end{eqnarray*}
-%Moreover, t
 The $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in 
-%an infinite 
 the mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
-%u_p(\bs \mid q_0) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = i}} r_p(q) \cdot 
-%\pr^{\bs}(q \mid q_0)\bigg)
 u_p(\bs \mid q_0) & = & \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
 \end{eqnarray*}
 \end{mydef}
+Notice that $u_p(\bs \mid q_0)$ may not be defined if the series $\sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$ diverges. To avoid this problem, from now on we assume that for every payoff function $\bR = (r_0, \ldots, r_{m-1})$, there exists a nonzero polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. Under this simple yet general condition, it is posible to prove that $u_p(\bs \mid q_0)$ is a real number (see Appendix \ref{sec-conver} for a proof of this property). 
+
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_0,s_1, \ldots, s_{m-1})$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$.
 \begin{mydef}
-%Let $q_0 \in \bQ$, $\bs \in \bS$, $\beta \in [0,1]$ and $n \geq 0$. Then $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in a mining game with $n$ steps if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
-%\begin{eqnarray*}
-%u_p^n(\bs \mid q_0)  & \geq  & u_p^n((\bs_{-p},s) \mid q_0).
-%\end{eqnarray*}
-%Moreover, 
 A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in  the %infinite 
 mining game if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
 \begin{eqnarray*}u_p(\bs \mid q_0)  & \geq  & u_p ((\bs_{-p},s) \mid q_0).
@@ -150,8 +137,8 @@ mining game if for every player $p \in \bP$ and every strategy $s$ for player $p
 \end{mydef}
 Along the paper we will also consider games ending in a finite number of steps. For these games we redefine the notion of $\beta$-discounted utilities by summing up the rewards only up to $n$, and define the notion of a $\beta$-discounted equilibrium accordingly. 
 
-\marcelo{In these definitions we are assuming that $u_p(\bs \mid q_0)$ is defined, which could not be the case if the series diverges. We should say something about this.}
-\francisco{True. Something like ``$r$ is a decreasing function and card$(Q)$ is controlled by $p^{|q|}$'' (worst case scenario, every player forks), so we should be OK.}
+%\marcelo{In these definitions we are assuming that $u_p(\bs \mid q_0)$ is defined, which could not be the case if the series diverges. We should say something about this.}
+%\francisco{True. Something like ``$r$ is a decreasing function and card$(Q)$ is controlled by $p^{|q|}$'' (worst case scenario, every player forks), so we should be OK.}
 
 
 
