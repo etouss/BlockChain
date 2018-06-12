@@ -102,6 +102,7 @@ Then, $\sigma(q)$ contains all states $q^* \in Q_\df$ such that there is a path 
 $q^*$ is the smallest prefix closed set of strings containing $w$. We need the following claim. 
 
 \begin{myclaim}
+\label{claim-nonempty-inter}
 For every different pair of states $q,q'$ in $Q_{(s_0),\df_1)}$, the sets $\sigma(q)$ and $\sigma(q')$ are disjoint. 
 \end{myclaim}
 
@@ -121,8 +122,10 @@ u_0(\df \mid \varepsilon) & = & \sum_{q \in \bQ} \beta^{|q|} \cdot  r_0(q) \cdot
 
 If we choose to sum only over states in the image of some $q^* \in Q_{(s_0),\df_1)}$ under $\sigma$, we now have: 
 \begin{eqnarray*}
-u_0(\df \mid \varepsilon) & \geq & \sum_{q \in \sigma(q^*) \,\mid\, q^* \in Q_{(s_0,\df_1)}} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon)
+u_0(\df \mid \varepsilon) & \geq & \sum_{q \in \sigma(q^*) \,\mid\, q^* \in Q_{(s_0,\df_1)}} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon),
 \end{eqnarray*}
+
+because Claim \ref{claim-nonempty-inter} guarantees that we are not summing each state in $Q_\df$ more than once. We rearrange the term in the right: 
 
 \begin{eqnarray*}
 u_0(\df \mid \varepsilon) & \geq &\sum_{q^* \in Q_{(s_0,\df_1)}}   \sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon)
