@@ -86,6 +86,63 @@ The question the is: can any player do better? As we show, the answer is no if w
 For any $0 \leq \beta \leq 1$, the strategy $\df$ is a $\beta$-discounted stationary equilibrium.
 \end{mythm} 
 
+\begin{proof}
+Let $s_p$ be an arbitrary strategy for player $p$. We need to show that the utility of $(\df_{-p},s_p)$ is not higher than the utility of $\df$. 
+
+First, observe that we just need to consider a two-player game, by merging all the players except $p$ into a single player whose hash power is the sum of the hash power 
+of each of the aggregated players. Thus, we just consider $\bP = \{0,1\}$, and for readability we assume $p = 0$ (the other case being symmetric). 
+
+For a strategy $s$, let $Q_s = \{q^* \in \bQ \mid \pr^s(q^* \mid \epsilon) > 0\}$ be the set of states that can be reached from the genesis block using $s$. 
+We define a mapping $\sigma: Q_{(s_0),\df_1)} \rightarrow 2^{Q_\df}$ as follows. 
+For each state $q \in Q_{(s_0),\df_1)}$, enumerate all distinct paths $\pi = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
+$q_i$ in one step, $q_0 = \varepsilon$ and $q_n = q$. To each such sequence $\pi$ we associate a word $b_1,\dots,b_n$ in $\{0,1\}^n$ as follows: 
+$b_i = 0$, if $q_{i} = a_0(q_{i-1})$, where $a_0 = s_0(q_{i-1})$, and $b_i = 1$ otherwise, that is, when  $q_{i} = a_1(q_{i-1})$, where $a_1 = \df(q_{i-1})$. 
+
+Then, $\sigma(q)$ contains all states $q^* \in Q_\df$ such that there is a path $\pi$ and a corresponding word $w$ and where 
+$q^*$ is the smallest prefix closed set of strings containing $w$. We need the following claim. 
+
+\begin{myclaim}
+For every different pair of states $q,q'$ in $Q_{(s_0),\df_1)}$, the sets $\sigma(q)$ and $\sigma(q')$ are disjoint. 
+\end{myclaim}
+
+\begin{proof}
+Assume for contradiction two different  states $q,q'$ in $Q_{(s_0),\df_1)}$ such that both $\sigma(q)$ and $\sigma(q')$ contain a state $q^* \in Q_\df$. By definition, there is a word 
+$w$ such that $q^*$ is the closure (over prefixes) of $w$. That word originated from sequences $\pi = q_0,\dots,q_n$ (for $q$) and $\pi' = q_0',\dots,q_n'$ (for $q'$). If 
+$\pi = \pi'$ then $q = q'$, so $\pi$ must be different from $\pi'$. Let $i$ be the first position where $\pi$ and $\pi'$ are different, so that 
+sequences $q_0,\dots,q_i$ and $q_0,\dots,q_i'$ are the same except for the last state. Then both $q_i$ and $q_i'$ are reachable from $q_{i-1}$ using exactly one step; it follows 
+by the construction of our game that one of $q_i$ and $q_i'$ is the result of applying action $\df_1(q_{i-1})$ and the other is the result of applying $s_0(q_{i-1})$, which implies that 
+the word generated from $\pi$ and $\pi'$ is not the same. 
+\end{proof}
+
+Recall the utility of player $0$ using $\df$ at the genesis tree is defined as 
+\begin{eqnarray*}
+u_0(\df \mid \varepsilon) & = & \sum_{q \in \bQ} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon)
+\end{eqnarray*}
+
+If we choose to sum only over states in the image of some $q^* \in Q_{(s_0),\df_1)}$ under $\sigma$, we now have: 
+\begin{eqnarray*}
+u_0(\df \mid \varepsilon) & \geq & \sum_{q \in \sigma(q^*) \,\mid\, q^* \in Q_{(s_0,\df_1)}} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+u_0(\df \mid \varepsilon) & \geq &\sum_{q^* \in Q_{(s_0,\df_1)}}   \sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon)
+\end{eqnarray*}
+
+For each state $q^* \in Q_{(s_0,\df_1)}$, note that 
+
+$$\sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{\df}(q \mid \varepsilon) \geq \sum_{q \in \sigma(q^*)} \beta^{|q^*|} \cdot  r_0(q^*) \cdot \pr^{\df}(q \mid \varepsilon) = \beta^{|q^*|} \cdot  r_0(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\df}(q \mid \varepsilon), $$ because $|q| = |q^*|$ and 
+$q$ and $q^*$ have the same number of blocks owned by $0$, and by definition,
+$$\sum_{q \in \sigma(q^*)}  \pr^{\df}(q \mid \varepsilon) = \pr^{(s_0,\df_1)}(q^* \mid \varepsilon).$$ 
+Summing up and rearranging, we have: 
+
+\begin{eqnarray*}
+u_0(\df \mid \varepsilon) & \geq &\sum_{q^* \in Q_{(s_0,\df_1)}}  \beta^{|q^*|} \cdot  r_0(q^*) \cdot \pr^{(s_0,\df_1)}(q^* \mid \varepsilon) = u_0((s_0,\df_1) \mid \varepsilon), 
+\end{eqnarray*}
+
+which was to be shown.
+\end{proof}
+
+
 While constant block rewards do not faithfully model reality, since in the Bitcoin protocol the reward decreases every 200.000 blocks or so, we would like to argue why Theorem \ref{thm-conts_equlibria} could serve as a good recommendation on how to enforce good behaviour on miners at the moment block rewards become insignificant. More precisely, if block rewards are negligible, the transaction fees will dictate the miners' pay-off, so the protocol could place a (constant) total fee limit on newly created blocks. Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem \ref{thm-conts_equlibria} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.
 
 
