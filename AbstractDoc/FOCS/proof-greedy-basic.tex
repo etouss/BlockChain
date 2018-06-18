@@ -1,56 +1,173 @@
-\documentclass[11pt]{article}
-\usepackage{amsmath,amssymb,amsfonts,amsthm}
-\usepackage[english]{babel}
-\usepackage{xcolor}
-\usepackage[letterpaper, margin=1in]{geometry}
-\usepackage{tikz}
-\usetikzlibrary{automata, graphs,positioning,chains,arrows,decorations.pathmorphing}
-\usepackage{url}
+%!TEX root = focs.tex
 
-\allowdisplaybreaks
-
-% \let\bfseriesbis=\bfseries \def\bfseries{\sffamily\bfseriesbis}
-%
-%
-% \newenvironment{point}[1]%
-% {\subsection*{#1}}%
-% {}
-%
-% \setlength{\parskip}{0.3\baselineskip}
+\section{Compact formalisation for greedy basic}
 
 
-%% USEFUL packages
-%\usepackage{mypackages}
+We denote
+$
+blocks(b,p)  =
+{\displaystyle c \cdot \sum_{i=1}^{|b|} \chi_p(b,i)}
+$ the number of blocks belonging to a player $p$ in the path of a block $b$.
 
-%% USEFUL macros
-\input{mymacros}
+We denote
+$\mathbf{L}(q,p) = \{b \in q \mid owner(b) = p \land \forall b' \in q, |b'| \leq |b|  \}$ the \textbf{set} of blocks which are the longest belonging to a player $p$ in the state $q$.
+As mentioned before $\mathbf{L}(q,p)$ is a set in the general case, however if we restrict ourself to greedy basic strategies for every player, then $|\mathbf{L}(q,p)| = 1$ for each reachable state $q$.
+
+We define $longest(q,p)$ as a block such that: $longest(q,p) \in \mathbf{L}(q,p)$ and for any $b \in \mathbf{L}(q,p), blocks(b,p) \leq blocks(longest(q,p),p)$. And we define $all-meet(q)$ as the longest block such that $all-meet(q) \in q$ and for any $p$, $all-meet(q) \preceq longest(q,p)$.
+
+Recall that $longest(q) = \{b\in q \mid \forall b' \in q, |b'| \leq |b| \}$ then we define
+$bestchain_p(q)$ as a block such that: $bestchain_p(q) \in  longest(q)$ and for any $ b \in longest(q) blocks(b,p) \leq blocks(bestchain_p(q),p)$
+
+\begin{myprop}
+Let $\bs$ a combined greedy strategy, then for any $\sigma$ strategy and any $q$ such that $\Pr^{(\bs,\sigma)}(q \mid \epsilon) \neq 0$, $bestchain_p(q)$, $longest(q,p)$ and $all-meet(q)$ are well-defined and unique.
+\end{myprop}
 
 
 
-%% Title
-% \title{}
-% \author{}
-% \date{}
+\iffalse
+\begin{myprop}
+Let $\bs$ a combined greedy basic strategy, then for any $p$ and any $q$  such that $\Pr^{\bs}(q \mid \epsilon) \neq 0$ we have $|Longest_0(q,p)| = 1$ and $|Longest_p(q)| = 1$ and ... WIP
+\end{myprop}
+\begin{proof}
+to do.
+\end{proof}
 
-\begin{document}
-	
-	% \sloppy
-	% \maketitle
-	
-	\input{introduction}
-	\input{formalization-fd}
-	%\input{constant_payoff}
-	\input{const_payoff}
-	\input{dec-payoff}
-	
-	%\input{old}
-	
-	\bibliographystyle{plain}
-	\bibliography{bibliography}
-	\appendix
-	
-	%\input{appendix-constant_reward}
-	\input{appendix}
-	\input{twoplayers}
-	\input{off4}
-\end{document}
+\begin{myprop}
+Let $\bs$ a combined greedy basic strategy and $\sigma$ a strategy for player $p$, then for any $q$ such that $\Pr^{(\bs_{\lnot p},\sigma)}(q \mid \epsilon) \neq 0$ we have $|Longest_1(q,p)| = 1$ and ... WIP
+\end{myprop}
+\begin{proof}
+to do.
+\end{proof}
+
+\fi
+
+Let $s$ a greedy basic strategy for player $p \in \mathbf{P}$, we say that $f : \mathbf{N} \rightarrow \mathbf{N}$ specify $s$ denoted $s_f$ if and only if for any $q \in \mathbf{Q}$ we have :
+
+\begin{eqnarray*}
+s(q) =
+\begin{cases}
+mine(p,longest(q,p),q) & \text{iff } f(|longest(q,p)|-|all-meet(q)|) \geq |bestchain_p(q)|-|all-meet(q)|\\
+mine(p,b,q) & \text{otherwise with } bestchain_p(q) = b.v \text{ and } |v| = f(0)\\
+\end{cases}
+\end{eqnarray*}
+
+\etienne{Whenever one stop forking the function specify where to mine again which is a stronger constraint than general greedy basic strategy.}
+
+\begin{myprop}
+Let f a function which specify $s_f$ greedy basic, then for any $a \in \mathbf{N}$ we have $f(a) \geq a $ and  $f(a) \geq f(0)$
+\end{myprop}
+\begin{proof}
+By absurd using greedy definition.
+\end{proof}
+
+In this framework : Default strategy is specify by the function $d$ such that for any $a \in \mathbf{N}$, $d(a) = a$.  Always fork can not really be specified so we have to add it, but informally it is $f_\epsilon$ such that for any $a \in \mathbf{N}$, $f_\epsilon(a) = \infty$.
+
+
+\section{off}
+
+\begin{myprop}
+\label{mainprop}
+Let $s_1$ a greedy basic strategy then exists $s_0$ a greedy basic strategy such that for any $\sigma$ strategy, $u_0(s_0,s_1 \mid \epsilon) \geq u_0(\sigma,s_1 \mid \epsilon)$.
+\end{myprop}
+
+\begin{proof}
+
+In order to demonstrate the property \ref{mainprop} we first need a few lemmas, the first states that there exists a reachable maximum utility value for a player $p$ when the other players strategy is fixed.
+\begin{mylem}
+\label{limlem}
+Let $\mathbf{F}_0 = \{f : \mathbb{N} \rightarrow \mathbb{N} \mid f \textit{ specify a greedy basic strategy} \}$, and $\bs$ a combined greedy basic strategy,
+then there exits $v_{max} = max \{u_0(s_{f_0},\bs \mid \epsilon) \mid f_0 \in \mathbf{F}_0 \}$.
+\end{mylem}
+\begin{proof}
+\end{proof}
+
+The second states that there exists a sequence from a strategy to an other, for which two subsequent elements only differ from one position.
+
+\begin{mylem}
+\label{seqlem}
+Let $s$ and $\sigma$ two strategies, then
+there exits $(\sigma_i)$ a sequence of strategy such that : $\sigma_0 = s$ and $\underset{n\rightarrow \infty}{lim}\sigma_N = \sigma$. Moreover for any $i < N$, exists a unique $q_{i+1} \in \mathbf{Q}$ such that $\sigma_{i}(q_{i+1}) \neq \sigma_{i+1}(q_{i+1})$ or for all $i' \geq i, \sigma_{i} = \sigma_{i'}$. Moreover for any $i,i' < N$, such that $i < i'$ then $q_{i'} \not \subseteq q_{i}$.
+\end{mylem}
+\begin{proof}
+\end{proof}
+
+Therefore with lemma \ref{limlem} we can conclude that there exists a value $v_{max} = max \{u_0(s_{f_0},s_1 \mid \epsilon) \mid f_0 \in \mathbf{F}_0 \}$. Hence there exits $f_{max}$ such that $u_0(s_{f_{max}},s_1\mid \epsilon) = v_{max}$ and $f_{max} \in \mathbf{F}_0$. We define $s$ as the greedy basic strategy induced from $f_{max}$.
+
+From lemma \ref{seqlem} we know that there exits $(\sigma_i)$ a sequence of strategy such that : $\sigma_0 = s$ and $\underset{n\rightarrow \infty}{lim}\sigma_N = \sigma$. Moreover for any $i < N$, exists a unique $q_{i+1} \in \mathbf{Q}$ such that $\sigma_{i}(q_{i+1}) \neq \sigma_{i+1}(q_{i+1})$ or for all $i' \geq i, \sigma_{i} = \sigma_{i'}$. Moreover for any $i,i' < N$, such that $i < i'$ then $q_{i'} \not \subseteq q_{i}$.
+
+
+We know prove inductively on the sequence $(\sigma_i)$ that for any $i \geq 0$, $u_0(\sigma_i,s_1 \mid \epsilon) \leq u_0(s,s_1 \mid \epsilon)$. For $i = 0$ it is trivial by definition of $\sigma_0 = s_0$.
+Assume for any $i < N$ we have $u_0(\sigma_i,s_1 \mid \epsilon) \leq u_0(s,s_1 \mid \epsilon)$, we know have to distinguish 2 cases.
+
+\bigskip
+The first one correspond to "noisy" actions, an action which does not modify the longest chain of the player, hence which will never be rewarding in the future. This can also be seen as non-greedy actions.
+
+\textbf{Case 1: $longest(\sigma_{i+1}(q_{i+1}),0) = longest(q_{i+1},0)$.}
+
+\begin{mylem}
+\label{lemdif}
+$u_0(\sigma_i,s_1 \mid \epsilon) - u_0(\sigma_{i+1},s_1 \mid \epsilon) = u_0(s,s_1 \mid s(q_{i+1})) - u_0(s,s_1 \mid \sigma_{i+1}(q_{i+1}))$
+\end{mylem}
+\begin{proof}
+\iffalse
+For any $i < N$ :
+
+\begin{eqnarray*}
+u_p(\bs \mid q) & = & \sum_{q' \in \bQ \,:\, q \subseteq q'} \beta^{|q'|-|q|} \cdot  r_p(q') \cdot \pr^{\bs}(q' \mid q)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+u_0(\sigma_{i+1},s_1 \mid \epsilon) & = & \sum_{q \in \bQ} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon)\\
+u_0(\sigma_{i+1},s_1 \mid \epsilon) & = & \sum_{q \in \bQ \,:\, |q| < |q_{i+1}| } \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon)\\
+& & + \sum_{q \in \bQ \,:\, |q| \geq |q_{i+1}| } \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon)\\
+u_0(\sigma_{i+1},s_1 \mid \epsilon) & = & \sum_{q \in \bQ \,:\, |q| < |q_{i+1}| } \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon)\\
+& & + \sum_{q \in \bQ \,:\, |q| = |q_{i+1}| } u_0(\sigma_{i+1},s_1 \mid q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon)\\
+\end{eqnarray*}
+
+\begin{eqnarray*}
+u_0(\sigma_{i+1},s_1 \mid \epsilon) & = & \sum_{q \in \bQ} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon)\\
+& = & \sum_{q \in \bQ \,:\, q_{i+1} \not \subseteq q} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i},s_1)}(q \mid \epsilon) \\
+&  & +  \sum_{q \in \bQ \,:\, q_{i+1} \subseteq q} \beta^{|q|} \cdot  r_0(q) \cdot \pr^{(\sigma_{i+1},s_1)}(q \mid \epsilon) \\
+\end{eqnarray*}
+
+\fi
+\end{proof}
+
+\begin{mylem}
+\label{lembeta}
+If $longest(\sigma_{i+1}(q_{i+1}),0) = longest(q_{i+1},0)$ then  $u_0(s,s_1 \mid \sigma_{i+1}(q_{i+1})) = \beta \cdot u_0(s,s_1 \mid s(q_{i+1}))$
+\end{mylem}
+\begin{proof}
+\end{proof}
+
+By lemma \ref{lemdif} we have that $u_0(\sigma_i,s_1 \mid \epsilon) < u_0(\sigma_{i+1},s_1 \mid \epsilon)$ if and only if $u_0(s,s_1 \mid s(q_{i+1})) < u_0(s,s_1 \mid \sigma_{i+1}(q_{i+1}))$.
+Moreover by lemma \ref{lembeta} we have $u_0(s,s_1 \mid \sigma_{i+1}(q_{i+1})) = \beta \cdot u_0(s,s_1 \mid s(q_{i+1}))$.
+Hence $u_0(\sigma_{i+1},s_1 \mid \epsilon) \leq u_0(s_0,s_1 \mid \epsilon)$.
+
+\bigskip
+The second case corresponds to a different greedy actions, if this new action is strictly better, we can build a strictly better greedy \textbf{basic} strategy for the player which contradict the definition of $s_0$.
+
+\textbf{Case 2: $longest(\sigma_{i+1}(q_{i+1}),0) \neq longest(q_{i+1},0)$.}
+
+Assume that for all $j < i+1$ we have $longest(\sigma_{i+1}(q_{j}),0) = longest(q_{j},0)$ then we define $\mathbf{Q}_{f_{i+1}} = \{q \in \bQ \mid \sigma_{i+1}(q) \preceq longest(\sigma_{i+1}(q_{j}),0) \}$ and  $f_{i+1} : \mathbb{N} \rightarrow \mathbb{N}$ such that for any $a \in \mathbb{N}$:
+\begin{eqnarray*}
+f_{i+1}(a) =
+\begin{cases}
+f_{max}(a) & \text{if for any } q \in \mathbf{Q}_{i+1}, |longest(q,0)| - |all-meet(q)| \neq a\\
+v & \text{otherwise with } v = max \{|longest(q)| - |all-meet(q)| \mid q \in \mathbf{Q}_{i+1}, \land |longest(q,0)| - |all-meet(q)| = a \}\\
+\end{cases}
+\end{eqnarray*}
+
+Then using the same argument as the first case (which is the only one that can happen) we can conclude that  $u_0(s_{f_{i+1}},s_1 \mid \epsilon) \geq u_0(\sigma_{i+1},s_1 \mid \epsilon)$. Moreover by definition of $s_0$ we have that
+$u_0(s_0,s_1 \mid \epsilon) \geq u_0(s_{f_{i+1}},s_1 \mid \epsilon)$ hence $u_0(s_0,s_1 \mid \epsilon) \geq u_0(\sigma_{i+1},s_1 \mid \epsilon)$.
+
+\bigskip
+Assume there exists $j < i+1$ such that $longest(\sigma_{i+1}(q_{j}),0) \neq longest(q_{j},0)$.
+
+\begin{mylem}
+If $\Pr^{(s_{f_j},s_1)}(q_{i+1} \mid \epsilon) = \Pr^{(s_{0},s_1)}(q_{i+1} \mid \epsilon)$
+\end{mylem}
+
+
+
+\end{proof}
