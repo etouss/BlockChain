@@ -32,33 +32,46 @@
 % \author{}
 % \date{}
 
+\newcommand{\nb}{\text{\rm nb}}
+\newcommand{\lnb}{\text{\rm longest\_nb}}
+\newcommand{\meetnb}{\text{\rm meet\_nb}}
+\newcommand{\bc}{\text{\rm best\_chain}}
+
 \begin{document}
 
 \section{Compact formalisation for greedy basic}
 
-
-We denote
-$
-blocks(b,p)  =
-{\displaystyle c \cdot \sum_{i=1}^{|b|} \chi_p(b,i)}
-$ the number of blocks belonging to a player $p$ in the path of a block $b$.
-
-We denote
-$\mathbf{L}(q,p) = \{b \in q \mid owner(b) = p \land \forall b' \in q, |b'| \leq |b|  \}$ the \textbf{set} of blocks which are the longest belonging to a player $p$ in the state $q$.
-As mentioned before $\mathbf{L}(q,p)$ is a set in the general case, however if we restrict ourself to greedy basic strategies for every player, then $|\mathbf{L}(q,p)| = 1$ for each reachable state $q$.
-
-We define $longest(q,p)$ as a block such that: $longest(q,p) \in \mathbf{L}(q,p)$ and for any $b \in \mathbf{L}(q,p), blocks(b,p) \leq blocks(longest(q,p),p)$. And we define $all-meet(q)$ as the longest block such that $all-meet(q) \in q$ and for any $p$, $all-meet(q) \preceq longest(q,p)$.
-
-Recall that $longest(q) = \{b\in q \mid \forall b' \in q, |b'| \leq |b| \}$ then we define
-$bestchain_p(q)$ as a block such that: $bestchain_p(q) \in  longest(q)$ and for any $ b \in longest(q) blocks(b,p) \leq blocks(bestchain_p(q),p)$
-
+Let $p \in \bP$ and $q \in \bQ$, and recall that:
+\begin{eqnarray*}
+\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
+\longest(q,p) & = & \{ b \in q \mid (b = \varepsilon \text{ or } \owner(b) = p),\\
+&& \hspace{70pt} \text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}.
+\end{eqnarray*}
+Then $\nb(b,p)$ is defined as  $\sum_{i=1}^{|b|} \chi_p(b,i)$, that is, as the number of blocks belonging to a player $p$ in the path in $q$ from the genesis block to $b$. Moreover, $\lnb(q,p)$ is defined as the set of blocks $b \in \longest(q,p)$ such that the path in $q$ from the genesis block to $q$ contains the larger numbers of blocks belonging to $p$:
+\begin{eqnarray*}
+\lnb(q,p) & = & \{ b \mid b \in \longest(q,p) \wedge \forall b' \in \longest(q,p): \nb(b',p) \leq \nb(b,p)\}.
+\end{eqnarray*}
+Finally, we define $\meetnb(q)$ and $\bc(q,p)$ as follows:
+\begin{eqnarray*}
+\meetnb(q) & = & \max_{\preceq} \{ b \in q \mid \forall p \in \bP \ \forall b' \in \lnb(q,p) : b \preceq b' \} \\
+\bc(q,p) & = & \{ b \mid b \in \longest(q) \wedge \forall b' \in \longest(q): \nb(b',p) \leq \nb(b,p)\}
+\end{eqnarray*}
+Notice that $\meetnb(q)$ is always a singleton set, so we assume that $\meetnb(q)$ is a block. On the other hand, $\lnb(q,p)$ and $\bc(q,p)$ may contain more than one block. In the following 
+proposition, we show a condition that ensures that for every player $p$ and reachable state $q$, it holds that $\lnb(q,p)$ and $\bc(q,p)$ are singleton sets, so that each one of them can be thought of as a block. More precisely, we say that a combined strategy $\bs$ is almost-greedy if  all but one strategy in $\bs$ are greedy. Then we have that:
+%
+%As mentioned before $\mathbf{L}(q,p)$ is a set in the general case, however if we restrict ourself to greedy basic strategies for every player, then $|\mathbf{L}(q,p)| = 1$ for each reachable state $q$.
+%We define $longest(q,p)$ as a block such that: $longest(q,p) \in \mathbf{L}(q,p)$ and for any $b \in \mathbf{L}(q,p), blocks(b,p) \leq blocks(longest(q,p),p)$. And we define $all-meet(q)$ as the longest block such that $all-meet(q) \in q$ and for any $p$, $all-meet(q) \preceq longest(q,p)$.
+%Recall that $longest(q) = \{b\in q \mid \forall b' \in q, |b'| \leq |b| \}$ then we define
+%$bestchain_p(q)$ as a block such that: $bestchain_p(q) \in  longest(q)$ and for any $ b \in longest(q) blocks(b,p) \leq blocks(bestchain_p(q),p)$
+%
 \begin{myprop}
-Let $\bs$ a combined greedy strategy, then for any $\sigma$ strategy and any $q$ such that $\Pr^{(\bs,\sigma)}(q \mid \epsilon) \neq 0$, $bestchain_p(q)$, $longest(q,p)$ and $all-meet(q)$ are well-defined and unique.
+If $\bs$ is a combined almost-greedy strategy, then for every $p \in \bP$ and $q \in \bQ$ such that 
+$\Pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $\lnb(q,p)$ and $\bc(q,p)$ are singleton sets.
 \end{myprop}
-
-
+\marcelo{I will include the proof of this proposition.}
 
 \iffalse
+
 \begin{myprop}
 Let $\bs$ a combined greedy basic strategy, then for any $p$ and any $q$  such that $\Pr^{\bs}(q \mid \epsilon) \neq 0$ we have $|Longest_0(q,p)| = 1$ and $|Longest_p(q)| = 1$ and ... WIP
 \end{myprop}
@@ -75,42 +88,44 @@ to do.
 
 \fi
 
-Let $s$ a greedy basic strategy for player $p \in \mathbf{P}$, we say that $f : \mathbf{N} \rightarrow \mathbf{N}$ specify $s$ denoted $s_f$ if and only if for any $q \in \mathbf{Q}$ we have :
-
+From now, we assume that every combined strategy is almost-greedy. Given a combined almost-greedy strategy $\bs = (s_0, \ldots, s_{m-1})$ and a player $p \in \bP$, we say that a function $f : \mathbb{N} \to \mathbb{N}$ specifies $s_p$ given $\bs$ if for every state $q \in \bQ$:
+%Let $s$ be a greedy basic strategy for player $p \in \mathbf{P}$, we say that $f : \mathbf{N} \rightarrow \mathbf{N}$ specify $s$ denoted $s_f$ if and only if for any $q \in \mathbf{Q}$ we have :
 \begin{eqnarray*}
-s(q) =
+s_p(q) & = &
 \begin{cases}
-mine(p,longest(q,p),q) & \text{iff } f(|longest(q,p)|-|all-meet(q)|) \geq |bestchain_p(q)|-|all-meet(q)|\\
-mine(p,b,q) & \text{otherwise with } bestchain_p(q) = b.v \text{ and } |v| = f(0)\\
+\mine(p,\lnb(q,p),q) & \text{if } f(|\lnb(q,p)|-|\meetnb(q)|) >\\
+& \hspace{100pt}|\bc(q,p)|-|\meetnb(q)|\\
+\mine(p,b,q) & \text{otherwise, where } \bc(q,p) = b \cdot v \text{ and } |v| = f(0)\\
 \end{cases}
 \end{eqnarray*}
 
 \etienne{Whenever one stop forking the function specify where to mine again which is a stronger constraint than general greedy basic strategy.}
 
-\begin{myprop}
-Let f a function which specify $s_f$ greedy basic, then for any $a \in \mathbf{N}$ we have $f(a) \geq a $ and  $f(a) \geq f(0)$
-\end{myprop}
+One may be tempted to think that every function $f: \mathbb{N} \to \mathbb{N}$ can be used to define some combined almost-greedy strategy $\bs$ such that the strategy $s_p$ is specified by $f$ given $\bs$.
+The following lemma shows that this is not the case.
+\begin{mylem}
+Let $\bs = (s_0, \ldots, s_{m-1})$ be a combined almost-greedy strategy and $p \in \bP$ such that $s_p$ is a greedy strategy.  If a function $f : \mathbb{N} \to \mathbb{N}$ specifies the strategy of player $p$ given $\bs$, then for every $n \in \mathbb{N}$, we have that  $f(n) \geq n + f(0)$.
+\end{mylem}
 \begin{proof}
-By absurd using greedy definition.
+By contradiction using the definition of greedy strategy. 
 \end{proof}
+In this framework, the Default strategy is specified by the function $f$ such that for every $n \in \mathbb{N}$, it holds that $f(n) = n$.  Always fork cannot really be specified so we have to add it, but informally it is $f_\varepsilon$ such that for every $n \in \mathbb{N}$, it holds that $f_\varepsilon(n) = \infty$.
 
-In this framework : Default strategy is specify by the function $d$ such that for any $a \in \mathbf{N}$, $d(a) = a$.  Always fork can not really be specified so we have to add it, but informally it is $f_\epsilon$ such that for any $a \in \mathbf{N}$, $f_\epsilon(a) = \infty$.
 
 
-\section{off}
+\section{}
 
+In this section, we assume that $m = 2$, so that combined strategies are of the form $(s_0,s_1)$. In order to simplify notation, instead of writing $u_p((s_0,s_1) \mid \varepsilon)$, we omit the inner parenthesis and simply write $u_p(s_0,s_1 \mid \varepsilon)$.
 \begin{myprop}
 \label{mainprop}
-Let $s_1$ a greedy basic strategy then exists $s_0$ a greedy basic strategy such that for any $\sigma$ strategy, $u_0(s_0,s_1 \mid \epsilon) \geq u_0(\sigma,s_1 \mid \epsilon)$.
+Let $s_1$ be a greedy basic strategy for player 1. Then there exists a greedy basic strategy $s_0$ for player 0 such that, for every strategy $\sigma$ for player 0, it holds that $u_0(s_0,s_1 \mid \varepsilon) \geq u_0(\sigma,s_1 \mid \varepsilon)$.
 \end{myprop}
-
-\begin{proof}
-
-In order to demonstrate the property \ref{mainprop} we first need a few lemmas, the first states that there exists a reachable maximum utility value for a player $p$ when the other players strategy is fixed.
+In order to prove the Proposition \ref{mainprop}, we need some technical lemmas. Let $\mathcal{F}_0$ be the set of all functions $f : \mathbb{N} \to \mathbb{N}$ for which there exists a combined almost-greedy strategy.
+The first such a lemma states that there exists a reachable maximum for the utility of player $0$ when the strategy of player 1 is fixed.
 \begin{mylem}
 \label{limlem}
-Let $\mathbf{F}_0 = \{f : \mathbb{N} \rightarrow \mathbb{N} \mid f \textit{ specify a greedy basic strategy} \}$, and $\bs$ a combined greedy basic strategy,
-then there exits $v_{max} = max \{u_0(s_{f_0},\bs \mid \epsilon) \mid f_0 \in \mathbf{F}_0 \}$.
+Let $s_1$ be a greedy basic strategy for player 1. Then we have that the following value is well-defined:
+$$\max \{u_0(s_0,s_1 \mid \varepsilon) \mid s_0 \text{ is a greedy strategy for player } 0 \text{ specified by a function } f : \mathbb{N} \to \mathbb{N}\}.$$
 \end{mylem}
 \begin{proof}
 \end{proof}
@@ -204,6 +219,5 @@ If $\Pr^{(s_{f_j},s_1)}(q_{i+1} \mid \epsilon) = \Pr^{(s_{0},s_1)}(q_{i+1} \mid 
 
 
 
-\end{proof}
 
 \end{document}
