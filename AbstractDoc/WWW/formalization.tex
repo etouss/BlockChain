@@ -88,17 +88,21 @@ Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by
 Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a$ to $q$, denoted by $a(q)$, is defined as the state $q \cup \{b \cdot p\}$. Finally, we denote by $\bA$ the set of combined actions for the $m$ players, that is, $\bA = \bA_0 \times \bA_1 \times \cdots \times \bA_{m-1}$.
 
 \subsection{Pay-off of a miner}
-Given a player $p \in \bP$, a state $q \in \bQ$ and a combined action $\ba \in \bA$, the pay-off of player $p$ in $q$ for actions $\ba$ is denoted by $r_p(q,\ba)$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. %Moreover, assuming that there is a  function $r_p$ for each player $p \in \bP$, define $\bR = (r_0, r_1, \ldots, r_{m-1})$ as the pay-off function of the game. 
+\etienne{I still have to work on the actual wording, but i think it will look like that. I choosed to push the graph in appendix for space reasons, what do u think ?}
+
+In stochastic game,the pay-off of a player $p \in \bP$, is given by a function $r_p: \bQ \times \bA \mapsto \mathbb{R}$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$.
 But how should the function $r_p(q,\ba)$ look like? Recall that one of the rules of bitcoin is that the money can only 
 be spent when it is given in blocks that are part of the blockchain. Thus, the first idea that comes into mind is to 
-reward players every time they put a block in the blockchain. However, this is not a good function, as it is not possible to build a pay-off function which rewards them once and only once for each block in the blockchain.
+reward players every time they put a block in the blockchain. However, this is not a good function, as it is not possible to build a pay-off function which rewards them once and only once for each block in the blockchain (see example \ref{eximpo}).
 
 \begin{myex} 
+\label{eximpo}
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.55,state/.style={circle,inner sep=2pt}]
 
     % The graph A
+    \node [state] at (3.5,2.25) (name1) {$(q_w,\ba_w)$};
 	\node [state] at (0,1.25) (Ra0) {$\varepsilon$};
 	\node [state] at (1.5,0.5) (0a0) {$0$};
 	\node [state] at (1.5,1.25) (1a0) {$1$};
@@ -106,11 +110,12 @@ reward players every time they put a block in the blockchain. However, this is n
 	\node [state] at (5.5,1.25) (111a0) {$111$};
 	
 	 % The graph A
-	\node [state] at (0,-1.25) (Ra1) {$\varepsilon$};
-	\node [state] at (1.5,-0.5) (0a1) {$1$};
-	\node [state] at (1.5,-1.25) (1a1) {$0$};
-	\node [state] at (3,-1.25) (11a1) {$00$};
-	\node [state] at (5.5,-1.25) (111a1) {$000$};
+	\node [state] at (0,-2.25) (Ra1) {$\varepsilon$};
+	\node [state] at (1.5,-1.5) (0a1) {$1$};
+	\node [state] at (1.5,-2.25) (1a1) {$0$};
+	\node [state] at (3,-2.25) (11a1) {$00$};
+	\node [state] at (5.5,-2.25) (111a1) {$000$};
+	\node [state] at (3.5,-0.5) (name2) {$(q_l,\ba_l)$};
 	
 	% The graph A
 	\node [state] at (7,0) (Ra) {$\varepsilon$};
@@ -119,7 +124,8 @@ reward players every time they put a block in the blockchain. However, this is n
 	\node [state] at (10,0.75) (11a) {$11$};
 	\node [state] at (10,-0.75) (00a) {$00$};
 	\node [state] at (12.5,0.75) (111a) {$111$};
-	\node [state] at (12.5,-0.75) (000a) {$000$};	
+	\node [state] at (12.5,-0.75) (000a) {$000$};
+	\node [state] at (10.5,-1.75) (name3) {$(q_t,\ba_t)$};	
 	
 	% Graph edges
 	\path[->]
@@ -149,7 +155,7 @@ reward players every time they put a block in the blockchain. However, this is n
 
 \end{tikzpicture} 
 \end{center}
-\caption{An example showing that I should want to try to compete when some other player forks on my blocks. \label{fig-payoff}}
+\caption{An example showing that I should want to try to compete when some other player forks on my blocks. \label{fig-impo}}
 \end{figure}
 
 
@@ -160,18 +166,34 @@ Consider a pay-off function $r_1$ for player $1$, it is immediate to understand 
 \end{myex} 
 
 Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting. 
-What we do instead is to use a heuristic for this reward. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. The main concern regarding this pay-off function is that the early blocks may have a lot more value than the later ones (not because of a decreasing reward, but because early blocks are counted multiple times).
-In order to show that this problem is not as strong as it might seems, we ran finite simulations of blockchains mined with default behaviour and compared the sum of the rewards obtained at the end for several pay-off functions.  
-
-\etienne{Explained, relative reward and absolute comparaison from previous bitcoin work}
-
-An other possible pay-off function presented in \cite{}, introduced a delay $d$ before rewarding a player for a block. Moreover this pay-off also insure that only one block for each depth is going to receive a payment (the first one for which the delay $d$ is achieve). It is really close to the bitcoin protocol as miners have to wait 100 blocks in order to use their coin-base transaction bitcoins, however the constraint that only one block per depth can be paid nullify the incentive of performing a fork longer than $d$. One could argue that a fork longer than $d$ would destroy the market confidence hence the value and therefore can be ignored. It might be the case with the current state of crypto-currencies, but if the technology become more widely adopted (government or bank), such a possibility can not be neglected any-more.
+What we do instead is to use a heuristic for this reward called cumulative pay-off model and denoted $r_p^c(.)$. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. 
+\\Note that in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off of player $p$ does not depend on the action of other players. Hence we extend the definition of the cumulative pay-off function such that for any state $q$ and any player $p$ we have $r_p^c(q) = r_p^c(q',(\ba,a_p))$ with $q' = q \setminus b$ and $a_p = mine(p,b,q')$. We also consider a function where the reward for each new block in the blockchain decreases by a constant factor $\alpha$. We will formally define our cumulative payoff functions in the following sections. 
 
 
+The main concern regarding this pay-off function called cumulative pay-off, is that the early blocks may have a lot more value than the later ones (not because of a decreasing reward, but because early blocks are counted multiple times).
+In order to show that this problem is not as strong as it might seems, we compared the sum of the rewards obtained under the cumulative, relative \cite{} and absolute \cite{} pay-off models on pseudo-randomly generated  blockchains. We considere a fix number of blocks distrubuted upon players $\bP$ and we assume they always mined upon the blockchain (default behaviour). Therefore the only variable between two iterations is the position of the blocks own by each players. The total number of blocks at the end of each iteration is 100.000 and we have done 1000 iterations. Let $i \in \{1\cdots 1000\}$, we denote by $q_i$ the final state of the iteration. For any state $q \subseteq q_i$ and any player $p \in \bP$ we denote $r_p^a(q)$ resp. $r_p^r(q)$ the absolute resp. relative pay-off function. We have that $r_p^a(q) = c$ if $owner(bc(q)) = p$ and $r_p^a(q) = 0$ otherwise. And that $r_p^r(q) = \frac{c}{|q|}$ if $owner(bc(q)) = p$ and $r_p^r(q) = 0$ otherwise. Finally with $$R_p^x(q_i) = \frac{\sum\limits_{q \subseteq q_i} r_p^x(q)}{\sum\limits_{p' \in \bP}\sum\limits_{q \subseteq q_i} r_{p'}^x(q)} $$ we call maximum difference the value:\\ $\underset{p \in \bP}{max}\left(\underset{{i \in \{1 \cdots 10
+00\}}}{max}(R_p^x(q_i)) - \underset{{i \in \{1 \cdots 10
+00\}}}{min}(R_p^x(q_i))\right)$\\and average difference the value: $\underset{{i,i' \in \{1 \cdots 10
+00\}}}{average}(|R_p^x(q_i) - R_p^x(q_{i'})|) $.
 
-\juan{Compare and put forward links to the comparison with other options when we have something}.
+\begin{figure}
+\begin{tabular}{c|c|c|}
+. & maxium difference & average difference   \\
+\hline
+constant pay-off & 0 & 0 \\
+\hline
+relative pay-off & x.x &  x.x \\
+\hline
+cumulative pay-off &  x.x &  x.x \\
+\end{tabular}
+\caption{Results of the simulation for absolute, relative and cumulative models}
+\end{figure}
 
-We also consider a function where the reward for each new block in the blockchain decreases by a constant factor $\alpha$. We will formally define our payoff functions in the following sections. 
+As you can see in the table \ref{}, the cumulative model yields to a behaviour inbetween the constant and relative models. Therefore, even if the value for the early blocks of the blockchain is higher than the value for the later ones, the difference between them is reasonable. More details and results about this experimentation are available in appendix \ref{}.
+
+An other possible pay-off function presented in \cite{}, introduced a delay $d$ before rewarding a player for a block. Moreover this pay-off also insure that only one block for each depth is going to receive a payment (the first one for which the delay $d$ is achieve). It is really close to the bitcoin protocol as miners have to wait 100 blocks in order to use their coin-base transaction bitcoins, however the constraint that only one block per depth can be paid nullify the incentive of performing a fork longer than $d$. One could argue that a fork longer than $d$ would destroy the market confidence hence the value and therefore can be ignored. It might be the case with the current state of crypto-currencies, but if the technology become more widely adopted (government or bank), such argument can not be use any-more.
+
+
 
 %The other issue is what to do when the blockchain is contested, and there are at least two paths sharing the maximal length. A simple solution 
 %would be to declare that players receive no pay-off when this happens. But again, this would lead to strange behaviours in which players with several blocks buried deep in the blockchain would receive no reward for this blocks because of a contest in the newer parts of the blockchain. 
