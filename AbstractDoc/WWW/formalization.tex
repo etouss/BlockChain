@@ -179,7 +179,7 @@ We also consider a function where the reward for each new block in the blockchai
 %and formalise this as follows. 
 
 \subsection{The definition of the game}
-As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every $q \in \bQ$ and $\ba = (a_0, a_1, \ldots, a_{m-1})$ in $\bA$:
+As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every state $q \in \bQ$ and combined action $\ba = (a_0, a_1, \ldots, a_{m-1})$ in $\bA$:
 \begin{eqnarray*}\label{eq-prop}
 \sum_{p=0}^{m-1} \pr(q, \ba, a_p(q)) & = & 1.
 \end{eqnarray*}
@@ -205,19 +205,20 @@ $\pr(q, \ba, a_p(q)) = h_p$ for every $q \in \bQ$ and $\ba \in \bA$ with $\ba = 
 %Moreover, we define $\bH = (h_0, h_1, \ldots, h_{m-1})$ as the hash power distribution, and we replace $\pr$ by $\bH$ in the definition of an an infinite stochastic game, so that $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$. 
 Moreover, we assume that $h_p > 0$ for every player $p \in \bP$, as if this not the case then $p$ can just be removed from the mining game. 
 
-\subsection{Stationary equilibrium}
+\subsection{Utility and equilibria of the game}
+We have defined a game that can capture miners' interactions. A fundamental component of such a game is the strategy that each player decides to take, which combined determine the utility of each player. In particular, miners take actions and decide about strategies trying to maximize their utility. In this sense, a stationary equilibrium of the game is a fundamental piece of information about miners' behavior, as such an equilibrium is a combination of players' strategies where no miner has an incentive to perform a different action. The notions of strategy, utility and stationary equilibrium are the last components of our game-theoretical characterization of mining in Bitcoin, and they are defined in this section.
+
 A strategy for a player $p \in \bP$ is a function $s : \bQ \rightarrow \bA_p$. 
 We define $\bS_p$ as the set of all strategies for player $p$, and $\bS = \bS_0 \times \bS_{1} \times \cdots \times \bS_{m-1}$ as the set of combined strategies for the game (recall that we are assuming that $\bP = \{0, 1, \ldots, m-1\}$ is the set of players). 
 
-As usual, we are interested in understanding which strategies fare better than others, which we capture by the notions of 
-\emph{utility} and \emph{equilibrium}. To define these we need some additional notation. 
+As usual, we are interested in understanding which strategies fare better than others, which we capture by the notions of  utility and equilibrium. To define these, we need some additional notation. 
 Let $\bs = (s_0, s_1, \ldots, s_{m-1})$ be a strategy in $\bS$. Then given $q \in \bQ$, define $\bs(q)$ as the combined action $(s_0(q), s_1(q), \ldots, s_{m-1}(q))$. Moreover, given an initial state $q_0 \in \bQ$, 
 the probability of reaching state $q \in \bQ$, denoted by $\pr^{\bs}(q \mid q_0)$, is defined as 0 if $q_0 \not\subseteq q$, and otherwise it is recursively defined as follows: if $q =  q_0$, then $\pr^{\bs}(q \mid q_0) = 1$; otherwise, we have that $|q| - |q_0| = k$, with $k \geq 1$, and
-\begin{eqnarray*}
-\pr^{\bs}(q \mid q_0) \ = \
+$$
+\pr^{\bs}(q \mid q_0) =
 \sum_{\substack{q' \in \bQ \,:\\ q_0 \subseteq q' \text{ and } |q'| - |q_0| = k-1}}
  \pr^{\bs}(q' \mid q_0) \cdot \pr(q', \bs(q'), q).
-\end{eqnarray*}
+ $$
 In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$. 
 %Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$. 
 
@@ -229,7 +230,7 @@ to impose a discount for future rewards using a factor $\beta \in [0,1)$.
 The $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in 
 the mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
-u_p(\bs \mid q_0) & = & \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
+u_p(\bs \mid q_0) & = & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)
 \end{eqnarray*}
 \end{mydef}
 Notice that the value $u_p(\bs \mid q_0)$ may not be defined if the series $\sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$ diverges. To avoid this problem, from now on we assume that for every payoff function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. Under this simple yet general condition, it is posible to prove that $u_p(\bs \mid q_0)$ is a real number (see Appendix \ref{sec-conver} for a proof of this property). 
