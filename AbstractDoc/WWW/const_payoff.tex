@@ -7,7 +7,7 @@
 The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this does not reflect the current reality of the Bitcoin protocol, this simplification serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, the results we obtain here could serve as a good recommendation of how the Bitcoin protocol can be modified in order to enforce fair behaviour of the miners when the block reward becomes insignificant.
 
 \subsection{Defining constant pay-off}
-When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest branch from the root of $q$ to its leaves, it might be the case that all such branches share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two branches agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
+When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
 
 \begin{figure}
 \begin{center}
@@ -15,12 +15,12 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 
     % The graph
 	\node [state] at (0,0) (R) {$\varepsilon$};
-	\node [state] at (1.5,0) (1) {$1$};
-	\node [state] at (3,0) (10) {$10$};
-	\node [state] at (4.5,0) (100) {$100$};
-	\node [state] at (6,0) (1001) {$1001$};
-	\node [state] at (8,0.75) (10011) {$10011$};
-	\node [state] at (8,-0.75) (10010) {$10010$};	
+	\node [state] at (1,0) (1) {$1$};
+	\node [state] at (2.1,0) (10) {$10$};
+	\node [state] at (3.3,0) (100) {$100$};
+	\node [state] at (4.6,0) (1001) {$1001$};
+	\node [state] at (5.9,0.75) (10011) {$10011$};
+	\node [state] at (5.9,-0.75) (10010) {$10010$};	
 	
 	% Graph edges
 	\path[->]
@@ -36,37 +36,36 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 
 \end{tikzpicture} 
 \end{center}
-\caption{Although two branches are contesting to become a blockchain, the blocks up to 1001 will contribute to the reward in each case. \label{fig-simple-fork}}
+\caption{Although two paths are competing to become a blockchain, the blocks up to 1001 will contribute to the reward in each case. \label{fig-simple-fork}}
 \end{figure}
 
 In order to model the aforementioned scenario we need to introduce some notation.
 Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$  when considered as strings. Then we define: 
 \begin{eqnarray*}
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
-\meet(q) & = & {\displaystyle \max_{\preceq} \ \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}}
+\meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}
 \end{eqnarray*}
-Intuitively, $\longest(q)$ contains the leaves of all branches in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ corresponds to the last block for which all these branches agree on. For instance, if $q$ is the state from Figure \ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=1001$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
+Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
 
-As mentioned before, the pay-off function will reward a player for the blocks she owns in the path from the genesis block to $\meet(q)$. Thus, to define the pay-off, we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$ and $i \in \{1, \ldots, |b|\}$, we have that:
-%First, for a player $p$, define the indicator function $\chi_p : \bB \to \{0,1\}$ as follows:
+As mentioned before, the pay-off function will reward a player for the blocks in $\meet(q)$. Thus, to define the pay-off, we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
 \begin{eqnarray*}
-\chi_p(b,i) & = & 
+\chi_p(b) & = & 
 \begin{cases}
-1 & \text{if the } i\text{-th symbol in } b \text{ is } p\\
+1 & \text{if } \owner(b) = p\\
 0 & \text{otherwise}
 \end{cases}
 \end{eqnarray*}
 We can finally define the payoff function we consider in this section, which we call \textbf{constant reward}. For a player $p$, we define it as 
 \begin{eqnarray*}
 r_p(q) & = & 
-{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \chi_p(\meet(q),i),}
+{\displaystyle c \cdot \sum_{b \in q} \chi_p(b),}
 \end{eqnarray*}
 where $c$ is a positive real number. As mentioned above, this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the pay-off function is defined for the blockchain of $q$.
 % when the latter is defined for the state $q$.
 %Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
 % and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
  
- \subsection{The default strategy is a dominant strategy}
+ \subsection{The default strategy maximizes the utility}
 
 Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
 the \emph{default} strategy, as it reflects the desired behaviour of the miners participating in the Bitcoin network. 
@@ -74,14 +73,14 @@ For a player $p$, let us denote this strategy
 by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
 
 We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, $i$ blocks will be placed in the blockchain defined by the game, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
-$$u_p(\cdf \mid \varepsilon) \ \ = \ \ h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ =  \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)^2}.$$
+$$u_p(\cdf \mid \varepsilon) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ =  \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
 
 %% Juan: I think it is way too nahive to put the analytical form of this
 %$$u_p(\bs \mid q_0) = c\cdot h_p \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \text{,}\ \ \ \ \text{ which evaluates to }\frac{c\cdot h_p}{(1-\beta)^2}.$$ %(recall that $q_0$ is the genesis block). 
 
-The question then is: can any player do better? As we show in the following theorem, the answer is no as the default strategy is a dominant strategy. 
+The question then is: can any player do better? As we show in the following theorem, the answer is no as the default strategy maximizes the utility. 
 \begin{mythm}\label{thm-conts_dom_str}
-Let $p$ be a player, $\beta$ be a discount factor in $[0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$:
+Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$:
 \begin{eqnarray*}
 u_p(\bs \mid \varepsilon) & \leq & u_p(\cdf \mid \varepsilon)
 \end{eqnarray*}
