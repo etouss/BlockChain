@@ -91,10 +91,15 @@ Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by
 Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a$ to $q$, denoted by $a(q)$, is defined as the state $q \cup \{b \cdot p\}$. Finally, we denote by $\bA$ the set of combined actions for the $m$ players, that is, $\bA = \bA_0 \times \bA_1 \times \cdots \times \bA_{m-1}$.
 
 \subsection{The pay-off of a miner}
-Given a player $p \in \bP$ and a state $q \in \bQ$, the pay-off of player $p$ in $q$ is denoted by $r_p(q)$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. 
+The Bitcoin protocol give reward to the owner of a block if it is part of the blockchain and has been confirmed by 100 blocks. A payment function which closely follows this protocol has been introduced in \cite{}, however it adds the constraint that for every level of the state's tree only one block give a reward (the first one which has been confirmed by 100 blocks). Due to this constraint if a fork longer than 100 blocks would happen, some blocks belonging to the new blockchain won't give any reward to their owners (which contradicts the bitcoin's rules). As a matter of fact the model nullify the incentive of performing a fork longer than 100 \cite{}. One could argue that a fork longer than 100 would destroy the market confidence and therefore can be ignored. It might be the case with the current state of crypto-currencies, but as the technology become more widely adopted (government or bank), such argument can not be use any-more.
 
-\marcelo{I just included a short version of this sub-section for completeness, we need to decide what we are going to put here. Etienne's longer version is at the end of this section.}
+In stochastic game, the pay-off of a player $p \in \bP$, is given by a function $r_p: \bQ \times \bA \mapsto \mathbb{R}$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$.
+As the pay-off of a player is determined by the state and not the history of states, a function which rewards players once and only once for each block they own in the blockchain, can not be build (see example \ref{eximpo}). We propose a model where on every states, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they will potentially mine. This model puts a strong incentive in maintaining blocks in the blockchain and does not nullify the incentive to fork.
+The main concern regarding this pay-off model, is that we might end-up giving reward to player multiple times for the same block (once for each state where the block belongs to the blockchain). In the following sections we address this specific matter \ref{} and formally defines our pay-off functions \ref{}. 
 
+Note that if in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off for a player $p$ does not depend on the action of other players. Hence we can extend the definition such that for any state $q$ and any player $p$ we have $r_p(q) = r_p(q',(\ba,a_p))$ with $q' = q \setminus b$ a state and $a_p = mine(p,b,q')$ a valid action.  
+ 
+ 
 \subsection{The definition of the game}
 As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every state $q \in \bQ$ and combined action $\ba = (a_0, a_1, \ldots, a_{m-1})$ in $\bA$:
 \begin{eqnarray*}\label{eq-prop}
@@ -204,8 +209,11 @@ Thus, the pay-off obtained by player $p$ for a block $b$ is at most $\beta^{|b|}
 %\marcelo{In these definitions we are assuming that $u_p(\bs \mid q_0)$ is defined, which could not be the case if the series diverges. We should say something about this.}
 %\francisco{True. Something like ``$r$ is a decreasing function and card$(Q)$ is controlled by $p^{|q|}$'' (worst case scenario, every player forks), so we should be OK.}
 
+\iffalse
 
 \subsection{Pay-off of a miner (extended version)}
+
+
 \etienne{I still have to work on the actual wording, but i think it will look like that. I choosed to push the graph in appendix for space reasons, what do u think ?}
 
 In stochastic game,the pay-off of a player $p \in \bP$, is given by a function $r_p: \bQ \times \bA \mapsto \mathbb{R}$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$.
@@ -317,9 +325,78 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 %would be to declare that players receive no pay-off when this happens. But again, this would lead to strange behaviours in which players with several blocks buried deep in the blockchain would receive no reward for this blocks because of a contest in the newer parts of the blockchain. 
 %In order to avoid this scenario, we choose to maintain the reward for blocks buried deep in the blockchain even when there is a contest, 
 %and formalise this as follows. 
+\fi
+
+\iffalse
+
+\begin{myex} 
+\label{eximpo}
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.55,state/.style={circle,inner sep=2pt}]
+
+    % The graph A
+    \node [state] at (3.5,2.25) (name1) {$(q_w,\ba_w)$};
+	\node [state] at (0,1.25) (Ra0) {$\varepsilon$};
+	\node [state] at (1.5,0.5) (0a0) {$0$};
+	\node [state] at (1.5,1.25) (1a0) {$1$};
+	\node [state] at (3,1.25) (11a0) {$11$};
+	\node [state] at (5.5,1.25) (111a0) {$111$};
+	
+	 % The graph A
+	\node [state] at (0,-2.25) (Ra1) {$\varepsilon$};
+	\node [state] at (1.5,-1.5) (0a1) {$1$};
+	\node [state] at (1.5,-2.25) (1a1) {$0$};
+	\node [state] at (3,-2.25) (11a1) {$00$};
+	\node [state] at (5.5,-2.25) (111a1) {$000$};
+	\node [state] at (3.5,-0.5) (name2) {$(q_l,\ba_l)$};
+	
+	% The graph A
+	\node [state] at (7,0) (Ra) {$\varepsilon$};
+	\node [state] at (8.5,0.75) (1a) {$1$};
+	\node [state] at (8.5,-0.75) (0a) {$0$};
+	\node [state] at (10,0.75) (11a) {$11$};
+	\node [state] at (10,-0.75) (00a) {$00$};
+	\node [state] at (12.5,0.75) (111a) {$111$};
+	\node [state] at (12.5,-0.75) (000a) {$000$};
+	\node [state] at (10.5,-1.75) (name3) {$(q_t,\ba_t)$};	
+	
+	% Graph edges
+	\path[->]
+	(Ra) edge (1a)
+	(Ra) edge (0a)
+	(1a) edge (11a)
+	(0a) edge (00a)
+	(Ra1) edge (1a1)
+	(1a1) edge (11a1)
+	(Ra0) edge (1a0)
+	(1a0) edge (11a0)
+	;  	
+	
+	% Graph edges
+	\path[dashed,blue]
+	(Ra1) edge (0a1)
+	(11a) edge (111a)
+	(11a0) edge (111a0)
+	;  	
+	
+	\path[dashed,red]
+	(Ra0) edge (0a0)
+	(00a) edge (000a)
+	(11a1) edge (111a1)
+	;
 
 
+\end{tikzpicture} 
+\end{center}
+\caption{An example showing that I should want to try to compete when some other player forks on my blocks. \label{fig-impo}}
+\end{figure}
 
+Consider a pay-off function $r_1$ for player $1$, it is immediate to understand that in the situation described by $q_l$ the value $r_1(q_l,\ba_l)$ should be $0$, indeed player $1$ did not put any new block in the blockchain. While in the situation described in $q_w$, $r_1(q_w,\ba_w)$ should reward the player $1$ for his block $111$.
+\\Now consider the tie situation described in $q_t$. What should be the value of $r_1(q_t,\ba_t)$? Either $r_1(q_t,\ba_t)$ only rewards player 1 for his block $111$, and if $q_t$ has been reach through $q_l$ then he would never has been paid for the block $1$. Or $r_1(q_t,\ba_t)$ rewards player 1 for every blocks involved in the tie and if $q_t$ is reach trough $q_w$, he would have been paid twice for the blocks $1$ and $11$. The pay-off not relying on the history of states, cannot distinguish those two situations hence it is not possible to build a pay-off function which pay once and only once the player for each block in the blockchain.
+
+\end{myex} 
+\fi
 
 
 
