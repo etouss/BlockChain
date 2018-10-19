@@ -4,7 +4,7 @@
 \section{Equilibria in games with constant payoff}
 \label{sec-const_rew}
 
-The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this does not reflect the current reality of the Bitcoin protocol, this simplification serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, the results we obtain here could serve as a good recommendation of how the Bitcoin protocol can be modified in order to enforce fair behaviour of the miners when the block reward becomes insignificant.
+The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this does not reflect the reality of the Bitcoin protocol, this simplification serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, the results we obtain here could serve as a good recommendation of how the Bitcoin protocol can be modified in order to enforce fair behaviour of the miners when the block reward becomes insignificant.
 
 \subsection{Defining constant pay-off}
 When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
@@ -60,6 +60,7 @@ We can finally define the payoff function we consider in this section, which we 
 r_p(q) & = & 
 {\displaystyle c \cdot \sum_{b \in q} \chi_p(b),}
 \end{eqnarray*}
+\martin{this reads odd since we do not use meet here. Is it correct?}
 where $c$ is a positive real number. As mentioned above, this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the pay-off function is defined for the blockchain of $q$.
 % when the latter is defined for the state $q$.
 %Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
@@ -87,7 +88,7 @@ u_p(\bs \mid \varepsilon) & \leq & u_p(\cdf \mid \varepsilon)
 \end{mythm} 
 
 \begin{proof}
-Let $\bs$ be an arbitrary combined strategy. Assume that $\bs = (s_0, \ldots, s_m)$, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q \mid \varepsilon) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
+Let $\bs= (s_0, \ldots, s_m)$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q \mid \varepsilon) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
 Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\cdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step if $q_2 = q_1 \cup \{ b \cdot p' \}$, where $b \in \bB$, $p' \in \bP$ and $b \cdot p' \not\in q_1$ (recall that $\bB = \{0, \ldots, m-1\}^*$ and $\bP = \{0, \ldots, m-1\}$); that is, we have that $q_2$ can be reached from $q_1$ in one step  if $q_2$ is the result of applying action $\mine(p', b, q_1)$, where $\mine(p', b, q_1)$ is a valid action for player $p'$. 
 Then for each state $q \in Q_{\bs}$, enumerate all distinct sequences $\pi = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
 $q_i$ in one step ($i \in \{1, \ldots, n-1\}$), $q_0 = \varepsilon$ and $q_n = q$. To each such sequence $\pi$, associate a block $b_\pi = b_1 \cdots b_n$ as follows. 
@@ -167,7 +168,7 @@ As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain that:
 \begin{mycor}\label{cor-conts_equlibria}
 For every $\beta \in [0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
 \end{mycor} 
-While constant-block reward do not faithfully model reality, since in the Bitcoin protocol the reward decreases every 200.000 blocks or so, we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour on miners at the moment block rewards become insignificant. More precisely, if block rewards are negligible, the transaction fees will dictate the miners' pay-off, so the protocol could place a (constant) total fee limit on newly created blocks. \marcelo{We need to argue why it is reasonable to impose a (constant) total fee limit in this scenario.} Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem  \ref{thm-conts_dom_str} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.
+While constant-block reward do not faithfully model reality, since in the Bitcoin protocol the reward decreases every approximately four years, we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour on miners at the moment block rewards become insignificant. More precisely, if block rewards are negligible, the transaction fees will dictate the miners' pay-off, so the protocol could place a (constant) total fee limit on newly created blocks. \marcelo{We need to argue why it is reasonable to impose a (constant) total fee limit in this scenario.} Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem  \ref{thm-conts_dom_str} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.
 
 % \subsection{The default strategy is an equilibrium}
 %
