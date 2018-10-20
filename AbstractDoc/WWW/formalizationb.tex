@@ -189,13 +189,8 @@ We propose a model where on every states, we pay miners for each of the blocks t
 \end{equation*} 
 This model puts a strong incentive in maintaining blocks in the blockchain and does not nullify the incentive to fork. The main concern regarding this pay-off model, is that we end-up giving reward to a miner multiple times for the same block (once for each state where the block belongs to the blockchain). But as we are working with the utility defined above \ref{}, the problem "disappear".
 
-We define the utility of a block $b$ for player $p$ and a combined strategy $\bs$ as:
-\begin{equation*}
-u_p^b(\bs \mid q_0) =  (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q,b) \cdot \pr^{\bs}(q \mid q_0).
-\end{equation*}
-
 \begin{myprop}\label{prop:bound}
-Assume $M_p(b) = max(\{r_p(q,b) \mid q \in \bQ \})$ is finite then we have:
+Assume $M_p(b) = max(\{r_p(q,b) \mid q \in \bQ \})$ is finite and $\forall q \in \bQ, r_p(q) = \sum_{b \in \B} r_p(q,b)$ then:
 \begin{equation*}
 u_p(\bs \mid \{\varepsilon\}) \leq   \sum_{b \in \bB} \beta^{|b|} \cdot M_p(b)
 \end{equation*}
@@ -246,20 +241,28 @@ Thus, the pay-off obtained by player $p$ for a block $b$ is at most $\beta^{|b|}
 %\francisco{True. Something like ``$r$ is a decreasing function and card$(Q)$ is controlled by $p^{|q|}$'' (worst case scenario, every player forks), so we should be OK.}
 \end{proof}
 
+If we extend the notion of utility to define the utility of a specific block, which correspond to the expected value a block would bring to a player, under a combined strategy.
+\begin{mydef}
+The utility of a block $b \in \B$ for a player $p \in \bP$ and a combined strategy $\bs \in \bS$ from a state $q_0 \in \bQ$ denoted $u_p^bu_p^b(\bs \mid q_0)$ is defined as:
+\begin{equation*}
+u_p^b(\bs \mid q_0) =  (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q,b) \cdot \pr^{\bs}(q \mid q_0).
+\end{equation*}
+\end{mydef}
 
+\begin{mylem*}
+Assume $\forall q \in \bQ, r_p(q) = \sum_{b \in \B} r_p(q,b)$ then:
+\begin{equation*}
+u_p(\bs \mid \{\varepsilon\}) =   \sum_{b \in \bB} u^b_p(\bs \mid \{\varepsilon\})
+\end{equation*}
+\end{mylem*}
+
+Using property \ref{prop:bound} we can conclude\etienne{Actually it is not immediate at all, too bad ;s can u have that ?}:
 \begin{mylem}
 For any block $b$, and player $p$ we have:
 \begin{equation*}
 u_p^b(\bs \mid \{\varepsilon\}) \leq \beta^{|b|} \cdot M_p(b)
 \end{equation*}
 \end{mylem}
-\begin{proof}
-We trivially have:
-\begin{equation*}
-u_p(\bs \mid \{\varepsilon\}) =   \sum_{b \in \bB} u^b_p(\bs \mid \{\varepsilon\})
-\end{equation*} and with property \ref{prop:bound} ??
-\etienne{Actually it is not immediate at all, too bad ;s can u have that ?}
-\end{proof}
 
 Therefore the utility bring by a block is at most the reward of the block. Intuitively a miner get the maximum utility of a block if and only of this block belongs to the blockchain of any possible future state. Which make sense as it means the miner get maximal value if he can spend is money whenever he wants to.
 
