@@ -247,14 +247,12 @@ The utility of a block $b \in \B$ for a player $p \in \bP$ and a combined strate
 \begin{equation*}
 u_p^b(\bs \mid q_0) =  (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q,b) \cdot \pr^{\bs}(q \mid q_0).
 \end{equation*}
-\end{mydef}
-
-\begin{mylem*}
-Assume $\forall q \in \bQ, r_p(q) = \sum_{b \in \B} r_p(q,b)$ then:
+Moreover if we assume $\forall q \in \bQ, r_p(q) = \sum_{b \in \B} r_p(q,b)$ then:
 \begin{equation*}
 u_p(\bs \mid \{\varepsilon\}) =   \sum_{b \in \bB} u^b_p(\bs \mid \{\varepsilon\})
 \end{equation*}
-\end{mylem*}
+\end{mydef}
+
 
 Using property \ref{prop:bound} we can conclude\etienne{Actually it is not immediate at all, too bad ;s can u have that ?}:
 \begin{mylem}
