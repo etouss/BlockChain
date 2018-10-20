@@ -115,11 +115,11 @@ void generate_plot(double xvals[NUM_POINTS], double yvals[NUM_POINTS],double yva
 
     string commandsForGnuplot[] = {
         "set title \"Utilities\"", 
-        "plot 'data1.temp' with lines, 'data2.temp' with lines",
+        "plot 'Default' with lines, 'Always Fork' with lines",
         "set xtics 10"
     };
-    FILE * temp1 = fopen("data1.temp", "w");
-    FILE * temp2 = fopen("data2.temp", "w");
+    FILE * temp1 = fopen("Default", "w");
+    FILE * temp2 = fopen("Always Fork", "w");
     FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
 
     int i;
