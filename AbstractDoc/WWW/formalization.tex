@@ -4,27 +4,27 @@
 \label{sec-formalization}
 
 The mining game is played by a set $\bP = \{0, 1, , \ldots, m-1\}$ of players, with $m \geq 2$.
-In this game, each player has some reward depending on the number of blocks she owns. Blocks are placed one on top of another, starting from an initial block called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far. 
+In this game, each player has some reward depending on the number of blocks she owns. Every block must point to a previous block, except for the first block which is called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
 
-The key question for each player is, then, where do I put my next block? In bitcoin, miners are only allowed to spend their reward as long 
-as their blocks belongs to the \emph{blockchain} of a state, which is simply the longest chain of blocks in this state. Thus, players face essentially two possibilities: they can put their blocks right after the end of the longest chain (the blockchain), or they can try to \emph{fork} 
-from the longest chain, betting that they will be able to put enough blocks to turn a smaller chain into the blockchain. As the likelihood of 
-mining the next block is directly related to the comparative hash power of a player, it makes sense to model this game as an infinite 
-stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power. 
+The key question for each player is, then, where do I put my next block? In bitcoin, miners are only allowed to spend their reward as long
+as their blocks belongs to the \emph{blockchain} of a state, which is simply the longest chain of blocks in this state. Thus, players face essentially two possibilities: they can put their blocks right after the end of the longest chain (the blockchain), or they can try to \emph{fork}
+from the longest chain, betting that a smaller chain will eventually become the blockchain. As the likelihood of
+mining the next block is directly related to the comparative hash power of a player, it makes sense to model this game as an infinite
+stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power.
 
-Let us now turn to the formal definition of the game. 
+% Let us now turn to the formal definition of the game.
 
 
 \subsection{Blocks, states and the notion of blockchain}
 
-In a game played by $m$ players a block is defined a string $b$ over the alphabet $\{0,1,\ldots, m-1\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{0,1,\ldots , m-1\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \smallsetminus \{\varepsilon\}) \rightarrow \{0,1, \ldots ,m-1\}$ such that $\owner(b)$ is equal to the last symbol of $b$. As in \cite{mininggames:2016}, a state of the game is defined as a tree of blocks. More precisely, a state of the game, or just state,  is a finite and nonempty set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{0,1,\ldots, m-1\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with the root $\varepsilon$. 
+In a game played by $m$ players a block is defined a string $b$ over the alphabet $\{0,1,\ldots, m-1\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{0,1,\ldots , m-1\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \smallsetminus \{\varepsilon\}) \rightarrow \{0,1, \ldots ,m-1\}$ such that $\owner(b)$ is equal to the last symbol of $b$. As in \cite{mininggames:2016}, a state of the game is defined as a tree of blocks. More precisely, a state of the game, or just state,  is a finite and nonempty set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{0,1,\ldots, m-1\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with the root $\varepsilon$.
 %
 The intuition here is that each element of $q$ corresponds to a block that was put into the state $q$ by some player. The genesis block corresponds to $\varepsilon$. When a player $p$ decides to mine on top of a block $b$, she puts another block into the state defined by the string $b\cdot p$, where we use notation $b_1 \cdot b_2$ for the concatenation of two strings $b_1$ and $b_2$.
 %
-Notice that with this terminology, given $b_1, b_2 \in q$, we have that $b_2$ is a descendant of $b_1$ in $q$ if $b_1 \preceq b_2$, where notation $b_1 \preceq b_2$ is used to indicate that $b_1$ is a prefix of $b_2$. Moreover, a path in $q$ is a nonempty set $\pi$ of blocks from $q$ for which there exist blocks $b_1, b_2$ such that $\pi = \{ b \mid b_1 \preceq b$ and $b \preceq b_2\}$; in particular, $b_2$ is a descendant of $b_1$ and $\pi$ is said to be a path from $b_1$ to $b_2$.
-Finally, let $\bQ$ be the set of all possible states in a game played by $m$ players, and for a state $q \in \bQ$, let $|q|$ be its size, measured as the cardinality of the set $q$ of strings (or blocks). 
+Notice that with this terminology, given $b_1, b_2 \in q$, we have that $b_2$ is a descendant of $b_1$ in $q$ if $b_1$ is a prefix of $b_2$ (denoted by $b_1 \preceq b_2$). Moreover, a path in $q$ is a nonempty set $\pi$ of blocks from $q$ for which there exist blocks $b_1, b_2$ such that $\pi = \{ b \mid b_1 \preceq b$ and $b \preceq b_2\}$; in particular, $b_2$ is a descendant of $b_1$ and $\pi$ is said to be a path from $b_1$ to $b_2$.
+Finally, let $\bQ$ be the set of all possible states in a game played by $m$ players, and for a state $q \in \bQ$, let $|q|$ be its size, measured as the cardinality of the set $q$ of strings (or blocks).
 
-Given a state $q$, we say that the {\em blockchain} of $q$ is the path $\pi$ in $q$ of the biggest length, in the case that this path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths in $q$ are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).  Notice that if $\bchain(q) = \pi$, then $\pi$ has to be a path in $q$ from the genesis block $\varepsilon$ to a leaf of $q$. 
+Given a state $q$, we say that the {\em blockchain} of $q$ is the path $\pi$ in $q$ of the biggest length, in the case that this path is unique, in which case we denote it by $\bchain(q)$. If two or more different paths in $q$ are tied for the longest, then we say that the blockchain in $q$ does not exists, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function).  Notice that if $\bchain(q) = \pi$, then $\pi$ has to be a path in $q$ from the genesis block $\varepsilon$ to a leaf of $q$.
 %If the blockchain of $q$ is defined, say $b = \bchain(q)$, then a block $b' \in q$ is said to belong to the blockchain of $q$ if $b' \in \epath(b)$, that is, if $b'$ is a block in the path from the root $\varepsilon$ to $b$ in the state $q$.
 
 \begin{example}
@@ -39,7 +39,7 @@ The following picture shows a state $q$ of the game assuming that $\bP =\{0,1\}$
 	\node [state] at (5.4,-1.5) (n111) {$111$};
 	\node [state] at (7.7,-1.5) (n1111) {$1111$};
 	\node [state] at (10.2,-1.5) (n11110) {$11110$};
-	
+
 	\path[->]
 	(r) edge (n1)
 	(r) edge (n0)
@@ -47,11 +47,11 @@ The following picture shows a state $q$ of the game assuming that $\bP =\{0,1\}$
 	(n11) edge (n110)
 	(n11) edge (n111)
 	(n111) edge (n1111)
-	(n1111) edge (n11110);  	
-\end{tikzpicture} 
+	(n1111) edge (n11110);
+\end{tikzpicture}
 \end{center}
-In this case, we have that $q = \{\varepsilon, 0, 1, 11, 110, 111, 1111, 11110\}$, so $q$ is a finite and prefix-closed subset of $\bB = \{0,1\}^*$. The owner of each block $b \in q \smallsetminus \{ \varepsilon\}$ is given by the  the last symbol of $b$; for instance, we have that $\owner(11) = 1$ and $\owner(11110) = 0$. Moreover, the longest path in $q$ is $\pi = \{\varepsilon, 1, 11, 111, 1111, 11110\}$, so that the blockchain of $q$ is $\pi$ (in symbols, $\bchain(q) = \pi$). 
-%Thus, we have that the blocks that belong to the blockchain of $q$ are $\varepsilon$, $1$, $11$, $111$, $1111$, $11110$, since these are precisely the blocks in $q$ in the path from $\varepsilon$ to $11110$ (in symbols, $\epath(\bchain(q)) = \{\varepsilon, 1, 11, 111, 1111, 11110\}$). Notice that the information about these blocks is important as the reward of each player depends on the blocks that belong to her in the blockchain. For instance, if the reward for each block is a constant $c$, then we have that the reward of player 1 is $4 c$ in $q$, as four blocks in the blockchain of $q$ belong to this player. 
+In this case, we have that $q = \{\varepsilon, 0, 1, 11, 110, 111, 1111, 11110\}$, so $q$ is a finite and prefix-closed subset of $\bB = \{0,1\}^*$. The owner of each block $b \in q \smallsetminus \{ \varepsilon\}$ is given by the  the last symbol of $b$; for instance, we have that $\owner(11) = 1$ and $\owner(11110) = 0$. Moreover, the longest path in $q$ is $\pi = \{\varepsilon, 1, 11, 111, 1111, 11110\}$, so that the blockchain of $q$ is $\pi$ (in symbols, $\bchain(q) = \pi$).
+%Thus, we have that the blocks that belong to the blockchain of $q$ are $\varepsilon$, $1$, $11$, $111$, $1111$, $11110$, since these are precisely the blocks in $q$ in the path from $\varepsilon$ to $11110$ (in symbols, $\epath(\bchain(q)) = \{\varepsilon, 1, 11, 111, 1111, 11110\}$). Notice that the information about these blocks is important as the reward of each player depends on the blocks that belong to her in the blockchain. For instance, if the reward for each block is a constant $c$, then we have that the reward of player 1 is $4 c$ in $q$, as four blocks in the blockchain of $q$ belong to this player.
 Finally, notice that $|q| = 8$, as $q$ is a set consisting of eight blocks.
 
 	Assume now that $q'$ is the following state of the game:
@@ -70,14 +70,14 @@ Finally, notice that $|q| = 8$, as $q$ is a set consisting of eight blocks.
 	(n1) edge (n11)
 	(n11) edge (n110)
 	(n11) edge (n111);
-\end{tikzpicture} 
+\end{tikzpicture}
 \end{center}
 In this case, we have that $\bchain(q')$ is not defined since the paths $\pi_1 = \{\varepsilon, 1, 11, 110\}$ and $\pi_2 = \{\varepsilon, 1, 11, 111\}$ are tied for the longest path in $q'$. \qed
 \end{example}
 
 
-Real-life bitcoin blocks also contain transactions that indicate movement of money in the system, and thus there are 
-several different blocks that a player $p$ can use to extend the current state when mining upon a block $b$ (e.g, depending  on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered as~equivalent. 
+Real-life bitcoin blocks also contain transactions that indicate movement of money in the system, and thus there are
+several different blocks that a player $p$ can use to extend the current state when mining upon a block $b$ (e.g, depending  on the ordering of transactions, or the nonce being used to announce the block). Since we are interested primarily in miners behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered as~equivalent.
 %\juan{moving this to the reward section}
 %\etienne{We may have to specify that it is under the assumption that there are no fees or that they are negligible.} \marcelo{Etienne is right about this, depending on the transactions included in the block the reward could be different. I don't think we should talk about reward here.}
 
@@ -96,13 +96,13 @@ in the blockchain. In order to formally define the notion of reward of a block w
 
 \begin{mydef}
 We define the reward of a block in a state for player $p$ by a function $r_p : \bQ \times \B \mapsto \mathbb{R}$ such that:
-\begin{equation*} 
-r_p(q,b) = r_p(q) - r_p(sub(b,q,p')) 
+\begin{equation*}
+r_p(q,b) = r_p(q) - r_p(sub(b,q,p'))
 \end{equation*}
 \end{mydef}
 
 \begin{myprop}\label{prop:impo}
-For any $r_p: \bQ \mapsto \mathbb{R}$, there exist a combined strategy $\bs$, a state $q$ with $\Pr^\bs(q \mid \epsilon) \neq 0$ and a block $b \in bc(q)$ with $\owner(b)=p$ such that \ref{eq:never} or \ref{eq:multiple} is verified: 
+For any $r_p: \bQ \mapsto \mathbb{R}$, there exist a combined strategy $\bs$, a state $q$ with $\Pr^\bs(q \mid \epsilon) \neq 0$ and a block $b \in bc(q)$ with $\owner(b)=p$ such that \ref{eq:never} or \ref{eq:multiple} is verified:
 \begin{equation}\label{eq:never}
 \forall q, r_p(q,b) = 0
 \end{equation}
@@ -140,7 +140,7 @@ u_p^b(\bs \mid \{\varepsilon\}) \leq \beta^{|b|} \cdot M_p(b)
 \end{equation*}
 \end{mylem}
 
-Therefore the utility bring by a block is at most the reward of the block. Intuitively a miner get the maximum utility of a block if and only of this block belongs to the blockchain of any possible future state. Which make sense as it means the miner get maximal value if he can spend is money whenever he wants to.  
+Therefore the utility bring by a block is at most the reward of the block. Intuitively a miner get the maximum utility of a block if and only of this block belongs to the blockchain of any possible future state. Which make sense as it means the miner get maximal value if he can spend is money whenever he wants to.
 
 
 
@@ -148,13 +148,13 @@ Therefore the utility bring by a block is at most the reward of the block. Intui
 \iffalse
 Note that if in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off for a player $p$ does not depend on the action of other players. Hence we can extend the definition such that for any state $q$ and any player $p$ we have $r_p(q) = r_p(q',(\ba,a_p))$ with $q'$ a state and $a_p$ a valid action such that $q = a_p(q')$.
 \fi
- 
+
 \subsection{The definition of the game}
 As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every state $q \in \bQ$ and combined action $\ba = (a_0, a_1, \ldots, a_{m-1})$ in $\bA$:
 \begin{eqnarray*}\label{eq-prop}
 \sum_{p=0}^{m-1} \pr(q, \ba, a_p(q)) & = & 1.
 \end{eqnarray*}
-Notice that if $p_1$ and $p_2$ are two different players, then for every action $a_1 \in \bA_{p_1}$, every action $a_2 \in \bA_{p_2}$ and every state $q \in \bQ$, it holds that $a_1(q) \neq a_2(q)$. Thus, we can think of $\pr(q, \ba, a_p(q))$ as the probability that player $p$ places the next block, which will generate the state $a_p(q)$. 
+Notice that if $p_1$ and $p_2$ are two different players, then for every action $a_1 \in \bA_{p_1}$, every action $a_2 \in \bA_{p_2}$ and every state $q \in \bQ$, it holds that $a_1(q) \neq a_2(q)$. Thus, we can think of $\pr(q, \ba, a_p(q))$ as the probability that player $p$ places the next block, which will generate the state $a_p(q)$.
 
 Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\bA,\bQ,\bR,\pr)$, where $\bP$ is the set of players, $\bA$ is the set of combined actions, $\bQ$ is the set of states, $\bR$ is the pay-off function and $\pr$ is the transition probability function.
 %\begin{itemize}
@@ -163,65 +163,65 @@ Summing up, from now on we consider an infinite stochastic game $\Gamma = (\bP,\
 %	\item $\bQ$ is the set of states.
 %	\item $\bR$ is the pay-off function.
 %	\item $\pr$ is the transition probability function.
-%\end{itemize} 
+%\end{itemize}
 
 \subsubsection{Games with constant hash power}
 %\label{sec-simp}
 Recall that the probability that action $a_p$ is indeed executed is given by $\pr(q, \ba, a_p(q))$. As we have mentioned, such a probability is directly related with the hash power of player $p$, the more hash power the likely it is that action $a_p$ is executed and $p$ mines the next block before the rest of the players. In what follows, we assume that the hash power of each player does not change during the mining game, which is captured by the following condition:
 \begin{itemize}
-\item For every $q, q' \in \bQ$, every $\ba, \ba' \in \bA$ such that $\ba = (a_0, a_1$, $\ldots$, $a_{m-1})$ and $\ba' = (a'_0, a'_1, \ldots, a'_{m-1})$,  and every player $p \in \bP$, it holds that $\pr(q, \ba, a_p(q)) = \pr(q', \ba', a'_p(q'))$.
+\item Given $q, q' \in \bQ$ and $\ba, \ba' \in \bA$ with $\ba = (a_0, a_1$, $\ldots$, $a_{m-1})$ and $\ba' = (a'_0, a'_1, \ldots, a'_{m-1})$, for every player $p \in \bP$ it holds that $\pr(q, \ba, a_p(q)) = \pr(q', \ba', a'_p(q'))$.
 \end{itemize}
-Thus, we assume from now on that this condition is satisfied. In particular, for each player $p \in \bP$, we assume that that 
-$\pr(q, \ba, a_p(q)) = h_p$ for every $q \in \bQ$ and $\ba \in \bA$ with $\ba = (a_0, a_1, \ldots, a_{m-1})$, and we refer to $h_p$ as the hash power of player $p$. 
-%Moreover, we define $\bH = (h_0, h_1, \ldots, h_{m-1})$ as the hash power distribution, and we replace $\pr$ by $\bH$ in the definition of an an infinite stochastic game, so that $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$. 
-Moreover, we assume that $h_p > 0$ for every player $p \in \bP$, as if this not the case then $p$ can just be removed from the mining game. 
+Thus, we assume from now on that this condition is satisfied. In particular, for each player $p \in \bP$, we assume that that
+$\pr(q, \ba, a_p(q)) = h_p$ for every $q \in \bQ$ and $\ba \in \bA$ with $\ba = (a_0, a_1, \ldots, a_{m-1})$, and we refer to $h_p$ as the hash power of player $p$.
+%Moreover, we define $\bH = (h_0, h_1, \ldots, h_{m-1})$ as the hash power distribution, and we replace $\pr$ by $\bH$ in the definition of an an infinite stochastic game, so that $\Gamma = (\bP,\bA,\bQ,\bR,\bH)$.
+Moreover, we assume that $h_p > 0$ for every player $p \in \bP$, as if this not the case then $p$ can just be removed from the mining game.
 
 \subsection{Utility and equilibria of the game}
-We have defined a game that can capture miners' interactions. A fundamental component of such a game is the strategy that each player decides to take, which combined determine the utility of each player. In particular, miners take actions and decide about strategies trying to maximize their utility. In this sense, a stationary equilibrium of the game is a fundamental piece of information about miners' behavior, as such an equilibrium is a combination of players' strategies where no miner has an incentive to perform a different action. The notions of strategy, utility and stationary equilibrium are the last components of our game-theoretical characterization of mining in Bitcoin, and they are defined in this section.
+We have defined a game that can capture miners' interactions. A fundamental component of such a game is the strategy that each player decides to take, which combined determine the utility of each player. In particular, miners take actions and decide about strategies trying to maximize their utility. In this sense, a stationary equilibrium of the game is a fundamental piece of information about miners' behavior, because such an equilibrium is a combination of players' strategies where no miner has an incentive to perform a different action. The notions of strategy, utility and stationary equilibrium are the last components of our game-theoretical characterization of mining in Bitcoin, and they are defined in this section.
 
-A strategy for a player $p \in \bP$ is a function $s : \bQ \rightarrow \bA_p$. 
-We define $\bS_p$ as the set of all strategies for player $p$, and $\bS = \bS_0 \times \bS_{1} \times \cdots \times \bS_{m-1}$ as the set of combined strategies for the game (recall that we are assuming that $\bP = \{0, 1, \ldots, m-1\}$ is the set of players). 
+A strategy for a player $p \in \bP$ is a function $s : \bQ \rightarrow \bA_p$.
+We define $\bS_p$ as the set of all strategies for player $p$, and $\bS = \bS_0 \times \bS_{1} \times \cdots \times \bS_{m-1}$ as the set of combined strategies for the game (recall that we are assuming that $\bP = \{0, 1, \ldots, m-1\}$ is the set of players).
 
-As usual, we are interested in understanding which strategies fare better than others, which we capture by the notions of  utility and equilibrium. To define these, we need some additional notation. 
-Let $\bs = (s_0, s_1, \ldots, s_{m-1})$ be a strategy in $\bS$. Then given $q \in \bQ$, define $\bs(q)$ as the combined action $(s_0(q), s_1(q), \ldots, s_{m-1}(q))$. Moreover, given an initial state $q_0 \in \bQ$, 
-the probability of reaching state $q \in \bQ$, denoted by $\pr^{\bs}(q \mid q_0)$, is defined as 0 if $q_0 \not\subseteq q$, and otherwise it is recursively defined as follows: if $q =  q_0$, then $\pr^{\bs}(q \mid q_0) = 1$; otherwise, we have that $|q| - |q_0| = k$, with $k \geq 1$, and
+As usual, we are interested in understanding which strategies are better than others, which we capture by the notions of  utility and equilibrium. To define these, we need some additional notation.
+Let $\bs = (s_0, s_1, \ldots, s_{m-1})$ be a strategy in $\bS$. Then given $q \in \bQ$, define $\bs(q)$ as the combined action $(s_0(q), s_1(q), \ldots, s_{m-1}(q))$. Moreover, given an initial state $q_0 \in \bQ$,
+the probability of reaching state $q \in \bQ$, denoted by $\pr^{\bs}(q \mid q_0)$, is defined as 0 if $q_0 \not\preceq q$, and otherwise it is recursively defined as follows: if $q =  q_0$, then $\pr^{\bs}(q \mid q_0) = 1$; otherwise, we have that $|q| - |q_0| = k$, with $k \geq 1$, and
 $$
 \pr^{\bs}(q \mid q_0) =
 \sum_{\substack{q' \in \bQ \,:\\ q_0 \subseteq q' \text{ and } |q'| - |q_0| = k-1}}
  \pr^{\bs}(q' \mid q_0) \cdot \pr(q', \bs(q'), q).
  $$
-In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$. 
-%Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$. 
+In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$.
+%Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$.
 It should be noticed that the framework just described corresponds to a Markov chain; in particular, the probability of reaching a state from an initial state is defined in the standard way for Markov chains~\cite{MU05}. However, we are not interested in the steady distribution for such a Markov chain and, thus, we do not explore more this connection in this paper.
 
-We finally have all the necessary ingredients to define the utility of a player in a mining game given a particular strategy. As is common 
-when looking at personal utilities, we define it as the summation of the expected rewards, and choose 
-to impose a discount for future rewards using a factor $\beta \in (0,1)$. 
+We finally have all the necessary ingredients to define the utility of a player in a mining game given a particular strategy. As is common
+when looking at personal utilities, we define it as the summation of the expected rewards, and choose
+to impose a discount for future rewards using a factor $\beta \in (0,1)$.
 
 \begin{mydef}
 \label{def-utility}
-The $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in 
+The $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in
 the mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
 u_p(\bs \mid q_0) & = & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0).
 \end{eqnarray*}
 \end{mydef}
-Notice that the value $u_p(\bs \mid q_0)$ may not be defined if the series $\sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$ diverges. To avoid this problem, from now on we assume that for every pay-off function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. Under this simple yet general condition, it is posible to prove that $u_p(\bs \mid q_0)$ is a real number (see Appendix \ref{sec-conver} for a proof of this property). 
+Notice that the value $u_p(\bs \mid q_0)$ may not be defined if the series $\sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$ diverges. To avoid this problem, from now on we assume that for every pay-off function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. Under this simple yet general condition, it is posible to prove that $u_p(\bs \mid q_0)$ is a real number (see Appendix \ref{sec-conver} for a proof of this property).
 
 As a last ingredient in our formalization, we need to introduce the notion stationary equilibrium.
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_0,s_1, \ldots, s_{m-1})$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$.
 \begin{mydef}
-A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in  the %infinite 
+A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in  the %infinite
 mining game if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
 \begin{eqnarray*}u_p(\bs \mid q_0)  & \geq  & u_p ((\bs_{-p},s) \mid q_0).
 \end{eqnarray*}
 \end{mydef}
-We conclude this section by going deeper into the definition of utility, given the key role it plays in our framework. 
-Definition~\ref{def-utility} corresponds to the usual notion of average discounted utility \marcelo{A citation is needed here}. In particular, if the starting point of the game is a state $q_0$, then for every state $q$ such that $q_0 \subseteq q$, the pay-off of a player $p$ in $q$ is $\beta^{|q|-|q_0|} \cdot r_p(q)$, where $|q|-|q_0|$ is the number of steps that have to be performed to reach $q$ from $q_0$ so the discount factor $\beta^{|q|-|q_0|}$ has to be applied. The uncertainty  about reaching state $q$ from $q_0$ is taking into consideration by including the term $\pr^{\bs}(q \mid q_0)$, which tell us that the expected payoff for the state $q$ is $\beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$.  
+We conclude this section by going deeper into the definition of utility, given the key role it plays in our framework.
+Definition~\ref{def-utility} corresponds to the usual notion of average discounted utility \marcelo{A citation is needed here}. In particular, if the starting point of the game is a state $q_0$, then for every state $q$ such that $q_0 \subseteq q$, the pay-off of a player $p$ in $q$ is $\beta^{|q|-|q_0|} \cdot r_p(q)$, where $|q|-|q_0|$ is the number of steps that have to be performed to reach $q$ from $q_0$ so the discount factor $\beta^{|q|-|q_0|}$ has to be applied. The uncertainty  about reaching state $q$ from $q_0$ is taking into consideration by including the term $\pr^{\bs}(q \mid q_0)$, which tell us that the expected payoff for the state $q$ is $\beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$.
 %
-As a last comment on the definition of utility, notice that a block $b$ can be included in an infinite number of states $q$ such that $\pr^{\bs}(q \mid q_0) > 0$. But the reward obtained by a player $p$ for this block $b$ should not be added more than once, which is the reason to include the term $(1 - \beta)$ in the definition of utility. Let us formalize this claim in more precise terms. 
+As a last comment on the definition of utility, notice that a block $b$ can be included in an infinite number of states $q$ such that $\pr^{\bs}(q \mid q_0) > 0$. But the reward obtained by a player $p$ for this block $b$ should not be added more than once, which is the reason to include the term $(1 - \beta)$ in the definition of utility. Let us formalize this claim in more precise terms.
 
-Assume that the reward obtained by a player $p$ for a block $b$ in a state $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. Notice that such decomposition can always be done; in fact, it can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
+Assume that the reward obtained by a player $p$ for a block $b$ in a state $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. Notice that such decomposition can always be done; in fact, it can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have:
 \begin{align*}
 u_p(\bs \mid \{\varepsilon\}) & =  (1 - \beta) \cdot  \sum_{q \in \bQ} \beta^{|q|-|\{\varepsilon\}|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid \{\varepsilon\})\\
 & =  (1 - \beta) \cdot \sum_{q \in \bQ} \beta^{|q|-1} \cdot  \bigg(\sum_{b \in q} r_p(b,q) \bigg) \cdot \pr^{\bs}(q \mid \{\varepsilon\})\\
@@ -230,7 +230,7 @@ u_p(\bs \mid \{\varepsilon\}) & =  (1 - \beta) \cdot  \sum_{q \in \bQ} \beta^{|q
 For the sake of readability, we assume that the game is starting from the initial state $\{\varepsilon\}$ that consists only of the genesis block. Notice that $|\{\varepsilon\}| = 1$, so that the discount factor for a state $q$ is $\beta^{|q|-1}$. Now assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
 \begin{align*}
 &\sum_{b \in \bB} \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot r_p(b,q) \cdot \pr^{\bs}(q \mid \{\varepsilon\})
-\ \leq \\  
+\ \leq \\
 &\hspace{40pt}  \sum_{b \in \bB} \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot M_p(b) \cdot \pr^{\bs}(q \mid \{\varepsilon\}) \ =\\
 &\hspace{40pt}  \sum_{b \in \bB} M_p(b) \cdot\bigg(\sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1}  \cdot \pr^{\bs}(q \mid \{\varepsilon\})\bigg) \ \leq\\
 &\hspace{40pt}  \sum_{b \in \bB} M_p(b) \cdot\bigg(\sum_{q \in \bQ \,:\, |q| \geq |b|+1} \beta^{|q|-1}  \cdot \pr^{\bs}(q \mid \{\varepsilon\})\bigg) \ = \\
@@ -251,8 +251,9 @@ u_p(\bs \mid \{\varepsilon\}) & \leq &  \sum_{b \in \bB} \beta^{|b|} \cdot M_p(b
 Thus, the pay-off obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that have to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$.
 
 \marcelo{The justification of the utility function is long, we can move the proof to the appendix and only keep the bound $u_p(\bs \mid \{\varepsilon\}) \leq \sum_{b \in \bB} \beta^{|b|} \cdot M_p(b)$.}
+\martin{Agree, would give it as a proposition to show that this is not over-counting blocks, and leave the proof to the appendix.}
 
-%Along the paper we will also consider games ending in a finite number of steps. For these games we redefine the notion of $\beta$-discounted utilities by summing up the rewards only up to $n$, and define the notion of a $\beta$-discounted equilibrium accordingly. 
+%Along the paper we will also consider games ending in a finite number of steps. For these games we redefine the notion of $\beta$-discounted utilities by summing up the rewards only up to $n$, and define the notion of a $\beta$-discounted equilibrium accordingly.
 %\marcelo{We are not going to consider games ending in a finite number of steps in this paper, right?}
 
 %\marcelo{In these definitions we are assuming that $u_p(\bs \mid q_0)$ is defined, which could not be the case if the series diverges. We should say something about this.}
@@ -266,11 +267,11 @@ Thus, the pay-off obtained by player $p$ for a block $b$ is at most $\beta^{|b|}
 \etienne{I still have to work on the actual wording, but i think it will look like that. I choosed to push the graph in appendix for space reasons, what do u think ?}
 
 In stochastic game,the pay-off of a player $p \in \bP$, is given by a function $r_p: \bQ \times \bA \mapsto \mathbb{R}$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$.
-But how should the function $r_p(q,\ba)$ look like? Recall that one of the rules of bitcoin is that the money can only 
-be spent when it is given in blocks that are part of the blockchain. Thus, the first idea that comes into mind is to 
+But how should the function $r_p(q,\ba)$ look like? Recall that one of the rules of bitcoin is that the money can only
+be spent when it is given in blocks that are part of the blockchain. Thus, the first idea that comes into mind is to
 reward players every time they put a block in the blockchain. However, this is not a good function, as it is not possible to build a pay-off function which rewards them once and only once for each block in the blockchain (see example \ref{eximpo}).
 
-\begin{myex} 
+\begin{myex}
 \label{eximpo}
 \begin{figure}
 \begin{center}
@@ -283,7 +284,7 @@ reward players every time they put a block in the blockchain. However, this is n
 	\node [state] at (1.5,1.25) (1a0) {$1$};
 	\node [state] at (3,1.25) (11a0) {$11$};
 	\node [state] at (5.5,1.25) (111a0) {$111$};
-	
+
 	 % The graph A
 	\node [state] at (0,-2.25) (Ra1) {$\varepsilon$};
 	\node [state] at (1.5,-1.5) (0a1) {$1$};
@@ -291,7 +292,7 @@ reward players every time they put a block in the blockchain. However, this is n
 	\node [state] at (3,-2.25) (11a1) {$00$};
 	\node [state] at (5.5,-2.25) (111a1) {$000$};
 	\node [state] at (3.5,-0.5) (name2) {$(q_l,\ba_l)$};
-	
+
 	% The graph A
 	\node [state] at (7,0) (Ra) {$\varepsilon$};
 	\node [state] at (8.5,0.75) (1a) {$1$};
@@ -300,8 +301,8 @@ reward players every time they put a block in the blockchain. However, this is n
 	\node [state] at (10,-0.75) (00a) {$00$};
 	\node [state] at (12.5,0.75) (111a) {$111$};
 	\node [state] at (12.5,-0.75) (000a) {$000$};
-	\node [state] at (10.5,-1.75) (name3) {$(q_t,\ba_t)$};	
-	
+	\node [state] at (10.5,-1.75) (name3) {$(q_t,\ba_t)$};
+
 	% Graph edges
 	\path[->]
 	(Ra) edge (1a)
@@ -312,15 +313,15 @@ reward players every time they put a block in the blockchain. However, this is n
 	(1a1) edge (11a1)
 	(Ra0) edge (1a0)
 	(1a0) edge (11a0)
-	;  	
-	
+	;
+
 	% Graph edges
 	\path[dashed,blue]
 	(Ra1) edge (0a1)
 	(11a) edge (111a)
 	(11a0) edge (111a0)
-	;  	
-	
+	;
+
 	\path[dashed,red]
 	(Ra0) edge (0a0)
 	(00a) edge (000a)
@@ -328,7 +329,7 @@ reward players every time they put a block in the blockchain. However, this is n
 	;
 
 
-\end{tikzpicture} 
+\end{tikzpicture}
 \end{center}
 \caption{An example showing that I should want to try to compete when some other player forks on my blocks. \label{fig-impo}}
 \end{figure}
@@ -338,11 +339,11 @@ reward players every time they put a block in the blockchain. However, this is n
 Consider a pay-off function $r_1$ for player $1$, it is immediate to understand that in the situation described by $q_l$ the value $r_1(q_l,\ba_l)$ should be $0$, indeed player $1$ did not put any new block in the blockchain. While in the situation described in $q_w$, $r_1(q_w,\ba_w)$ should reward the player $1$ for his block $111$.
 \\Now consider the tie situation described in $q_t$. What should be the value of $r_1(q_t,\ba_t)$? Either $r_1(q_t,\ba_t)$ only rewards player 1 for his block $111$, and if $q_t$ has been reach through $q_l$ then he would never has been paid for the block $1$. Or $r_1(q_t,\ba_t)$ rewards player 1 for every blocks involved in the tie and if $q_t$ is reach trough $q_w$, he would have been paid twice for the blocks $1$ and $11$. The pay-off not relying on the history of states, cannot distinguish those two situations hence it is not possible to build a pay-off function which pay once and only once the player for each block in the blockchain.
 
-\end{myex} 
+\end{myex}
 
-Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting. 
-What we do instead is to use a heuristic for this reward called cumulative pay-off model and denoted $r_p^c(.)$. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain. 
-\\Note that in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off of player $p$ does not depend on the action of other players. Hence we extend the definition of the cumulative pay-off function such that for any state $q$ and any player $p$ we have $r_p^c(q) = r_p^c(q',(\ba,a_p))$ with $q' = q \setminus b$ and $a_p = mine(p,b,q')$. We also consider a function where the reward for each new block in the blockchain decreases by a constant factor $\alpha$. We will formally define our cumulative payoff functions in the following sections. 
+Ideally, one would like to reward players according to the blocks they have in the blockchain when the game terminates (or the limit of that number, in the case of infinite games). The problem is that we cannot really know what this pay-off will be until the game is actually finished, and thus we cannot model this pay-off in our stochastic game setting.
+What we do instead is to use a heuristic for this reward called cumulative pay-off model and denoted $r_p^c(.)$. On each turn, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they have potentially mining them. This clearly puts a strong incentive in maintaining blocks, but also on mining new blocks on the blockchain.
+\\Note that in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off of player $p$ does not depend on the action of other players. Hence we extend the definition of the cumulative pay-off function such that for any state $q$ and any player $p$ we have $r_p^c(q) = r_p^c(q',(\ba,a_p))$ with $q' = q \setminus b$ and $a_p = mine(p,b,q')$. We also consider a function where the reward for each new block in the blockchain decreases by a constant factor $\alpha$. We will formally define our cumulative payoff functions in the following sections.
 
 
 The main concern regarding this pay-off function called cumulative pay-off, is that the early blocks may have a lot more value than the later ones (not because of a decreasing reward, but because early blocks are counted multiple times).
@@ -370,15 +371,15 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 
 
 
-%The other issue is what to do when the blockchain is contested, and there are at least two paths sharing the maximal length. A simple solution 
-%would be to declare that players receive no pay-off when this happens. But again, this would lead to strange behaviours in which players with several blocks buried deep in the blockchain would receive no reward for this blocks because of a contest in the newer parts of the blockchain. 
-%In order to avoid this scenario, we choose to maintain the reward for blocks buried deep in the blockchain even when there is a contest, 
-%and formalise this as follows. 
+%The other issue is what to do when the blockchain is contested, and there are at least two paths sharing the maximal length. A simple solution
+%would be to declare that players receive no pay-off when this happens. But again, this would lead to strange behaviours in which players with several blocks buried deep in the blockchain would receive no reward for this blocks because of a contest in the newer parts of the blockchain.
+%In order to avoid this scenario, we choose to maintain the reward for blocks buried deep in the blockchain even when there is a contest,
+%and formalise this as follows.
 \fi
 
 \iffalse
 
-\begin{myex} 
+\begin{myex}
 \label{eximpo}
 \begin{figure}
 \begin{center}
@@ -391,7 +392,7 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 	\node [state] at (1.5,1.25) (1a0) {$1$};
 	\node [state] at (3,1.25) (11a0) {$11$};
 	\node [state] at (5.5,1.25) (111a0) {$111$};
-	
+
 	 % The graph A
 	\node [state] at (0,-2.25) (Ra1) {$\varepsilon$};
 	\node [state] at (1.5,-1.5) (0a1) {$1$};
@@ -399,7 +400,7 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 	\node [state] at (3,-2.25) (11a1) {$00$};
 	\node [state] at (5.5,-2.25) (111a1) {$000$};
 	\node [state] at (3.5,-0.5) (name2) {$(q_l,\ba_l)$};
-	
+
 	% The graph A
 	\node [state] at (7,0) (Ra) {$\varepsilon$};
 	\node [state] at (8.5,0.75) (1a) {$1$};
@@ -408,8 +409,8 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 	\node [state] at (10,-0.75) (00a) {$00$};
 	\node [state] at (12.5,0.75) (111a) {$111$};
 	\node [state] at (12.5,-0.75) (000a) {$000$};
-	\node [state] at (10.5,-1.75) (name3) {$(q_t,\ba_t)$};	
-	
+	\node [state] at (10.5,-1.75) (name3) {$(q_t,\ba_t)$};
+
 	% Graph edges
 	\path[->]
 	(Ra) edge (1a)
@@ -420,15 +421,15 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 	(1a1) edge (11a1)
 	(Ra0) edge (1a0)
 	(1a0) edge (11a0)
-	;  	
-	
+	;
+
 	% Graph edges
 	\path[dashed,blue]
 	(Ra1) edge (0a1)
 	(11a) edge (111a)
 	(11a0) edge (111a0)
-	;  	
-	
+	;
+
 	\path[dashed,red]
 	(Ra0) edge (0a0)
 	(00a) edge (000a)
@@ -436,7 +437,7 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 	;
 
 
-\end{tikzpicture} 
+\end{tikzpicture}
 \end{center}
 \caption{An example showing that I should want to try to compete when some other player forks on my blocks. \label{fig-impo}}
 \end{figure}
@@ -444,8 +445,5 @@ An other possible pay-off function presented in \cite{}, introduced a delay $d$ 
 Consider a pay-off function $r_1$ for player $1$, it is immediate to understand that in the situation described by $q_l$ the value $r_1(q_l,\ba_l)$ should be $0$, indeed player $1$ did not put any new block in the blockchain. While in the situation described in $q_w$, $r_1(q_w,\ba_w)$ should reward the player $1$ for his block $111$.
 \\Now consider the tie situation described in $q_t$. What should be the value of $r_1(q_t,\ba_t)$? Either $r_1(q_t,\ba_t)$ only rewards player 1 for his block $111$, and if $q_t$ has been reach through $q_l$ then he would never has been paid for the block $1$. Or $r_1(q_t,\ba_t)$ rewards player 1 for every blocks involved in the tie and if $q_t$ is reach trough $q_w$, he would have been paid twice for the blocks $1$ and $11$. The pay-off not relying on the history of states, cannot distinguish those two situations hence it is not possible to build a pay-off function which pay once and only once the player for each block in the blockchain.
 
-\end{myex} 
+\end{myex}
 \fi
-
-
-
