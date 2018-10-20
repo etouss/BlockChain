@@ -91,14 +91,63 @@ Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by
 Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a$ to $q$, denoted by $a(q)$, is defined as the state $q \cup \{b \cdot p\}$. Finally, we denote by $\bA$ the set of combined actions for the $m$ players, that is, $\bA = \bA_0 \times \bA_1 \times \cdots \times \bA_{m-1}$.
 
 \subsection{The pay-off of a miner}
-The Bitcoin protocol give reward to the owner of a block if it is part of the blockchain and has been confirmed by 100 blocks. A payment function which closely follows this protocol has been introduced in \cite{}, however it adds the constraint that for every level of the state's tree only one block give a reward (the first one which has been confirmed by 100 blocks). Due to this constraint if a fork longer than 100 blocks would happen, some blocks belonging to the new blockchain won't give any reward to their owners (which contradicts the bitcoin's rules). As a matter of fact the model nullify the incentive of performing a fork longer than 100 \cite{}. One could argue that a fork longer than 100 would destroy the market confidence and therefore can be ignored. It might be the case with the current state of crypto-currencies, but as the technology become more widely adopted (government or bank), such argument can not be use any-more.
+Blockchain protocol rules enforce that miners receive a reward once and only once for each block they own
+in the blockchain. In order to formally define the notion of reward of a block we need to introduce a few notation. Let $q \in \bQ$ a state, $p,p' \in \bP$ two players and $b \in q$ a block owns by $p$ we denote by $sub(b,q,p')$ the state such that $b' \in sub(b,q,p')$ iff : $b' \in q \land b \not \preceq b'$ or $\exists b'' \in q, b \preceq b'', \forall i \neq |b|, b''[i] = b'[i], b'[i] = p'$. Informally $sub(b,q,p')$ corresponds to same state as $q$ expect that the owner of the block $b$ is $p'$.
 
-In stochastic game, the pay-off of a player $p \in \bP$, is given by a function $r_p: \bQ \times \bA \mapsto \mathbb{R}$, and the payoff function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$.
-As the pay-off of a player is determined by the state and not the history of states, a function which rewards players once and only once for each block they own in the blockchain, can not be build (see example \ref{eximpo}). We propose a model where on every states, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they will potentially mine. This model puts a strong incentive in maintaining blocks in the blockchain and does not nullify the incentive to fork.
-The main concern regarding this pay-off model, is that we might end-up giving reward to player multiple times for the same block (once for each state where the block belongs to the blockchain). In the following sections we address this specific matter \ref{} and formally defines our pay-off functions \ref{}. 
+\begin{mydef}
+We define the reward of a block in a state for player $p$ by a function $r_p : \bQ \times \B \mapsto \mathbb{R}$ such that:
+\begin{equation*} 
+r_p(q,b) = r_p(q) - r_p(sub(b,q,p')) 
+\end{equation*}
+\end{mydef}
 
-Note that if in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off for a player $p$ does not depend on the action of other players. Hence we can extend the definition such that for any state $q$ and any player $p$ we have $r_p(q) = r_p(q',(\ba,a_p))$ with $q' = q \setminus b$ a state and $a_p = mine(p,b,q')$ a valid action.  
- 
+\begin{myprop}\label{prop:impo}
+For any $r_p: \bQ \mapsto \mathbb{R}$, there exist a combined strategy $\bs$, a state $q$ with $\Pr^\bs(q \mid \epsilon) \neq 0$ and a block $b \in bc(q)$ with $\owner(b)=p$ such that \ref{eq:never} or \ref{eq:multiple} is verified: 
+\begin{equation}\label{eq:never}
+\forall q, r_p(q,b) = 0
+\end{equation}
+\begin{equation}\label{eq:multiple}
+\exists q,q', q\neq q' \land r_p(q,b) \neq 0 \land r_p(q',b)
+\end{equation}
+\end{myprop}
+
+Proposition \ref{prop:impo} tell us that it is impossible to build a pay-off function such that miners receive reward once and only once for each block they own in the blockchain.
+A pay-off function has been proposed in \cite{}, which adds the constraint that for every level of the state's tree only one block give a reward (the first one which has been confirmed by $\delta \in \mathbb{N}$ blocks). Due to this constraint if a fork longer than $\delta$ blocks would happen, some blocks belonging to the new blockchain won't give any reward to their owners. As a matter of fact the model nullify the incentive of performing a fork longer than $\delta$ \cite{}. One could argue that a fork longer than $\delta$ would destroy the market confidence and therefore can be ignored. It might be the case with the current state of crypto-currencies, but as the technology become more widely adopted (government or bank), such argument can not be use any-more.
+
+We propose a model where on every states, we pay miners a constant $c$ for each of the blocks they already have in the blockchain, plus the new block they will potentially mine. This model puts a strong incentive in maintaining blocks in the blockchain and does not nullify the incentive to fork.
+The main concern regarding this pay-off model, is that we end-up giving reward to a miner multiple times for the same block (once for each state where the block belongs to the blockchain). But as we are working with the utility defined above \ref{}, the problem "disappear".
+
+\begin{definition}
+We define the utility of a block $b$ for player $p$ and a combined strategy $\bs$ as:
+\begin{equation*}
+u_p^b(\bs \mid q_0) =  (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q,b) \cdot \pr^{\bs}(q \mid q_0).
+\end{equation*}
+Clearly we have that: \begin{equation*}
+u_p(\bs \mid q_0) =  \sum_{b \in \bB} u_p^b(\bs \mid q_0)
+\end{equation*}
+\end{definition}
+
+\begin{myprop}\label{prop:bound}
+Assume $M_p(b) = max(\{r_p(q,b) \mid q \in \bQ \})$ is finite then we have:
+\begin{equation*}
+u_p(\bs \mid \{\varepsilon\}) \leq   \sum_{b \in \bB} \beta^{|b|} \cdot M_p(b)
+\end{equation*}
+\end{myprop}
+\begin{mylem}
+For any block $b$, and player $p$ we have:
+\begin{equation*}
+u_p^b(\bs \mid \{\varepsilon\}) \leq \beta^{|b|} \cdot M_p(b)
+\end{equation*}
+\end{mylem}
+
+Therefore the utility bring by a block is at most the reward of the block. Intuitively a miner get the maximum utility of a block if and only of this block belongs to the blockchain of any possible future state. Which make sense as it means the miner get maximal value if he can spend is money whenever he wants to.  
+
+
+
+
+\iffalse
+Note that if in the general case a pay-off is a function from $\bQ \times \bA$ to $\mathbb{R}$, in our model the pay-off for a player $p$ does not depend on the action of other players. Hence we can extend the definition such that for any state $q$ and any player $p$ we have $r_p(q) = r_p(q',(\ba,a_p))$ with $q'$ a state and $a_p$ a valid action such that $q = a_p(q')$.
+\fi
  
 \subsection{The definition of the game}
 As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ \to [0,1]$ is a transition probability function satisfying that for every state $q \in \bQ$ and combined action $\ba = (a_0, a_1, \ldots, a_{m-1})$ in $\bA$:
