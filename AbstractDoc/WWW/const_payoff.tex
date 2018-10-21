@@ -43,9 +43,10 @@ In order to model the aforementioned scenario we need to introduce some notation
 Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$  when considered as strings. Then we define: 
 \begin{eqnarray*}
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
-\meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}
+\meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\} \\
 \end{eqnarray*}
 Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
+
 
 As mentioned before, the pay-off function will reward a player for the blocks in $\meet(q)$. Thus, to define the pay-off, we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
 \begin{eqnarray*}
@@ -58,7 +59,7 @@ As mentioned before, the pay-off function will reward a player for the blocks in
 We can finally define the payoff function we consider in this section, which we call \textbf{constant reward}. For a player $p$, we define it as 
 \begin{eqnarray*}
 r_p(q) & = & 
-{\displaystyle c \cdot \sum_{b \in q} \chi_p(b),}
+{\displaystyle c \cdot \sum_{b \in \meet(q)} \chi_p(b),}
 \end{eqnarray*}
 \martin{this reads odd since we do not use meet here. Is it correct?}
 where $c$ is a positive real number. As mentioned above, this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the pay-off function is defined for the blockchain of $q$.
