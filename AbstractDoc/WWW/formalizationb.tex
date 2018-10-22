@@ -168,14 +168,15 @@ r_p(q,b) = r_p(q) - r_p(sub(b,q,p')) \textit{ with } p' \neq p
 \end{equation*}
 \end{mydef}
 
+We define a path of the game as sequence $\Pi = \epsilon,q_1,q_2,\cdots$ of states $q_i \in \bQ$, where if $q_{i+1} \in \bQ$ then there exists $p \in \bP$ and $a_p \in \bA_p$ such that $q_{i+1}= a_p(q_i)$.
 
 \begin{myprop}\label{prop:impo}
-For any $r_p: \bQ  \mapsto \mathbb{R}$, there exist a combined strategy $\bs$, a state $q_0$ with $\Pr^\bs(q_0 \mid \epsilon) \neq 0$ and a block $b \in bc(q_0)$ with $\owner(b)=p$ such that \ref{eq:never} or \ref{eq:multiple} is verified:
+For any $r_p: \bQ  \mapsto \mathbb{R}$, there exist a path of the game $\Pi$ such that \ref{eq:never} or \ref{eq:multiple} is verified:
 \begin{equation}\label{eq:never}
-\forall q, r_p(q,b) = 0
+\exists q_i \in \Pi,\exists b \in bc(q_i), \forall q_{j} r_p(q_{j},b) = 0
 \end{equation}
 \begin{equation}\label{eq:multiple}
-\exists q,q', q\neq q' \land r_p(q,b) \neq 0 \land r_p(q',b) \neq 0
+\exists b \in \B, \exists q_i,q_{j} \in \Pi, q_i \neq q_{j}, r_p(q_i,b) \neq 0,  r_p(q_{j},b) \neq 0
 \end{equation}
 \end{myprop}
 
