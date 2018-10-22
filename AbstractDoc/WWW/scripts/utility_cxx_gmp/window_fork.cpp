@@ -45,7 +45,7 @@ void generate_window_fork_plot(double initial_i, double final_i, int n){
     // Generate each point
     double xvals[NUM_POINTS];
 
-    double Y[n+1][NUM_POINTS];
+    double Y[n+2][NUM_POINTS];
 
     cout << "Computing..." << endl;
         
@@ -59,6 +59,8 @@ void generate_window_fork_plot(double initial_i, double final_i, int n){
         for(int k = 0 ; k < n; k++){
             Y[k+1][i] = cut_to_long_int(window_fork(k+1,h));
         }
+        Y[n+1][i] = cut_to_long_int(always_fork(h));
+
 
         /*gmp_printf("%f,", h);
         gmp_printf("%.*Ff\n", PREC/3, Y[0][i]);
@@ -66,11 +68,12 @@ void generate_window_fork_plot(double initial_i, double final_i, int n){
 
     }
 
-    string names[n+1];
+    string names[n+2];
     names[0] = "Default.temp";
     for(int k = 0 ; k < n; k++){
         names[k+1] = "Window_Fork_" + to_string(k+1)+".temp";
     }
+    names[n+1] = "Always_Fork.temp";
     
-    generate_plot(n+1, xvals, Y, names);
+    generate_plot(n+2, xvals, Y, names);
 }

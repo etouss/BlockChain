@@ -30,10 +30,10 @@ extern mpf_class b;
 //
 // Ladderish --> Diminish CUT_OFF (negative values allowed)
 // Chaotic/Periodic --> Augment CUT_OFF
-#define CUT_OFF -2
+#define CUT_OFF -15
 
 // In case one has an infinite series without (implemented) closed form
-#define SUM_LIMIT 1000
+#define SUM_LIMIT 150
 
 // Set of functions (defined in tools.cpp)
 mpf_class Cat(mpf_t);

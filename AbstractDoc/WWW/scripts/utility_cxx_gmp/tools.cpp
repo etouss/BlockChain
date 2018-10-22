@@ -4,7 +4,7 @@ using namespace std;
 
 
 mpf_class a = 0.9997_mpf;
-mpf_class b = 0.999997_mpf;
+mpf_class b = 0.99999999999997_mpf;
 
 
 // Cat numbers generating function: (1-sqrt(1-4x))/(2x)
@@ -89,7 +89,7 @@ mpf_class phi(mpf_class h){
 mpf_class phi_j(int k, int j, mpf_class h){
 
     //phi_0 = abh
-    if (j == 0) return a * b * h;
+    if (j == 0) return a * b * h / (1-b);
 
     mpf_class x, y, fact, fact2, fact3;
     // x = b^2h(1-h)
