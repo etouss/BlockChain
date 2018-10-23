@@ -4,8 +4,7 @@
 \section{Equilibria in games with constant payoff}
 \label{sec-const_rew}
 
-The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this does not reflect the reality of the Bitcoin protocol, this simplification serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, the results we obtain here could serve as a good recommendation of how the Bitcoin protocol can be modified in order to enforce fair behaviour of the miners when the block reward becomes insignificant.
-\marcelo{We need to change this considering the more general view of our framework for cryptocurrencies.}
+The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this may not reflect many blockchain's protocol, where the reward diminishes over time \cite{bitcoin,ethernum,others}, this easy case serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, the results we obtain here could serve as a good recommendation for blockchain's protocol to enforce fair behaviour of the miners when the block rewards consists only of transaction fees.
 
 \subsection{Defining constant pay-off}
 When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
@@ -62,7 +61,6 @@ We can finally define the payoff function we consider in this section, which we 
 r_p(q) & = & 
 {\displaystyle c \cdot \sum_{b \in \meet(q)} \chi_p(b),}
 \end{eqnarray*}
-\martin{this reads odd since we do not use meet here. Is it correct?} \marcelo{I don't understand this comment, meet is used in the expression above.}
 where $c$ is a positive real number. As mentioned above, this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the pay-off function is defined for the blockchain of $q$.
 % when the latter is defined for the state $q$.
 %Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
@@ -175,9 +173,8 @@ As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain that:
 \begin{mycor}\label{cor-conts_equlibria}
 For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
 \end{mycor} 
-While constant-block reward do not faithfully model reality, since in the Bitcoin protocol the reward decreases every approximately four years, we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour on miners at the moment block rewards become insignificant. More precisely, if block rewards are negligible, the transaction fees will dictate the miners' pay-off, so the protocol could place a (constant) total fee limit on newly created blocks. \marcelo{We need to argue why it is reasonable to impose a (constant) total fee limit in this scenario.} Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem  \ref{thm-conts_dom_str} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.
-\marcelo{Same comment as at the beginning of this section, we need to change this paragraph considering the more general view of our framework for cryptocurrencies.}
 
+While constant-block reward do not faithfully model the reality of most crypto-currencies, in the Bitcoin protocol the reward decreases every approximately four years, we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour on miners when block rewards consist only of transaction fees. If a blockchain protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of block, assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem  \ref{thm-conts_dom_str} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. On one hand such constraint on transaction fees insure the neutrality of the blockchain, on the other hand if the market value of the crypto-currency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
 % \subsection{The default strategy is an equilibrium}
 %
 %Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
