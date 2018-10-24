@@ -87,21 +87,23 @@ Figure XXX shows an example where player $0$ has just forked. Player $1$ then in
 she forces a draw on the blockchain, and the natural thing to do is to continue with the fork (Figure XXX). But if $0$ wins again? Player $1$ could still 
 try mining upon the genesis block, our could try something less aggressive, just forking on the last block (Figure XXX). 
 
-Now player $1$ manages to win the blockchain again, and $0$ mines another block upon this new blockchain (Figure XXX). Does player $1$ intends to fork again? 
-does she intend to keep forking for ever? 
+Now player $1$ manages to win the blockchain again, and $0$ mines another block upon this new blockchain (Figure XXX). Again, there are several possibilities. 
+Does player $1$ intends to fork again? does she intend to keep forking for ever? 
 \end{example} 
 
+In trying to cover these possible actions, we study the following strategies. 
 
+\begin{itemize}
+\item A strategy $\af$ (for \emph{always fork}), where player $1$ forks as soon as player $0$ mines a block in the blockchain, and continues with the fork until she wins the blockchain.  \item A family of strategies $\textbf{F}^1$, $\textbf{F}^2$, etc. In this strategies player $1$ behaves just as in $\af$, but will fork a specific number of times, switching to $\df$ once 
+all forks have been completed. 
+\item A Family of strategies ?? 
+\end{itemize}
 
+\medskip
+\noindent
+\textbf{Strategy $\af$}. As we explained, the idea of $\af$ for player $1$ is to fork every time she loses a block. In other words, 
+in $\af$ player $1$ tries to have all blocks in a blockchain. This strategy is depicted in Figure \ref{fig:always_fork}. 
 
-two questions. 
-\begin{enumerate}
-\item How \emph{aggresive} is the forking strategy? 
-\end{enumerate}
-
-ADD FORK ONCE
-
-Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
 
 \begin{figure}
 \begin{center}
@@ -135,7 +137,9 @@ Of course, if player 1 knows that her utility will be higher when she forks in t
 \label{fig:always_fork}
 \end{figure}
 
-NEED TO HAVE THE CODIFICATION OF STATES VIA BINARY NUMBERS AND EXPLAIN IT WELL SO THAT IT IS NOT CONFUSED WITH BLOCK "NAMES".
+The question we want to answer is twofold. On one hand we want to answer whether $\af$ is a better strategy than $\df$ for player $1$, under the assumption that player $0$ uses $\df$ and under some specific values of $\alpha$, $\beta$ and $h$. Since we know how to compute the utility for $\bdf = (\df,\df)$, all we need is a way to compute the utility for player $1$ under the combined strategy $(\df,\af)$. But perhaps more interestingly, we can also answer a more analytical question: Given realistic values of $\alpha$ and $\beta$, how much hash power does player $1$ needs to consider $\af$ instead of $\df$? 
+
+Answering both questions requires us to learn how to compute the utility for strategy $(\df,\af)$, so this is what we do next. 
 
 \begin{theorem}\label{thm:always_fork}
 Let $h$ be the hash power of player one, let $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. Then:
@@ -146,19 +150,56 @@ $$u_1(\baf\mid\varepsilon) = \frac{\varphi}{1-\Gamma}, \text{ where: }$$
 \end{itemize}
 \end{theorem}
 
+%ADD FORK ONCE
+
+%Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
+
+
+NEED TO HAVE THE CODIFICATION OF STATES VIA BINARY NUMBERS AND EXPLAIN IT WELL SO THAT IT IS NOT CONFUSED WITH BLOCK "NAMES".
+
 \begin{proof}
-Since $\varepsilon\subseteq q$, for any state $q\in \bQ$, by the definition of utility we have that: 
-
-$$u_1(\baf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|}\cdot r(q)\cdot \pr^{\baf}(q\mid \varepsilon).$$
-
-Applying the idea of coding the states in a two player game as sequences of binary numbers, we can write the above as:
-
-\begin{equation}\label{eq:def_utility}
-u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
-\end{equation}
 
 
-Now notice that when playing $\baf$, player 1 will fork each time she loses a block. This in particular means, that the states where she will receive an award for her blocks will always start with her winning one or more forks. For instance, in Figure \ref{fig:always_fork}, player 1 receives an award in block 11, which corresponds to a state coded by the word $w=011$. A similar story holds true for block 111, which corresponds to a state coded by the word $w=01101$. In general, states where player 1 receives an award can be coded by a Dyck word $d$, where both 1 and 0 have the same number of blocks in the game, followed by a block won by 1. After that any word $w$ can follow, leaving us in a state coded by $d1w$. Notice that the reward of player 1 in this state can be split into the reward for $d1$ (since this will always be part of $\meet(q)$, for $q$ the state corresponding to $d1w$), and the reward for $w$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w$ starts. Therefore, we can write the above utility as follows:
+Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q \mid \varepsilon) > 0\}$ be all states that can be reached from the genesis using strategy $\baf$, and recall 
+the mapping $\sigma: Q_\baf \rightarrow \{0,1\}^*$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$ (we are abusing notation by switching from blocks to words in $\{0,1\}^*$). From the definition of $\sigma$ we have that for any state $q \in Q_\baf$ one verifies 
+$\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \{0,1\}^*} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
+$h^{n_1}(1-h)^{n_0}$. Further, by Claim \ref{claim-nonempty-inter-gen} the inverse  $\sigma^{-1}: \{0,1\}^* \rightarrow Q_\baf$ is a total function.  
+All of this means that we can rewrite the utility of player $1$ using $\baf$ as 
+
+\begin{multline*}
+u_1(\baf \mid \varepsilon) = \sum_{q \in \bQ} \beta^{|q|} \cdot  r_1(q) \cdot \pr^{\cdf}(q \mid \varepsilon) = \\ 
+\sum_{q \in \bQ} \sum_{w \in \sigma(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w \mid \varepsilon) =  \\
+\sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr^{\baf}(w \mid \varepsilon),
+\end{multline*}
+where $r_1(w)$ is just $r_1(\sigma^{-1}(w)$.
+
+
+%Since $\varepsilon\subseteq q$, for any state $q\in \bQ$, by the definition of utility we have that: 
+
+%$$u_1(\baf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|}\cdot r(q)\cdot \pr^{\baf}(q\mid \varepsilon).$$
+
+%Applying the idea of coding the states in a two player game as sequences of binary numbers, we can write the above as:
+
+%\begin{equation}\label{eq:def_utility}
+%u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
+%\end{equation}
+
+Now, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ in which player $q$ mines a block in the blockchain for the first time. 
+The easiest of them is $w = 1$, which represents player $1$ winning the first move of the game and successfully mining upon the genesis block. 
+But there are infinitely many more of them. Word $011$ represents a state where player $0$ mined a block, player $1$ forked and then player $1$ 
+forked again (as in Figure \ref{fig:always_fork}). Word $00111$ also belong to the set $S$: the scenario is that player $0$ mined two blocks, player $1$ forked 
+on the genesis block and then won two more blocks in a row, managing to set the sequence $1$-$11$-$111$ as the blockchain. 
+Interestingly, word $01011 \in S$ leads to the same state as $00111$, but the story was a bit different: now player $0$ won, player $1$ forked, player $0$ 
+won again, mining upon block $0$, player $1$ fought over her line, mining over block $11$, and then won again. 
+In general, the words in this set $S$ have the form $d1$, where $d$ is a \emph{Dyck word}: a word with the same number of $0$s and $1$s, but such that 
+no prefix of $d$ has more $1$s than $0$s (this intuitively signifies that player $1$ never had more blocks than $0$ at any point). 
+
+Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
+$w$ with $r_1(w) > 0$ are of the form $s w'$, with $s \in S$, and this is a partition: there cannot be two words $s_1, s_2 \in S$ such that 
+$w$ can be written as  both $s_1 w'$ and $s_2 w''$. Moreover, given such a word $w = d1w'$, the reward $r_1(d1w')$ can be split 
+into the reward for $d1$ (since this will always be part of $\meet(q)$, for $q$ the state corresponding to $d1w'$), and the reward for $w'$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w'$ starts. Therefore, we can write the above utility as follows:
+
+%Now notice that when playing $\baf$, player 1 will fork each time she loses a block. This in particular means, that the states where she will receive an award for her blocks will always start with her winning one or more forks. For instance, in Figure \ref{fig:always_fork}, player 1 receives an award in block 11, which corresponds to a state coded by the word $w=011$. A similar story holds true for block 111, which corresponds to a state coded by the word $w=01101$. In general, states where player 1 receives an award can be coded by a Dyck word $d$, where both 1 and 0 have the same number of blocks in the game, followed by a block won by 1. After that any word $w$ can follow, leaving us in a state coded by $d1w$. Notice that the reward of player 1 in this state can be split into the reward for $d1$ (since this will always be part of $\meet(q)$, for $q$ the state corresponding to $d1w$), and the reward for $w$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w$ starts. Therefore, we can write the above utility as follows:
 
 \begin{eqnarray*}
 u_1(\baf\mid\varepsilon) = \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r(d1) + \alpha^{\frac{|d|}{2}+1}\cdot r(w)\big] \cdot \\ \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).
