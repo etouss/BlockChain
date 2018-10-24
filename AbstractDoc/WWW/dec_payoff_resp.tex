@@ -75,30 +75,6 @@ u_1(\cdf \mid \varepsilon) & = & ch\cdot \sum_{i=0}^{\infty}\beta^{i}\frac{\alph
 Using the fact that $\sum_{i=0}^{\infty}x^i= \frac{1}{1-x}$, we obtain the desired result.
 \end{proof}
 
-Now suppose player $1$ decides to deviate from the default strategy of mining upon a blockchain, and decides at a certain point that she would like to fork the next time 
-she looses a block in the blockchain. For simplicity we only consider the situation where both players $0$ and $1$ begin the game in the genesis block, but this is without generality: 
-any state before player $1$ deviates is just a sequence of blocks, a blockchain, and thus we can always sum up any reward player $0$ or $1$ is collecting thanks to the blocks in this 
-sequences.  
-
-There are several strategies one could consider that involve forking player $0$, let us briefly go through some of them. 
-
-\begin{example}
-Figure XXX shows an example where player $0$ has just forked. Player $1$ then intends to fork, playing along the dotted line. If player $1$ wins, then 
-she forces a draw on the blockchain, and the natural thing to do is to continue with the fork (Figure XXX). But if $0$ wins again? Player $1$ could still 
-try mining upon the genesis block, our could try something less aggressive, just forking on the last block (Figure XXX). 
-
-Now player $1$ manages to win the blockchain again, and $0$ mines another block upon this new blockchain (Figure XXX). Does player $1$ intends to fork again? 
-does she intend to keep forking for ever? 
-\end{example} 
-
-
-
-
-two questions. 
-\begin{enumerate}
-\item How \emph{aggresive} is the forking strategy? 
-\end{enumerate}
-
 ADD FORK ONCE
 
 Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
