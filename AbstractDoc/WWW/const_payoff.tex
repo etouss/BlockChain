@@ -111,27 +111,6 @@ In this proof, we need the following property of the mapping $\sigma$.
 For every pair of distinct states $q,q'$ in $Q_{\bs}$, the sets $\sigma(q)$ and $\sigma(q')$ are disjoint. 
 \end{myclaim}
 
-\begin{proof}
-For the sake of contradiction, assume that
-%Assume for contradiction two different  states 
-$q,q'$ are two distinct states in $Q_{\bs}$ such that both $\sigma(q)$ and $\sigma(q')$ contain a state $q^* \in Q_\cdf$. By definition of $Q_\cdf$, there exists a block 
-%$w$ 
-$b^*$ such that $q^* = \{b \in \bB \mid b \preceq b^*\}$.
-% is the closure (over prefixes) of $w$. 
-By definition of mapping $\sigma$, there exist a sequence $\rho = q_0,\dots,q_n$ for $q$ and a sequence $\rho' = q_0',\dots,q_n'$ for $q'$ such that $b^* = b_\rho$ and $b^* = b_{\rho'}$. If 
-$\rho = \rho'$, then $q = q'$ as $q = q_n$ and $q' = q'_n$. Hence, we have that $\rho \neq \rho'$.
-%, so $\rho$ must be different from $\rho'$. 
-Let $i$ be the first position where $\rho$ and $\rho'$ differ,
-%are different, 
-so that 
-sequences $q_0,\dots,q_{i-1}$ and $q_0,\dots,q'_{i-1}$ are the same and $q_i \neq q_i'$ (notice that $i \in \{1, \ldots, n\}$ since $q_0 = q'_0 = \varepsilon$).
-%except for the last state. 
-Then both $q_i$ and $q_i'$ are reachable from $q_{i-1}$ in one step. Therefore, it follows that 
-%by the construction of our game 
-$q_i = a_{p_1}(q_{i-1})$ and $q'_i = a_{p_2}(q_{i-1})$, where $a_{p_1} = s_{p_1}(q_{i-1})$, $a_{p_2} = s_{p_2}(q_{i-1})$ and $p_1 \neq p_2$. Hence, we have that the symbols in the $i$-th positions of $b_\rho$ and $b_{\rho'}$ are different, from which we conclude that $b_\rho \neq b_{\rho'}$, and reach a contradiction since $b^* = b_\rho$ and $b^* = b_{\rho'}$.
-%is different from the symbol in the $
-%the word generated from $\pi$ and $\pi'$ is not the same. 
-\end{proof}
 Recall that the utility of player $p$ using combined strategy $\cdf$ 
 %at the genesis tree 
 is defined as:

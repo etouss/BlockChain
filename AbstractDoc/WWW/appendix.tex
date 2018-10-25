@@ -122,3 +122,257 @@ u_p(\bs \mid \{\varepsilon\}) & \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|
 & = & \beta^{|b|} \cdot M_p(b), 
 \end{eqnarray*}
 which was to be shown. 
+
+\subsection*{Proof of Claim \ref{claim-nonempty-inter-gen}}
+
+For the sake of contradiction, assume that
+%Assume for contradiction two different  states 
+$q,q'$ are two distinct states in $Q_{\bs}$ such that both $\sigma(q)$ and $\sigma(q')$ contain a state $q^* \in Q_\cdf$. By definition of $Q_\cdf$, there exists a block 
+%$w$ 
+$b^*$ such that $q^* = \{b \in \bB \mid b \preceq b^*\}$.
+% is the closure (over prefixes) of $w$. 
+By definition of mapping $\sigma$, there exist a sequence $\rho = q_0,\dots,q_n$ for $q$ and a sequence $\rho' = q_0',\dots,q_n'$ for $q'$ such that $b^* = b_\rho$ and $b^* = b_{\rho'}$. If 
+$\rho = \rho'$, then $q = q'$ as $q = q_n$ and $q' = q'_n$. Hence, we have that $\rho \neq \rho'$.
+%, so $\rho$ must be different from $\rho'$. 
+Let $i$ be the first position where $\rho$ and $\rho'$ differ,
+%are different, 
+so that 
+sequences $q_0,\dots,q_{i-1}$ and $q_0,\dots,q'_{i-1}$ are the same and $q_i \neq q_i'$ (notice that $i \in \{1, \ldots, n\}$ since $q_0 = q'_0 = \varepsilon$).
+%except for the last state. 
+Then both $q_i$ and $q_i'$ are reachable from $q_{i-1}$ in one step. Therefore, it follows that 
+%by the construction of our game 
+$q_i = a_{p_1}(q_{i-1})$ and $q'_i = a_{p_2}(q_{i-1})$, where $a_{p_1} = s_{p_1}(q_{i-1})$, $a_{p_2} = s_{p_2}(q_{i-1})$ and $p_1 \neq p_2$. Hence, we have that the symbols in the $i$-th positions of $b_\rho$ and $b_{\rho'}$ are different, from which we conclude that $b_\rho \neq b_{\rho'}$, and reach a contradiction since $b^* = b_\rho$ and $b^* = b_{\rho'}$.
+%is different from the symbol in the $
+%the word generated from $\pi$ and $\pi'$ is not the same. 
+
+
+\subsection*{Proof of Lemma \ref{lem:default_utility}}
+By the definition of utility we have:
+$$u_1(\bdf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|-1}\cdot r(q)\cdot \pr^{\bdf}(q\mid \varepsilon).$$
+Separating the sum by the state size, we can write:
+\begin{eqnarray*}
+u_1(\cdf \mid \varepsilon) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_1(q) \cdot 
+\pr^{\cdf}(q \mid \varepsilon)\bigg).
+\end{eqnarray*}
+By encoding each state $q\in\bQ$ as a binary string $w\in \bstring$ according to the Proof of Theorem \ref{thm:always_fork} , we can compute the utility as follows:
+\begin{eqnarray*}
+u_1(\cdf \mid \varepsilon)& = & c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=1}^{i}w[j] \alpha^j \bigg)\cdot 
+\pr^{\cdf}(q_w \mid \varepsilon)\bigg).
+\end{eqnarray*}
+Notice that in the equation above we use the fact that when playing $\cdf$ each state contains a single blockchain (and nothing else), thus implying that $\chi_p(\meet(q_w),j) = \chi_p(\bchain(q_w),j) = w[j]$, for every word $w\in \{0,1\}^*$. By changing the order of summation we obtain:
+\begin{eqnarray*}
+u_1(\cdf \mid \varepsilon)& = &c\cdot \sum_{i=0}^{\infty}\beta^{i}\sum_{j=1}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
+\pr^{\cdf}(q_w \mid \varepsilon)\bigg)
+\end{eqnarray*}
+Using the fact that that mining any block for player 1 is an independent Bernoulli trial with probability of success $h$, and the fact that $\pr(\{q_w \mid w\in \{0,1\}^i \})=1$, for all $i$, we can conclude that $(\sum_{w\in\{0,1\}^i}   w[j]\cdot \pr^{\cdf}(q_w \mid \varepsilon) = \expected(w[j]) = h$, thus yielding:
+\begin{eqnarray*}	
+u_1(\cdf \mid \varepsilon) & = & c\cdot \sum_{i=0}^{\infty}\beta^{i}\sum_{j=1}^{i} \alpha^j \expected(w[j]) = ch\cdot \sum_{i=0}^{\infty}\beta^{i}\sum_{j=1}^{i} \alpha^j .
+\end{eqnarray*}
+Computing the final sum, we get:
+\begin{eqnarray*}	
+u_1(\cdf \mid \varepsilon) & = & ch\cdot \sum_{i=0}^{\infty}\beta^{i}\frac{\alpha\cdot (1-\alpha^i)}{1-\alpha}\\
+ & = & ch\cdot \frac{\alpha}{1-\alpha} \cdot \bigg(\sum_{i=0}^{\infty}\beta^{i} - \sum_{i=0}^{\infty}(\alpha \cdot \beta)^i \bigg).
+\end{eqnarray*}
+Using the fact that $\sum_{i=0}^{\infty}x^i= \frac{1}{1-x}$, we obtain the desired result.
+
+\subsection{Complete proof of Theorem \label{thm:always_fork}:}
+Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q \mid \varepsilon) > 0\}$ be all states that can be reached from the genesis using strategy $\baf$, and recall 
+the mapping $\sigma: Q_\baf \rightarrow \{0,1\}^*$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the definition of $\sigma$ we have that for any state $q \in Q_\baf$ one verifies 
+$\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \sigma(q)} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
+$h^{n_1}(1-h)^{n_0}$. Further, by Claim \ref{claim-nonempty-inter-gen} the inverse  $\sigma^{-1}: \{0,1\}^* \rightarrow Q_\baf$ is a total function.  
+All of this means that we can rewrite the utility of player $1$ using $\baf$ as 
+
+\begin{multline*}
+u_1(\baf \mid \varepsilon) = \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\cdf}(q \mid \varepsilon) = \\ 
+\sum_{q \in \bQ} \sum_{w \in \sigma(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w \mid \varepsilon) =  \\
+\sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr^{\baf}(w \mid \varepsilon),
+\end{multline*}
+where $r_1(w)$ is just a convenient shorthand for $r_1(\sigma^{-1}(w))$.
+
+
+%Since $\varepsilon\subseteq q$, for any state $q\in \bQ$, by the definition of utility we have that: 
+
+%$$u_1(\baf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|}\cdot r(q)\cdot \pr^{\baf}(q\mid \varepsilon).$$
+
+%Applying the idea of coding the states in a two player game as sequences of binary numbers, we can write the above as:
+
+%\begin{equation}\label{eq:def_utility}
+%u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
+%\end{equation}
+
+Now, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\sigma$) in which player $1$ owns at least one block in the blockchain for the first time. 
+The easiest of them is $w = 1$, which represents the state in Figure XXX. This state is created when player $q$ wins the first move of the game, sucesfully mining upon the genesis block. Next is word $011$, representing the state in Figure YY. To arrive at this state player $0$ must have mined the first block, player $1$ forked and then player $1$ 
+forked again. The next words in $S$ are $00111$ and $01011$, both representing the state of Figure ZZZ. 
+In general, the words in the set $S$ have the form $d1$, where $d$ is a \emph{Dyck word}: a word with the same number of $0$s and $1$s, but such that 
+no prefix of $d$ has more $1$s than $0$s (this intuitively signifies that player $1$ never had more blocks than $0$ at any point). 
+Note that the only dyck word of length $0$ is $\epsilon$, the next dyck word by length is $01$, and then $0011$ and $0101$. 
+
+\begin{figure}
+\begin{subfigure}{0.2\columnwidth}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (-2,0) (R) {$\varepsilon$};
+	\node [state] at (-0.5,0) (1) {$1$};
+
+	% Graph edges
+	\path[->]
+	(R) edge (1);  	
+\end{tikzpicture} 
+\end{subfigure} 
+\qquad
+\begin{subfigure}{0.3\columnwidth}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (1) {$1$};
+	\node [state] at (1.5,-0.75) (0) {$0$};
+
+	\node [state] at (3,0.75) (11) {$11$};	
+	
+	% Graph edges
+	\path[->]
+	(R) edge (0);  	
+	
+	\path[->]
+	(R) edge (1)
+	(1) edge (11);
+
+\end{tikzpicture} 
+\end{subfigure}
+
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (1) {$1$};
+	\node [state] at (1.5,-0.75) (0) {$0$};
+
+	\node [state] at (3,-0.75) (00) {$00$};
+	
+	\node [state] at (3,0.75) (11) {$11$};	
+	\node [state] at (4.5,0.75) (111) {$111$};	
+	
+	% Graph edges
+	\path[->]
+	(R) edge (0)
+	(0) edge (00);  	
+	
+	\path[->]
+	(R) edge (1)
+	(1) edge (11)
+	(11) edge (111);
+
+\end{tikzpicture} 
+\end{center}
+\end{subfigure}
+
+\caption{XXX}
+\label{fig:proof-theorem-4}
+\end{figure}
+
+Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
+$w$ with $r_1(w) > 0$ are therefore of the form $d 1 w'$. Now let $q = \sigma^{-1}(d1w')$ be the state represented by $d1w'$
+
+
+*say that $\meet(d1w')$ contains $d1$, and therefore by definition of our reward function, the reward $r_1(d1w')$ can be split 
+into the reward for $d1$ and the reward for $w'$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w'$ starts. Therefore, we can write the above utility as follows:
+
+%Now notice that when playing $\baf$, player 1 will fork each time she loses a block. This in particular means, that the states where she will receive an award for her blocks will always start with her winning one or more forks. For instance, in Figure \ref{fig:always_fork}, player 1 receives an award in block 11, which corresponds to a state coded by the word $w=011$. A similar story holds true for block 111, which corresponds to a state coded by the word $w=01101$. In general, states where player 1 receives an award can be coded by a Dyck word $d$, where both 1 and 0 have the same number of blocks in the game, followed by a block won by 1. After that any word $w$ can follow, leaving us in a state coded by $d1w$. Notice that the reward of player 1 in this state can be split into the reward for $d1$ (since this will always be part of $\meet(q)$, for $q$ the state corresponding to $d1w$), and the reward for $w$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w$ starts. Therefore, we can write the above utility as follows:
+
+\begin{eqnarray*}
+u_1(\baf\mid\varepsilon) = \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r(d1) + \alpha^{\frac{|d|}{2}+1}\cdot r(w)\big] \cdot \\ \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).
+\end{eqnarray*}
+
+The product of probabilities is obtained since winning a block is an independent trial. Splitting up the sums we get:
+
+\begin{align*}
+ & u_1(\baf\mid\varepsilon) = \\
+ & \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon)
+ \mbox{ } +\\
+ & \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r(w) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).
+\end{align*}
+
+We will denote the first term in the equation above by $\varphi$. 
+
+%More precisely,
+%$$\varphi = \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).$$
+
+Next, in the expression for $u_1(\baf\mid\varepsilon)$ we will split the second term into the elements that depend only on $d$, and the ones that depend only on $w$, getting:
+
+\begin{align*}
+ & u_1(\baf\mid\varepsilon) = \varphi \mbox{ } +\\
+ & \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon) \cdot 
+ \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r(w)  \cdot \pr^{\baf}(w\mid \varepsilon).
+\end{align*}
+
+But the rightmost sum is precisely the definition of $u_1(\baf\mid\varepsilon)$, so we can write: 
+
+\begin{align*}
+ u_1(\baf\mid\varepsilon) = \varphi \mbox{ } + 
+ \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon) \cdot  u_1(\baf\mid\varepsilon).
+\end{align*}
+
+By denoting:
+
+$$\Gamma = \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon),$$
+
+we get the equation:
+
+$$u_1(\baf\mid\varepsilon) = \frac{\varphi}{1-\Gamma}.$$
+
+Let us now find a closed form for $\Gamma$ and $\varphi$. We start with $\Gamma$.
+
+\begin{align*}
+\Gamma = & \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon)\\
+ = & \mbox{ } \alpha\cdot \beta \sum_{d\in \dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr^{\baf}(d1\mid \varepsilon) \\
+  = & \mbox{ } \alpha\cdot \beta \sum_{\ell = 0}^{\infty} \sum_{d\in \dyck_{2\ell}} (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+   = & \mbox{ } \alpha\cdot \beta \sum_{\ell = 0}^{\infty} |\dyck_{2\ell}| (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+    = & \mbox{ } \alpha\cdot \beta \cdot h \cdot Cat(\alpha\cdot\beta^2 \cdot h \cdot (1-h)).\\
+\end{align*}
+
+Here the third equality follows since all Dyck words are of even length. The final equality is obtained using the fact that the $\ell$th Catalan number is equal to the number of Dyck words of length $2\ell$, thus the summation in the previous line defines the generating function of Catalan numbers.
+
+Finally, we compute a closed form for $\varphi$. First, recall that:
+
+$$\varphi = \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).$$
+
+Splitting the part that depends on $d$ and the part that depends on $w$, we get:
+
+$$\varphi = \sum_{d\in \dyck}  \beta^{|d|+1}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \sum_{w\in \{0,1\}^*} \beta^{|w|}\cdot \pr^{\baf}(w\mid \varepsilon).$$
+
+To calculate $\sum_{w\in \{0,1\}^*} \beta^{|w|}\cdot \pr^{\baf}(w\mid \varepsilon)$, observe that for all $w$ of some fixed length $\ell$, we are adding only a single factor $\beta^{|w|}$ to the entire sum, or more formally,  %For instance, when $\ell=2$ we will calculate $\beta^2\cdot (\pr^{\baf}(00\mid \varepsilon)+\pr^{\baf}(01\mid \varepsilon)+\pr^{\baf}(10\mid \varepsilon)+\pr^{\baf}(11\mid \varepsilon)) = \beta^2\cdot 1$. More formally, 
+$\sum_{w\in \{0,1\}^{\ell}} \beta^{|w|}\cdot \pr^{\baf}(w\mid \varepsilon) = \beta^{\ell}$. Therefore:
+
+$$\varphi = \frac{1}{1-\beta}\sum_{d\in \dyck}  \beta^{|d|+1}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon).$$
+
+Calculating $\pr^{\baf}(d1\mid \varepsilon)$ and removing the extra $\beta$ factor we now get:
+
+$$\varphi = \frac{\beta}{1-\beta}\sum_{d\in \dyck}  \beta^{|d|} \cdot h^{\frac{|d|}{2}+1}\cdot (1-h)^{\frac{|d|}{2}}\cdot r(d1).$$
+
+Next, we calculate $r(d1)$ explicitly:
+
+$$\varphi = \frac{\beta}{1-\beta}\sum_{d\in \dyck}  \beta^{|d|} \cdot h^{\frac{|d|}{2}+1}\cdot (1-h)^{\frac{|d|}{2}}\cdot \sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i.$$
+
+Removing loose terms, and representing all Dyck words via their length explicitly, we obtain:
+
+$$\varphi = \frac{\alpha\cdot \beta\cdot h}{1-\beta}\sum_{\ell=0}^{\infty}\sum_{d\in \dyck_{2\ell}}  (\beta^{2}\cdot h\cdot (1-h))^{\ell}\cdot \sum_{i=0}^{\ell}\alpha^i.$$
+
+Computing $\sum_{i=0}^{\ell}\alpha^i$ we obtain:
+
+$$\varphi = \frac{\alpha\cdot \beta\cdot h}{1-\beta}\sum_{\ell=0}^{\infty}\sum_{d\in \dyck_{2\ell}}  (\beta^{2}\cdot h\cdot (1-h))^{\ell}\cdot \frac{1-\alpha^{\ell+1}}{1-\alpha}.$$
+
+Since none of the factors of the summation depends on the specific word $d$, we get:
+
+$$\varphi = \frac{\alpha\cdot \beta\cdot h}{(1-\alpha)\cdot (1-\beta)}\sum_{\ell=0}^{\infty} |\dyck_{2\ell}|  (\beta^{2}\cdot h\cdot (1-h))^{\ell}\cdot (1-\alpha^{\ell+1}).$$
+
+Finally, by splitting the sum into two, and using the definition of the generating function for Catalan numbers, we obtain:
+
+$$\varphi  =  \frac{\alpha\cdot \beta\cdot h}{(1-\alpha)\cdot (1-\beta)}\cdot \big[Cat(\beta^2\cdot h\cdot (1-h))-\alpha\cdot Cat(\alpha\cdot \beta^2\cdot h\cdot (1-h))\big].$$
+
+
+
+
