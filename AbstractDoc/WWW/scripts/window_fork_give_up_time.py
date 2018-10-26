@@ -3,9 +3,25 @@ import numpy as np
 import math
 
 ## alpha and beta
-a = 0.999
-b = 0.9999
+a = 0.9999967030
+b =  0.9999996156
 
+
+# generating function of Catalan numbers:
+def ff(x): 
+	return (1-np.sqrt(1-4*x))/(2*x)
+
+
+# always fork
+def af(h):
+
+	## utility of the always fork strategy as calculated in the paper
+	psi = (a*b*h)*ff(a*b*b*h*(1-h))
+	fi = ((a*b*h)/((1-a)*(1-b)))*(ff(b*b*h*(1-h))-a*ff(a*b*b*h*(1-h)))
+
+	always_fork = fi/(1-psi)
+
+	return always_fork
 
 # factorial function
 def fact(x):
@@ -52,7 +68,7 @@ def f(aa,r,bb):
 	return res	
 
 # pentagon generation
-def Pent(aa,bb,r):
+def Pent_aux(aa,bb,r):
 
  	if (r<=aa):
  		res = choose(bb+r,r)	
@@ -64,12 +80,16 @@ def Pent(aa,bb,r):
  			res += f(i,r,bb)
 
  	else:
- 		res = choose_gen(r-bb,r)
+ 		res = choose_gen(r-bb,bb)
 
  		for i in range(r-bb+1,aa+1):
  			res += f(i,r,bb)
 
  	return res
+
+# real Pent
+def Pent(aa,bb,r): 	
+	return Pent_aux(aa,bb-1,r)
 
 # part a1 of the equation
 def a1(k,j,l,h):
@@ -232,28 +252,43 @@ h = np.arange(0.001, 0.999, 0.001)
 
 default = h*a*b/((1-b)*(1-a*b))
 
-window_fork = util(1,6,h)
+asfuck = af(h)
+
+window_fork = {}
+
+for i in range(1,7):
+	window_fork[i] = util(2*i,14,h)
 
 fig, ax = plt.subplots()
 
+#for i in range(1,7):
+#	ax.plot(h,window_fork[i])	
+
+ax.plot(h,util(2,14,h))
+ax.plot(h,util(2,20,h))
+ax.plot(h,util(2,6,h))
+#ax.plot(h,window_fork[6])
+
 #ax.plot(h,window_fork,color='blue')
-#ax.plot(h,default,color='red')
+ax.plot(h,default,color='red')
+
+ax.plot(h,asfuck,color='blue')
 
 sumA1 = sum_a1(1,6,h)
 sumA2 = sum_a2(1,6,h)
 sumB1 = sum_b1(1,6,h)
 sumB2 = sum_b2(1,6,h)
 
-ax.plot(h,sumA2,color='red')
-ax.plot(h,sumB2,color='green')
+#ax.plot(h,sumA2,color='red')
+#ax.plot(h,sumB2,color='green')
 
-sumC = sum_c(5,6,h)
-sumD = sum_d(5,6,h)
+sumC = sum_c(1,6,h)
+sumD = sum_d(1,6,h)
 
-ax.plot(h,sumC,color='blue')
-ax.plot(h,sumD,color='pink')
+#ax.plot(h,sumC,color='blue')
+#ax.plot(h,sumD,color='pink')
 
-ax.plot(h,sumA2+sumB2+sumC+sumD,color='black')
+#ax.plot(h,sumA2+sumB2+sumC+sumD,color='black')
 
 ax.set(xlabel='hash power (h)', ylabel='utility',
        title='Utility for a=%r, b=%r' % (a,b) )
