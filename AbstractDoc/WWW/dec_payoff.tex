@@ -218,11 +218,12 @@ Note that the only dyck word of length $0$ is $\epsilon$, the next dyck word by 
 \end{figure}
 
 Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
-$w$ with $r_1(w) > 0$ are therefore of the form $d 1 w'$. Now let $q = \sigma^{-1}(d1w')$ be the state represented by $d1w'$
-
-
-*say that $\meet(d1w')$ contains $d1$, and therefore by definition of our reward function, the reward $r_1(d1w')$ can be split 
-into the reward for $d1$ and the reward for $w'$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w'$ starts. Therefore, we can write the above utility as follows:
+$w$ with $r_1(w) > 0$ are therefore of the form $d 1 w'$. Now let $q = \sigma^{-1}(d1w')$ be the state represented by $d1w'$. 
+State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
+with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w$). 
+We can then calculate the reward for $q$: 
+$$r_1(q) = \big(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \big)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(\sigma^{-1}(w)).$$
+Therefore (and writing $r_1(w)$ for $r_(\sigma^{-1}(w)))$, we can write:
 %
 %Now notice that when playing $\baf$, player 1 will fork each time she loses a block. This in particular means, that the states where she will receive an award for her blocks will always start with her winning one or more forks. For instance, in Figure \ref{fig:always_fork}, player 1 receives an award in block 11, which corresponds to a state coded by the word $w=011$. A similar story holds true for block 111, which corresponds to a state coded by the word $w=01101$. In general, states where player 1 receives an award can be coded by a Dyck word $d$, where both 1 and 0 have the same number of blocks in the game, followed by a block won by 1. After that any word $w$ can follow, leaving us in a state coded by $d1w$. Notice that the reward of player 1 in this state can be split into the reward for $d1$ (since this will always be part of $\meet(q)$, for $q$ the state corresponding to $d1w$), and the reward for $w$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w$ starts. Therefore, we can write the above utility as follows:
 %
