@@ -75,7 +75,7 @@ by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m
 %Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
 
 We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, $i$ blocks will be placed in the blockchain defined by the game, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
-$$u_p(\cdf \mid \varepsilon) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ =  \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
+$$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ =  \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
 
 %% Juan: I think it is way too nahive to put the analytical form of this
 %$$u_p(\bs \mid q_0) = c\cdot h_p \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \text{,}\ \ \ \ \text{ which evaluates to }\frac{c\cdot h_p}{(1-\beta)^2}.$$ %(recall that $q_0$ is the genesis block). 
@@ -84,12 +84,12 @@ The question then is: can any player do better? As we show in the following theo
 \begin{mythm}\label{thm-conts_dom_str}
 Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$:
 \begin{eqnarray*}
-u_p(\bs \mid \varepsilon) & \leq & u_p(\cdf \mid \varepsilon)
+u_p(\bs) & \leq & u_p(\cdf)
 \end{eqnarray*}
 \end{mythm} 
 
 \begin{proof}
-Let $\bs= (s_0, \ldots, s_{m-1})$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q \mid \varepsilon) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
+Let $\bs= (s_0, \ldots, s_{m-1})$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
 Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\cdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step if $q_2 = q_1 \cup \{ b \cdot p' \}$, where $b \in \bB$, $p' \in \bP$ and $b \cdot p' \not\in q_1$ (recall that $\bB = \{0, \ldots, m-1\}^*$ and $\bP = \{0, \ldots, m-1\}$); that is, we have that $q_2$ can be reached from $q_1$ in one step  if $q_2$ is the result of applying action $\mine(p', b, q_1)$, where $\mine(p', b, q_1)$ is a valid action for player $p'$. 
 Then for each state $q \in Q_{\bs}$, consider all distinct sequences $\rho = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
 $q_i$ in one step ($i \in \{1, \ldots, n-1\}$), $q_0 = \varepsilon$ and $q_n = q$. To each such a sequence $\rho = q_0,\dots,q_n$, associate a block $b_\rho$ of length $n$ as follows.
@@ -115,36 +115,36 @@ Recall that the utility of player $p$ using combined strategy $\cdf$
 %at the genesis tree 
 is defined as:
 \begin{eqnarray*}
-u_p(\cdf \mid \varepsilon) & = & \sum_{q \in \bQ} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\cdf}(q \mid \varepsilon).
+u_p(\cdf) & = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
 If we choose to sum only over the states in the images under $\sigma$ of the states of $Q_\bs$, then by Claim \ref{claim-nonempty-inter-gen} we have that:
 \begin{eqnarray*}
-u_p(\cdf \mid \varepsilon) & \geq & \sum_{q \in \sigma(q^*) \,:\, q^* \in Q_{\bs}} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\cdf}(q \mid \varepsilon).
+u_p(\cdf) & \geq & \sum_{q \in \sigma(q^*) \,:\, q^* \in Q_{\bs}} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
 %because Claim \ref{claim-nonempty-inter} guarantees that we are not summing each state in $Q_\df$ more than once. %We 
 Rearranging the term in the right-hand side, we obtain:
 \begin{eqnarray*}
-u_p(\cdf \mid \varepsilon) & \geq &\sum_{q^* \in Q_{\bs}}   \sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot  r_p(q) \cdot \pr^{\cdf}(q \mid \varepsilon).
+u_p(\cdf) & \geq &\sum_{q^* \in Q_{\bs}}   \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
 For each state $q^* \in Q_{\bs}$, notice that if $q \in \sigma(q^*)$, then $|q| = |q^*|$ and the number blocks owned by $p$ in $q$ is the same as the number of blocks owned by $p$ in $q^*$. Thus, we have that $r_p(q) \geq r_p(q^*)$ since $q \in Q_{\cdf}$ and, therefore, every block owned by $p$ in $q$ is in $\bchain(q)$ and $\bchain(q) = \meet(q)$.
         Notice that it could be the case that $r_p(q) > r_p(q^*)$, as some blocks owned by $p$ in $q^*$  may not be in $\meet(q^*)$. We conclude that:
 \begin{align*}
-\sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot  r_p(q) \, \cdot \, & \pr^{\cdf}(q \mid \varepsilon) \geq \\
-&\sum_{q \in \sigma(q^*)} \beta^{|q^*|} \cdot  r_p(q^*) \cdot \pr^{\cdf}(q \mid \varepsilon) = \\
-&\beta^{|q^*|} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q \mid \varepsilon).
+\sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot  r_p(q) \, \cdot \, & \pr^{\cdf}(q) \geq \\
+&\sum_{q \in \sigma(q^*)} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\cdf}(q) = \\
+&\beta^{|q^*|-1} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q).
 \end{align*}
 % because $|q| = |q^*|$ and 
 %$q$ and $q^*$ have the same number of blocks owned by $0$. 
 Moreover, by definition of $\pr^{\cdf}$ and $\pr^\bs$, we have that:
 \begin{eqnarray*}
-\sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q \mid \varepsilon) & = & \pr^{\bs}(q^* \mid \varepsilon).
+\sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q) & = & \pr^{\bs}(q^*).
 \end{eqnarray*}
-Combining the previous results and considering that $\pr^{\bs}(q^* \mid \varepsilon) = 0$ for every $q^* \in \bQ \smallsetminus Q_{\bs}$, we conclude that: 
+Combining the previous results and considering that $\pr^{\bs}(q^*) = 0$ for every $q^* \in \bQ \smallsetminus Q_{\bs}$, we conclude that: 
 \begin{eqnarray*}
-u_p(\cdf \mid \varepsilon) & \geq & \sum_{q^* \in Q_\bs} \bigg(\beta^{|q^*|} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q \mid \varepsilon)\bigg)\\
-& = & \sum_{q^* \in Q_\bs} \beta^{|q^*|} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^* \mid \varepsilon)\\
-& = & \sum_{q^* \in \bQ} \beta^{|q^*|} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^* \mid \varepsilon)\\
-& = & u_p(\bs \mid \varepsilon), 
+u_p(\cdf) & \geq & \sum_{q^* \in Q_\bs} \bigg(\beta^{|q^*|-1} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q)\bigg)\\
+& = & \sum_{q^* \in Q_\bs} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^*)\\
+& = & \sum_{q^* \in \bQ} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^*)\\
+& = & u_p(\bs), 
 \end{eqnarray*}
 which was to be shown.
 \end{proof}
