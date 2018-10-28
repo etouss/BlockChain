@@ -105,16 +105,16 @@ This concludes the proof of the proposition.
 \subsection{Proof of Proposition \ref{prop-ub-block}}
 We have that:
 \begin{eqnarray*}
-u_p(\bs \mid \{\varepsilon\}) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  r_p(b,q) \cdot \pr^{\bs}(q \mid \{\varepsilon\})\\
-& \leq & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  M_p(b) \cdot \pr^{\bs}(q \mid \{\varepsilon\})\\
-& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot   \pr^{\bs}(q \mid \{\varepsilon\})\\
-& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\sum_{q \in \bQ \,:\, b \in q \text{ and } |q| = i} \beta^{|q|-1} \cdot   \pr^{\bs}(q \mid \{\varepsilon\})\bigg)\\
-& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, b \in q \text{ and } |q| = i} \pr^{\bs}(q \mid \{\varepsilon\})\bigg)\\
-& \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q \mid \{\varepsilon\})\bigg).
+u_p(\bs ) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  r_p(b,q) \cdot \pr^{\bs}(q )\\
+& \leq & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  M_p(b) \cdot \pr^{\bs}(q )\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot   \pr^{\bs}(q )\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\sum_{q \in \bQ \,:\, b \in q \text{ and } |q| = i} \beta^{|q|-1} \cdot   \pr^{\bs}(q )\bigg)\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, b \in q \text{ and } |q| = i} \pr^{\bs}(q )\bigg)\\
+& \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q )\bigg).
 \end{eqnarray*}
-By lemma \ref{lem-prop-k}, we have that $\sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q \mid \{\varepsilon\}) = 1$. Hence, we conclude that:
+By lemma \ref{lem-prop-k}, we have that $\sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q ) = 1$. Hence, we conclude that:
 \begin{eqnarray*}
-u_p(\bs \mid \{\varepsilon\}) & \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q \mid \{\varepsilon\})\bigg)\\
+u_p(\bs ) & \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q )\bigg)\\
 & = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \beta^{i-1}\\
 & = & (1 - \beta) \cdot  \beta^{|b|} \cdot M_p(b) \cdot  \sum_{i=|b|+1}^\infty \beta^{i-1-|b|}\\
 & = & (1 - \beta) \cdot  \beta^{|b|} \cdot M_p(b) \cdot \sum_{j=0}^\infty \beta^{j}\\
