@@ -10,47 +10,47 @@ def f(x):
 
 ## alpha and beta
 a = 0.9999967030
-b =  0.9999996156
+b = 0.9999996156
+
+def af(h):
+	psi = (a*b*h)*f(a*b*b*h*(1-h))
+	fi = ((a*b*h)/((1-a)*(1-b)))*(f(b*b*h*(1-h))-a*f(a*b*b*h*(1-h)))
+
+	return (1-b)*fi/(1-psi)
+
+def fo(h):
+	## fork once strategy (genesis fork)
+	k1 = (a*b*h)/((1-a)*(1-b))
+	k2 = (a*a*b*h*(a*b+h*b-h*a*b-1))/((1-a)*(1-b)*(1-a*b))
+
+	return (1-b)*(k1*f(b*b*h*(1-h)) + k2*f(a*b*b*h*(1-h)))
+
+
+def default_comp(h):
+	return (1-b)*h*a*b/((1-b)*(1-a*b))
 
 ## the range and granularity to consider
 h = np.arange(0.001, 0.999, 0.001)
 
-## utility of the default strategy -- as a vector
-default = (1-b)*h*a*b/((1-b)*(1-a*b))
+always_fork = af(h)
 
-## utility of the always fork strategy as calculated in the paper
-psi = (a*b*h)*f(a*b*b*h*(1-h))
-fi = ((a*b*h)/((1-a)*(1-b)))*(f(b*b*h*(1-h))-a*f(a*b*b*h*(1-h)))
+fork_once = fo(h)
 
-always_fork = (1-b)*fi/(1-psi)
-
-#the difference between always fork and default
-print(always_fork)
-
-
-## fork once strategy (genesis fork)
-k1 = (a*b*h)/((1-a)*(1-b))
-k2 = (a*a*b*h*(a*b+h*b-h*a*b-1))/((1-a)*(1-b)*(1-a*b))
-
-fork_once = (1-b)*(k1*f(b*b*h*(1-h)) + k2*f(a*b*b*h*(1-h)))
+default = default_comp(h)
 
 ## plotting
 fig, ax = plt.subplots()
 
-## the difference between always fork and default
+# plot the utlities
 ax.plot(h,always_fork,color='blue')
-
-## the difference between fork once and default
 ax.plot(h,fork_once,color='red')
-
 ax.plot(h,default,color='pink')
-
 
 ax.set(xlabel='hash power (h)', ylabel='utility',
        title='Utility for a=%r, b=%r' % (a,b) )
 ax.grid()
 
-ax.legend(['always fork','fork once'])
+ax.legend(['always fork','fork once','default'])
 
 fig.savefig("test_AF.png")
 plt.show()
