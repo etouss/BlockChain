@@ -115,16 +115,16 @@ Recall that the utility of player $p$ using combined strategy $\cdf$
 %at the genesis tree 
 is defined as:
 \begin{eqnarray*}
-u_p(\cdf) & = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
+u_p(\cdf) & = & (1-\beta) \cdot \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
 If we choose to sum only over the states in the images under $\sigma$ of the states of $Q_\bs$, then by Claim \ref{claim-nonempty-inter-gen} we have that:
 \begin{eqnarray*}
-u_p(\cdf) & \geq & \sum_{q \in \sigma(q^*) \,:\, q^* \in Q_{\bs}} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
+u_p(\cdf) & \geq & (1-\beta) \cdot  \sum_{q \in \sigma(q^*) \,:\, q^* \in Q_{\bs}} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
 %because Claim \ref{claim-nonempty-inter} guarantees that we are not summing each state in $Q_\df$ more than once. %We 
 Rearranging the term in the right-hand side, we obtain:
 \begin{eqnarray*}
-u_p(\cdf) & \geq &\sum_{q^* \in Q_{\bs}}   \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
+u_p(\cdf) & \geq &(1-\beta) \cdot \sum_{q^* \in Q_{\bs}}   \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
 For each state $q^* \in Q_{\bs}$, notice that if $q \in \sigma(q^*)$, then $|q| = |q^*|$ and the number blocks owned by $p$ in $q$ is the same as the number of blocks owned by $p$ in $q^*$. Thus, we have that $r_p(q) \geq r_p(q^*)$ since $q \in Q_{\cdf}$ and, therefore, every block owned by $p$ in $q$ is in $\bchain(q)$ and $\bchain(q) = \meet(q)$.
         Notice that it could be the case that $r_p(q) > r_p(q^*)$, as some blocks owned by $p$ in $q^*$  may not be in $\meet(q^*)$. We conclude that:
@@ -141,9 +141,9 @@ Moreover, by definition of $\pr^{\cdf}$ and $\pr^\bs$, we have that:
 \end{eqnarray*}
 Combining the previous results and considering that $\pr^{\bs}(q^*) = 0$ for every $q^* \in \bQ \smallsetminus Q_{\bs}$, we conclude that: 
 \begin{eqnarray*}
-u_p(\cdf) & \geq & \sum_{q^* \in Q_\bs} \bigg(\beta^{|q^*|-1} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q)\bigg)\\
-& = & \sum_{q^* \in Q_\bs} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^*)\\
-& = & \sum_{q^* \in \bQ} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^*)\\
+u_p(\cdf) & \geq & (1-\beta) \cdot \sum_{q^* \in Q_\bs} \bigg(\beta^{|q^*|-1} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q)\bigg)\\
+& = &(1-\beta) \cdot  \sum_{q^* \in Q_\bs} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^*)\\
+& = &(1-\beta) \cdot  \sum_{q^* \in \bQ} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\bs}(q^*)\\
 & = & u_p(\bs), 
 \end{eqnarray*}
 which was to be shown.
