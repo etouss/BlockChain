@@ -1,0 +1,15 @@
+\subsection{Does this utility function make any sense?}\label{sec-wtf}
+
+Blockchain protocols enforce that miners receive a reward for each block they own precisely once. For instance, in Bitcoin, each miner will receive a pre-set reward (12.5 bitcoins at the time of writing) when she mines a block on top of a current blockchain. In order for the miners to have an incentive to keep mining on top of this block, and not fork as they please, the block reward can only be spent once the block with the reward has been included in a branch with one hundred or more blocks. Intuitively, we can interpret this as if the actual value of the mined block increases each time it has been confirmed, until it can finally be spent.
+
+We design our stochastic game to mimic this behaviour as follows. First, the reward $r_p(q)$ of a player $p$ in a state $q$ will depend on the blocks that player $p$ owns in $\bchain(q)$. More formally, $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q)$ is the reward that player $p$ receives for a block $b$ in a state $q$, and equals zero if $\bchain(q)$ is not defined.
+
+
+
+
+
+spend this reward, the mined block has to be positioned at the tail of a (future) blockchain, and have at least one hundred blocks confirming its validity. 
+
+
+
+On the other hand, Definition \ref{def-utility} states that when computing the utility of a player $p$, she can in fact receive the reward for the same block multiple times. For instance, when all the players 
