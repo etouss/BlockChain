@@ -276,6 +276,65 @@ Here the third equality follows since all Dyck words are of even length. The fin
 The closed form for $\varphi$ is computed in a similar way, constructing again generating functions of catalan numbers of specific parameters. 
 \end{proof}
 
+\medskip
+\noindent
+\textbf{When to fork}. To answer this question, we used the closed forms of $\bdf$ and $\baf$ to compute the utility for a fixed $\alpha$, $\beta$ and varying hash power. 
+To make it realistic as possible, we computed realistic values for $\alpha$ and $\beta$. For $\alpha$ we calculate the compound version of the discount of the bitcoin protocol, that is, 
+the value XXXX verifying that $\alpha^{210.000} = 1/2$. 
+For $\beta$ we calculate the 10-minute equivalent rate that would give us the US real interest rate in 2017 when compound over a year, which amounts to YYYYY. 
+
+Figure \ref{Fig-af-df-fo} shows the value of the utility for player one when both players use the default strategy (color) and when players behave according to $\baf$ (color). 
+The point where the two lines meet is $h = ZZZZ$, which shows that our model captures and confirms the folklore fact that it is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. 
+
+
+\medskip
+\noindent
+\textbf{Forking for a fixed number of times}. The other question we answer in this section is regarding the number of times one should be willing to fork. 
+This means analysing the family $F^1, F^2, \dots$ of strategies for player one, where $F^i$ dictates to follow $\af$ until the $i$-th fork is completed (and won), and then 
+switching to $\df_1$. 
+
+Using a similar strategy as we did for $\af$, we can calculate the utility for player one under each of the strategies $(\df_0,F^i)$. However, if one now looks at the (color) line 
+of Figure \ref{Fig-af-df-fo}, one sees there is no need to do this as all of these are subsumed by $\af$: if $\af$ is actually better than default, then the more we fork the more utility we gain, and on the other hand, 
+is $\af$ is worse than default, then  performing less forks is always the better alternative. 
+
+It turns out we can capture this behaviour in a slightly more general way, as long as the strategies involve some repetitive behaviour. 
+\juan{Etiennes Result!!!} 
+
+
+\subsection{Giving up for more utility}. 
+
+We have seen that one should start forking with a little les than half the hash power, and that once forking becomes profitable then one should do it all the time. However, these results involve somewhat basic strategies: either we fork or we don't fork, and there is nothing our opponent can do to prevent that. 
+
+But what if we study more complex strategies? Is there a strategy that makes forking profitable with less hashpower than the needed for $\af$? 
+It turns out this is the case, we can start forking with a little less hashpower, as long as we are willing to give up the though fights. 
+
+The families of strategies that we study in this section involve two parameters. First, one parameter $\ell$ that mandates the maximum length of the fight we are willing to put up 
+after forking, and one parameter $k$ that regulate how far back do I put my block when confronted with a chain of blocks I don't own. We denote these strategies by 
+$\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works, and indeed $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where 
+player $1$ is willing to keep fights of any length and to fork at the beginning of any chain of blocks she does not own.  
+
+\begin{example}
+Let us consider how $\gup_4^2$ would be different from always fork. First there is the issue of where to fork. Since $k = 2$, both strategies behave the same 
+for chains of cero, one or two blocks owned by player $0$. The difference is when facing a chain of 3 unowned new blocks in the blockchain, as in Figure \ref{}. 
+In this case, $\af$ would try to fork from her own block, but $\gup_4^2$ would fork instead on the dotted line (i.e., the $k$-th unowned block).
+Next is the give-up time. Normally, $\af$ is willing to fight forks forever, and for example, the move for state $q'$ in Figure \ref{} would still be to mine upon 
+her own block $1$. On the other hand $\gup_4^2$ has already seen $4$ blocks from the start of the fork, so with this strategy player $1$ instead gives up and 
+tries to mine upon the last block of player $0$, reinitiating her set of strategies as if this last block where the genesis block. 
+\end{example}
+
+To compute the closed form for $\gup_\ell^k$ we need a more involved combinatorial argument that requires counting dyck words were the difference between $0$'s and $1$'s can now be any constant, and with a bound on the maximum amount of $0$s. Let $\bgup^k_\ell$ denote the pair $(\df_0,\gup_\ell^k)$. Together with the recurrence argument of the proof of Theorem \ref{thm:always_fork}, we obtain: 
+
+\begin{theorem}
+For each pair of integers $\ell$ and $k$, the utility $u_1(\bgup^k_\ell \mid \epsilon)$ is computable, and has a closed expression of the form $u_1(\bgup^k_\ell \mid \epsilon) = \frac{\varphi}{1-\Gamma}$, where $\varphi$ and $\Gamma$ depend on $\alpha$, $\beta$, $h$, $\ell$ and $k$. 
+\end{theorem}
+
+This result gives us the possibility to mimic the plot we had for $\af$, with the same values of $\alpha$ and $\beta$s, but now for different values of $\ell$ and $k$. The most interesting results are when 
+fixing $k$ and varying $\ell$, as they give us what we are looking for. As we see in Figure \ref{}, for $h = X$ the strategy $\gup_X^Y$ (color) gives higher utility 
+than both the default strategy (color) and $\af$ (color). What is even more interesting, with smaller?bigger? numbers for $\ell$ we can arrive at strategies for which forking is profitable under even less hash power, albeit these strategies tend to be worse for bigger values of $h$. 
+
+When we fix $\ell$ and vary $k$ we..... 
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% BELOW IS THE PREVIOUS VERSION THAT I STILL DID NOT MAKE A PASS ON %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
