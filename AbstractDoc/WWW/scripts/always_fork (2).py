@@ -41,10 +41,13 @@ default = default_comp(h)
 ## plotting
 fig, ax = plt.subplots()
 
+linestyles = ['-', '--', '-.', ':']
+markers = [".",",","o","v","^","<",">","s","P","+","X"]
+
 # plot the utlities
-ax.plot(h,always_fork,color='blue')
-ax.plot(h,fork_once,color='red')
-ax.plot(h,default,color='pink')
+ax.plot(h,always_fork,color='black',linestyle=linestyles[0])
+ax.plot(h,fork_once,color='black',linestyle=linestyles[1])
+ax.plot(h,default,color='black',linestyle=linestyles[3])
 
 ax.set(xlabel='hash power (h)', ylabel='utility',
        title='Utility for a=%r, b=%r' % (a,b) )
