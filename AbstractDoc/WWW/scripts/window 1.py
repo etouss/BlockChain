@@ -240,7 +240,7 @@ def util(k,l,h):
 
 	res /= den
 
-	return res
+	return res*10
 
 # Data for plotting
 
@@ -248,20 +248,25 @@ def util(k,l,h):
 
 #print(choose(28,20))
 
-h = np.arange(0.001, 0.999, 0.001)
+start = 0.4
+end = 0.6
+step = 0.001
 
-default = h*a*b/((1-b)*(1-a*b))
+h = np.arange(start, end, step)
+
+default = h*a*b/((1-b)*(1-a*b))*10
 
 always_fork = af(h)
 
 window_fork = {}
 labels = []
 
-#linestyles = ['-', '--', '-.', ':']
-linestyles = [None,None,None,None]
+linestyles = [':', '--', '-.', ':']
+#linestyles = [None,None,None,None]
 colors = [0.1,0.25,0.4,0.55,0.7]
 
 fig, ax = plt.subplots()
+ax.set_ylim([1e12,5e12])
 
 #for j in range(1,2):
 #    for i in range(1,5):
@@ -269,45 +274,75 @@ fig, ax = plt.subplots()
 #            labels.append("window: " + str(j) + ", give up: " + str(2*i))
 #            ax.plot(h,util(j,2*i,h),linestyle=linestyles[i-1])
 
-labels.append("window: " + str(1) + ", give up: " + str(2*1))
+labels.append("window: " + str(1) + ", give up: " + str(2))
 w1g2 = util(1,2,h)
-ax.plot(h,util(1,2,h),linestyle=linestyles[0])
+ax.plot(h,util(1,2,h),linestyle=linestyles[0],color=str(colors[0]))
 
-labels.append("window: " + str(1) + ", give up: " + str(2*2))
-w1g4 = util(1,4,h)
-ax.plot(h,util(1,4,h),linestyle=linestyles[1])
+labels.append("window: " + str(1) + ", give up: " + str(6))
+w1g4 = util(1,6,h)
+ax.plot(h,util(1,6,h),linestyle=linestyles[1],color=str(colors[1]))
 
-labels.append("window: " + str(1) + ", give up: " + str(2*3))
-w1g6 = util(1,6,h)
-ax.plot(h,util(1,6,h),linestyle=linestyles[2])
+labels.append("window: " + str(1) + ", give up: " + str(10))
+w1g6 = util(1,10,h)
+ax.plot(h,util(1,10,h),linestyle=linestyles[2],color=str(colors[2]))
 
-labels.append("window: " + str(1) + ", give up: " + str(2*4))
-w1g8 = util(1,8,h)
-ax.plot(h,util(1,8,h),linestyle=linestyles[3])
+#labels.append("window: " + str(1) + ", give up: " + str(2*4))
+#w1g8 = util(1,8,h)
+#ax.plot(h,util(1,8,h),linestyle=linestyles[3])
 
 
 y = 0
 
-for x in np.arange(0.4, 0.6, 0.001):
+for x in np.arange(0.4, 0.6, step):
 	intersection = util(1,2,x) - util(1,6,x)
 	if intersection < 0.00000005:
 		y = x		
 		break
 
-ax.plot(y,util(1,2,y),'ro')
+section = np.arange(start,y,step)
+#plt.fill_between(section,util(1,2,section),color='Grey').set_hatch('///')
 
-ax.plot(h,default,color='red')
+plt.fill_between(section,util(1,2,section),facecolor='0.95',hatch='\\\\',edgecolor='0.7')
+#plt.fill_between(section,util(1,2,section),facecolor='0.85',edgecolor=str(colors[0]))
+
+
+y1 = 0
+
+for x in np.arange(0.4, 0.6, step):
+	intersection = util(1,6,x) - util(1,10,x)
+	if intersection < 0.00000005:
+		y1 = x		
+		break
+
+section = np.arange(y,y1,step)
+plt.fill_between(section,util(1,6,section),facecolor='0.9',hatch='..',edgecolor='0.7')
+#plt.fill_between(section,util(1,6,section),facecolor='0.25',edgecolor=str(colors[1]))
+
+section = np.arange(y1,end,step)
+plt.fill_between(section,util(1,10,section),facecolor='0.85',hatch='//',edgecolor='0.7')
+#plt.fill_between(section,util(1,10,section),facecolor='0.55',edgecolor=str(colors[2]))
+
+#ax.plot(y,util(1,2,y),'ro')
+
+ax.plot(h,default,color='black')
 
 labels.append('default')
 
-ax.plot(h,always_fork,color='blue')
+#ax.plot(h,always_fork,color='blue')
 
-labels.append('always fork')
+#labels.append('always fork')
 
 
 ax.set(xlabel='hash power (h)', ylabel='utility',
        title='Utility for a=%r, b=%r' % (a,b) )
-ax.grid()
+#ax.grid()
+#ax.yaxis.grid() # horizontal lines
+
+major_ticks = np.arange(start, end, 0.1)
+
+ax.set_xticks(major_ticks)
+
+ax.xaxis.grid() # vertical lines
 ax.legend(labels)
 
 fig.savefig("window_fork.png")
