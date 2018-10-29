@@ -252,7 +252,7 @@ h = np.arange(0.001, 0.999, 0.001)
 
 default = h*a*b/((1-b)*(1-a*b))
 
-asfuck = af(h)
+always_fork = af(h)
 
 window_fork = {}
 
@@ -261,18 +261,18 @@ for i in range(1,7):
 
 fig, ax = plt.subplots()
 
-#for i in range(1,7):
-#	ax.plot(h,window_fork[i])	
+for i in range(1,7):
+	ax.plot(h,window_fork[i])	
 
-ax.plot(h,util(2,14,h))
-ax.plot(h,util(2,20,h))
-ax.plot(h,util(2,6,h))
+#ax.plot(h,util(2,14,h))
+#ax.plot(h,util(2,20,h))
+#ax.plot(h,util(2,6,h))
 #ax.plot(h,window_fork[6])
 
 #ax.plot(h,window_fork,color='blue')
 ax.plot(h,default,color='red')
 
-ax.plot(h,asfuck,color='blue')
+ax.plot(h,always_fork,color='blue')
 
 sumA1 = sum_a1(1,6,h)
 sumA2 = sum_a2(1,6,h)
