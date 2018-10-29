@@ -148,34 +148,40 @@ $q_i = a_{p_1}(q_{i-1})$ and $q'_i = a_{p_2}(q_{i-1})$, where $a_{p_1} = s_{p_1}
 
 \subsection*{Proof of Lemma \ref{lem:default_utility}}
 By the definition of utility we have:
-$$u_1(\bdf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|-1}\cdot r(q)\cdot \pr^{\bdf}(q\mid \varepsilon).$$
+\begin{eqnarray*}
+u_1(\bdf) & = & (1-\beta) \cdot \sum_{q\in \bQ}\beta^{|q|-1}\cdot r(q)\cdot \pr^{\bdf}(q).
+\end{eqnarray*}
 Separating the sum by the state size, we can write:
 \begin{eqnarray*}
-u_1(\cdf \mid \varepsilon) & = & \sum_{i=0}^{\infty}\beta^{i} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_1(q) \cdot 
-\pr^{\cdf}(q \mid \varepsilon)\bigg).
+u_1(\cdf) & = & (1-\beta) \cdot \sum_{i=1}^{\infty}\beta^{i-1} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_1(q) \cdot 
+\pr^{\cdf}(q)\bigg).
 \end{eqnarray*}
-By encoding each state $q\in\bQ$ as a binary string $w\in \bstring$ according to the Proof of Theorem \ref{thm:always_fork} , we can compute the utility as follows:
+By encoding each state $q\in\bQ$ as a binary string $w\in \bstring$ (as in the proof of Theorem \ref{thm:always_fork} ) we can compute the utility as follows:
 \begin{eqnarray*}
-u_1(\cdf \mid \varepsilon)& = & c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=1}^{i}w[j] \alpha^j \bigg)\cdot 
-\pr^{\cdf}(q_w \mid \varepsilon)\bigg).
+u_1(\cdf)& = & (1-\beta) \cdot c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=1}^{i}w[j] \cdot \alpha^j \bigg)\cdot 
+\pr^{\cdf}(q_w)\bigg),
 \end{eqnarray*}
-Notice that in the equation above we use the fact that when playing $\cdf$ each state contains a single blockchain (and nothing else), thus implying that $\chi_p(\meet(q_w),j) = \chi_p(\bchain(q_w),j) = w[j]$, for every word $w\in \{0,1\}^*$. By changing the order of summation we obtain:
+where $w[j]$ is the $j$-th symbol of the string $w$ and $q_w = \{ b \in \bB \mid b \preceq w\}$. 
+Notice that in the equation above, we use the fact that when playing $\cdf$ each state contains a single blockchain (and nothing else), thus implying that for every word $w\in \{0,1\}^*$, it holds that $\meet(q_w) = \bchain(q_w)$ and $\chi_1(b) = \owner(b) = w[j]$, for every block $b \in q_w$ such that $|b| = j \geq 1$. By rearranging the order of the summation we obtain:
 \begin{eqnarray*}
-u_1(\cdf \mid \varepsilon)& = &c\cdot \sum_{i=0}^{\infty}\beta^{i}\sum_{j=1}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
-\pr^{\cdf}(q_w \mid \varepsilon)\bigg)
+u_1(\cdf )& = &(1-\beta) \cdot c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \bigg(\sum_{j=1}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
+\pr^{\cdf}(q_w)\bigg)\bigg)
 \end{eqnarray*}
-Using the fact that that mining any block for player 1 is an independent Bernoulli trial with probability of success $h$, and the fact that $\pr(\{q_w \mid w\in \{0,1\}^i \})=1$, for all $i$, we can conclude that $(\sum_{w\in\{0,1\}^i}   w[j]\cdot \pr^{\cdf}(q_w \mid \varepsilon) = \expected(w[j]) = h$, thus yielding:
+Using the fact that that mining any block for player 1 is an independent Bernoulli trial with probability of success $h$, and the fact that $\pr^{\cdf}(\{q_w \mid w\in \{0,1\}^i \text{ and } w[j]=1\})=h$ and $\pr^{\cdf}(\{q_w \mid w\in \{0,1\}^i \text{ and } w[j]=0\})=(1-h)$, for all $i \geq 1$ and $j \in \{1, \ldots, i\}$, we can conclude that $\sum_{w\in\{0,1\}^i}   w[j] \cdot \pr^{\cdf}(q_w) = \expected(w[j]) = h$, thus yielding:
 \begin{eqnarray*}	
-u_1(\cdf \mid \varepsilon) & = & c\cdot \sum_{i=0}^{\infty}\beta^{i}\sum_{j=1}^{i} \alpha^j \expected(w[j]) = ch\cdot \sum_{i=0}^{\infty}\beta^{i}\sum_{j=1}^{i} \alpha^j .
+u_1(\cdf) \ = \ (1-\beta) \cdot c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \bigg(\sum_{j=1}^{i} \alpha^j \cdot \expected(w[j])\bigg) \ = \ (1-\beta) \cdot c \cdot h \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \bigg(\sum_{j=1}^{i} \alpha^j\bigg) .
 \end{eqnarray*}
-Computing the final sum, we get:
+Computing the final summation, we get:
 \begin{eqnarray*}	
-u_1(\cdf \mid \varepsilon) & = & ch\cdot \sum_{i=0}^{\infty}\beta^{i}\frac{\alpha\cdot (1-\alpha^i)}{1-\alpha}\\
- & = & ch\cdot \frac{\alpha}{1-\alpha} \cdot \bigg(\sum_{i=0}^{\infty}\beta^{i} - \sum_{i=0}^{\infty}(\alpha \cdot \beta)^i \bigg).
+u_1(\cdf) & = & (1-\beta) \cdot c \cdot h\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \frac{\alpha\cdot (1-\alpha^i)}{1-\alpha}\\
+ & = & (1-\beta) \cdot c \cdot h\cdot \frac{\alpha}{1-\alpha} \cdot \bigg(\sum_{i=0}^{\infty}\beta^{i} - \sum_{i=0}^{\infty}(\alpha \cdot \beta)^i \bigg).
 \end{eqnarray*}
-Using the fact that $\sum_{i=0}^{\infty}x^i= \frac{1}{1-x}$, we obtain the desired result.
+Using the fact that $\sum_{i=0}^{\infty}x^i= \frac{1}{1-x}$ for $x \in (0,1)$, we obtain the desired result:
+\begin{eqnarray*}
+u_1(\cdf) & = & h\cdot c\cdot\frac{\alpha\cdot\beta}{(1-\alpha\cdot\beta)}.
+\end{eqnarray*}
 
-\subsection{Complete proof of Theorem \label{thm:always_fork}:}
+\subsection{Complete proof of Theorem \ref{thm:always_fork}:}
 Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q \mid \varepsilon) > 0\}$ be all states that can be reached from the genesis using strategy $\baf$, and recall 
 the mapping $\sigma: Q_\baf \rightarrow \{0,1\}^*$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the definition of $\sigma$ we have that for any state $q \in Q_\baf$ one verifies 
 $\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \sigma(q)} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
