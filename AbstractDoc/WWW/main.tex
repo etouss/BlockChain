@@ -45,7 +45,11 @@
 \input{mymacros}
 
 \begin{document}
-\title{We need a title}
+%\title{Should I fork? \\ A formal look at mining in cryptocurrencies.}
+%\title{Should I fork? \\ Cryptocurrencies mining as a stoshastic game.}
+%\title{Should I fork? \\Cryptocurrency mining through a stochastic stethoscope}
+\title{Cryptocurrency mining through a stochastic stethoscope}
+%\title{Formal foundations of cryptocurrency mining} %PLEASE NOT THIS ONE
 %\titlenote{Produces the permission block, and
 %  copyright information}
 %\subtitle{Extended Abstract}
@@ -131,18 +135,14 @@
 
 \begin{abstract}
 In the consensus protocol used in most cryptocurrencies, participants are expected to perform actions, for which they are promised a reward. 
-This actions are colloquially known as mining, and protocols must ensure that mining is reward-compatible: participants are expected to behave correctly 
-if they want to maximise their gains. Yet studying incentives behind mining actions in cryptocurrencies has proven a difficult task, as protocols are full of details and 
-technicalities. We are thus left without a clear understanding 
-of the miner's incentives and their optimal behaviour, and most of what is currently know is based solely on trial and error. 
+This actions are colloquially known as mining, and protocols must ensure that mining is reward-compatible: participants are expected to behave correctly if they want to maximise their gains. %Yet studying incentives behind mining actions in cryptocurrencies has proven a difficult task, as protocols are full of details and  technicalities. We are thus left without a clear understanding of the miner's incentives and their optimal behaviour, and most of what is currently know is based solely on trial and error. 
+Yet studying incentives behind mining actions in cryptocurrencies has proven a difficult task, leaving us without a clear understanding of optimal miner behaviour. %, or the precise value of the incentives in cryptocurrency protocols. 
 
-Our goal is to understand how does the optimal strategies for miners look like, and particularly under which circumstances are miners incentivised to fork the blockchain by 
-mining over blocks which are not the latest.  We model mining in cryptocurrencies as a stochastic game in which players always try to 
-produce new blocks, and are rewarded for it. The probability of a player producing a new block depends on the has power of players, that is, their proportion computational power with 
-respect to the power of the whole network. Players then look to maximise their utility in the long run, and their best strategy depends on their hash power and the discount 
+Our goal is to understand how do optimal mining strategies look like, and particularly under which circumstances are miners incentivised to fork the blockchain by mining on top of blocks which are not at the tail of the current chain.  We model mining in cryptocurrencies as a stochastic game in which players always try to 
+produce new blocks, and are rewarded for it. The probability of a player producing a new block depends on the hash power of the player, that is, the proportion of the computational power she controls compared to the power of the entire network. Players then look to maximise their utility in the long run, and their best strategy depends on their hash power and the discount 
 applied to the reward of each new block being mined. 
-We show that if no discount is offered, then miners do not have incentives to fork, no matter how high is their hash power. On the other hand, when working with 
-discounts similar in spirit to that of Bitcoin, miners do have incentive to fork, and surprisingly, they may want to fork even with less than half the hash power. 
+We show that if no discount is offered, then the miners do not have any incentive to fork, no matter how high their hash power is. On the other hand, when working with 
+discounts similar to those in Bitcoin, miners do have an  incentive to fork, and surprisingly, they may want to do so even when they own less than half of the network's hash power. 
 \end{abstract}
 
 %
