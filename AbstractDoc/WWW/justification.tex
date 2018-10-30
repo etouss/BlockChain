@@ -1,15 +1,35 @@
-\subsection{Does this utility function make any sense?}\label{sec-wtf}
+\subsection{Why this utility function make sense?}\label{sec-wtf}
 
-Blockchain protocols enforce that miners receive a reward for each block they own precisely once. For instance, in Bitcoin, each miner will receive a pre-set reward (12.5 bitcoins at the time of writing) when she mines a block on top of a current blockchain. In order for the miners to have an incentive to keep mining on top of this block, and not fork as they please, the block reward can only be spent once the block with the reward has been included in a branch with one hundred or more blocks. Intuitively, we can interpret this as if the actual value of the mined block increases each time it has been confirmed, until it can finally be spent.
+%Blockchain protocols enforce that miners receive a reward for each block they own precisely once. For instance, in Bitcoin, each miner will receive a pre-set reward (12.5 bitcoins at the time of writing) when she mines a block on top of a current blockchain. In order for the miners to have an incentive to keep mining on top of this block, and not fork as they please, the block reward can only be spent once the block with the reward has been included in a branch with one hundred or more blocks on top of it. Intuitively, we can interpret this as if the actual value of the mined block increases each time it has been confirmed, until it can finally be spent.
 
-We design our stochastic game to mimic this behaviour as follows. First, the reward $r_p(q)$ of a player $p$ in a state $q$ will depend on the blocks that player $p$ owns in $\bchain(q)$. More formally, $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q)$ is the reward that player $p$ receives for a block $b$ in a state $q$, and equals zero if $\bchain(q)$ is not defined.
+Blockchain protocols enforce that miners receive a reward for each block they own precisely once. For instance, in Bitcoin, each miner will receive a pre-set reward (12.5 bitcoins at the time of writing) when she mines a block on top of a current blockchain. In order for the miners to have an incentive to keep mining on top of this block, and not fork as they please, the block reward can only be spent once the block with the reward has been included in a branch with one hundred or more blocks on top of it. We can interpret this as two types of incentives being placed by the bitcoin protocol:
+\begin{itemize}
+\item The incentive to mine on the longest branch in hope that it reaches 100 blocks, allowing us to spend the reward; and
+\item The actual value of the mined block increases each time it has been confirmed, until it can finally be spent.
+\end{itemize}
+
+We design our stochastic game to mimic this behaviour as follows.  First, the reward $r_p(q)$ of a player $p$ in a state $q$ will depend on the blocks that player $p$ owns in $\bchain(q)$. More formally, $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q)$ is the reward that player $p$ receives for a block $b$ in a state $q$, and equals zero if $\bchain(q)$ is not defined. This puts a strong incentive for the players to extend the longest existing blockchain, and not mine on a random block. 
+
+The second incentive is achieved by not paying the entire block reward  immediately after the block is mined. To see this, note that each state $q$ is reached when a miner appends a single block to the previous state. For instance, one way to reach the state $q$ in Example \ref{ex-mining} is when the player 0 mines her block on top of the block 1111 in a state containing all the other blocks of $q$. Similarly as in the Bitcoin protocol, if we were to give player 0 her reward immediately after mining the block 11110, she would have no further incentive to mine on top of this block, as the reward for mining on top of any other block of $q$ would be the same. What Definition \ref{def-utility} does instead is pay a portion of block $b$'s reward each time it is included in a blockchain of a state $q$ equal to $r_p(b,q)$ multiplied by a discount factor $\beta^{|q|-1}$. In a sense, we pay a portion of block $b$'s reward each time it is included in the current blockchain.
+
+Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
+\begin{eqnarray*}
+u_p^b(\bs) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in \bchain(q)} \beta^{|q|-1} \cdot  r_p(q,b) \cdot \pr^{\bs}(q).
+\end{eqnarray*}
+For simplicity, here we assume that the game starts in the genesis block $\varepsilon$, and not in an arbitrary state $q_0$. The discount factor in this case is $\beta^{|q|-1}$, since $|\{\varepsilon\}|= 1$.  Note that in $u_p^b(\bs)$ we pay $r_p(q,b)$ discounted by $\beta^{|q|-1}$ every time $b$ belongs to a blockchain defined by $q$, thus making it valuable for a miner to continue working on the branch containing the block $b$.
+
+While Definition \ref{def-utility} corresponds to the usual notion of discounted utility \cite{??}, it might seem unusual that we might pay (a portion of) the block's reward multiple times. In order to resolve this issue, we include the factor $1-\beta$ in our definition of utility. To illustrate this, consider a game where all the player mine on the existing blockhain, thus making each state a single branch starting in the genesis block $\varepsilon$. Denote by $\bs_0$ this combined strategy. If a player $p$ won the first block, call it $b_0$, then $b_0$ will be included in every possible state of the game, and will receive some reward in each of these states. Intuitively, since $b_0$ was won in the first step of the game, its value for the player $p$ will be $r_p(q_0,b_0) \cdot \beta$, where $q_0$ is the state $\{\varepsilon,p\}$\footnote{The discount factor means that owning an asset one step in the future implies a deduction of its value by a factor $\beta$, two steps in the future by a factor of $\beta^2$, etc.}. By the definition above we have that $u_p^{b_0}(\bs_0) = (1-\beta) \cdot \sum_{q\in \bQ} \beta^{|q|-1}\cdot r_p(q,b_0)\cdot \pr^{\bs_0}(q)$. Considering how each state looks under $\bs_0$, we can write this as $u_p^{b_0}(\bs_0) = (1-\beta)\cdot\sum_{i\geq 1} \sum_{q : |q| = i }\beta^i\cdot r_p(q,b_0)\cdot \pr^{\bs_0}(q)$. Assuming that $r_p(q,b)=r_p(q',b)$, for all $q,q'$, which is a natural assumption holding true for all the strategies we consider, and in real life protocols, such as the one deployed by e.g. Bitcoin, we get $u_p^{b_0}(\bs_0) = (1-\beta)\cdot r_p(q,b_0)\cdot \sum_{i\geq 1}\beta^i\cdot \sum_{q : |q| = i } \pr^{\bs_0}(q)$. Since the inner sum always add us to 1 (as it counts the probability of reaching a particular state on a single branch under $\bs_0$), and $\sum_{i\geq 1}\beta^i = \frac{\beta}{1-\beta}$, we get that $u_p^{b_0}(\bs_0) = r_p(q_0,b_0) \cdot \beta$, as expected.
+
+More generally, assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
+\begin{myprop}\label{prop-ub-block}
+For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \bS$, it holds that:
+\begin{eqnarray*}
+u^b_p(\bs) & \leq &  \beta^{|b|} \cdot M_p(b).
+\end{eqnarray*}
+\end{myprop}
+Thus, the utility obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that has to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$. 
+Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This again tell us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
 
 
 
 
-
-spend this reward, the mined block has to be positioned at the tail of a (future) blockchain, and have at least one hundred blocks confirming its validity. 
-
-
-
-On the other hand, Definition \ref{def-utility} states that when computing the utility of a player $p$, she can in fact receive the reward for the same block multiple times. For instance, when all the players 
