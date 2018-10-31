@@ -208,16 +208,17 @@ tells us that the probability of a state $q$ is the sum of probabilities of all 
 %$\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \sigma(q)} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
 %$h^{n_1}(1-h)^{n_0}$. Further, by Claim \ref{claim-nonempty-inter-gen} the inverse  $\sigma^{-1}: \{0,1\}^* \rightarrow Q_\baf$ is a total function.  
 
-From Claim \ref{claim-words-app}, we conclude that the utility of player $1$ can be rewritten as follows:
+For every $w \in \{0,1\}^*$, there exists a unique state $q \in Q_{\baf}$ such that $w \in \tau(q)$. Given Claim \ref{claim-words} (a), to prove this claim we only need to prove the existence of such a state $q$. If $w = \varepsilon$, then $q = \{\varepsilon\}$. On the other hand, if $w = p_1 \cdots p_n$ with $n \geq 1$ and each $p_i \in \{0,1\}$, then $q = q_n$ in a sequence $q_0, \ldots, q_n$ of states defined by the rules: (1) $q_0 = \varepsilon$; and (2) for every $i \in \{1, \ldots, n\}$, it holds that $q_{i} = a_{i}(q_{i-1})$, where $a_{i} = \df_0(q_{i-1})$ if $p_i = 0$, and $a_{i} = \af(q_{i-1})$ if $p_i = 1$.
+Thus, we conclude that the utility of player $1$ can be rewritten as follows:
 \begin{eqnarray*}
-u_1(\baf) & = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\cdf}(q)\\
-& = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \bigg(\sum_{w \in \tau(q)} \pr(w)\bigg)\\
-& = &  \sum_{q \in \bQ} \sum_{w \in \tau(q)} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr(w)\\
-& = &  \sum_{q \in \bQ} \sum_{w \in \tau(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
+u_1(\baf) & = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+& = & \sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+& = & \sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \bigg(\sum_{w \in \tau(q)} \pr(w)\bigg)\\
+& = &  \sum_{q \in \bQ_{\baf}} \sum_{w \in \tau(q)} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr(w)\\
+& = &  \sum_{q \in \bQ_{\baf}} \sum_{w \in \tau(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
 & = & \sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w),
 \end{eqnarray*}
 given that $|w| = |q| -1$ for every $w \in \tau(q)$, and assuming that $r_1(w)$ is defined as $r_1(q)$ for the only state $q$ such that $w \in \tau(q)$.
-
 
 
 
@@ -235,7 +236,7 @@ We will now try to describe all the states in which player 1 receives a non-zero
 The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4-app} (a). This state is created when player $q$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4-app} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
 won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4-app} (c). 
 In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word} \cite{Dyck}: a word with the same number of $0$s and $1$s, but such that 
-no prefix of $d$ has more $1$s than $0$s (this intuitively means that at any point player $1$ did not have more blocks than $0$). 
+no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ has more blocks than $0$). 
 Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. We use $\Dyck$ to denote the set of all Dyck words. Notice that by definition all elements of $\Dyck$ are of even length.
 
 \begin{figure}
@@ -293,66 +294,61 @@ Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word 
 \end{figure}
 
 Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
-$w$ with $r_1(w) > 0$ are therefore of the form $d 1 w'$. Now let $q = \sigma^{-1}(d1w')$ be the state represented by $d1w'$
-
-
-*say that $\meet(d1w')$ contains $d1$, and therefore by definition of our reward function, the reward $r_1(d1w')$ can be split 
-into the reward for $d1$ and the reward for $w'$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w'$ starts. Therefore, we can write the above utility as follows:
-
-%Now notice that when playing $\baf$, player 1 will fork each time she loses a block. This in particular means, that the states where she will receive an award for her blocks will always start with her winning one or more forks. For instance, in Figure \ref{fig:always_fork}, player 1 receives an award in block 11, which corresponds to a state coded by the word $w=011$. A similar story holds true for block 111, which corresponds to a state coded by the word $w=01101$. In general, states where player 1 receives an award can be coded by a Dyck word $d$, where both 1 and 0 have the same number of blocks in the game, followed by a block won by 1. After that any word $w$ can follow, leaving us in a state coded by $d1w$. Notice that the reward of player 1 in this state can be split into the reward for $d1$ (since this will always be part of $\meet(q)$, for $q$ the state corresponding to $d1w$), and the reward for $w$, with a shift of $\alpha^{\frac{|d|}{2}+1}$, since the latter is the length of the longest common chain before $w$ starts. Therefore, we can write the above utility as follows:
-
+$w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$ with $d \in \Dyck$. Now let $q$ be the only state such that  $d\cdot 1\cdot w' \in \tau(q)$.
+% be the state represented by $d\cdot 1\cdot w'$. 
+State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
+with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w'$). 
+We can then calculate the reward for $q$ as: 
 \begin{eqnarray*}
-u_1(\baf\mid\varepsilon) = \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r(d1) + \alpha^{\frac{|d|}{2}+1}\cdot r(w)\big] \cdot \\ \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).
+%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+r_1(q) & = & r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
 \end{eqnarray*}
+Hence, we obtain $u_1(\baf)$ is equal to:
+\begin{eqnarray*}
+ \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r_1(d\cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w)\big] \cdot \pr(d\cdot 1 \cdot w).
+\end{eqnarray*}
+%
+%The product of probabilities is obtained since winning a block is an independent trial. 
+Splitting up the summation we get that $ u_1(\baf)$ is equal to:
+\begin{eqnarray*}
+ \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d\cdot 1) \cdot \pr(d\cdot 1\cdot w) +
+  \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r_1(w) \cdot \pr(d\cdot 1 \cdot w).
+\end{eqnarray*}
+%
+We denote the first term in the equation above by $\Phi$. 
+By definition of the probability of a string, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
+Next, we use this fact in the expression for $u_1(\baf)$ to split the second term into the elements that depend only on $d$, and the ones that depend only on $w$:
+%
+\begin{eqnarray*}
+ u_1(\baf) & = & \Phi  + 
+  \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1) \cdot 
+ \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w)  \cdot \pr(w).
+\end{eqnarray*}
+%
+Since the rightmost sum is precisely $u_1(\baf)$, we have that:
+%
+\begin{eqnarray*}
+ u_1(\baf) & = & \Phi + 
+ \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot  u_1(\baf).
+\end{eqnarray*}
+%
+By denoting with $\Gamma$ the term $\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)$, we get the equation:
+\begin{eqnarray*}
+u_1(\baf) & = &  \frac{\Phi}{1-\Gamma}.
+\end{eqnarray*}
+Let us now find a closed form for $\Gamma$ and $\Phi$, starting with $\Gamma$. In what follows, we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$ (recall that all Dyck words are of even length):
+%
+\begin{eqnarray*}
+\Gamma & = & \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\\
+ & = & \alpha\cdot \beta \cdot \bigg(\sum_{d\in \Dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr(d\cdot 1)\bigg) \\
+  & = & \alpha\cdot \beta \cdot \bigg(\sum_{\ell = 0}^{\infty} \sum_{d\in \Dyck_{2\ell}} (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\bigg)\\
+   & = &  \alpha\cdot \beta \cdot (\sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| \cdot (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h)\\
+    & = &  \alpha\cdot \beta \cdot h \cdot \cat(\alpha\cdot\beta^2 \cdot h \cdot (1-h)).
+\end{eqnarray*}
+%
+%Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). 
+The final equality is obtained using the fact that the $\ell$-th Catalan number is equal to the number of Dyck words of length $2\ell$ \cite{??}, thus the summation in the previous line defines the generating function of Catalan numbers.
 
-The product of probabilities is obtained since winning a block is an independent trial. Splitting up the sums we get:
-
-\begin{align*}
- & u_1(\baf\mid\varepsilon) = \\
- & \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon)
- \mbox{ } +\\
- & \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r(w) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).
-\end{align*}
-
-We will denote the first term in the equation above by $\varphi$. 
-
-%More precisely,
-%$$\varphi = \sum_{d\in \dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r(d1) \cdot \pr^{\baf}(d1\mid \varepsilon)\cdot \pr^{\baf}(w\mid \varepsilon).$$
-
-Next, in the expression for $u_1(\baf\mid\varepsilon)$ we will split the second term into the elements that depend only on $d$, and the ones that depend only on $w$, getting:
-
-\begin{align*}
- & u_1(\baf\mid\varepsilon) = \varphi \mbox{ } +\\
- & \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon) \cdot 
- \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r(w)  \cdot \pr^{\baf}(w\mid \varepsilon).
-\end{align*}
-
-But the rightmost sum is precisely the definition of $u_1(\baf\mid\varepsilon)$, so we can write: 
-
-\begin{align*}
- u_1(\baf\mid\varepsilon) = \varphi \mbox{ } + 
- \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon) \cdot  u_1(\baf\mid\varepsilon).
-\end{align*}
-
-By denoting:
-
-$$\Gamma = \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon),$$
-
-we get the equation:
-
-$$u_1(\baf\mid\varepsilon) = \frac{\varphi}{1-\Gamma}.$$
-
-Let us now find a closed form for $\Gamma$ and $\varphi$. We start with $\Gamma$.
-
-\begin{align*}
-\Gamma = & \sum_{d\in \dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr^{\baf}(d1\mid \varepsilon)\\
- = & \mbox{ } \alpha\cdot \beta \sum_{d\in \dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr^{\baf}(d1\mid \varepsilon) \\
-  = & \mbox{ } \alpha\cdot \beta \sum_{\ell = 0}^{\infty} \sum_{d\in \dyck_{2\ell}} (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
-   = & \mbox{ } \alpha\cdot \beta \sum_{\ell = 0}^{\infty} |\dyck_{2\ell}| (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
-    = & \mbox{ } \alpha\cdot \beta \cdot h \cdot Cat(\alpha\cdot\beta^2 \cdot h \cdot (1-h)).\\
-\end{align*}
-
-Here the third equality follows since all Dyck words are of even length. The final equality is obtained using the fact that the $\ell$th Catalan number is equal to the number of Dyck words of length $2\ell$, thus the summation in the previous line defines the generating function of Catalan numbers.
 
 Finally, we compute a closed form for $\varphi$. First, recall that:
 
