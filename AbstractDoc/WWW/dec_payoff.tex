@@ -129,7 +129,7 @@ If $h$ is the hash power of player 1, then:
 \begin{eqnarray*}
 u_1(\baf) &=& \frac{\varphi}{1-\Gamma}, 
 \end{eqnarray*}
-where $\cat$ is the generating function of Catalan numbers, and
+where $\cat$ is the generating function of Catalan numbers\footnote{The generating function of Catalan numbers \cite{Catalans} is given by $Cat(x) = \frac{1-\sqrt{1-4x}}{2x}$.}, and
 \begin{align*}
 \varphi & = \ \frac{\alpha \cdot \beta \cdot h }{(1-\alpha)\cdot (1-\beta)} \cdot \bigg[\cat(\beta^2 \cdot h \cdot (1-h)) \ -\\
 & \hspace{120pt} \alpha\cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h))\bigg]\\
@@ -141,6 +141,176 @@ where $\cat$ is the generating function of Catalan numbers, and
 
 %Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
 
+
+\begin{proof}
+Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and recall 
+the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\sigma_* :Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
+\begin{multline*}
+\sigma_*(q) \ = \ \big\{ 
+b_\rho \mid \rho \text{ is a sequence for } q, \text{ and } \\
+\{b\in \bB \mid b\preceq b_\rho\} \in \sigma(q) \
+\big\}.
+\end{multline*}
+Intuitively, $\sigma_*(q)$ is the set of all plays that 0 and 1 can do in $|q|$ steps according to $\baf$ that leads them to the state $q$ when starting in a genesis block. As such, they are coded as sequences of zeros and ones that tell us which player puts a block at the stage $i$ of the game, for $i = 1\ldots |q|$. It is straightforward to verify the following:
+
+\begin{myclaim}\label{claim-words} For all $q, q'\in Q_\baf$ it holds that:
+\begin{itemize}
+\item If $q\neq q'$, then $\sigma_*(q)$ is disjoint from $\sigma_*(q')$.
+\item $\pr^{\baf}(q) = \sum_{w \in \sigma_*(q)} \pr(w)$, where $\pr(w)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
+$h^{n_1}(1-h)^{n_0}$.
+\end{itemize}
+\end{myclaim}
+The first property in Claim \ref{claim-words} tells us that a sequence of actions of players 0 and 1 uniquely determines a state of the game. The second property tells us that that the probability of a state $q$ is the sum of probabilities of all the sequences of actions of players 0 and 1 that end up in $q$ when started in the genesis block. Notice that since actions of 0 and 1 are independent trials, with  probabilities $1-h$ and $h$, respectively, the probability of a play where 0 wins $n_0$ rounds, and 1 wins $n_1$ rounds is $h^{n_1}(1-h)^{n_0}$, as stated in the claim.
+
+Using these two properties, we can rewrite the utility of player $1$ when $\baf$ is being played as: 
+\begin{align*}
+u_1(\baf) & = \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+ & =  \sum_{q \in \bQ} \sum_{w \in \sigma_*(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
+  & =  \sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w),
+\end{align*}
+where $r_1(w)$ is just a convenient shorthand for $r_1(\sigma_*^{-1}(w))$, that is, the reward of player 1 in a state reached when the word $w$ is the sequence of actions taken by players 0 and 1.
+
+
+%Since $\varepsilon\subseteq q$, for any state $q\in \bQ$, by the definition of utility we have that: 
+
+%$$u_1(\baf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|}\cdot r(q)\cdot \pr^{\baf}(q\mid \varepsilon).$$
+
+%Applying the idea of coding the states in a two player game as sequences of binary numbers, we can write the above as:
+
+%\begin{equation}\label{eq:def_utility}
+%u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
+%\end{equation}
+
+We will now try to describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\sigma_*$) in which player $1$ owns at least one block in the blockchain for the {\em first time}. 
+The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4} (a). This state is created when player $q$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
+won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4} (c). 
+In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word} \cite{Dyck}: a word with the same number of $0$s and $1$s, but such that 
+no prefix of $d$ has more $1$s than $0$s (this intuitively signifies that player $1$ never had more blocks than $0$ at any point). 
+Note that the only Dyck word of length $0$ is $\epsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. We use $\Dyck$ to denote the set of all Dyck words. Notice that by definition all elements of $\Dyck$ are of even length.
+
+\begin{figure}
+\begin{subfigure}{0.2\columnwidth}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (-2,0) (R) {$\varepsilon$};
+	\node [state] at (-0.5,0) (1) {$1$};
+
+	% Graph edges
+	\path[->]
+	(R) edge (1);  	
+\end{tikzpicture} 
+\end{subfigure} 
+\qquad
+\begin{subfigure}{0.3\columnwidth}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (1) {$1$};
+	\node [state] at (1.5,-0.75) (0) {$0$};
+
+	\node [state] at (3,0.75) (11) {$11$};	
+	
+	% Graph edges
+	\path[->]
+	(R) edge (0);  	
+	
+	\path[->]
+	(R) edge (1)
+	(1) edge (11);
+
+\end{tikzpicture} 
+\end{subfigure}
+
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (1) {$1$};
+	\node [state] at (1.5,-0.75) (0) {$0$};
+
+	\node [state] at (3,-0.75) (00) {$00$};
+	
+	\node [state] at (3,0.75) (11) {$11$};	
+	\node [state] at (4.5,0.75) (111) {$111$};	
+	
+	% Graph edges
+	\path[->]
+	(R) edge (0)
+	(0) edge (00);  	
+	
+	\path[->]
+	(R) edge (1)
+	(1) edge (11)
+	(11) edge (111);
+
+\end{tikzpicture} 
+\end{center}
+\end{subfigure}
+
+\caption{XXX}
+\label{fig:proof-theorem-4}
+\end{figure}
+
+Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
+$w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$. Now let $q = \sigma_*^{-1}(d\cdot 1\cdot w')$ be the state represented by $d\cdot 1\cdot w'$. 
+State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
+with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w'$). 
+We can then calculate the reward for $q$: 
+$$r_1(q) = \big(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \big)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(\sigma_*^{-1}(w)).$$
+Therefore (and writing $r_1(w)$ for $r_1(\sigma_*^{-1}(w)))$, we obtain:
+\begin{eqnarray*}
+u_1(\baf) = \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r(d\cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r(w)\big] \cdot \\ \pr(d\cdot 1)\cdot \pr(w).
+\end{eqnarray*}
+%
+The product of probabilities is obtained since winning a block is an independent trial. Splitting up the sums we get:
+\begin{multline*}
+ u_1(\baf) = 
+ \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r(d\cdot 1) \cdot \pr(d\cdot 1)\cdot \pr(w)
+ \mbox{ } +\\
+  \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r(w) \cdot \pr(d\cdot 1)\cdot \pr(w).
+\end{multline*}
+%
+We denote the first term in the equation above by $\varphi$. 
+Next, in the expression for $u_1(\baf)$ we will split the second term into the elements that depend only on $d$, and the ones that depend only on $w$, getting:
+%
+\begin{align*}
+ & u_1(\baf) = \varphi \mbox{ } +\\
+ & \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1) \cdot 
+ \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r(w)  \cdot \pr(w).
+\end{align*}
+%
+Since the rightmost sum is precisely $u_1(\baf)$, we have:
+%
+\begin{align*}
+ u_1(\baf) = \varphi \mbox{ } + 
+ \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1) \cdot  u_1(\baf).
+\end{align*}
+%
+By denoting with $\Gamma$ the rightmost term of the sum above we get the equation:
+$$u_1(\baf\mid\varepsilon) = \frac{\varphi}{1-\Gamma}.$$
+Let us now find a closed form for $\Gamma$.
+%
+\begin{align*}
+\Gamma = & \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\\
+ = & \mbox{ } \alpha\cdot \beta \sum_{d\in \Dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr(d\cdot 1) \\
+  = & \mbox{ } \alpha\cdot \beta \sum_{\ell = 0}^{\infty} \sum_{d\in \Dyck_{2\ell}} (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+   = & \mbox{ } \alpha\cdot \beta \sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+    = & \mbox{ } \alpha\cdot \beta \cdot h \cdot Cat(\alpha\cdot\beta^2 \cdot h \cdot (1-h)).\\
+\end{align*}
+%
+Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). The final equality is obtained using the fact that the $\ell$th Catalan number is equal to the number of Dyck words of length $2\ell$ \cite{??}, thus the summation in the previous line defines the generating function of Catalan numbers.
+%
+The closed form for $\varphi$ is computed in a similar way, constructing again generating functions of Catalan numbers for  specific parameters. 
+\end{proof}
+
+
+
+%%%OFF :) THE VERSION JUAN HAD BEFORE MY PASS
+\begin{comment}
 \begin{proof}
 Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis using strategy $\baf$, and recall 
 the mapping $\sigma: Q_\baf \rightarrow \{0,1\}^*$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the definition of $\sigma$ we have that for any state $q \in Q_\baf$ one verifies 
@@ -297,6 +467,7 @@ Here the third equality follows since all Dyck words are of even length. The fin
 
 The closed form for $\varphi$ is computed in a similar way, constructing again generating functions of catalan numbers of specific parameters. 
 \end{proof}
+\end{comment}
 
 \medskip
 \noindent
