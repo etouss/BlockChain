@@ -464,9 +464,9 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 \medskip
 \noindent
 \textbf{When to fork}. To answer this question, we used the closed forms of $\bdf$ and $\baf$ to compute the utility for a fixed $\alpha$, $\beta$ and varying hash power. 
-To make it realistic as possible, we computed realistic values for $\alpha$ and $\beta$. For $\alpha$ we calculate the compound version of the discount of the bitcoin protocol, that is, 
-the value XXXX verifying that $\alpha^{210.000} = 1/2$. 
-For $\beta$ we calculate the 10-minute equivalent rate that would give us the US real interest rate in 2017 when compound over a year, which amounts to YYYYY. 
+To make it as realistic as possible, we compute $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
+a value of alpha that would divide the reward by half every 210.000 blocks. Solving  $\alpha^{210.000} = 1/2$ gives us a value of $\alpha = 0.9999967030$. For 
+$\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 2017, which amounts to 2.2077\%. This gives us a value of $\beta = 0.9999996156$. 
 
 Figure \ref{Fig-af-df-fo} shows the value of the utility for player one when both players use the default strategy (color) and when players behave according to $\baf$ (color). 
 The point where the two lines meet is $h = ZZZZ$, which shows that our model captures and confirms the folklore fact that it is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. 
