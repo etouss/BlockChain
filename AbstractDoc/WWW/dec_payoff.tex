@@ -143,32 +143,36 @@ where $\cat$ is the generating function of Catalan numbers\footnote{The generati
 
 
 \begin{proof}
-Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and recall 
-the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\sigma_* :Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
-\begin{multline*}
-\sigma_*(q) \ = \ \big\{ 
-b_\rho \mid \rho \text{ is a sequence for } q, \text{ and } \\
-\{b\in \bB \mid b\preceq b_\rho\} \in \sigma(q) \
-\big\}.
-\end{multline*}
-Intuitively, $\sigma_*(q)$ is the set of all plays that 0 and 1 can do in $|q|$ steps according to $\baf$ that leads them to the state $q$ when starting in a genesis block. As such, they are coded as sequences of zeros and ones that tell us which player puts a block at the stage $i$ of the game, for $i = 1\ldots |q|$. It is straightforward to verify the following:
-
-\begin{myclaim}\label{claim-words} For all $q, q'\in Q_\baf$ it holds that:
+Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and from the proof of Theorem \ref{thm-conts_dom_str} recall the definition of sequence $\rho$ for a state $q$, and recall the construction of string $b_\rho$ from such a sequence $\rho$.
+%the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
+By using these elements, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
+\begin{eqnarray*}
+\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
+\end{eqnarray*}
+Intuitively, $\tau(q)$ is the set of all moves that players 0 and 1 can do in $|q|$ steps according to $\baf$ that lead them to the state $q$ when starting in the genesis block. As such, they are coded as sequences of zeros and ones that tell us which player puts a block at the stage $i$ of the game, for $i \in \{ 1,\ldots, |q|\}$. It is straightforward to verify the following:
+\begin{myclaim}\label{claim-words-app} For every $q, q'\in Q_\baf$, it holds that:
 \begin{itemize}
-\item If $q\neq q'$, then $\sigma_*(q)$ is disjoint from $\sigma_*(q')$.
-\item $\pr^{\baf}(q) = \sum_{w \in \sigma_*(q)} \pr(w)$, where $\pr(w)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
+\item[(a)] If $q\neq q'$, then $\tau(q)$ is disjoint from $\tau(q')$.
+\item[(b)] $\pr^{\baf}(q) = \sum_{w \in \tau(q)} \pr(w)$, where $\pr(w)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is  defined as 
 $h^{n_1}(1-h)^{n_0}$.
 \end{itemize}
 \end{myclaim}
-The first property in Claim \ref{claim-words} tells us that a sequence of actions of players 0 and 1 uniquely determines a state of the game. The second property tells us that that the probability of a state $q$ is the sum of probabilities of all the sequences of actions of players 0 and 1 that end up in $q$ when started in the genesis block. Notice that since actions of 0 and 1 are independent trials, with  probabilities $1-h$ and $h$, respectively, the probability of a play where 0 wins $n_0$ rounds, and 1 wins $n_1$ rounds is $h^{n_1}(1-h)^{n_0}$, as stated in the claim.
+In particular, Claim \ref{claim-words-app} (a) can be proved exactly in the same way Claim \ref{claim-nonempty-inter-gen} is proved. Notice that Claim \ref{claim-words-app} (a)
+%The first property in Claim \ref{claim-words} 
+tells us that a sequence of actions of players 0 and 1 uniquely determines a state of the game. 
+Moreover,  Claim \ref{claim-words-app} (b)
+%The second property 
+tells us that the probability of a state $q$ is the sum of probabilities of all the sequences of actions of players 0 and 1 that end up in $q$ when started in the genesis block. Observe that since the actions of players 0 and 1 are independent trials, with  probabilities $1-h$ and $h$, respectively, the probability of a state where player 0 wins $n_0$ rounds and player 1 wins $n_1$ rounds is $h^{n_1}(1-h)^{n_0}$, as stated in the claim.
 
-Using these two properties, we can rewrite the utility of player $1$ when $\baf$ is being played as: 
-\begin{align*}
-u_1(\baf) & = \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
- & =  \sum_{q \in \bQ} \sum_{w \in \sigma_*(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
-  & =  \sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w),
-\end{align*}
-where $r_1(w)$ is just a convenient shorthand for $r_1(\sigma_*^{-1}(w))$, that is, the reward of player 1 in a state reached when the word $w$ is the sequence of actions taken by players 0 and 1.
+From Claim \ref{claim-words-app}, we conclude that the utility of player $1$ can be rewritten as follows:
+\begin{eqnarray*}
+u_1(\baf) & = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\cdf}(q)\\
+& = & \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \bigg(\sum_{w \in \tau(q)} \pr(w)\bigg)\\
+& = &  \sum_{q \in \bQ} \sum_{w \in \tau(q)} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr(w)\\
+& = &  \sum_{q \in \bQ} \sum_{w \in \tau(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
+& = & \sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w),
+\end{eqnarray*}
+given that $|w| = |q| -1$ for every $w \in \tau(q)$, and assuming that $r_1(w)$ is defined as $r_1(q)$ for the only state $q$ such that $w \in \tau(q)$.
 
 
 %Since $\varepsilon\subseteq q$, for any state $q\in \bQ$, by the definition of utility we have that: 
@@ -181,87 +185,75 @@ where $r_1(w)$ is just a convenient shorthand for $r_1(\sigma_*^{-1}(w))$, that 
 %u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
 %\end{equation}
 
-We will now try to describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\sigma_*$) in which player $1$ owns at least one block in the blockchain for the {\em first time}. 
+We will now try to describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\tau$) in which player $1$ owns at least one block in the blockchain for the {\em first time}. 
 The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4} (a). This state is created when player $q$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
 won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4} (c). 
 In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word} \cite{Dyck}: a word with the same number of $0$s and $1$s, but such that 
-no prefix of $d$ has more $1$s than $0$s (this intuitively signifies that player $1$ never had more blocks than $0$ at any point). 
-Note that the only Dyck word of length $0$ is $\epsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. We use $\Dyck$ to denote the set of all Dyck words. Notice that by definition all elements of $\Dyck$ are of even length.
+no prefix of $d$ has more $1$s than $0$s (this intuitively means that at any point player $1$ did not have more blocks than $0$). 
+Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. We use $\Dyck$ to denote the set of all Dyck words. Notice that by definition all elements of $\Dyck$ are of even length.
 
 \begin{figure}
-\begin{subfigure}{0.2\columnwidth}
-\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
-
-    % The graph
-	\node [state] at (-2,0) (R) {$\varepsilon$};
-	\node [state] at (-0.5,0) (1) {$1$};
-
-	% Graph edges
-	\path[->]
-	(R) edge (1);  	
-\end{tikzpicture} 
-\end{subfigure} 
-\qquad
-\begin{subfigure}{0.3\columnwidth}
-\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
-
-    % The graph
-	\node [state] at (0,0) (R) {$\varepsilon$};
-	\node [state] at (1.5,0.75) (1) {$1$};
-	\node [state] at (1.5,-0.75) (0) {$0$};
-
-	\node [state] at (3,0.75) (11) {$11$};	
-	
-	% Graph edges
-	\path[->]
-	(R) edge (0);  	
-	
-	\path[->]
-	(R) edge (1)
-	(1) edge (11);
-
-\end{tikzpicture} 
-\end{subfigure}
-
-\begin{subfigure}[b]{0.3\textwidth}
 \begin{center}
-\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.61,state/.style={circle,inner sep=2pt}]
 
     % The graph
-	\node [state] at (0,0) (R) {$\varepsilon$};
-	\node [state] at (1.5,0.75) (1) {$1$};
-	\node [state] at (1.5,-0.75) (0) {$0$};
+	\node [state] at (-4.5,0) (aR) {$\varepsilon$};
+	\node [state] at (-3,0) (a1) {$1$};
+	\node [state] at (-3.8,-1.5) {(a)};
 
-	\node [state] at (3,-0.75) (00) {$00$};
-	
-	\node [state] at (3,0.75) (11) {$11$};	
-	\node [state] at (4.5,0.75) (111) {$111$};	
+	% Graph edges
+	\path[->]
+	(aR) edge (a1);  	
+
+    % The graph
+	\node [state] at (0,0) (bR) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (b1) {$1$};
+	\node [state] at (1.5,-0.75) (b0) {$0$};
+
+	\node [state] at (3,0.75) (b11) {$11$};	
+	\node [state] at (1.6,-1.5) {(b)};
 	
 	% Graph edges
 	\path[->]
-	(R) edge (0)
-	(0) edge (00);  	
+	(bR) edge (b0)
+	(bR) edge (b1)
+	(b1) edge (b11);
+
+    % The graph
+	\node [state] at (-3.15,-3.5) (cR) {$\varepsilon$};
+	\node [state] at (-1.65,-2.75) (c1) {$1$};
+	\node [state] at (-1.65,-4.25) (c0) {$0$};
+
+	\node [state] at (-0.15,-4.25) (c00) {$00$};
 	
+	\node [state] at (-0.15,-2.75) (c11) {$11$};	
+	\node [state] at (1.35,-2.75) (c111) {$111$};	
+	\node [state] at (-0.75,-5) {(c)};
+	
+	% Graph edges
 	\path[->]
-	(R) edge (1)
-	(1) edge (11)
-	(11) edge (111);
+	(cR) edge (c0)
+	(c0) edge (c00)
+	(cR) edge (c1)
+	(c1) edge (c11)
+	(c11) edge (c111);
 
 \end{tikzpicture} 
 \end{center}
-\end{subfigure}
 
-\caption{XXX}
-\label{fig:proof-theorem-4}
+\caption{States in a game played according to strategy $\baf$. \label{fig:proof-theorem-4}}
 \end{figure}
 
 Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
-$w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$. Now let $q = \sigma_*^{-1}(d\cdot 1\cdot w')$ be the state represented by $d\cdot 1\cdot w'$. 
+$w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$ with $d \in \Dyck$. Now let $q$ be the only state such that  $d\cdot 1\cdot w' \in \tau(q)$.
+% be the state represented by $d\cdot 1\cdot w'$. 
 State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
 with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w'$). 
-We can then calculate the reward for $q$: 
-$$r_1(q) = \big(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \big)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(\sigma_*^{-1}(w)).$$
-Therefore (and writing $r_1(w)$ for $r_1(\sigma_*^{-1}(w)))$, we obtain:
+We can then calculate the reward for $q$ as: 
+\begin{eqnarray*}
+r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+\end{eqnarray*}
+Hence, we obtain:
 \begin{eqnarray*}
 u_1(\baf) = \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r(d\cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r(w)\big] \cdot \\ \pr(d\cdot 1)\cdot \pr(w).
 \end{eqnarray*}
@@ -472,9 +464,9 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 \medskip
 \noindent
 \textbf{When to fork}. To answer this question, we used the closed forms of $\bdf$ and $\baf$ to compute the utility for a fixed $\alpha$, $\beta$ and varying hash power. 
-To make it realistic as possible, we computed realistic values for $\alpha$ and $\beta$. For $\alpha$ we calculate the compound version of the discount of the bitcoin protocol, that is, 
-the value XXXX verifying that $\alpha^{210.000} = 1/2$. 
-For $\beta$ we calculate the 10-minute equivalent rate that would give us the US real interest rate in 2017 when compound over a year, which amounts to YYYYY. 
+To make it as realistic as possible, we compute $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
+a value of alpha that would divide the reward by half every 210.000 blocks. Solving  $\alpha^{210.000} = 1/2$ gives us a value of $\alpha = 0.9999967030$. For 
+$\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 2017, which amounts to 2.2077\%. This gives us a value of $\beta = 0.9999996156$. 
 
 Figure \ref{Fig-af-df-fo} shows the value of the utility for player one when both players use the default strategy (color) and when players behave according to $\baf$ (color). 
 The point where the two lines meet is $h = ZZZZ$, which shows that our model captures and confirms the folklore fact that it is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. 

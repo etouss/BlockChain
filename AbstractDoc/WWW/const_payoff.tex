@@ -90,9 +90,14 @@ u_p(\bs) & \leq & u_p(\cdf)
 
 \begin{proof}
 Let $\bs= (s_0, \ldots, s_{m-1})$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
-Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\cdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step if $q_2 = q_1 \cup \{ b \cdot p' \}$, where $b \in \bB$, $p' \in \bP$ and $b \cdot p' \not\in q_1$ (recall that $\bB = \{0, \ldots, m-1\}^*$ and $\bP = \{0, \ldots, m-1\}$); that is, we have that $q_2$ can be reached from $q_1$ in one step  if $q_2$ is the result of applying action $\mine(p', b, q_1)$, where $\mine(p', b, q_1)$ is a valid action for player $p'$. 
+Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\cdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step according to the strategy $\bs$ if $q_2 = a(q_1)$, where $a = s_{p'}(q_1)$ for some $p' \in \bP$;
+%q_1 \cup \{ b \cdot p' \}$, where $b \in \bB$, $p' \in \bP$ and $b \cdot p' \not\in q_1$ 
+%(recall that $\bB = \{0, \ldots, m-1\}^*$ and 
+%(recall that $\bP = \{0, \ldots, m-1\}$); 
+that is, we have that $q_2$ can be reached from $q_1$ in one step according to $\bs$ if $q_2$ is the result of applying the action $s_{p'}(q_1)$ to $q_1$ for some player $p'$.
+% $\mine(p', b, q_1)$, where $\mine(p', b, q_1)$ is a valid action for player $p'$. 
 Then for each state $q \in Q_{\bs}$, consider all distinct sequences $\rho = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
-$q_i$ in one step ($i \in \{1, \ldots, n-1\}$), $q_0 = \varepsilon$ and $q_n = q$. To each such a sequence $\rho = q_0,\dots,q_n$, associate a block $b_\rho$ of length $n$ as follows.
+$q_i$ in one step according to $\bs$ ($i \in \{1, \ldots, n-1\}$), $q_0 = \varepsilon$ and $q_n = q$. To each such a sequence $\rho = q_0,\dots,q_n$, associate a block $b_\rho$ of length $n$ as follows.
 % in $\{0,1\}^*$ 
 For every $i \in \{1, \ldots, n\}$, if for a player $p' \in \bP$, it holds that $s_{p'}(q_{i-1}) = a_{p'}$ and $q_{i} = a_{p'}(q_{i-1})$, then $i$-th symbol of $b$ is $p'$. Notice that the $i$-th symbol of $b_\rho$ is well defined as $q \in Q_\bs$ and the sets of actions for two distinct players are disjoint.
 %Notice that if  $b_i = 1$, then $q_{i} = a_1(q_{i-1})$ with $a_1 = \df_1(q_{i-1})$. 
