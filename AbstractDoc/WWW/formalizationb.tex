@@ -166,43 +166,8 @@ mining game if for every player $p \in \bP$ and every strategy $s$ for player $p
 
 \input{justification.tex}
 \input{justificationb.tex}
+\input{justificationc.tex}
 
-\subsection{On the pay-off and utility of a miner}\label{sec-pay-ut}
-Blockchain protocols enforce that miners receive a reward once and only once for each block they own
-in the blockchain. However due to the nature of pay-off functions in stochastic games such rule can not be enforced. In fact, as the pay-off function does not rely on the history of states, for any pay-off function there exists a sequence of plays such that a miner has never received a reward for a block belonging to the blockchain, or he has received it several times. \marcelo{I think this should be replaced by a less technical explanation, something easier to understand. In particular, it is not clear how this is obtained.}
-
-In this section, we show how this constraint is simulated in our framework by combining the notions of pay-off function and $\beta$--discounted utility introduced in the previous section. \etienne{We should change enforced by something just a bit weaker and it would be perfect.} \marcelo{I used simulated instead of enforced, is it better?}
-
-In our framework, a miner is paid in every state according to the blocks she has in the blockchain. Such a pay-off includes not only the final block in the blockchain if she won the mining race, but also the blocks she could have put in the blockchain in some previous states. This property can be formalized as follows.
-Given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in the state $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then the aforementioned property is satisfied by all these pay-off functions in the following sense: given a player $p$ and a state $q$, it holds that $r_p(q,b) > 0$ for every block $b$ such that $b \in \bchain(q)$ and $\owner(q) = p$. 
-In this way, given that $r_p(q) = \sum_{b \in q} r_p(b,q)$, our formalization puts a strong incentive for each player in maintaining her blocks in the blockchain, but without ruling out the possibility that in some cases deviating from the blockchain can be a better alternative for a player. This is the first desirable property of our formalization.
-
-A natural question at this point is whether the property mentioned in the previous paragraph implies that a miner is rewarded  multiple times for the same block (once for each state where the block belongs to the blockchain), given the definition of the utility function. In what follows, we formally shows that this is not the case in the sense that the reward for a block can be paid at most once, which is the second desirable property of our formalization.
-
-%Given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in the state $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. We propose a pay-off where on every states, we pay miners for each of the blocks they already have in the blockchain, plus the new block they will potentially mine. Therefore for any player $p$ and any state $q$ we have that $r_p(q,b) \neq 0$ if $q \in bc(q)$ and $\owner(q) = p$. And the pay-off function verify $r_p(q) = \sum_{b \in q} r_p(b,q)$.
-%This model clearly puts a strong incentive in maintaining blocks in the blockchain and does not nullify the incentive to fork. The main concern is that if we consider a sequence of plays we end-up giving reward to a miner multiple times for the same block (once for each state where the block belongs to the blockchain), but to analyse the pay-off of a sequence of plays one should focus on the utility. 
-
-Definition~\ref{def-utility} corresponds to the usual notion of average discounted utility \marcelo{A citation is needed here}. In particular, if the starting point of the game is a state $q_0$, then for every state $q$ such that $q_0 \subseteq q$, the pay-off of a player $p$ in $q$ is $\beta^{|q|-|q_0|} \cdot r_p(q)$, where $|q|-|q_0|$ is the number of steps that have to be performed to reach $q$ from $q_0$ so the discount factor $\beta^{|q|-|q_0|}$ has to be applied. The uncertainty  about reaching state $q$ from $q_0$ is taking into consideration by including the term $\pr^{\bs}(q \mid q_0)$, which tell us that the expected pay-off of player $p$ for the state $q$ is $\beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)$.
-%
-%As a last comment on the definition of utility, 
-%
-But notice that although this definition of expected pay-off is the natural one,
-a block $b$ can be included in an infinite number of states $q$ such that $\pr^{\bs}(q \mid q_0) > 0$, which is in contradiction with the aforementioned blockhain protocol's rule that a miner receives a reward once and only once for each block she owns in the blockchain. To solve this issue, the term $(1 - \beta)$ is included in the definition of utility, as shown next.
-% But the reward obtained by a player $p$ for this block $b$ should not be added more than once, which is the reason to include the term $(1 - \beta)$ in the definition of utility. Let us formalize this claim in more precise terms.
-Given a combined strategy $\bs$, we can naturally define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
-\begin{eqnarray*}
-u_p^b(\bs) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  r_p(q,b) \cdot \pr^{\bs}(q).
-\end{eqnarray*}
-For the sake of readability, we assume that the game is starting from the initial state $\{\varepsilon\}$ that consists only of the genesis block. Notice that $|\{\varepsilon\}| = 1$, so that the discount factor for a state $q$ is $\beta^{|q|-1}$. Now assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
-\begin{myprop}\label{prop-ub-block}
-For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \bS$, it holds that:
-\begin{eqnarray*}
-u^b_p(\bs) & \leq &  \beta^{|b|} \cdot M_p(b).
-\end{eqnarray*}
-\end{myprop}
-Thus, the utility obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that has to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$. 
-Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This again tell us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
-%Which make sense as it means the miner get maximal value if he can spend is money whenever he wants to.
 
 \iffalse
 Given a player $p$ and a combined strategy $\bs$, we have that: 
