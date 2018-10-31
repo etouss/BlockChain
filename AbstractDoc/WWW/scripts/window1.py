@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import math
@@ -248,8 +249,8 @@ def util(k,l,h):
 
 #print(choose(28,20))
 
-start = 0.0001
-end = 0.9999
+start = 0.4
+end = 0.6
 step = 0.001
 
 h = np.arange(start, end, step)
@@ -265,8 +266,14 @@ linestyles = [':', '--', '-.', ':']
 #linestyles = [None,None,None,None]
 colors = [0.1,0.25,0.4,0.55,0.7]
 
+#font = {'family' : 'normal',
+#        'weight' : 'bold',
+#        'size'   : 22}
+
+#matplotlib.rc('font', **font)
+
 fig, ax = plt.subplots()
-#ax.set_ylim([1e12,5e12])
+ax.set_ylim([1e12,5e12])
 
 #for j in range(1,2):
 #    for i in range(1,5):
@@ -274,31 +281,27 @@ fig, ax = plt.subplots()
 #            labels.append("window: " + str(j) + ", give up: " + str(2*i))
 #            ax.plot(h,util(j,2*i,h),linestyle=linestyles[i-1])
 
-window = [1,1,1,1];
-gu =     [2,3,4,5];
+labels.append("window: " + str(1) + ", give up: " + str(2))
+w1g2 = util(1,2,h)
+ax.plot(h,util(1,2,h),linestyle=linestyles[0],color=str(colors[0]))
 
+labels.append("window: " + str(1) + ", give up: " + str(6))
+w1g4 = util(1,6,h)
+ax.plot(h,util(1,6,h),linestyle=linestyles[1],color=str(colors[1]))
 
-labels.append("window: " + str(window[0]) + ", give up: " + str(gu[0]))
-w1g2 = util(window[0],gu[0],h)
-ax.plot(h,util(window[0],gu[0],h),linestyle=linestyles[0],color=str(colors[0]))
+labels.append("window: " + str(1) + ", give up: " + str(10))
+w1g6 = util(1,10,h)
+ax.plot(h,util(1,10,h),linestyle=linestyles[2],color=str(colors[2]))
 
-labels.append("window: " + str(window[1]) + ", give up: " + str(gu[1]))
-w1g4 = util(window[1],gu[1],h)
-ax.plot(h,util(window[1],gu[1],h),linestyle=linestyles[1],color=str(colors[1]))
-
-labels.append("window: " + str(window[2]) + ", give up: " + str(gu[2]))
-w1g6 = util(window[2],gu[2],h)
-ax.plot(h,util(window[2],gu[2],h),linestyle=linestyles[2],color=str(colors[2]))
-
-labels.append("window: " + str(window[3]) + ", give up: " + str(gu[3]))
-w1g8 = util(window[3],gu[3],h)
-ax.plot(h,util(window[3],gu[3],h),linestyle=linestyles[3],color=str(colors[3]))
+#labels.append("window: " + str(1) + ", give up: " + str(2*4))
+#w1g8 = util(1,8,h)
+#ax.plot(h,util(1,8,h),linestyle=linestyles[3])
 
 
 y = 0
 
-for x in np.arange(0.001, 0.999, step):
-	intersection = util(window[0],gu[0],x) - util(window[1],gu[1],x)
+for x in np.arange(0.4, 0.6, step):
+	intersection = util(1,2,x) - util(1,6,x)
 	if intersection < 0.00000005:
 		y = x		
 		break
@@ -306,37 +309,24 @@ for x in np.arange(0.001, 0.999, step):
 section = np.arange(start,y,step)
 #plt.fill_between(section,util(1,2,section),color='Grey').set_hatch('///')
 
-plt.fill_between(section,util(window[0],gu[0],section),facecolor='1',hatch='\\\\\\',edgecolor='0.8')
+plt.fill_between(section,util(1,2,section),facecolor='0.95',hatch='\\\\',edgecolor='0.7')
 #plt.fill_between(section,util(1,2,section),facecolor='0.85',edgecolor=str(colors[0]))
 
 
 y1 = 0
 
-for x in np.arange(0.001, 0.999, step):
-	intersection = util(window[1],gu[1],x) - util(window[2],gu[2],x)
+for x in np.arange(0.4, 0.6, step):
+	intersection = util(1,6,x) - util(1,10,x)
 	if intersection < 0.00000005:
 		y1 = x		
 		break
 
-section = np.arange(y-step,y1,step)
-plt.fill_between(section,util(window[1],gu[1],section),facecolor='1',hatch='....',edgecolor='0.8')
+section = np.arange(y,y1,step)
+plt.fill_between(section,util(1,6,section),facecolor='0.9',hatch='..',edgecolor='0.7')
 #plt.fill_between(section,util(1,6,section),facecolor='0.25',edgecolor=str(colors[1]))
 
-y2 = 0
-
-for x in np.arange(0.001, 0.999, step):
-	intersection = util(window[2],gu[2],x) - util(window[3],gu[3],x)
-	if intersection < 0.00000005:
-		y2 = x		
-		break
-
-section = np.arange(y1-step,y2,step)
-plt.fill_between(section,util(window[2],gu[2],section),facecolor='1',hatch='----',edgecolor='0.8')
-#plt.fill_between(section,util(1,6,section),facecolor='0.25',edgecolor=str(colors[1]))
-
-
-section = np.arange(y2-step,end,step)
-plt.fill_between(section,util(window[3],gu[3],section),facecolor='1',hatch='////',edgecolor='0.8')
+section = np.arange(y1,end,step)
+plt.fill_between(section,util(1,10,section),facecolor='0.85',hatch='//',edgecolor='0.7')
 #plt.fill_between(section,util(1,10,section),facecolor='0.55',edgecolor=str(colors[2]))
 
 #ax.plot(y,util(1,2,y),'ro')
@@ -350,24 +340,14 @@ labels.append('default')
 #labels.append('always fork')
 
 
-#ax.set(xlabel='hash power (h)', ylabel='utility', title='Utility for a=%r, b=%r' % (a,b) )
-
-ax.set(xlabel='hash power (h)', ylabel='utility')
-
+ax.set(xlabel='hash power (h)', ylabel='utility',
+       title='Utility for a=%r, b=%r' % (a,b) )
 #ax.grid()
 #ax.yaxis.grid() # horizontal lines
 
 major_ticks = np.arange(start, end, 0.1)
 
-#ax.set_xticks([0.5])
-ax.set_xticks([0.5])
-ax.set_yticks([])
-
-for item in ax.get_xticklabels():
-	item.set_fontsize(18)
-
-ax.xaxis.label.set_fontsize(18)
-ax.yaxis.label.set_fontsize(18)
+ax.set_xticks(major_ticks)
 
 ax.xaxis.grid() # vertical lines
 ax.legend(labels,fontsize = 'xx-large')
