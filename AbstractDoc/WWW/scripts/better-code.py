@@ -381,8 +381,8 @@ min_y = 1.8e11
 step = 0.001
 
 NUM_CURVES = 4
-window = [1, 1, 1, 1]
-give_up = [2, 3, 4, 5]
+window = [4, 4, 4, 4]
+give_up = [6, 8, 10, 12]
 
 plot = gen_main_plot(start, end, step, min_y, NUM_CURVES, window, give_up)
 
