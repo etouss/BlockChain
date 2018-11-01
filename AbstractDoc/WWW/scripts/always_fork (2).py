@@ -41,7 +41,7 @@ default = default_comp(h)
 ## plotting
 fig, ax = plt.subplots()
 
-linestyles = ['-', '--', '-.', ':']
+linestyles = [':', '-.', '--', '-']
 markers = [".",",","o","v","^","<",">","s","P","+","X"]
 
 # plot the utlities
