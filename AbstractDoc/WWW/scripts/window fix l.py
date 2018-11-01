@@ -274,8 +274,8 @@ fig, ax = plt.subplots()
 #            labels.append("window: " + str(j) + ", give up: " + str(2*i))
 #            ax.plot(h,util(j,2*i,h),linestyle=linestyles[i-1])
 
-window = [1,1,1,1];
-gu =     [2,3,4,5];
+window = [1,2,3,3];
+gu =     [4,5,6,6];
 
 
 labels.append("$\mathbf{G}^{k = " + str(window[0]) +

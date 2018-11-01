@@ -488,7 +488,9 @@ folklore fact that is profitable to fork with more than half the hash power. How
   \centering
     \includegraphics[width=0.46\textwidth]{plots/test_AF.png}
     \label{fig-af-df-fo}
-    \caption{sdsd}
+    \caption{Utility for player $1$ under strategies $\bdf$, $(\df_0,\pf{i})$ and $\baf$. The curve for $\pf{i}$ is too close to that of $\df$ to tell a difference at this scale, but the difference 
+    do exists: at about $h = 0.5$, the curve for $\pf{i}$ is always higher than that of $\df$. Note that the utility collapses to $\df$ when $h = 1$. This is always 
+    the higher amount that can be earned in our game.}
 \end{figure}
 
 \smallskip
@@ -506,7 +508,7 @@ Note that this result does not rule out the possibility that, for some amount of
 this is not the case for $i = 1$, and we can also prove it for $i > 1$, albeit at the cost of much more powerful machinery that we do not have the space to introduce. 
 However, in the following section we do show that there are actually strategies leading to forks with less hash power. 
 
-\subsection{Giving up for more utility}. 
+\subsection{Giving up for more utility}
 
 By adding a little more flexibility to the strategy of always forking we can identify strategies that make forking profitable with less hash power. 
 
@@ -567,7 +569,8 @@ player $1$ is willing to keep fights of any length and to fork at the beginning 
 \end{tikzpicture} 
 \end{center}
 
-\caption{blah}
+\caption{Difference between $\af$ and $\gup^2_4$ in terms of actions of these strategies in two states. In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
+fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$)}
 \label{fig-gup}
 \end{figure}
 
@@ -595,25 +598,19 @@ $46\%$ of the hash power player $1$ already should start using strategies $\gup^
 $h = 0.499$, so this gives us a loot of extra room to look for optimal strategies if we are willing to fork (especially considering every percentage of hash power in popular cryptocurrencies 
 may cost millions).
 
-
-
-
-
-For readability, we have 
-shaded the areas in which a certain strategy is better for player $1$ when player $0$ uses $\df$. Surprisingly, 
-
 \begin{figure}
   \centering
     \includegraphics[width=0.46\textwidth]{plots/GUP.png}
     \label{fig-plot-gup-fixwindow}
-    \caption{sdsd}
+    \caption{Utility for player $1$ under strategies $\bgup^1_2, \dots, \bgup^1_5$. The shaded areas indicates which of these yield higher utility at a given hash power. 
+    The rightmost box represents a zoom around $h = 0.4$ and $h = 0.5$, and the curve for $\bgup^1_4$ meets that of $\bdf$ at $h = 0.467$.}
 \end{figure}
 
-This result gives us the possibility to mimic the plot we had for $\af$, with the same values of $\alpha$ and $\beta$s, but now for different values of $\ell$ and $k$. The most interesting results are when 
-fixing $k$ and varying $\ell$, as they give us what we are looking for. As we see in Figure \ref{}, for $h = X$ the strategy $\gup_X^Y$ (color) gives higher utility 
-than both the default strategy (color) and $\af$ (color). What is even more interesting, with smaller?bigger? numbers for $\ell$ we can arrive at strategies for which forking is profitable under even less hash power, albeit these strategies tend to be worse for bigger values of $h$. 
-
-When we fix $\ell$ and vary $k$ we..... 
+Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight our forks. However, 
+Figure \ref{fig-plot-gup-fixwindow} is important because we have found that strategy $\gup^1_4$ is the strategy that beats default under the least amount of hash power 
+amongst any combination of $k$, $\ell$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
+the more hash power the bigger the window of blocks one should aim to fork, and the more time one should wait before giving up. We remark that the analysis 
+we can do through 2- or 3-dimensional plots is only one part of the picture, and that a game-thoretical analysis of these strategies is an interesting area for future work. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
