@@ -135,7 +135,7 @@ $$
 \sum_{\substack{q' \in \bQ \,:\\ q_0 \subseteq q' \text{ and } |q'| - |q_0| = k-1}}
  \pr^{\bs}(q' \mid q_0) \cdot \pr(q', \bs(q'), q).
  $$
-In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$.
+In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$. Notice that this is well defined, since there can be at most one player $p$ whose action in the state $q'$ leads us to the state $q$.
 For the sake of presentation, the probability of reaching a state $q$ from the initial state $\{\varepsilon\}$ (consisting only of the genesis block $\varepsilon$) is denoted by $\pr^{\bs}(q)$, instead of $\pr^{\bs}(q \mid \{\varepsilon\})$. 
 %Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$.
 It should be noticed that the framework just described corresponds to a Markov chain; in particular, the probability of reaching a state from an initial state is defined in the standard way for Markov chains~\cite{MU05}. However, we are not interested in the steady distribution for such a Markov chain and, thus, we do not explore more this connection in this paper.

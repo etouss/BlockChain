@@ -99,12 +99,14 @@ that is, we have that $q_2$ can be reached from $q_1$ in one step according to $
 Then for each state $q \in Q_{\bs}$, consider all distinct sequences $\rho = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
 $q_i$ in one step according to $\bs$ ($i \in \{1, \ldots, n-1\}$), $q_0 = \varepsilon$ and $q_n = q$. To each such a sequence $\rho = q_0,\dots,q_n$, associate a block $b_\rho$ of length $n$ as follows.
 % in $\{0,1\}^*$ 
-For every $i \in \{1, \ldots, n\}$, if for a player $p' \in \bP$, it holds that $s_{p'}(q_{i-1}) = a_{p'}$ and $q_{i} = a_{p'}(q_{i-1})$, then $i$-th symbol of $b$ is $p'$. Notice that the $i$-th symbol of $b_\rho$ is well defined as $q \in Q_\bs$ and the sets of actions for two distinct players are disjoint.
+For every $i \in \{1, \ldots, n\}$, if for a player $p' \in \bP$, it holds that $s_{p'}(q_{i-1}) = a_{p'}$ and $q_{i} = a_{p'}(q_{i-1})$, then $i$-th symbol of $b_\rho$ is $p'$. Notice that the $i$-th symbol of $b_\rho$ is well defined as $q \in Q_\bs$ and the sets of actions for two distinct players are disjoint.
 %Notice that if  $b_i = 1$, then $q_{i} = a_1(q_{i-1})$ with $a_1 = \df_1(q_{i-1})$. 
 Finally, define $\sigma(q)$ as the set of all states $q' \in Q_\cdf$ consisting of a single path whose final block is a block $b_\rho$ associated to a sequence $\rho$ for $q$; formally, we have that:
 \begin{multline*}
 \sigma(q) \ = \ \big\{q' \in Q_\cdf \mid \text{there exists a sequence } \rho \text{ for } q\\ \text{ such that } q' = \{ b \in \bB \mid b \preceq b_\rho \}\big\}.
 \end{multline*}
+%Erase if too hane holding:
+Intuitively, if $\rho$ is a sequence for $q$, then the $i$-th symbol of $b_{\rho}$ tells us which player won the $i$-th round of the mining game. The state $q'\in \sigma(q)$ associated with $b_\rho$ simply recreates what would have happened if this was the order in which the players were mining the blocks when they use $\cdf$ as their strategy.
 %for which there exist a sequence $\rho$ and a corresponding block $b_\rho$ such that $q' = \{ b \in \bB \mid b \preceq b_\rho \}$
 %and where 
 %$q^*$ is the smallest prefix closed set of strings containing $w$. 
