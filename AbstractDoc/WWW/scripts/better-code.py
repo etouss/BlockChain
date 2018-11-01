@@ -252,7 +252,7 @@ def sum_d(k, l, h):
     return res
 
 
-def util(k, l, h):  
+def util(k, l, h):
     res = a * b * h / (1 - b) + sum_a1(k, l, h) + sum_b1(k, l, h)
 
     den = 1 - a * b * h - sum_a2(k, l, h) - sum_b2(k, l, h) \
@@ -265,7 +265,7 @@ def util(k, l, h):
 
 def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     fig, ax = plt.subplots()
-   
+
     intersection_points = [start]
 
     # Variable
@@ -290,7 +290,7 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
                     util(window[i], give_up[i], x) -
                     util(window[i + 1], give_up[i + 1], x)))
         # Get minimum
-        min_val, id_min = min((val, idx) for (idx, val) in enumerate(diff_list))
+        min_val, id_min = min((val, ix) for (ix, val) in enumerate(diff_list))
         intersection_points.append(preimages[id_min])
 
     intersection_points.append(end)
@@ -302,7 +302,8 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
                 util(window[i], give_up[i], h),
                 linestyle=linestyles[i],
                 color=str(colors[i]))
-        labels.append("$\mathbf{G}^{k = " + str(window[i]) + "}_{\ell = " + str(give_up[i]) + "}$")
+        labels.append("$\mathbf{G}^{k = " + str(window[i]) +
+                      "}_{\ell = " + str(give_up[i]) + "}$")
 
         section = np.arange(intersection_points[i],
                             intersection_points[i + 1] + step,
@@ -313,7 +314,6 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
                          facecolor='1',
                          hatch=hatches[i],
                          edgecolor=edgecolors[i])
-
 
     ax.plot(h,
             default(h),
@@ -332,10 +332,10 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
 
     ax.legend(labels, fontsize='xx-large')
 
-    xticks = []#intersection_points[1:NUM_CURVES]
+    xticks = []  # intersection_points[1:NUM_CURVES]
     xticks.append(.5)
-    
-    #plt.axvline(x=0.50001, color=".5", linewidth=1)
+
+    # plt.axvline(x=0.50001, color=".5", linewidth=1)
 
     ax.set_xticks(xticks)
     ax.set_yticks([])
@@ -343,7 +343,7 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     plt.xlabel('Hash Power', fontsize="large")
     plt.ylabel('Utility', fontsize="large")
     ax.set_ylim(y0)
-    plt.margins(0,0)
+    plt.margins(0, 0)
     return plt
 
 
