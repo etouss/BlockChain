@@ -61,21 +61,21 @@ markers = [".",",","o","v","^","<",">","s","P","+","X"]
 # plot the utlities
 ax.plot(h,always_fork,color='black',linestyle=linestyles[0])
 ax.plot(h,fork_once,color='black',linestyle=linestyles[1])
-ax.plot(h,fork_trice,color='black',linestyle=linestyles[2])
+#ax.plot(h,fork_trice,color='black',linestyle=linestyles[2])
 ax.plot(h,default,color='black',linestyle=linestyles[3])
 
 ax.set(xlabel='hash power (h)', ylabel='utility')
 ax.grid()
 
-ax.legend(['AF','F[2]','F[3]','DF'],fontsize = 'x-large')
+ax.legend(['AF','F[1]','DF'],fontsize = 'x-large')
 
 ax.set_xticks([0,0.25,0.5,0.75,1])
 ax.set_yticks([])
 
 for item in ax.get_xticklabels():
-	item.set_fontsize(14)
-ax.xaxis.label.set_fontsize(20)
-ax.yaxis.label.set_fontsize(20)
+	item.set_fontsize(12)
+ax.xaxis.label.set_fontsize(14)
+ax.yaxis.label.set_fontsize(14)
 
 
 fig.savefig("test_AF.png")
