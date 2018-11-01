@@ -508,7 +508,7 @@ However, in the following section we do show that there are actually strategies 
 
 \subsection{Giving up for more utility}. 
 
-By adding a little more flexibility to the strategy of always forking we can identify strategies that make forking profitable with much less hash power. 
+By adding a little more flexibility to the strategy of always forking we can identify strategies that make forking profitable with less hash power. 
 
 The families of strategies that we study in this section involve two parameters. First, one parameter $\ell$ that mandates the maximum length of the fight we are willing to put up 
 after forking, and one parameter $k$ that regulate how far back do I put my block when confronted with a chain of blocks I don't own. We denote these strategies by 
@@ -587,10 +587,27 @@ Fix a pair of integers $\ell$ and $k$. Then the utility $u_1(\bgup^k_\ell)$ has 
 \end{theorem}
 
 In other words, given specific $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them as we did before, 
-for $\alpha = 0.9999967030$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives us an interesting view of the advantages of this framework. For readability, we have 
+for $\alpha = 0.9999967030$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives us an interesting feel for the advantages of this family of strategies. 
+We fix $k = 1$, and plot the utility of strategies $\bgup^1_2$ through $\bgup^1_5$, and we shaded those areas in which one of the utilities is greater. As wee see, for a 
+fork window $k = 1$, the optimal amount time player $1$ should be willing to fight a fork before giving up depends on the hash power. With little hash power the likelihood of winning a 
+fork is small, so we want to give up as early as possible. However, the more hash power we obtain, the better it is to wait more and more. Interestingly, with a little more than 
+$46\%$ of the hash power player $1$ already should start using strategies $\gup^1_4$ and with a little more power, $\gup^1_5$. We know that player $1$ should use $\af$ not before 
+$h = 0.499$, so this gives us a loot of extra room to look for optimal strategies if we are willing to fork (especially considering every percentage of hash power in popular cryptocurrencies 
+may cost millions).
+
+
+
+
+
+For readability, we have 
 shaded the areas in which a certain strategy is better for player $1$ when player $0$ uses $\df$. Surprisingly, 
 
-
+\begin{figure}
+  \centering
+    \includegraphics[width=0.46\textwidth]{plots/GUP.png}
+    \label{fig-plot-gup-fixwindow}
+    \caption{sdsd}
+\end{figure}
 
 This result gives us the possibility to mimic the plot we had for $\af$, with the same values of $\alpha$ and $\beta$s, but now for different values of $\ell$ and $k$. The most interesting results are when 
 fixing $k$ and varying $\ell$, as they give us what we are looking for. As we see in Figure \ref{}, for $h = X$ the strategy $\gup_X^Y$ (color) gives higher utility 
