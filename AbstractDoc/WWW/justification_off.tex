@@ -35,5 +35,6 @@ u^b_p(\bs) & \leq &  \beta^{|b|} \cdot M_p(b).
 Thus, the utility obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that has to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$. 
 Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This tell us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
 
+Of course, one could ask why not simply reward a portion of the block's reward until it is buried hundred blocks deep into the blockchain? One can think of the Bitcoin's protocol working in this way, and it is also studied in other game theoretic formalizations of the protocol \cite{??}. Apart from being able to reason about games in a more elegant way, the main motivation for this approach is that it allows us to prove assumptions such as that arbitrarily long forks are virtually impossible.  
 
 
