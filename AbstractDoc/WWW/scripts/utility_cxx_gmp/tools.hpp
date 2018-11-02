@@ -16,13 +16,13 @@ extern mpf_class a;
 extern mpf_class b; 
 
 // Number of points to plot
-#define NUM_POINTS 500
+#define NUM_POINTS 50000
 
 // Don't touch this. It serves to set up the pipe c++ -> terminal gnuplot
 #define NUM_COMMANDS 6
 
 // Precision of floats, in bits. 
-#define PREC 1000
+#define PREC 10000
 
 // Conversion to double: mpf_t / 10^CUT_OFF
 // Tune this if graphs look funny. 
