@@ -397,5 +397,74 @@ Hence, by using the definition of the generating function for Catalan numbers, w
 \Phi  & =  & \frac{\alpha\cdot \beta\cdot h \cdot c}{(1-\alpha)} \cdot \big[\cat(\beta^2\cdot h\cdot (1-h))-\alpha\cdot \cat(\alpha\cdot \beta^2\cdot h\cdot (1-h))\big].
 \end{eqnarray*}
 
+\subsection{Proof of Proposition \ref{prop-fork_fix}}
+
+For the sake of contradiction assume $u_1(\bdf) \leq u_1(\baf)$, and that there exists $j > 0$ with $u_1((\df_0,\pf{j})) \leq u_1(\af))$. 
+
+Let $Q_\pf{j} = \{q \in \bQ \mid \pr^\pf{j}(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\pf{j}$. As we did for $Q_\baf$ we define $\tau:Q_\pf{j} \mapsto 2^{\{0,1\}^*}$ as follows:
+\begin{eqnarray*}
+\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
+\end{eqnarray*}
+And we trivially obtain the same properties, especially for every distinct words $w \neq w' \in \{0, 1\} ^*$, there exist two unique distinct states $q \neq q' \in Q_\pf{j}$,  such that $w \in \tau(q)$ and $w' \in \tau(q')$. %Moreover there also exits a state $q'' \in Q_\pf{j}$, such that $w\cdot w' \in \tau(q'')$ and we have $\pr^\pf{j}(q'') = \pr^\pf{j}(q) \cdot \pr^\pf{j}(q''\mid q)$.
+After having performed $j$ successful fork, player $1$ is playing default strategy. As seen in proof of Theorem \ref{}, a successful can fork is represented by a word of the work $d\cdot 1$ where $d \in \Dyck$. Extending the pattern, the states reach immediately after $j$ successfully fork are represented by word of the form $d_1 \cdot 1^+ \cdot d_2 \cdot 1^+ \cdots d_j \cdot 1$ where $(d_1, \cdots, d_j) \in \Dyck^j$. We denote the set of word of this form 
+\begin{equation*}W_j = \{d_1 \cdot 1^+ \cdot d_2 \cdot 1^+ \cdots d_j \cdot 1 \mid d_1, \cdots, d_j) \in \Dyck^j\}
+\end{equation*}.
+
+Therefore for any words $w = d_1 \cdot 1^{i_1} \cdot d_2 \cdot 1^{i_2} \cdots d_j \cdot 1 \in W_j$ and $w' \in \{0, 1\} ^*$ we have $\pr^\pf{j}(w) = \pr^\baf(w)$, and $\pr^\pf{j}(w\cdot w') = \pr^\baf(w)\cdot \pr^\df(w')$. And we can calculate the reward for $w\cdot w'$ as:
+\begin{eqnarray*}
+%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+r_1(w\cdot w') & = & r_1(w) + \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1(w').
+\end{eqnarray*}
+
+
+
+Hence, we have:
+\begin{eqnarray*}
+u_1(\pf{j})& = & (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot r_1(w\cdot w') \cdot \pr^\pf{j}(w\cdot w')\\
+u_1(\pf{j}) & = & (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot \big[r_1(w) + \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1(w') \big] \cdot \pr^\baf(w)\cdot\pr^\bdf(w')
+\end{eqnarray*}
+
+Splitting up the summation we get::
+\begin{eqnarray*}
+u_1(\pf{j})& = & (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot r_1(w) \cdot \pr^\baf(w)\cdot\pr^\bdf(w')
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1(w') \cdot \pr^\baf(w)\cdot\pr^\bdf(w')
+\end{eqnarray*}
+
+We split the terms into the elements that depend only on $w$, and the ones that depend only on $w'$:
+\begin{eqnarray*}
+u_1(\pf{j})& = & (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot r_1(w) \cdot \pr^\baf(w)\cdot \sum_{w'\in \{0,1\}^*}  \beta^{|w'|} \cdot \pr^\bdf(w')
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr^\baf(w) \cdot  \sum_{w'\in \{0,1\}^*} \beta^{|w'|} \cdot r_1(w') \cdot\pr^\bdf(w') \\
+u_1(\pf{j})& = & \sum_{w \in W_j}  \beta^{|w|}\cdot r_1(w) \cdot \pr^\baf(w)
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr^\baf(w) \cdot  u_1(\bdf) \\
+\end{eqnarray*}
+
+Applying the same method we quickly obtain:
+\begin{eqnarray*}
+u_1(\baf)& = & (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot r_1(w) \cdot \pr^\baf(w)\cdot \sum_{w'\in \{0,1\}^*}  \beta^{|w'|} \cdot \pr^\baf(w')
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr^\baf(w) \cdot  \sum_{w'\in \{0,1\}^*} \beta^{|w'|} \cdot r_1(w') \cdot\pr^\baf(w')\\
+u_1(\baf)& = & \sum_{w \in W_j}  \beta^{|w|}\cdot r_1(w) \cdot \pr^\baf(w)
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr^\baf(w) \cdot  u_1(\baf)
+\end{eqnarray*}
+
+Therefore we have: 
+\begin{eqnarray*}
+u_1(\baf) - u_1(\pf{j}) & = & (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr^\baf(w) \cdot (u_1(\baf) - u_1(\bdf))
+\end{eqnarray*}
+
+And as we clearly have:
+\begin{eqnarray*}
+(1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr^\baf(w) \geq 0
+\end{eqnarray*}
+And by assumption we have:
+\begin{eqnarray*}
+u_1(\baf) - u_1(\bdf) \geq 0
+\end{eqnarray*}
+We obtain:
+\begin{eqnarray*}
+u_1(\baf) - u_1(\pf{j}) \geq 0
+\end{eqnarray*}
+ 
+
+
 
 
