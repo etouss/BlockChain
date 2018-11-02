@@ -2,21 +2,30 @@
 
 \subsection{On the pay-off and utility of a miner}\label{sec-wtf}
 
-The next and last component of our game is the reward for miners: how much do they earn for each mined block. Our definitions are based in the following 
-two definitions that are common to most cryptocurrencies based on blockchain, and Bitcoin in particular. 
-
-\noindent
-(1) Miners receive a one-time reward per each block they mine. For example, in Bitcoin, each miner will receive a pre-set reward (12.5 bitcoins at the time of writing) when she mines a block.
-
-\noindent
+%The next and last component of our game is the reward for miners: how much do they earn for each mined block. 
+Our definition of the reward of a miner is based on the following 
+%two definitions 
+conditions
+that are common to most cryptocurrencies based on blockchain:
+%, and Bitcoin in particular. 
+%
+%\noindent
+(1) Miners receive a one-time reward per each block they mine. For example, in Bitcoin, each miner will receive a pre-set reward when she mines a block (12.5BTC at the time of writing).
+%
+%\noindent
 (2) The only blocks that are valid are those in the blockchain; if a block is not in the blockchain then the reward given for mining this block cannot be spent. To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
 
-So how should the reward function look like? The first naive idea is to give miners the block reward as soon as they put a block at the top of the current blockchain. This provides some incentive to extend the blockchain, however, it does not completely protect the system from forks that (potentially malicious) miners might want to initiate. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two blocks (110 and 111) competing to be in the blockchain, and consider 111 to be the last block added to reach $q'$. If player 0 already cashed in the reward for the block 110 (since this was awarded immediately), she has no further incentive to mine on top of this block, as the block 1110 would give her an equal reward. This can then allow a malicious miner (1 in this example) to do a local fork (e.g. the block 111), where for instance some transactions are being blocked, and does not provide an incentive for other miners to protect the other branch competing to be the blockchain. The way that the Bitcoin protocol goes around this is by paying for blocks which are buried deep into the blockchain (they have been confirmed one hundred times). This now gives a strong incentive ot player 0 to mine on top of the block 110, since she can not cash in her reward immediately after mining this block, but only once it has been extended many times.
+So how should the reward function look like? The first naive idea is to give miners the block reward as soon as they put a block at the top of the current blockchain. This provides some incentive to extend the blockchain, however, it does not completely protect the system from forks that (potentially malicious) miners might want to initiate. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two blocks (110 and 111) competing to be in the blockchain, and consider 111 to be the last block added to reach $q'$. If player 0 already cashed in the reward for the block 110 (since this was awarded immediately), she has no further incentive to mine on top of this block, as the block 1110 would give her an equal reward. This can then allow a malicious miner (1 in this example) to do a local fork (e.g. the block 111), where for instance some transactions are being blocked, and does not provide an incentive for other miners to protect the other branch competing to be the blockchain. The way that the Bitcoin protocol goes around this is by paying for blocks which are buried deep into the blockchain.
+% (they have been confirmed one hundred times). 
+This now gives a strong incentive to player 0 to mine on top of the block 110, since she can not cash in her reward immediately after mining this block, but only once it has been extended many times.
 
+We design our reward function, and the stochastic game to mimic this behaviour. More precisely, given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. 
+%the reward of a player $p$ in a state $q$, denoted $r_p(q)$ is defined as $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q) > 0$ is the reward that player $p$ receives for a block $b$ she owns in the blockchain of the state $q$, and equals zero if $\bchain(q)$ is not defined. 
+Then to enforce the fact that the block reward for the block $b$ is not granted immediately, we pay in Definition \ref{def-utility} a 
+%($\beta$-discounted) 
+portion of $r_p(b,q)$, for each state $q$ where $b$ is in. In other words, if a miner owns a block, then she will be rewarded for this block in every state where this block is part of the blockchain, in which case $r_p(b,q) > 0$. %This type of reward functions is general enough to express other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}.
 
-We design our reward function, and the stochastic game to mimic this behaviour. In particular, the reward of a player $p$ in a state $q$, denoted $r_p(q)$ is defined as $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q) > 0$ is the reward that player $p$ receives for a block $b$ she owns in the blockchain of the state $q$, and equals zero if $\bchain(q)$ is not defined. To enforce the fact that the block reward for the block $b$ is not granted immediately, in Definition \ref{def-utility}, we pay a ($\beta$-discounted) portion of $r_p(b,q)$, for each state $q$ that $b$ is in. In other words, if a miner owns a block, then she will be rewarded for this block in every state where this block is part of the blockchain. %This type of reward functions is general enough to express other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}.
-
-This means that we might pay the miner infinitely many times for a single block. A natural question is then do we over-pay for the blocks? This is where the discount factors in our definition of utility come into play.  More precisely, we play a portion of block $b$'s reward each time it is included in the current blockchain. In other words, 
+This means that we might pay the miner infinitely many times for a single block. A natural question is then do we overpay for the blocks? This is where the discount factors in our definition of utility come into play.  More precisely, we pay a portion of block $b$'s reward each time it is included in the current blockchain. In other words, 
 when a player mines a new block, she will receive the full amount for this block only if she manages to maintain the block in the blockchain up to infinity. Otherwise, if this block 
 ceases to be in the blockchain, we only pay a fraction of the full amount. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
 \begin{eqnarray*}
@@ -25,7 +34,7 @@ u_p^b(\bs) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in \bchain(q)} \be
 For simplicity, here we assume that the game starts in the genesis block $\varepsilon$, and not in an arbitrary state $q_0$. The discount factor in this case is $\beta^{|q|-1}$, since $|\{\varepsilon\}|= 1$.  
 
 
-To see that we pay the correct amount for each block, assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by most currently circulating cryptocurrencies, in the pay-off functions considered in this paper, and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
+To see that we pay the correct amount for each block, assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by most currently circulating cryptocurrencies, by the pay-off functions considered in this paper, and by other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
 \begin{myprop}\label{prop-ub-block}
 For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \bS$, it holds that:
 \begin{eqnarray*}
@@ -35,6 +44,6 @@ u^b_p(\bs) & \leq &  \beta^{|b|} \cdot M_p(b).
 Thus, the utility obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that has to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$. 
 Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This tell us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
 
-Of course, one could ask why not simply reward a portion of the block's reward until it is buried hundred blocks deep into the blockchain? One can think of the Bitcoin's protocol working in this way, and it is also studied in other game theoretic formalizations of the protocol \cite{??}. Apart from being able to reason about games in a more elegant way, the main motivation for this approach is that it allows us to prove assumptions such as that arbitrarily long forks are virtually impossible.  
+%Of course, one could ask why not simply reward a portion of the block's reward until it is buried hundred blocks deep into the blockchain? One can think of the Bitcoin's protocol working in this way, and it is also studied in other game theoretic formalizations of the protocol \cite{??}. Apart from being able to reason about games in a more elegant way, the main motivation for this approach is that it allows us to prove assumptions such as that arbitrarily long forks are virtually impossible.  
 
 
