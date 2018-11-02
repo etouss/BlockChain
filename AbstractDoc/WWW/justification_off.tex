@@ -2,25 +2,9 @@
 
 \subsection{On the pay-off and utility of a miner}
 \label{sec-pay-uti}
+When we consider that long forks are impossible, a reward function which give miners their complete payoff as soon as a block is burried deep enough in the blockchain can be build \ref{2016}. However the goal of a game-theoretical formalisation is to prove assumption such as: \textit{long forks are impossible}. Therefore it is a behaviour that our model should allow, and reward according to the protocol. If we follow the rules, when a long fork happens each block burried deep enough in the new blockchain should reward their owner, while the block from the previous chain, even burried deeply, become invalid. A reward model strictly representing this system can not be build. Indeed consider a situation where two long chains were tying and finally resolves, then one of them is becoming the blockchain. In this state, blockchain's new blocks buried deep enough should give reward to their owner but, due to the memoryless nature of reward functions in stochastic games, there is no possibility to distinguish new blocks from already paid ones.
 
-%The next and last component of our game is the reward for miners: how much do they earn for each mined block. 
-Our definition of the reward of a miner is based on the following 
-%two definitions 
-conditions
-that are common to most cryptocurrencies based on blockchain:
-%, and Bitcoin in particular. 
-%
-%\noindent
-(1) Miners receive a one-time reward per each block they mine. For example, in Bitcoin, each miner will receive a pre-set reward when she mines a block (12.5BTC at the time of writing).
-%
-%\noindent
-(2) The only blocks that are valid are those in the blockchain; if a block is not in the blockchain then the reward given for mining this block cannot be spent. To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
-
-So how should the reward function look like? The first naive idea is to give miners the block reward as soon as they put a block at the top of the current blockchain. This provides some incentive to extend the blockchain, however, it does not completely protect the system from forks that (potentially malicious) miners might want to initiate. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two blocks (110 and 111) competing to be in the blockchain, and consider 111 to be the last block added to reach $q'$. If player 0 already cashed in the reward for the block 110 (since this was awarded immediately), she has no further incentive to mine on top of this block, as the block 1110 would give her an equal reward. This can then allow a malicious miner (1 in this example) to do a local fork (e.g. the block 111), where for instance some transactions are being blocked, and does not provide an incentive for other miners to protect the other branch competing to be the blockchain. The way that the Bitcoin protocol goes around this is by paying for blocks which are buried deep into the blockchain.
-% (they have been confirmed one hundred times). 
-This now gives a strong incentive to player 0 to mine on top of the block 110, since she can not cash in her reward immediately after mining this block, but only once it has been extended many times.
-
-We design our reward function, and the stochastic game to mimic this behaviour. More precisely, given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. 
+Hence we design our payoff model to mimic the incencitives of the blochain's payement system. More prisely, given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. 
 %the reward of a player $p$ in a state $q$, denoted $r_p(q)$ is defined as $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q) > 0$ is the reward that player $p$ receives for a block $b$ she owns in the blockchain of the state $q$, and equals zero if $\bchain(q)$ is not defined. 
 Then to enforce the fact that the block reward for the block $b$ is not granted immediately, we pay in Definition \ref{def-utility} a 
 %($\beta$-discounted) 
