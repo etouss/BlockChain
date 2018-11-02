@@ -9,7 +9,7 @@
 
 The miner fees in many cryptocurrencies, including Bitcoin, is not constant, but diminishes over time. 
 It is thus natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
-circumstances? Our answer is a resounding no, and as we show in this section, when the miner fees decrease over time, forking can be a valid strategy depending on the hash power of the player (and other parameters of the game). 
+circumstances. Our answer is a resounding no, and as we show in this section, when the miner fees decrease over time, forking can be a valid strategy depending on the hash power of the player (and other parameters of the game). 
 
 For simplicity, we model the diminishing miner fees as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
 we use the following reward function $\rpa$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
@@ -121,35 +121,34 @@ The question we want to answer is twofold. On the one hand, we want to know whet
 %Since we know how to compute the utility for $\bdf = (\df_0,\df_1)$, this amounts to computing the utility for player $1$ for the combined strategy $(\df_0,\af)$. 
 On the other hand, and 
 perhaps more interestingly, we can also answer a more analytical question: given realistic values of $\alpha$ and $\beta$, how much hash power does player $1$ need to consider $\af$ instead of $\df_1$? 
-Answering both questions requires us to compute the utility for the  strategy $(\df_0,\af)$, so this is what we do next. 
+Answering both questions requires us to compute the utility for the  strategy $(\df_0,\af)$, which is what we do next. 
 
 \begin{theorem}\label{thm:always_fork}
 If $h$ is the hash power of player 1, then:
 %, $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. Then:
 \begin{eqnarray*}
-u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, 
+u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where }
 \end{eqnarray*}
-where 
-\begin{align*}
-\Phi & = \ \frac{\alpha \cdot \beta \cdot h \cdot c}{(1-\alpha)} \cdot \big[\cat(\beta^2 \cdot h \cdot (1-h)) \ -\\
-& \hspace{100pt} \alpha\cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h))\big],\\
+{\small\begin{align*}
+\Phi & = \ \frac{\alpha  \beta  h  c}{(1-\alpha)}  \big(\cat(\beta^2  h  (1-h)) \ -
+ \alpha\cdot \cat(\alpha \beta^2  h  (1-h))\big),\\
 \Gamma & = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h)),
-\end{align*}
-and $\cat$ is the generating function of Catalan numbers, that is:
-\begin{eqnarray*}
-\cat(x) & = & \frac{1-\sqrt{1-4x}}{2x}.
-\end{eqnarray*}
+\end{align*}}
+and $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
 \end{theorem}
 
 %ADD FORK ONCE
 
 %Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
 
+Before presenting the proof, let us give some intuition. Player 1, adopting the AF strategy, will always start the game mining on $\varepsilon$, regardless of how many blocks Player 0 manages to append, and continues until her branch is the longest. Therefore, the only states that contribute to Player 1's utility are those in where she made at least one successful fork (all others states give zero reward). Having Player 1 achieved the longest branch once, say, at block $b$, both players will now mine on $b$ and the situation repeats as if $b$ were $\varepsilon$, with proper shifting in the reward and $\beta$-discount. In other words, we have
+$$u_1(\baf) = \Phi + \Gamma\cdot u_1(\baf),$$
+where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor.
 
 \begin{proof}
 Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and from the proof of Theorem \ref{thm-conts_dom_str} recall the definition of sequence $\rho$ for a state $q$, and recall the construction of string $b_\rho$ from such a sequence $\rho$.
 %the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
-By using these elements, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
+By using these elements, we define $\tau:Q_\baf \to 2^{\{0,1\}^*}$ as follows:
 \begin{eqnarray*}
 \tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
 \end{eqnarray*}
@@ -195,9 +194,8 @@ given that $|w| = |q| -1$ for every $w \in \tau(q)$, and assuming that $r_1(w)$ 
 We now describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\tau$) in which player $1$ owns at least one block in the blockchain for the {\em first time}. 
 The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4} (a). This state is created when player $q$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
 won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4} (c). 
-In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word} \cite{Dyck}: a word with the same number of $0$s and $1$s, but such that 
-no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ has more blocks than $0$). 
-Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. We use $\Dyck$ to denote the set of all Dyck words. Notice that by definition all elements of $\Dyck$ are of even length.
+In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word}: a word with the same number of $0$s and $1$s, but such that 
+no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ has more blocks than $0$). Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. As it turns out, the number of Dyck words of length $2m$ is the $m$-th Catalan number. We denote by $\Dyck_{2m}$ the set of Dyck words of length $2m$, and by $\Dyck$ the set of all Dyck words.
 
 \begin{figure}
 %\begin{center}
@@ -353,9 +351,9 @@ Let us now find a closed form for $\Gamma$. In what follows, we use $\Dyck_{2\el
 \end{eqnarray*}
 %
 %Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). 
-The final equality is obtained using the fact that the $\ell$-th Catalan number is equal to the number of Dyck words of length $2\ell$ \cite{??}, thus the summation in the previous line defines the generating function of Catalan numbers.
-%
-The closed form for $\Phi$ is computed in a similar way, constructing again generating functions of Catalan numbers for  specific parameters. 
+The final equality is obtained recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan. This function is defined and continuous in $[0,1/4]$, and that $h\cdot(1-h)\in [0,1/4]$ for all $h\in[0,1]$.
+
+The closed form for $\Phi$ is computed analogously, yielding the claimed expression.
 \end{proof}
 
 
@@ -523,13 +521,13 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 \medskip
 \noindent
 \textbf{When to fork}. To answer this question, we used the closed forms of $\bdf$ and $\baf$ to compute the utility for a fixed $\alpha$, $\beta$ and varying hash power. 
-To make it as realistic as possible, we compute $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
-a value of alpha that would divide the reward by half every 210.000 blocks. Solving  $\alpha^{210.000} = 1/2$ gives us a value of $\alpha = 0.9999967030$. For 
+We consider reallistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
+a value of alpha that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999967030$. For 
 $\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 2017 \cite{interest}, which amounts to 2.2077\%. This gives us a value of $\beta = 0.9999996156$. 
 
 Figure \ref{fig-af-df-fo} shows the value of the utility for player $1$ when using strategies $\af$, $\pf{1}$ or $\df$, and player $0$ always using $\df$. The point where the utility for 
-$\af$ and $\df$ meet is $h = 0.4996$ which means that player $1$ should use $\af$ as soon as she controls more than this proportion of the hash power. This confirms the 
-folklore fact that is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. This has been noted before in e.g. \cite{}.
+$\af$ and $\df$ meet is $h = 0.4969 \pm 0.000001$ \francisco{Confirmed with the c++ scripts with thousands of bits of precision actually}, which means that player $1$ should use $\af$ as soon as she controls more than this proportion of the hash power. This confirms the 
+folklore fact that is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. This has been noted before in e.g. \cite{}. \francisco{Should we mention that this is quite expectable from the strategies? i.e. the probability of being ahead at one point in time is almost one for $h > .4969$, so it is actually not very interesting.}
 
 \begin{figure}
   \centering
@@ -540,6 +538,7 @@ folklore fact that is profitable to fork with more than half the hash power. How
 
 \smallskip
 \noindent
+\francisco{I think the following subsection should not be included (or should be restated as only considering AF vs DF). The comparation with F[i] looks quite weak to me.}
 \textbf{Forking for a fixed number of times}. Looking at Figure \ref{fig-af-df-fo}, we see that the utility when using $\pf{1}$ is  between the lines for $\af$ and $\df$. 
 This utility was calculated using a similar strategy as in in the proof of Theorem \ref{thm:always_fork}. 
 From the figure one can infer that, assuming $\af$ yields more utility to player $1$ than $\df$ (e.g. when $h>0.5$), then player $1$ should not use $\pf{1}$ but rather keep on forking, as 
@@ -557,10 +556,7 @@ However, in the following section we do show that there are actually strategies 
 
 By adding a little more flexibility to the strategy of always forking we can identify strategies that make forking profitable with less hash power. 
 
-The families of strategies that we study in this section involve two parameters. First, one parameter $\ell$ that mandates the maximum length of the fight we are willing to put up 
-after forking, and one parameter $k$ that regulate how far back do I put my block when confronted with a chain of blocks I don't own. We denote these strategies by 
-$\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works, and indeed $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where 
-player $1$ is willing to keep fights of any length and to fork at the beginning of any chain of blocks she does not own.  
+The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to put when forking, and a parameter $k$ that regulates how far back does the miner fork, when confronted with a chain of blocks I don't own. We denote these strategies by $\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works, and indeed $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where player $1$ is willing to keep fights of any length and to fork at the beginning of any chain of blocks she does not own.  
 
 \begin{figure}
 \begin{center}
@@ -620,18 +616,16 @@ fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates
 \end{figure}
 
 \begin{example}
-Let us consider how $\gup_4^2$ would be different from always fork. First there is the issue of where to fork. Since $k = 2$, both strategies behave the same 
-for chains of cero, one or two blocks owned by player $0$. The difference is when facing a chain of 3 unowned new blocks in the blockchain, as in Figure \ref{fig-gup}. 
-In this case, $\af$ would try to fork from her own block, but $\gup_4^2$ would fork instead on the dotted line (i.e., the $k$-th unowned block).
-Next is the give-up time. Normally, $\af$ is willing to fight forks forever, and for example, the move for state $q'$ in Figure \ref{fig-gup} would still be to mine upon 
-her own block $11$. On the other hand $\gup_4^2$ has already seen $4$ blocks from the start of the fork, so with this strategy player $1$ instead gives up and 
-tries to mine upon $0000$, reinitiating her set of strategies as if this last block where the genesis block. 
+Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when confronted to chains of zero, one or two blocks owned by player $0$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three unowned new blocks in the blockchain, as in Figure \ref{fig-gup}-a. In this case, $\af$ would again try to fork from her own block, but $\gup_4^2$ would fork instead on the dotted line (i.e., the $k$-th unowned block).
+The second difference is provided by the give-up time (Figure \ref{fig-gup}-b). Normally, $\af$ is willing to continue forking regardless of winning hopes, therefore the move for state $q'$ in Figure \ref{fig-gup}-b would still be to mine upon her own block $11$. On the other hand $\gup_4^2$ has already seen $4$ blocks from the start of the fork, so with this strategy player $1$ instead gives up and tries to mine upon $0000$, rebooting the strategies as if this last block was the genesis block. 
 \end{example}
 
-To compute the closed form for $\gup_\ell^k$ we need a more involved combinatorial argument that requires counting dyck words were the difference between $0$'s and $1$'s can now be any constant, and with a bound on the maximum amount of $0$s. Let $\bgup^k_\ell$ denote the pair $(\df_0,\gup_\ell^k)$. Together with the recurrence argument used in the proof of Theorem \ref{thm:always_fork}, we obtain: 
+To compute an analytical form for $u_1(\gup_\ell^k)$ we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the disadvantage and give-up parameters $k,\ell$. We obtain the following.
 
 \begin{theorem}
-Fix a pair of integers $\ell$ and $k$. Then the utility $u_1(\bgup^k_\ell)$ has a closed expression of the form $u_1(\bgup^k_\ell) = \frac{\varphi}{1-\Gamma}$, where $\varphi$ and $\Gamma$ are polynomials depending on $\alpha$, $\beta$ and $h$. 
+For every pair of positive integers $\ell, k$ with $k<l$, we have 
+$$u_1(\bgup^k_\ell) = \frac{\varphi_{\tiny l,k}}{1-\Gamma_{l,k}},$$
+where $\varphi_{l,k}$ and $\Gamma_{l,k}$ are polynomials in $\alpha$, $\beta$ and $h$. 
 \end{theorem}
 
 In other words, given specific $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them as we did before, 
@@ -647,8 +641,8 @@ may cost millions).
   \centering
     \includegraphics[width=0.46\textwidth]{plots/GUP.png}
     \label{fig-plot-gup-fixwindow}
-    \caption{Utility for player $1$ under strategies $\bgup^1_2, \dots, \bgup^1_5$. The shaded areas indicates which of these yield higher utility at a given hash power. 
-    The rightmost box represents a zoom around $h = 0.4$ and $h = 0.5$, and the curve for $\bgup^1_4$ meets that of $\bdf$ at $h = 0.467$.}
+    \caption{Utility for player $1$ under strategies $\bgup^1_2, \dots, \bgup^1_5$. Shaded areas indicate which strategy yields higher utility at a given hash power. 
+    The rightmost box represents a zoom around $h = 0.4$ and $h = 0.5$, and the curve for $\bgup^1_4$ meets that of $\bdf$ at $h = 0.467$. All data was generated with arbitrary floating point precision (GMP).}
 \end{figure}
 
 Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight our forks. However, 

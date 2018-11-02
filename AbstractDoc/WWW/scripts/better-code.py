@@ -322,20 +322,46 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
 
     plt.text(0.1, default(.14), '$\mathbf{DF}$', fontsize="large")
 
-    ax.plot(h,
+    """ax.plot(h,
             af(h),
             color='.5',
             linewidth=.8
-            )
+            )"""
+
+    plt.text(.38,
+             2e11,
+             "$\mathbf{G}^1_2$",
+             backgroundcolor="white",
+             fontsize="large",
+             bbox=dict(facecolor='1'))
+    plt.text(.435,
+             2e11,
+             "$\mathbf{G}^1_3$",
+             backgroundcolor="white",
+             fontsize="large",
+             bbox=dict(facecolor='1'))
+    plt.text(.475,
+             2e11,
+             "$\mathbf{G}^1_4$",
+             backgroundcolor="white",
+             fontsize="large",
+             bbox=dict(facecolor='1'))
+    plt.text(.51,
+             2e11,
+             "$\mathbf{G}^1_5$",
+             backgroundcolor="white",
+             fontsize="large",
+             bbox=dict(facecolor='1'))
 
     plt.text(0.8, af(.95), '$\mathbf{AF}$', fontsize="large")
 
+
     ax.legend(labels, fontsize='xx-large')
 
-    xticks = []  # intersection_points[1:NUM_CURVES]
+    xticks = intersection_points[1:NUM_CURVES]
     xticks.append(.5)
 
-    # plt.axvline(x=0.50001, color=".5", linewidth=1)
+    plt.axvline(x=0.50001, color=".5", linewidth=1)
 
     ax.set_xticks(xticks)
     ax.set_yticks([])
@@ -344,13 +370,14 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     plt.ylabel('Utility', fontsize="large")
     ax.set_ylim(y0)
     plt.margins(0, 0)
+
     return plt
 
 
 # Plot limits (x axis)
-start = 0  # .36
-end = 1  # .55
-min_y = 0  # 1.8e11
+start = .36
+end = .55
+min_y = 1.8e11
 step = 0.001
 
 NUM_CURVES = 4
