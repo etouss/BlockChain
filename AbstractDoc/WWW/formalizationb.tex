@@ -94,7 +94,21 @@ Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by
 Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a$ to $q$, denoted by $a(q)$, is defined as the state $q \cup \{b \cdot p\}$. Finally, we denote by $\bA$ the set of combined actions for the $m$ players, that is, $\bA = \bA_0 \times \bA_1 \times \cdots \times \bA_{m-1}$.
 
 \subsubsection{The pay-off of a miner}
-For each player $p \in \bP$, we assume the existence of a pay-off function $r_p : \bQ \to \mathbb{R}$, so that the pay-off of $p$ in a state $q$ is given by $r_p(q)$. Moreover, the combined pay-off function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. In Section \ref{sec-pay-ut}, we discuss the implications of defining miners' pay-offs in this way, and the implications of the manner these pay-offs are accumulated in the utility function.
+%The next and last component of our game is the reward for miners: how much do they earn for each mined block. 
+Most cryptocurrencies based on blockchain follow this miner's payment rules:
+%, and Bitcoin in particular. 
+%
+%\noindent
+(1) Miners receive a one-time reward per each block they mine. For example, in Bitcoin, each miner will receive a pre-set reward when she mines a block (12.5BTC at the time of writing).
+%
+%\noindent
+(2) The only blocks that are valid are those in the blockchain; if a block is not in the blockchain then the reward given for mining this block cannot be spent. To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
+
+So how should the reward function look like? The first naive idea is to give miners the block reward as soon as they put a block at the top of the current blockchain. This provides some incentive to extend the blockchain, however, it does not completely protect the system from forks that (potentially malicious) miners might want to initiate. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two blocks (110 and 111) competing to be in the blockchain, and consider 111 to be the last block added to reach $q'$. If player 0 already cashed in the reward for the block 110 (since this was awarded immediately), she has no further incentive to mine on top of this block, as the block 1110 would give her an equal reward. This can then allow a malicious miner (1 in this example) to do a local fork (e.g. the block 111), where for instance some transactions are being blocked, and does not provide an incentive for other miners to protect the other branch competing to be the blockchain. The way that the Bitcoin protocol goes around this is by paying for blocks which are buried deep into the blockchain.
+% (they have been confirmed one hundred times). 
+This now gives a strong incentive to player 0 to mine on top of the block 110, since she can not cash in her reward immediately after mining this block, but only once it has been extended many times.
+
+In Section \ref{sec-pay-ut}, we discuss the difficulty of defining a reward function which follow this rules, and therefore propose a pay-off model that mimic those incentives. For now we assume for each player $p \in \bP$,  the existence of a reward function $r_p : \bQ \to \mathbb{R}$ such that the reward of $p$ in a state $q$ is given by $r_p(q)$. Moreover, the combined reward function of the game is $\bR = (r_0, r_1, \ldots, r_{m-1})$. 
 
 \subsubsection{Transition probability function}\label{sub:transi}
 
