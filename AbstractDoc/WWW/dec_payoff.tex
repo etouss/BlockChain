@@ -7,11 +7,13 @@
 %the reward given for mining blocks is reduced by half every 200.000 blocks or so. Thus the natural question, do the results above continue to hold under these 
 %circumstances? Our answer is a resounding no, and now forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
 
-The miner fees in many cryptocurrencies, including Bitcoin, is not constant, but diminishes over time. 
-It is thus natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
-circumstances. Our answer is a resounding no, and as we show in this section, when the miner fees decrease over time, forking can be a valid strategy depending on the hash power of the player (and other parameters of the game). 
+Miner's fees in many cryptocurrencies, including Bitcoin, is not constant, but diminishes over time~\cite{Bitcoin,Monero,Litecoin,Bcash}. 
+Thus, it is natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
+circumstances. 
+%Our answer is a resounding no, and as we show in this section, when the miner fees decrease over time, forking can be a valid strategy depending on the hash power of the player (and other parameters of the game).
+As shown in this section, the answer to this question is no;  when the miner's fees decreases forking can be a good strategy, depending on the hash power of a player and on the other parameters of the game.
 
-For simplicity, we model the diminishing miner fees as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
+For simplicity, we model the diminishing miner's fees as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
 we use the following reward function $\rpa$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
 %\begin{eqnarray*}
 %\rpa(q) & = & 
@@ -60,7 +62,7 @@ How would this new strategy look? To consider a realistic scenario, in this sect
 %\begin{itemize}
 %\item 
 First we consider the strategy $\af$ (for \emph{always fork}), where player~$1$ forks as soon as player $0$ mines a block in the blockchain, and she continues mining on the new branch until it becomes the blockchain. Here player $1$ is willing to fork every time player $0$ produces a block in the blockchain. In other words, 
-in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strategy is depicted in Figure \ref{fig:always_fork}.
+in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strategy is depicted in Figure~\ref{fig:always_fork}.
 %\item 
 Second, we consider a family of strategies $\pf{1}$, $\pf{2}$, etc. In the strategy $\pf{i}$, player $1$ behaves just as in $\af$, but will do a fork at most $i$ times, %a specific number of times, 
 switching to $\df$ once 
@@ -121,19 +123,21 @@ The question we want to answer is twofold. On the one hand, we want to know whet
 %Since we know how to compute the utility for $\bdf = (\df_0,\df_1)$, this amounts to computing the utility for player $1$ for the combined strategy $(\df_0,\af)$. 
 On the other hand, and 
 perhaps more interestingly, we can also answer a more analytical question: given realistic values of $\alpha$ and $\beta$, how much hash power does player $1$ need to consider $\af$ instead of $\df_1$? 
-Answering both questions requires us to compute the utility for the  strategy $(\df_0,\af)$, which is what we do next. 
+Answering both questions requires us to compute the utility for the  strategy $\baf=(\df_0,\af)$, which is what we do next. 
 
 \begin{theorem}\label{thm:always_fork}
 If $h$ is the hash power of player 1, then:
-%, $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. Then:
+%%, $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. Then:
 \begin{eqnarray*}
-u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where }
+u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where}
 \end{eqnarray*}
-{\small\begin{align*}
-\Phi & = \ \frac{\alpha  \beta  h  c}{(1-\alpha)}  \big(\cat(\beta^2  h  (1-h)) \ -
- \alpha\cdot \cat(\alpha \beta^2  h  (1-h))\big),\\
-\Gamma & = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h)),
-\end{align*}}
+%{\small
+\begin{align*}
+\Phi & \ = \ \frac{\alpha \cdot \beta  \cdot h  \cdot c}{(1-\alpha)} \cdot  \big(\cat(\beta^2  \cdot h  \cdot (1-h)) \ -\\ 
+& \hspace{100pt} \alpha\cdot \cat(\alpha \cdot \beta^2  \cdot h  \cdot (1-h))\big),\\
+\Gamma & \ = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h)),
+\end{align*}
+%}
 and $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
 \end{theorem}
 
@@ -141,17 +145,18 @@ and $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan n
 
 %Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
 
-Before presenting the proof, let us give some intuition. Player 1, adopting the AF strategy, will always start the game mining on $\varepsilon$, regardless of how many blocks Player 0 manages to append, and continues until her branch is the longest. Therefore, the only states that contribute to Player 1's utility are those in where she made at least one successful fork (all others states give zero reward). Having Player 1 achieved the longest branch once, say, at block $b$, both players will now mine on $b$ and the situation repeats as if $b$ were $\varepsilon$, with proper shifting in the reward and $\beta$-discount. In other words, we have
-$$u_1(\baf) = \Phi + \Gamma\cdot u_1(\baf),$$
-where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor.
+Before presenting the proof, let us give some intuition about it. Player 1, adopting the AF strategy, will always start the game mining on $\varepsilon$, regardless of how many blocks Player 0 manages to append, and continues until her branch is the longest. Therefore, the only states that contribute to Player 1's utility are those in where she made at least one successful fork (all others states give zero reward to her). Having Player 1 achieved the longest branch once, say, at block $b$, both players will now mine on $b$ and the situation repeats as if $b$ were $\varepsilon$, with proper shifting in the reward and $\beta$-discount. In other words, we have
+$u_1(\baf) = \Phi + \Gamma\cdot u_1(\baf),$
+where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor, from which we obtain the expression for $u_1(\baf)$ given in Theorem \ref{thm:always_fork}.
 
 \begin{proof}
 Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and from the proof of Theorem \ref{thm-conts_dom_str} recall the definition of sequence $\rho$ for a state $q$, and recall the construction of string $b_\rho$ from such a sequence $\rho$.
 %the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
 By using these elements, we define $\tau:Q_\baf \to 2^{\{0,1\}^*}$ as follows:
-\begin{eqnarray*}
-\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
-\end{eqnarray*}
+$\tau(q) = \{ b_\rho \mid \rho \text{ is a sequence for } q\}$.
+%\begin{eqnarray*}
+%\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
+%\end{eqnarray*}
 Intuitively, $\tau(q)$ is the set of all moves that players 0 and 1 can do in $|q|-1$ steps according to $\baf$ that lead them to the state $q$ when starting in the genesis block. As such, they are coded as sequences of zeros and ones that tell us which player puts a block at the stage $i$ of the game, for $i \in \{ 1,\ldots, |q|-1\}$. It is straightforward to verify the following:
 \begin{myclaim}\label{claim-words} For every $q, q'\in Q_\baf$, it holds that:
 \begin{itemize}
@@ -171,8 +176,8 @@ tells us that the probability of a state $q$ is the sum of probabilities of all 
 For every $w \in \{0,1\}^*$, there exists a unique state $q \in Q_{\baf}$ such that $w \in \tau(q)$. Given Claim \ref{claim-words} (a), to prove this claim we only need to prove the existence of such a state $q$. If $w = \varepsilon$, then $q = \{\varepsilon\}$. On the other hand, if $w = p_1 \cdots p_n$ with $n \geq 1$ and each $p_i \in \{0,1\}$, then $q = q_n$ in a sequence $q_0, \ldots, q_n$ of states defined by the rules: (1) $q_0 = \varepsilon$; and (2) for every $i \in \{1, \ldots, n\}$, it holds that $q_{i} = a_{i}(q_{i-1})$, where $a_{i} = \df_0(q_{i-1})$ if $p_i = 0$, and $a_{i} = \af(q_{i-1})$ if $p_i = 1$.
 Thus, we conclude that the utility of player $1$ can be rewritten as follows:
 \begin{eqnarray*}
-u_1(\baf) & = & (1-\beta) \cdot \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
-& = & (1-\beta) \cdot  \sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+%u_1(\baf) & = & (1-\beta) \cdot \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+u_1(\baf) & = & (1-\beta) \cdot  \sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
 & = & (1-\beta) \cdot \sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \bigg(\sum_{w \in \tau(q)} \pr(w)\bigg)\\
 & = &  (1-\beta) \cdot \sum_{q \in \bQ_{\baf}} \sum_{w \in \tau(q)} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr(w)\\
 & = &  (1-\beta) \cdot \sum_{q \in \bQ_{\baf}} \sum_{w \in \tau(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
@@ -195,7 +200,7 @@ We now describe all the states in which player 1 receives a non-zero reward in t
 The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4} (a). This state is created when player $q$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
 won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4} (c). 
 In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word}: a word with the same number of $0$s and $1$s, but such that 
-no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ has more blocks than $0$). Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. As it turns out, the number of Dyck words of length $2m$ is the $m$-th Catalan number. We denote by $\Dyck_{2m}$ the set of Dyck words of length $2m$, and by $\Dyck$ the set of all Dyck words.
+no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ has more blocks than player $0$). Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. As it turns out, the number of Dyck words of length $2m$ is the $m$-th Catalan number~\cite{stanley2015catalan}. We denote by $\Dyck_{2m}$ the set of Dyck words of length $2m$, and by $\Dyck$ the set of all Dyck words.
 
 \begin{figure}
 %\begin{center}
@@ -301,26 +306,26 @@ $w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$ with $d \in \
 % be the state represented by $d\cdot 1\cdot w'$. 
 State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
 with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w'$). 
-We can then calculate the reward for $q$ as: 
-\begin{eqnarray*}
-%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
-r_1(q) & = & r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
-\end{eqnarray*}
-Hence, we obtain $u_1(\baf)$ is equal to:
+We can then calculate the reward for $q$ as $r_1(q) = r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w')$, obtaining that:
+%\begin{eqnarray*}
+%%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+%r_1(q) & = & r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+%\end{eqnarray*}
+%Hence, we obtain $u_1(\baf)$ is equal to:
 \begin{multline*}
- (1-\beta) \cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*} \bigg(\beta^{|d|+1+|w|}\cdot \\
+u_1(\baf) \ = \ (1-\beta) \cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*} \bigg(\beta^{|d|+1+|w|}\cdot \\
  \big[r_1(d\cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w)\big] \cdot \pr(d\cdot 1 \cdot w)\bigg).
 \end{multline*}
 %
 %The product of probabilities is obtained since winning a block is an independent trial. 
-Splitting up the summation we get that $ u_1(\baf)$ is equal to:
+Splitting up the summation, we get that $ u_1(\baf)$ is equal to:
 \begin{align*}
 &(1-\beta) \cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d\cdot 1) \cdot \pr(d\cdot 1\cdot w) \ +\\
  & (1-\beta) \cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r_1(w) \cdot \pr(d\cdot 1 \cdot w).
 \end{align*}
 %
 We denote the first term in the equation above by $\Phi$. 
-By definition of the probability of a string, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
+By definition of the probability of a word, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
 Next, we use this fact in the expression for $u_1(\baf)$ to split the second term into the elements that depend only on $d$, and the ones that depend only on $w$:
 %
 \begin{multline*}
@@ -335,23 +340,25 @@ Since the term $(1-\beta) \cdot \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w)  
  \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot  u_1(\baf).
 \end{eqnarray*}
 %
-By denoting with $\Gamma$ the term $\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)$, we get the equation:
-\begin{eqnarray*}
-u_1(\baf) & = &  \frac{\Phi}{1-\Gamma}.
-\end{eqnarray*}
-Let us now find a closed form for $\Gamma$. In what follows, we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$ (recall that all Dyck words are of even length):
+By denoting with $\Gamma$ the term $\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)$, we get the equation
+$u_1(\baf) = \frac{\Phi}{1-\Gamma}$.
+%\begin{eqnarray*}
+%u_1(\baf) & = &  \frac{\Phi}{1-\Gamma}.
+%\end{eqnarray*}
+Let us now find a closed form for~$\Gamma$:
+%. In what follows, we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$ (recall that all Dyck words are of even length):
 %
 \begin{eqnarray*}
 \Gamma & = & \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\\
- & = & \alpha\cdot \beta \cdot  \sum_{d\in \Dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr(d\cdot 1) \\
+% & = & \alpha\cdot \beta \cdot  \sum_{d\in \Dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr(d\cdot 1) \\
   & = & \alpha\cdot \beta \cdot \sum_{\ell = 0}^{\infty} \sum_{d\in \Dyck_{2\ell}} (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
-   & = &  \alpha\cdot \beta \cdot \sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| \cdot (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+%   & = &  \alpha\cdot \beta \cdot \sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| \cdot (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
       & = &  \alpha\cdot \beta \cdot h \cdot \sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| \cdot (\alpha\cdot \beta^2 \cdot h \cdot (1-h))^{\ell}\\
     & = &  \alpha\cdot \beta \cdot h \cdot \cat(\alpha\cdot\beta^2 \cdot h \cdot (1-h)).
 \end{eqnarray*}
 %
 %Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). 
-The final equality is obtained recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan. This function is defined and continuous in $[0,1/4]$, and that $h\cdot(1-h)\in [0,1/4]$ for all $h\in[0,1]$.
+The final equality is obtained by recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan number, so that the summation in the previous line defines the generating function of these numbers. Notice that function $\cat(x)$ is defined and continuous for $x \in (0,\frac{1}{4}]$, and that $\alpha\cdot\beta^2 \cdot h \cdot (1-h) \in (0,\frac{1}{4}] $ since $\alpha \in (0,1]$, $\beta \in (0,1)$ and $h\cdot(1-h)\in (0,\frac{1}{4})$ for every $h\in(0,1)$.
 
 The closed form for $\Phi$ is computed analogously, yielding the claimed expression.
 \end{proof}
