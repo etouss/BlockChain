@@ -107,7 +107,7 @@ would continue mining on block $1110$ instead of forking again.
 \end{tikzpicture} 
 \end{center}
 %\caption{Dashed arrows are used to indicate when player~1 did a fork. Initially, player $0$ mines on the genesis block $\varepsilon$ including block $0$. Player 1 then decides to fork on the genesis block, and continue mining in this new brach until it becomes the blockchain, which happens in this case when player 1 mines on top of  block $1$ generating block $11$. But then again player 1 loses a block when player 0 mines on top of block $111$ generating block $1110$, so she decides to fork on top of block $111$ until the new brach becomes the blockchain. Up to this point in the mining game, the blockchain is given by the path $\{\varepsilon, 1, 11, 111, 1111, 11111\}$ that only contains blocks belonging to player 1.}
-\caption{Dashed arrows are used to indicate when player~1 did a fork. The first block (block 0) is mined by the player 0. At this point 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
+\caption{Dashed arrows are used to indicate when player~1 does a fork. The first block (block 0) is mined by the player 0. At this point 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
 %
 %until the new brach becomes the blockchain
 %which is represented by a dashed arrow, after she manages to Player Following the block 0 player 1 tries to win a fork starting at $\varepsilon$. After winning the initial fork, if she loses another block (as in the block 110), she will try to fork again. When playing $\baf$, the word $w$ describing this state is $011011$.}
@@ -608,9 +608,8 @@ Assume that $u_1(\bdf) \leq u_1(\baf)$ for some values of $\alpha$, $\beta$ and 
 
 \subsection{Giving up for more utility}
 
-By adding a little more flexibility to the strategy of always forking we can identify strategies that make forking profitable with less hash power. 
-
-The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to put when forking, and a parameter $k$ that regulates how far back does the miner fork, when confronted with a chain of blocks I don't own. We denote these strategies by $\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works, and indeed $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where player $1$ is willing to keep fights of any length and to fork at the beginning of any chain of blocks she does not own.  
+By adding a little more flexibility to the strategy of always forking, we can identify approaches that make a fork profitable with less hash power. 
+The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to put when doing a fork, and a parameter $k$ that regulates how far back does the miner do a fork, when confronted with a chain of blocks she does not own. We denote these strategies by $\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works; indeed, $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where player $1$ is willing to keep fights of any length and to do a fork at the beginning of any chain of blocks she does not own.  
 
 \begin{figure}
 \begin{center}
@@ -664,46 +663,59 @@ The families of strategies that we study in this section involve two parameters.
 \end{tikzpicture} 
 \end{center}
 
-\caption{Difference between $\af$ and $\gup^2_4$ in terms of actions of these strategies in two states. In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
-fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$)}
-\label{fig-gup}
+\caption{Difference between $\af$ and $\gup^2_4$ in terms of actions of these strategies in two states. 
+%In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
+%fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$).
+\label{fig-gup}}
 \end{figure}
 
 \begin{example}
-Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when confronted to chains of zero, one or two blocks owned by player $0$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three unowned new blocks in the blockchain, as in Figure \ref{fig-gup}-a. In this case, $\af$ would again try to fork from her own block, but $\gup_4^2$ would fork instead on the dotted line (i.e., the $k$-th unowned block).
-The second difference is provided by the give-up time (Figure \ref{fig-gup}-b). Normally, $\af$ is willing to continue forking regardless of winning hopes, therefore the move for state $q'$ in Figure \ref{fig-gup}-b would still be to mine upon her own block $11$. On the other hand $\gup_4^2$ has already seen $4$ blocks from the start of the fork, so with this strategy player $1$ instead gives up and tries to mine upon $0000$, rebooting the strategies as if this last block was the genesis block. 
+Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when confronted with chains of zero, one or two blocks owned by player $0$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three 
+%unowned new 
+blocks owned by player 0, 
+%in the blockchain, 
+as shown in Figure \ref{fig-gup} (a). In this case, $\af$ would again try to do a fork from her own block, which in this case is the genesis block as no block belongs to player 1. On the other hand, $\gup_4^2$ would try to do a fork instead on the dotted line, that is, the second block that does not belong to her.
+The second difference is provided by the give-up time, which is shown in Figure~\ref{fig-gup}~(b). Normally, $\af$ is willing to continue forking regardless of the hope of winning, therefore the move for the state in Figure \ref{fig-gup} (b) would still be to mine upon her own block $11$. On the other hand, $\gup_4^2$ has already seen 4 blocks from the start of the fork, so with this strategy player $1$ instead gives up and tries to mine upon $0000$, rebooting the strategy as if 
+%this last block 
+$0000$ was the genesis block. 
 \end{example}
 
-To compute an analytical form for $u_1(\gup_\ell^k)$ we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the disadvantage and give-up parameters $k,\ell$. We obtain the following.
-
+Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$. 
+To compute an analytical form for $u_1(\bgup_\ell^k)$, we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the 
+%disadvantage and give-up 
+parameters $k$ and $\ell$. We obtain the following.
 \begin{theorem}
-For every pair of positive integers $\ell, k$ with $k<l$, we have 
-$$u_1(\bgup^k_\ell) = \frac{\varphi_{\tiny l,k}}{1-\Gamma_{l,k}},$$
-where $\varphi_{l,k}$ and $\Gamma_{l,k}$ are polynomials in $\alpha$, $\beta$ and $h$. 
+For every pair of positive integers $\ell, k$ such that $k< \ell$, we have that:
+$$u_1(\bgup^k_\ell) = \frac{\Phi_{\ell,k}}{1-\Gamma_{\ell,k}},$$
+where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are polynomials in $\alpha$, $\beta$ and $h$. 
 \end{theorem}
-
-In other words, given specific $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them as we did before, 
-for $\alpha = 0.9999967030$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives us an interesting feel for the advantages of this family of strategies. 
-We fix $k = 1$, and plot the utility of strategies $\bgup^1_2$ through $\bgup^1_5$, and we shaded those areas in which one of the utilities is greater. As wee see, for a 
-fork window $k = 1$, the optimal amount time player $1$ should be willing to fight a fork before giving up depends on the hash power. With little hash power the likelihood of winning a 
-fork is small, so we want to give up as early as possible. However, the more hash power we obtain, the better it is to wait more and more. Interestingly, with a little more than 
-$46\%$ of the hash power player $1$ already should start using strategies $\gup^1_4$ and with a little more power, $\gup^1_5$. We know that player $1$ should use $\af$ not before 
-$h = 0.499$, so this gives us a loot of extra room to look for optimal strategies if we are willing to fork (especially considering every percentage of hash power in popular cryptocurrencies 
+In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them, as we did before, 
+for $\alpha = 0.9999967030$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives 
+%us an 
+interesting 
+%feel 
+information about the advantages of this family of strategies. 
+We fix $k = 1$, plot the utility of strategies $\bgup^1_2$ through $\bgup^1_5$, and shade those areas in which one of the utilities is greater. As we see, for a 
+fork window $k = 1$, the optimal amount time player $1$ should be willing to fight for a branch before giving up depends on the hash power. With little hash power the likelihood of winning a 
+branch is small, so player 1 should give up as early as possible. However, the more hash power she obtains, the better it is to wait more. Interestingly, with a little more than 
+$46\%$ of the hash power, player $1$ already should start using strategy $\gup^1_4$ to defeat the default strategy, and with a little more power, $\gup^1_5$. We know that player~$1$ should use $\af$ not before 
+$h = 0.499$, so this gives us a lot of extra room to look for optimal strategies if we are willing to fork (especially considering that every percentage of hash power in popular cryptocurrencies 
 may cost millions).
 
 \begin{figure}
   \centering
     \includegraphics[width=0.46\textwidth]{plots/GUP.png}
-    \label{fig-plot-gup-fixwindow}
     \caption{Utility for player $1$ under strategies $\bgup^1_2, \dots, \bgup^1_5$. Shaded areas indicate which strategy yields higher utility at a given hash power. 
-    The rightmost box represents a zoom around $h = 0.4$ and $h = 0.5$, and the curve for $\bgup^1_4$ meets that of $\bdf$ at $h = 0.467$. All data was generated with arbitrary floating point precision (GMP).}
+    The rightmost box represents a zoom around $h = 0.46$,
+    %and $h = 0.5$, 
+    and the curve for $\bgup^1_4$ meets that of the default strategy ($\bdf$) at $h = 0.467$. All data was generated with arbitrary floating point precision (with the GNU Multiple Precision Arithmetic Library).\label{fig-plot-gup-fixwindow}}
 \end{figure}
 
-Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight our forks. However, 
-Figure \ref{fig-plot-gup-fixwindow} is important because we have found that strategy $\gup^1_4$ is the strategy that beats default under the least amount of hash power 
-amongst any combination of $k$, $\ell$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
-the more hash power the bigger the window of blocks one should aim to fork, and the more time one should wait before giving up. We remark that the analysis 
-we can do through 2- or 3-dimensional plots is only one part of the picture, and that a game-thoretical analysis of these strategies is an interesting area for future work. 
+Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight for our forks. However, 
+Figure \ref{fig-plot-gup-fixwindow} is important because we have found that strategy $\gup^1_4$ is the strategy that beats the default strategy under the least amount of hash power 
+amongst any combination of values for $k$ and $\ell$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
+the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. We remark that the analysis 
+we can do through 2- or 3-dimensional plots is only one part of the picture, and that a game-theoretical analysis of these strategies is an interesting area for future work. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
