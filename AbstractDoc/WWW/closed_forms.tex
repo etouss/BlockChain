@@ -1,38 +1,320 @@
 %!TEX root = main.tex
 
-%!TEX root = main.tex
-
-\subsection{Closed form of $u(\gup^k_\ell)$}
-
+\subsection{Evaluation of $u(\gup^k_\ell)$}
+\label{sec-evaluation-G}
 In this section, we develop analytical expressions for the utilities when considering the strategy $\gup^k_\ell$ against a default player. In fact, it is possible to express $u(\gup^k_\ell)$ as a rational function (\ie, a quotient of two polynomials). In particular, these functions can be evaluated to any degree of precision, which allowed us to establish the results of section \ref{sec-dec}.
 
 \begin{subsubsection}{Scenario}
-There are two miners (or, more generally, pools of miners), labelled Miner 0 and Miner 1. Miner 0 follows the \cdf strategy, that is, they will always mine on top of the longest chain, regardless of where their past blocks are. On the other hand, Miner 1 plays with the $\gup^k_\ell$ strategy: given a portion of at most $k$ blocks not owned by her at the end of the blockchain, she forks at the beginning of this chain (we refer to $k$ as the disadvantage). When forking, she establishes a give-up length $\ell$ such that she will give up the fork if the main branch achieves to append $\ell$ blocks, orphaning all mined blocks on the fork. This scenario captures the fact that, with reasonable hash power, a pool does not want to fork too far behind, and will give up the fork if it does not prove successful, before reaching a hopeless situation.
+There are two miners (or, more generally, pools of miners), labelled Miner 0 and Miner 1. Miner 0 follows the \cdf{} strategy, that is, they will always mine on top of the longest chain, regardless of where their past blocks are. On the other hand, Miner 1 plays with the $\gup^k_\ell$ strategy: given a portion of at most $k$ blocks not owned by her at the end of the blockchain, she forks at the beginning of this chain (we refer to $k$ as the disadvantage). When forking, she establishes a give-up length $\ell$ such that she will give up the fork if the main branch achieves to append $\ell$ blocks, orphaning all mined blocks on the fork. This scenario captures the fact that, with reasonable hash power, a pool does not want to fork too far behind, and will give up the fork if it does not prove successful, before reaching a hopeless situation.
 \end{subsubsection}
 
-\begin{subsubsection}{Outline}
 
-\end{subsubsection}
-
-\begin{mythm}
-Miner 1, with hash power $h$, fixes a disadvantage $k$, a give-up length $\ell$, and plays with $\gup^k_\ell$, while miner 0 plays with $\cdf$. For the ease of notation, let
-$$
-\left\{
-\begin{array}{lll}
-x   & = & \beta^2 \cdot h \cdot (1 - h),\\
-y   & = & \alpha \cdot x.\\
 %A_1 & = & \frac{\alpha \cdot \beta \cdot h}{1 - \alpha}\\
 %A_2 & = & \alpha \cdot \beta \cdot h\\
-\end{array}
-\right.
-$$
+
+\begin{mythm}
+Miner 1, with hash power $h$, fixes a disadvantage $k$, a give-up length $\ell$, and plays with $\gup^k_\ell$. Miner 0 plays with $\cdf$. 
 The utility of miner 1 is given by
 $$
-u_1(\gup^k_\ell) = \frac{\alpha \cdot \beta \cdot h + a}{}
+u_1(\gup^k_\ell)(h) = \frac{\Phi_{k,\ell}(h)}{1-\Gamma_{k,\ell}(h)},
 $$
-
-
-
+where $\Phi_{k,\ell},\Gamma_{k,\ell}$ are polynomials in $h$ (with coefficients depending on $k,\ell,\alpha$ and $\beta$).
 \end{mythm}
+In the proof of this theorem, we develop precise expressions for $\Phi_{k,\ell}, \Gamma_{k,\ell}$. These are combinations of two sets of polynomials we call Trapezoidal and Pentagonal Dyck polynomials ($T_{n,m}, P_{n,m}$, see \ref{sec-trapezoid-pentagon}). In what follows, let $x = \beta^2 \cdot h \cdot (1 - h)$ for the ease of notation.
+\begin{proof}
+The game begins with both players mining on $\varepsilon$, and assume that Miner 0 first appends $j$ blocks. Here, five types of states can arise:
+\begin{itemize}
+    \item[(0)] (Case $j=0$) Miner 1 immediately appends a block $b$ on top of $\varepsilon$ and now both players will mine on top of $b$.
+    \item[(a)] After miner 0 appends $j\leq k$ blocks on top of $\varepsilon$, miner 1 appends one block on top of $\varepsilon$ and starts the fork. Miner 1 wins the fork, gaining at most $j+\ell+1$ blocks.
+    \item[(b)] After miner 0 appends $j > k$ blocks on top of $\varepsilon$, miner 1 appends one block at position $j-k$. Miner 1 wins the fork, gaining at most $k+\ell+1$ blocks.
+    \item[(c)] After miner 0 appends $j\leq k$ blocks on top of $\varepsilon$, miner 1 appends one block on top of $\varepsilon$ and starts the fork. Miner 0's branch achieves length $\ell+1$ and miner 1 gives up.
+    \item[(d)] After miner 0 appends $j > k$ blocks on top of $\varepsilon$, miner 1 appends one block at position $j-k$. Miner 0's branch achieves length $\ell+1$ and miner 1 gives up.
+\end{itemize}
+
+A key observation is that after one of this cases, both players will mine over the same block, and reboot the strategies as if this block were $\varepsilon$. This recursive behaviour allows us to compute the utility of single forks in the same spirit as in \ref{thm:always_fork}, and then use proper shifting to establish an equation in $u_1(\gup^k_\ell)(h)$. In other words, we have
+
+$$u_1(\gup^k_\ell)(h) = u_0(h) + \sum_{j=1}^k (u_{a,j}(h) + u_{c,j}(h)) + \sum_{j=k+1}^\infty (u_{b,j}(h) + u_{d,j}(h)),$$
+where each term corresponds to the total utility contributed by the cases above. In what follows, we develop expressions for each of these terms.
+
+\begin{subsubsection}{Case (0)} Every state $q$ in this case is of the form $1\cdot w$, where $w\in \bstring$, and thus the utility amounts to
+\begin{align*}
+u_0(h) &= (1-\beta) \cdot \sum_{w\in \bstring}\beta^{1+|w|} (\alpha + \alpha\cdot r_1(w))\cdot h \cdot \pr(w).\\
+    &= (1-\beta) \frac{\alpha\cdot \beta \cdot h}{1-\beta} + \alpha\cdot\beta\cdot h \cdot(1-\beta) \sum_{w\in \bstring}\beta^{|w|} r_1(w) \cdot \pr(w)\\
+    &= \alpha\cdot \beta \cdot h + \alpha\cdot\beta\cdot h\cdot u_1(\gup^k_\ell)(h),
+\end{align*}
+\end{subsubsection}
 
 
+\begin{subsubsection}{Case (a)}
+These states are all of the form 
+$$q = 0^j\cdot 1\cdot d\cdot 1\cdot w, d\in \Dyck_{j-1}, |d|+j \leq 2\ell, w\in \bstring,$$ 
+where $\Dyck_{j-1}$ are Dyck words with disadvantage $j-1$. 
+
+\begin{figure}[ht!]
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+    \node [state] at (0,0) (R) {$\varepsilon$};
+    \node [state] at (1,0) (1) {$|$};
+    \node [state] at (2,0) (2) {$|$};
+    \node [state] at (3,0) (3) {$|$};
+    \node [state] at (4,0) (4) {$|$};
+    \node [state] at (5,0) (5) {$|$};
+    \node [state] at (6,0) (6) {$|$};
+    \node [state] at (7,0) (7) {$|$};
+    \node [state] at (8,0) (8) {$|$};
+
+    \node [state] at (0.9,-1) (ghost) {$$};
+    
+    \node [state] at (1,-1) (one1) {$|$};
+    \node [state] at (2,-1) (one2) {$|$};
+    \node [state] at (3,-1) (one3) {$|$};
+    \node [state] at (4,-1) (one4) {$|$};
+    \node [state] at (5,-1) (one5) {$|$};
+    \node [state] at (6,-1) (one6) {$|$};
+    \node [state] at (7,-1) (one7) {$|$};
+    \node [state] at (8,-1) (one8) {$|$};
+    \node [state] at (9,-1) (one9) {$|$};
+    \node [state] at (10,-1) (one10) {$w$};
+    
+    \node [state] at (6.1,-1) (ghost2) {$$};
+    
+    % Graph branches
+
+    \path[->]
+    (1,-1) edge (9.5,-1)
+    (R) edge (ghost);
+
+    \path[-]
+    (ghost) edge (ghost2)
+    (R) edge (8,0);
+
+    
+    \path[<->,dashed]
+    (1,.5) edge node {$j$} (5,.5)
+    (6,.5) edge node {$r$} (8,.5);
+\end{tikzpicture} 
+\caption{(Case a) Miner 1 forked at $\varepsilon$ successfully, since $r+j \leq l$.}
+\end{figure}
+
+
+We have
+\begin{align*}
+u_{a,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, d\in \Dyck_{j-1}, |d| \leq 2\ell-j}\beta^{|d|+j+1+|w|} \bigg(\sum_{i=0}^{(|d|+j)/2}\alpha^{i+1} + \alpha^{(|d|+j)/2 + 1} r(w)\bigg) h^{(|d|+j)/2 + 1}(1-h)^{(|d|+j)/2} \pr(w).
+\end{align*}
+Simplifying this expression yields
+\begin{align*}
+u_{a,j}(h) &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j \cdot \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j}x^{(|d|-j)/2}(1-\alpha^{(|d|+j)/2 + 1})\bigg) \\
+& +
+\alpha\cdot\beta\cdot h \cdot(\alpha\cdot x)^j \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j} (\alpha\cdot x)^{(|d|-j)/2}\bigg)\cdot\bigg(\sum_{w\in\bstring} \beta^{|w|}\cdot r_1(w)\cdot \pr(w)\bigg)\\
+    &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j(T_{j-1,\ell-j}(x)-\alpha^{j+1}\cdot T_{j-1,\ell-j}(\alpha\cdot x)) + \alpha\cdot\beta\cdot h\cdot(\alpha \cdot x)^j\cdot T_{j-1,\ell-j}(\alpha\cdot x)\cdot u_1(\gup^k_\ell)(h),
+\end{align*}
+where $T_{n,m}$ is defined on section \ref{sec-trapezoid-pentagon}.
+
+\end{subsubsection}
+
+\begin{subsubsection}{Case (b)}
+These states are of the form 
+$$q = 0^j\cdot 1\cdot d\cdot 1\cdot w, d\in \Dyck_{k-1}, |d|+k \leq 2\ell, w\in \bstring.$$ 
+
+\begin{figure}[ht!]
+
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+    \node [state] at (-3,0) (R) {$\varepsilon$};
+    \node [state] at (-2,0) (-2) {$|$};
+    \node [state] at (-1,0) (-1) {$|$};
+    \node [state] at (0,0) (0) {$|$};
+    \node [state] at (1,0) (1) {$|$};
+    \node [state] at (2,0) (2) {$|$};
+    \node [state] at (3,0) (3) {$|$};
+    \node [state] at (4,0) (4) {$|$};
+    \node [state] at (5,0) (5) {$|$};
+    \node [state] at (6,0) (6) {$|$};
+    \node [state] at (7,0) (7) {$|$};
+    \node [state] at (8,0) (8) {$|$};
+
+    \node [state] at (0.9,-1.5) (ghost) {$$};
+    
+    \node [state] at (1,-1.5) (one1) {$|$};
+    \node [state] at (2,-1.5) (one2) {$|$};
+    \node [state] at (3,-1.5) (one3) {$|$};
+    \node [state] at (4,-1.5) (one4) {$|$};
+    \node [state] at (5,-1.5) (one5) {$|$};
+    \node [state] at (6,-1.5) (one6) {$|$};
+    \node [state] at (7,-1.5) (one7) {$|$};
+    \node [state] at (8,-1.5) (one8) {$|$};
+    \node [state] at (9,-1.5) (one9) {$|$};
+    \node [state] at (10,-1.5) (one10) {$w$};
+    
+    \node [state] at (6.1,-1.5) (ghost2) {$$};
+    
+    % Graph branches
+
+    \path[->]
+    (1,-1.5) edge (9.5,-1.5)
+    (0,0) edge (ghost);
+
+    \path[-]
+    
+    (R) edge (8,0);
+
+    
+    \path[<->,dashed]
+    (-2,.5) edge node {$j$} (5,.5)
+    (1,-.5) edge node[below] {$k$} (5,-.5)
+    (6,.5) edge node {$r$} (8,.5);
+\end{tikzpicture} 
+\caption{(Case b) Miner 1 forked successfully, since $r+k \leq l$.}
+
+\end{figure}
+
+Analogously as before, we have
+\begin{align*}
+u_{b,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, d\in \Dyck_{k-1}, |d| \leq 2\ell-k}\beta^{j+|d|+k+1+|w|} \bigg(\alpha^{j-k}\cdot \sum_{i=0}^{(|d|+k)/2}\alpha^{i+1} + \alpha^{(|d|-k)/2 + j + 1} r(w)\bigg) h^{(|d|+k)/2 + 1}(1-h)^{(|d|-k)/2 + j} \pr(w).
+\end{align*}
+Developing and simplifying this expression as the latter case yields
+\begin{align*}
+u_{b,j}(h) &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot \alpha^{j-k}\cdot \beta^{j+k}\cdot h^{k}\cdot (1-h)^{j}\big(T_{k-1,\ell-k}(x)-\alpha^{k+1}\cdot T_{k-1,\ell-k}(\alpha\cdot x)\big) \\
+&+ \alpha\cdot\beta\cdot h\cdot \alpha^j\cdot\beta^{j+k}\cdot h^{k}\cdot(1-h)^{j}\cdot T_{k-1,\ell-k}(\alpha\cdot x)\cdot  u_1(\gup^k_\ell)(h).
+\end{align*}
+
+\end{subsubsection}
+
+
+\begin{subsubsection}{Case (c)}
+These states are of the form 
+$$q = 0^j\cdot 1\cdot e\cdot w, e\in \Pent_{j-1,\ell-j+1}, w\in \bstring,$$ 
+where $\Pent_{n,m}$ are all the binary strings with $m$ zeroes such that in every prefix, the number of ones minus the number of zeroes does not exceed $n$. The number of such strings is analyzed in section \ref{sec-trapezoid-pentagon}. Let us denote by $H(s)$ the Hamming weight of a binary string $s$. 
+
+\begin{figure}[ht!]
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+    \node [state] at (0,0) (R) {$\varepsilon$};
+    \node [state] at (1,0) (1) {$|$};
+    \node [state] at (2,0) (2) {$|$};
+    \node [state] at (3,0) (3) {$|$};
+    \node [state] at (4,0) (4) {$|$};
+    \node [state] at (5,0) (5) {$|$};
+    \node [state] at (6,0) (6) {$|$};
+    \node [state] at (7,0) (7) {$|$};
+    \node [state] at (8,0) (8) {$|$};
+    \node [state] at (9,0) (9) {$|$};
+    \node [state] at (10,0) (10) {$|$};
+    \node [state] at (11,0) (11) {$w$};
+    \node [state] at (0.9,-1) (ghost) {$$};
+    \node [state] at (1,-1) (one1) {$|$};
+    \node [state] at (2,-1) (one2) {$|$};
+    \node [state] at (3,-1) (one3) {$|$};
+    \node [state] at (4,-1) (one4) {$|$};
+    \node [state] at (5,-1) (one5) {$|$};
+    \node [state] at (6,-1) (one6) {$|$};
+    \node [state] at (6.1,-1) (ghost2) {$$};
+    
+    % Graph branches
+
+    \path[->]
+    (R) edge (11)
+    (R) edge (ghost);
+
+    \path[-]
+    (ghost) edge (ghost2);
+    
+    \path[<->,dashed]
+    (1,.5) edge node {$j$} (5,.5)
+    (6,.5) edge node {$\ell-j+1$} (10,.5)
+    (2,-1.5) edge node [below] {$r=H(e)$}(6,-1.5);
+\end{tikzpicture} 
+\caption{(Case c) Miner 1 forked at $\varepsilon$ but gave up, since the upper branch attained $l$ blocks.}
+
+\end{figure}
+
+We have
+\begin{align*}
+u_{c,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, e\in \Pent_{j-1, \ell-j-1}} \beta^{\ell+H(e)+|w|+2}\cdot \alpha^{\ell+1}\cdot r_1(w) \cdot h^{H(e)+1}\cdot(1-h)^{\ell+1}\cdot \pr(w).
+\end{align*}
+This yields the following:
+\begin{align*}
+u_{c,j}(h) &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^l\cdot u_1(\gup^k_\ell)(h) \cdot  \sum_{e\in\Pent_{j-1,\ell-j-1}}(\beta\cdot h)^{H(e)}\\
+        &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^l \cdot P_{\ell,j}(\beta\cdot h) \cdot u_1(\gup^k_\ell)(h).
+\end{align*}
+
+
+\end{subsubsection}
+
+
+\begin{subsubsection}{Case (d)}
+These states are of the form $q = 0^j\cdot 1\cdot e\cdot w, e\in \Pent_{k-1,\ell-k+1}, w\in \bstring.$
+
+\begin{figure}[ht!]
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+    \node [state] at (-3,0) (R) {$\varepsilon$};
+    \node [state] at (-2,0) (-2) {$|$};
+    \node [state] at (-1,0) (-1) {$|$};
+    \node [state] at (0,0) (0) {$|$};
+    \node [state] at (1,0) (1) {$|$};
+    \node [state] at (2,0) (2) {$|$};
+    \node [state] at (3,0) (3) {$|$};
+    \node [state] at (4,0) (4) {$|$};
+    \node [state] at (5,0) (5) {$|$};
+    \node [state] at (6,0) (6) {$|$};
+    \node [state] at (7,0) (7) {$|$};
+    \node [state] at (8,0) (8) {$|$};
+    \node [state] at (9,0) (9) {$|$};
+    \node [state] at (10,0) (10) {$|$};
+    \node [state] at (11,0) (11) {$w$};
+    \node [state] at (0.9,-1.5) (ghost) {$$};
+    \node [state] at (1,-1.5) (one1) {$|$};
+    \node [state] at (2,-1.5) (one2) {$|$};
+    \node [state] at (3,-1.5) (one3) {$|$};
+    \node [state] at (4,-1.5) (one4) {$|$};
+    \node [state] at (5,-1.5) (one5) {$|$};
+    \node [state] at (6,-1.5) (one6) {$|$};
+    \node [state] at (6.1,-1.5) (ghost2) {$$};
+    
+    % Graph branches
+
+    \path[->]
+    (R) edge (11)
+    (0) edge (ghost);
+
+    \path[-]
+    (ghost) edge (ghost2);
+    
+    \path[<->,dashed]
+    (-2,.5) edge node {$j$} (6,.5)
+    (1,-.5) edge node [below] {$k$} (6,-.5)
+    (7,.5) edge node {$\ell-k+1$} (10,.5)
+    (2,-2) edge node [below] {$r=H(e)$}(6,-2);
+\end{tikzpicture} 
+\caption{(Case d) Miner 1 forked at some block, but gives up, since the upper branch attained $l$ blocks.}
+\end{figure}
+
+
+As in case (c), we compute
+\begin{align*}
+u_{d,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, e\in \Pent_{k-1, \ell-k-1}} \beta^{\ell+j-k+H(e)+|w|+2}\cdot \alpha^{\ell+j-k+1}\cdot r_1(w) \cdot h^{H(e)+1}\cdot(1-h)^{\ell+j-k+1}\cdot \pr(w)\\
+        &= \alpha\cdot x\cdot(\alpha\cdot\beta\cdot(1-h))^{j+\ell-k}\cdot P_{\ell,k}(\beta\cdot h) \cdot u_1(\gup^k_\ell)(h).
+\end{align*}
+
+
+
+\end{subsubsection}
+
+Putting all of these expressions together and summing over $j$ gives an equation for $u_1(\gup^k_\ell)(h)$, that solves to the claimed rational function. More precisely, we have
+$$u_1(\gup^k_\ell)(h) = u_0 + \sum_{j=1}^k (u_{a,j} + u_{c,j}) + \sum_{j=k+1}^\infty (u_{b,j} + u_{d,j}) = \Phi_{k,\ell} + \Gamma_{k,\ell}\cdot u_1(\gup^k_\ell)(h),$$
+where $\Phi$ is the total contribution of one fork (successful or not) and $\Gamma$ is the total shifting factor. First note that $u_{b,j}+u_{d,j}$ is a geometric sequence in $j$ with a ratio in $[0,1)$, therefore the summation converges. In particular, $\Phi_{k,\ell}$ and $\Gamma_{k,\ell}$ are polynomials in $h$ whose coefficients depend in $\alpha,\beta,\ell,k$.
+\end{proof}
+
+\subsection{Trapezoidal and Pentagonal Dyck Polynomials}
+\label{sec-trapezoid-pentagon}
+
+In this section, we define two sets of polynomials that control the combinatorial nature of our game. They arise as generating polynomials of the sequences of states of fixed length. 
+
+Recall that $\Dyck_{a,2b}$ is the set of binary strings of length $2b+a$ such that the number of ones equals the number of zeroes plus $a$, and such that for every prefix, the number of ones minus the number of zeroes is at most $a$. Now, define $\sigma_{a,b}:=|\Dyck_{a,2b}|$. Interpreting each 0 as a unitary $\uparrow$ step in $\ZZ^2$ and each 1 as a unitary $\rightarrow$ step, we have that $\sigma_{a,b}$ is the total number of $\{\uparrow,\rightarrow\}$ paths from $(0,0)$ to $(a,a+b)$ that lie within the trapezoid ${(0,0),(a,0),(a,a+b),(0,b)}$. We enumerate them in proposition \ref{enum-sigma}.
+
+Also, from section \ref{sec-evaluation-G}, the set $\Pent_{a,b}$ consists of all binary strings with $b$ zeroes such that in every prefix, the number of ones minus the number of zeroes does not exceed $a$. Also, define $\Pent_{a,b}^r$ the number of such strings which have exactly $r$ ones, and define $\theta_{a,b}^r:= |\Pent_{a,b}^r|$. As before, note that $\theta_{a,b}^r$ is the total number of $\{\uparrow,\rightarrow\}$ paths in $\ZZ^2$ from $(0,0)$ to $(r,b)$ that lie within the pentagon $\{(0,0),(0,a),(r,r-a), (r,b), (0,b)\}$ (this is a rectangle if $r<a$). We develop a linear recurrence for $\theta_{a,b}^r$ that solves in terms of $\sigma_{a,b}$ in proposition \ref{enum-theta}.
