@@ -263,127 +263,37 @@ def util(k, l, h):
     return res
 
 
-def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
-    fig, ax = plt.subplots()
+def max_util(h):
 
-    intersection_points = [start]
+    max_k = 0
+    max_l = 0
+    max_value = 0
+    for i in range(1, 21):
+        for j in range(i+1, 21):
+            if util(i, j, h) > max_value:
+                max_value = util(i, j, h)
+                max_k = i
+                max_l = j
 
-    # Variable
-    h = np.arange(start, end, step)
-
-    labels = []
-    linestyles = ['-', '--', '-.', ':']
-    colors = [.3, .3, .3, .3]
-    edgecolors = ['.8', '.8', '.8', '.8']
-    hatches = ['\\\\\\', '---', '///', '...']
-
-    # Find intersection points, assuming between 0.35 and 0.75
-    diff_list = []
-    preimages = []
-
-    for i in range(0, NUM_CURVES - 1):
-        # Make a list containing the difference
-        for x in np.arange(.35, .75, step):
-            preimages.append(x)
-            diff_list.append(
-                abs(
-                    util(window[i], give_up[i], x) -
-                    util(window[i + 1], give_up[i + 1], x)))
-        # Get minimum
-        min_val, id_min = min((val, ix) for (ix, val) in enumerate(diff_list))
-        intersection_points.append(preimages[id_min])
-
-    intersection_points.append(end)
-    print("Intersections: ", intersection_points)
-
-    # Plot curves
-    for i in range(0, NUM_CURVES):
-        ax.plot(h,
-                util(window[i], give_up[i], h),
-                linestyle=linestyles[i],
-                color=str(colors[i]))
-        labels.append("$\mathbf{G}^{k = " + str(window[i]) +
-                      "}_{\ell = " + str(give_up[i]) + "}$")
-
-        section = np.arange(intersection_points[i],
-                            intersection_points[i + 1] + step,
-                            step)
-
-        plt.fill_between(section,
-                         util(window[i], give_up[i], section),
-                         facecolor='1',
-                         hatch=hatches[i],
-                         edgecolor=edgecolors[i])
-
-    ax.plot(h,
-            default(h),
-            color='.5',
-            linewidth=.8)
-
-    plt.text(0.1, default(.14), '$\mathbf{DF}$', fontsize="large")
-
-    """ax.plot(h,
-            af(h),
-            color='.5',
-            linewidth=.8
-            )"""
-
-    plt.text(.38,
-             2e11,
-             "$\mathbf{G}^1_2$",
-             backgroundcolor="white",
-             fontsize="large",
-             bbox=dict(facecolor='1'))
-    plt.text(.435,
-             2e11,
-             "$\mathbf{G}^1_3$",
-             backgroundcolor="white",
-             fontsize="large",
-             bbox=dict(facecolor='1'))
-    plt.text(.475,
-             2e11,
-             "$\mathbf{G}^1_4$",
-             backgroundcolor="white",
-             fontsize="large",
-             bbox=dict(facecolor='1'))
-    plt.text(.51,
-             2e11,
-             "$\mathbf{G}^1_5$",
-             backgroundcolor="white",
-             fontsize="large",
-             bbox=dict(facecolor='1'))
-
-    plt.text(0.8, af(.95), '$\mathbf{AF}$', fontsize="large")
+    return max_k, max_l
 
 
-    ax.legend(labels, fontsize='xx-large')
+for x in np.arange(0, 1, .1):
+    print(max_util(x))
 
-    xticks = intersection_points[1:NUM_CURVES]
-    xticks.append(.5)
+h = 0.49
 
-    plt.axvline(x=0.50001, color=".5", linewidth=1)
+utill = [[util(x, y, h) for x in range(1, 21)] for y in range(1, 21)]
 
-    ax.set_xticks(xticks)
-    ax.set_yticks([])
+fig, ax = plt.subplots()
+im = ax.imshow(utill)
+ax.invert_yaxis()
 
-    plt.xlabel('Hash Power', fontsize="large")
-    plt.ylabel('Utility', fontsize="large")
-    ax.set_ylim(y0)
-    plt.margins(0, 0)
+ax.set_xticks(np.arange(1,21,1))
+ax.set_yticks(np.arange(1,21,1))
 
-    return plt
+window_fork = {}
+labels = []
+fig.savefig("window_fork.png")
+plt.show()
 
-
-# Plot limits (x axis)
-start = .36
-end = .55
-min_y = 1.8e11
-step = 0.001
-
-NUM_CURVES = 4
-window = [1, 1, 1, 1]
-give_up = [2, 3, 4, 5]
-
-plot = gen_main_plot(start, end, step, min_y, NUM_CURVES, window, give_up)
-
-plot.show()

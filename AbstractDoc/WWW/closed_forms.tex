@@ -1,0 +1,38 @@
+%!TEX root = main.tex
+
+%!TEX root = main.tex
+
+\subsection{Closed form of $u(\gup^k_\ell)$}
+
+In this section, we develop analytical expressions for the utilities when considering the strategy $\gup^k_\ell$ against a default player. In fact, it is possible to express $u(\gup^k_\ell)$ as a rational function (\ie, a quotient of two polynomials). In particular, these functions can be evaluated to any degree of precision, which allowed us to establish the results of section \ref{sec-dec}.
+
+\begin{subsubsection}{Scenario}
+There are two miners (or, more generally, pools of miners), labelled Miner 0 and Miner 1. Miner 0 follows the \cdf strategy, that is, they will always mine on top of the longest chain, regardless of where their past blocks are. On the other hand, Miner 1 plays with the $\gup^k_\ell$ strategy: given a portion of at most $k$ blocks not owned by her at the end of the blockchain, she forks at the beginning of this chain (we refer to $k$ as the disadvantage). When forking, she establishes a give-up length $\ell$ such that she will give up the fork if the main branch achieves to append $\ell$ blocks, orphaning all mined blocks on the fork. This scenario captures the fact that, with reasonable hash power, a pool does not want to fork too far behind, and will give up the fork if it does not prove successful, before reaching a hopeless situation.
+\end{subsubsection}
+
+\begin{subsubsection}{Outline}
+
+\end{subsubsection}
+
+\begin{mythm}
+Miner 1, with hash power $h$, fixes a disadvantage $k$, a give-up length $\ell$, and plays with $\gup^k_\ell$, while miner 0 plays with $\cdf$. For the ease of notation, let
+$$
+\left\{
+\begin{array}{lll}
+x   & = & \beta^2 \cdot h \cdot (1 - h),\\
+y   & = & \alpha \cdot x.\\
+%A_1 & = & \frac{\alpha \cdot \beta \cdot h}{1 - \alpha}\\
+%A_2 & = & \alpha \cdot \beta \cdot h\\
+\end{array}
+\right.
+$$
+The utility of miner 1 is given by
+$$
+u_1(\gup^k_\ell) = \frac{\alpha \cdot \beta \cdot h + a}{}
+$$
+
+
+
+\end{mythm}
+
+
