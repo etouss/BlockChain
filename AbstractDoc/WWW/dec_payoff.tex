@@ -7,13 +7,10 @@
 %the reward given for mining blocks is reduced by half every 200.000 blocks or so. Thus the natural question, do the results above continue to hold under these 
 %circumstances? Our answer is a resounding no, and now forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
 
-Miner's fees in many cryptocurrencies, including Bitcoin, is not constant, but diminishes over time~\cite{Bitcoin,Monero,Litecoin,Bcash}. 
-Thus, it is natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
-circumstances. 
-%Our answer is a resounding no, and as we show in this section, when the miner fees decrease over time, forking can be a valid strategy depending on the hash power of the player (and other parameters of the game).
-As shown in this section, the answer to this question is no;  when the miner's fees decreases forking can be a good strategy, depending on the hash power of a player and on the other parameters of the game.
-
-For simplicity, we model the diminishing miner's fees as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
+Miner's fees in many cryptocurrencies, including Bitcoin, is not constant, but diminishes over time~\cite{Bitcoin,Monero,Litecoin,Bcash}. We model such 
+%diminishing 
+fees as a constant factor that is lowered after every new block in the blockchain. That is, 
+%in this section 
 we use the following reward function $\rpa$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
 %\begin{eqnarray*}
 %\rpa(q) & = & 
@@ -22,12 +19,30 @@ we use the following reward function $\rpa$ for all players $p \in \bP$, denoted
 \rpa(q) & = & 
 c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
 \end{eqnarray*}
-where $c$ is a positive real number and $\alpha \in (0,1]$. Notice that in the case of Bitcoin, $\alpha$ has to make the reward halve every 210.000 blocks, and is therefore very close to 1. %This is usually the case in other cryptocurrencies as well. 
+In this section, we show that when miners' fees decrease over time, doing a fork can be a good strategy. In fact, we explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the number of times a player can do a fork, the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that is profitable to fork with more than half of the hash power. But more importantly, our exploration gives us in Section \ref{sec-giving-up} a concrete strategy that with less than half of the hash power 
+%a little more than $46\%$ of the hash power 
+can be used to defeat the default strategy.
 
-%\medskip
+%Thus, it is natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
+%circumstances. 
+%%Our answer is a resounding no, and as we show in this section, when the miner fees decrease over time, forking can be a valid strategy depending on the hash power of the player (and other parameters of the game).
+%As shown in this section, the answer to this question is no;  when the miner's fees decreases forking can be a good strategy, depending on the hash power of a player and on the other parameters of the game.
 %
-%(say that the approach we use is the same as above: we consider a two player game and group a bunch of well behaved players 
-%into a single player. Also state that the subtree lemma holds also for this payoff)
+%For simplicity, we model the diminishing miner's fees as a constant factor that is lowered after every new block in the blockchain. That is, in this section 
+%we use the following reward function $\rpa$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
+%%\begin{eqnarray*}
+%%\rpa(q) & = & 
+%%{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\meet(q),i)} \end{eqnarray*}
+%\begin{eqnarray*}
+%\rpa(q) & = & 
+%c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
+%\end{eqnarray*}
+%where $c$ is a positive real number and $\alpha \in (0,1]$. Notice that in the case of Bitcoin, $\alpha$ has to make the reward halve every 210.000 blocks, and is therefore very close to 1. %This is usually the case in other cryptocurrencies as well. 
+%
+%%\medskip
+%%
+%%(say that the approach we use is the same as above: we consider a two player game and group a bunch of well behaved players 
+%%into a single player. Also state that the subtree lemma holds also for this payoff)
 
 \subsection{When is forking a good strategy?}
 \label{sec-forkingstrategies}
@@ -607,9 +622,10 @@ Assume that $u_1(\bdf) \leq u_1(\baf)$ for some values of $\alpha$, $\beta$ and 
 %However, in the following section we do show that there are actually strategies leading to forks with less hash power. 
 
 \subsection{Giving up for more utility}
+\label{sec-giving-up}
 
 By adding a little more flexibility to the strategy of always forking, we can identify approaches that make a fork profitable with less hash power. 
-The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to put when doing a fork, and a parameter $k$ that regulates how far back does the miner do a fork, when confronted with a chain of blocks she does not own. We denote these strategies by $\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works; indeed, $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where player $1$ is willing to keep fights of any length and to do a fork at the beginning of any chain of blocks she does not own.  
+The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to carry out when doing a fork, and a parameter $k$ that regulates how far back the miner is willing to do a fork, when confronted with a chain of blocks she does not own. We denote these strategies by $\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works; indeed, $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where player $1$ is willing to keep fights of any length and to do a fork at the beginning of any chain of blocks she does not own.  
 
 \begin{figure}
 \begin{center}
@@ -687,9 +703,10 @@ parameters $k$ and $\ell$. We obtain the following.
 \begin{theorem}
 For every pair of positive integers $\ell, k$ such that $k< \ell$, we have that:
 $$u_1(\bgup^k_\ell) = \frac{\Phi_{\ell,k}}{1-\Gamma_{\ell,k}},$$
-where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, $\beta$ and $h$. 
+where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, $\beta$ and $h$ (that is, divisions of polynomials of  $\alpha$, $\beta$ and $h$).
 \end{theorem}
-\francisco{optional: We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in appendix \ref{sec-evaluation-G}.} In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them, as we did before, 
+%\francisco{optional: We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in appendix \ref{sec-evaluation-G}.} 
+In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them, as we did before, 
 for $\alpha = 0.9999967030$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives 
 %us an 
 interesting 
