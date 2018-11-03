@@ -117,7 +117,7 @@ would continue mining on block $1110$ instead of forking again.
 %\medskip
 %\noindent
 %\textbf{Strategy $\af$}. 
-\subsubsection{On the utility of always forking}
+\subsubsection{The utility of always forking}
 %As we explained, the idea of $\af$ for player $1$ is to fork every time she loses a block, trying to own all blocks in the blockchain. 
 The question we want to answer is twofold. On the one hand, we want to know whether $\af$ is a better strategy than $\df_1$ for player $1$, under the assumption that player $0$ uses $\df_0$, and under some specific values of $\alpha$, $\beta$ and $h$. 
 %Since we know how to compute the utility for $\bdf = (\df_0,\df_1)$, this amounts to computing the utility for player $1$ for the combined strategy $(\df_0,\af)$. 
@@ -525,39 +525,86 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 \end{proof}
 \end{comment}
 
-\medskip
-\noindent
-\textbf{When to fork}. To answer this question, we used the closed forms of $\bdf$ and $\baf$ to compute the utility for a fixed $\alpha$, $\beta$ and varying hash power. 
-We consider reallistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
+%\medskip
+%\noindent
+\subsubsection{The more you do a fork, the more you can defeat the default strategy}
+%\textbf{When to fork}. 
+Recall that in the strategy $\pf{1}$, player $1$ behaves just as in $\af$, but do a fork at most once, 
+switching to $\df$ once this fork has been completed.
+The utility of player 1 for the combined strategy $\bpf{1} = (\df_0, \pf{1})$ can be calculated using similar ideas as in the proof of Theorem \ref{thm:always_fork}, which gives rise to a closed form for $u_1(\bpf{1})$ (we omit this calculation due to the lack of space). With the closed forms for $u_1(\bdf)$, $u_1(\baf)$ and $u_1(\bpf{1})$, we can compare the utilities of these strategies for player 1 for fixed values of $\alpha$ and $\beta$, but varying her hash power. In particular, we consider realistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
 a value of alpha that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999967030$. For 
-$\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 2017 \cite{interest}, which amounts to 2.2077\%. This gives us a value of $\beta = 0.9999996156$. 
+$\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 
+%2017 \cite{interest}, 
+the last few years, which is approximately 2\%.\footnote{\url{https://data.worldbank.org/indicator/FR.INR.RINR?locations=US}}
+%amounts to 2.2077\%. 
+This gives us a value of $\beta = 0.9999996156$. 
+                      								     
+Figure \ref{fig-af-df-fo} shows the value of the utility of player $1$ for the combined strategies $\baf$, $\bpf{1}$ and $\bdf$.
+%, and player $0$ always using $\df$. 
+The point where the utility for $\baf$ and $\bdf$ meet is $h = 0.4969 \pm 0.000001$,
+% \francisco{Confirmed with the c++ scripts with thousands of bits of precision actually}, 
+which means that player~$1$ should use $\baf$ as soon as she controls more than this proportion of the hash power. \marcelo{Is it the same value for $F[1]$?}
+This confirms the 
+folklore fact that is profitable to fork with more than half of the hash power. However, it is interesting to note that
+% this is not exactly the case: 
+one should be willing to fork even with a little less than half of the hash power, which has been noted before in  \cite{}. \marcelo{We are missing a citation here.}
+%\francisco{Should we mention that this is quite expectable from the strategies? i.e. the probability of being ahead at one point in time is almost one for $h > .4969$, so it is actually not very interesting.}
 
-Figure \ref{fig-af-df-fo} shows the value of the utility for player $1$ when using strategies $\af$, $\pf{1}$ or $\df$, and player $0$ always using $\df$. The point where the utility for 
-$\af$ and $\df$ meet is $h = 0.4969 \pm 0.000001$ \francisco{Confirmed with the c++ scripts with thousands of bits of precision actually}, which means that player $1$ should use $\af$ as soon as she controls more than this proportion of the hash power. This confirms the 
-folklore fact that is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. This has been noted before in e.g. \cite{}. \francisco{Should we mention that this is quite expectable from the strategies? i.e. the probability of being ahead at one point in time is almost one for $h > .4969$, so it is actually not very interesting.}
+Although at the scale of Figure \ref{fig-af-df-fo}, the curve for $\bpf{1}$ is too close to that of $\bdf$ to tell a difference, these curves are indeed distinct: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\bdf$. In fact, from the figure one can infer that if $\baf$ yields more utility to player $1$ than $\bdf$, 
+%(e.g. when $h>0.5$),
+ then player $1$ should not use $\bpf{1}$ but rather keep on forking, as 
+the utility for $\baf$ is always above than the utility for $\bpf{1}$ in that case. In the following proposition, we show that this can be generalised to any value of $i$, showing that if $\baf$ defeats the default strategy, then the more you do a fork, the more you can defeat the default strategy.
+ %Can we say the same for other similar strategies? Even though we can compute the utility of using any of the strategies $\pf{i}$, we cannot directly compare an infinite number of strategies. Instead, we prove the following general result. 
+%We can show something similar for all the other $\pf{i}$.
+\begin{proposition}\label{prop-fork_fix}
+Assume that $u_1(\bdf) \leq u_1(\baf)$ for some values of $\alpha$, $\beta$ and $h$. Then for such values,  $u_1(\bpf{i}) \leq u_1(\baf)$ for every $i > 0$.
+\end{proposition}
 
 \begin{figure}
   \centering
     \includegraphics[width=0.46\textwidth]{plots/test_AF.png}
-    \caption{Utility for player $1$ under strategies $\bdf$, $(\df_0,\pf{1})$ and $\baf$. The curve for $\pf{1}$ is too close to that of $\df$ to tell a difference at this scale, but the difference does exist: after about $h = 0.5$, the curve for $\pf{1}$ is always higher than that of $\df$. Note that the utility collapses to $\df$ when $h = 1$. This is always the highest amount that can be earned in our game.}
+    \caption{Utilities for player $1$ under strategies $\bdf$, $\bpf{1}$ and $\baf$. 
+    %The curve for $\bpf{1}$ is too close to that of $\df$ to tell a difference at this scale, but the difference does exist: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\df$. 
+    Notice that the utilities collapse to $\bdf$ when $h = 1$. This is always the highest amount that can be earned in our game.}
         \label{fig-af-df-fo}
 \end{figure}
+%
+%Note that this result does not rule out the possibility that, for some amount of hash power, playing some $\pf{i}$ would turn out better than $\df$, but $\af$ would not. We know 
+%this is not the case for $i = 1$, and we can also prove it for $i > 1$, albeit at the cost of much more powerful machinery that we do not have the space to introduce. 
+%However, in the following section we do show that there are actually strategies leading to forks with less hash power. 
 
-\smallskip
-\noindent
-\francisco{I think the following subsection should not be included (or should be restated as only considering AF vs DF). The comparation with F[i] looks quite weak to me.}
-\textbf{Forking for a fixed number of times}. Looking at Figure \ref{fig-af-df-fo}, we see that the utility when using $\pf{1}$ is  between the lines for $\af$ and $\df$. 
-This utility was calculated using a similar strategy as in in the proof of Theorem \ref{thm:always_fork}. 
-From the figure one can infer that, assuming $\af$ yields more utility to player $1$ than $\df$ (e.g. when $h>0.5$), then player $1$ should not use $\pf{1}$ but rather keep on forking, as 
-the utility for $\af$ is always above than the utility for $\pf{i}$ in that case. %Can we say the same for other similar strategies? Even though we can compute the utility of using any of the strategies $\pf{i}$, we cannot directly compare an infinite number of strategies. Instead, we prove the following general result. 
-We can show something similar for all the other $\pf{i}$.
-\begin{proposition}\label{prop-fork_fix}
-Assume that $u_1(\bdf) \leq u_1(\baf)$ for some $\alpha,\beta,h$. Then for all $i > 0$ we have that $u_1((\df_0,\pf{i})) \leq u_1(\af))$.
-\end{proposition}
 
-Note that this result does not rule out the possibility that, for some amount of hash power, playing some $\pf{i}$ would turn out better than $\df$, but $\af$ would not. We know 
-this is not the case for $i = 1$, and we can also prove it for $i > 1$, albeit at the cost of much more powerful machinery that we do not have the space to introduce. 
-However, in the following section we do show that there are actually strategies leading to forks with less hash power. 
+%To answer this question, we used the closed forms of $\bdf$ and $\baf$ to compute the utility for a fixed $\alpha$, $\beta$ and varying hash power. 
+%We consider realistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
+%a value of alpha that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999967030$. For 
+%$\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 2017 \cite{interest}, which amounts to 2.2077\%. This gives us a value of $\beta = 0.9999996156$. 
+%
+%Figure \ref{fig-af-df-fo} shows the value of the utility for player $1$ when using strategies $\af$, $\pf{1}$ or $\df$, and player $0$ always using $\df$. The point where the utility for 
+%$\af$ and $\df$ meet is $h = 0.4969 \pm 0.000001$ \francisco{Confirmed with the c++ scripts with thousands of bits of precision actually}, which means that player $1$ should use $\af$ as soon as she controls more than this proportion of the hash power. This confirms the 
+%folklore fact that is profitable to fork with more than half the hash power. However, it is interesting to note that this is not exactly the case: one should be willing to fork even with a little less than half the hash power. This has been noted before in e.g. \cite{}. \francisco{Should we mention that this is quite expectable from the strategies? i.e. the probability of being ahead at one point in time is almost one for $h > .4969$, so it is actually not very interesting.}
+%
+%\begin{figure}
+%  \centering
+%    \includegraphics[width=0.46\textwidth]{plots/test_AF.png}
+%    \caption{Utility for player $1$ under strategies $\bdf$, $\bpf{1}$ and $\baf$. The curve for $\bpf{1}$ is too close to that of $\df$ to tell a difference at this scale, but the difference does exist: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\df$. Note that the utility collapses to $\bdf$ when $h = 1$. This is always the highest amount that can be earned in our game.}
+%        \label{fig-af-df-fo}
+%\end{figure}
+%
+%\smallskip
+%\noindent
+%\francisco{I think the following subsection should not be included (or should be restated as only considering AF vs DF). The comparation with F[i] looks quite weak to me.}
+%\textbf{Forking for a fixed number of times}. Looking at Figure \ref{fig-af-df-fo}, we see that the utility when using $\pf{1}$ is  between the lines for $\af$ and $\df$. 
+%This utility was calculated using a similar strategy as in in the proof of Theorem \ref{thm:always_fork}. 
+%From the figure one can infer that, assuming $\af$ yields more utility to player $1$ than $\df$ (e.g. when $h>0.5$), then player $1$ should not use $\pf{1}$ but rather keep on forking, as 
+%the utility for $\af$ is always above than the utility for $\pf{i}$ in that case. %Can we say the same for other similar strategies? Even though we can compute the utility of using any of the strategies $\pf{i}$, we cannot directly compare an infinite number of strategies. Instead, we prove the following general result. 
+%We can show something similar for all the other $\pf{i}$.
+%\begin{proposition}\label{prop-fork_fix}
+%Assume that $u_1(\bdf) \leq u_1(\baf)$ for some $\alpha,\beta,h$. Then for all $i > 0$ we have that $u_1((\df_0,\pf{i})) \leq u_1(\af))$.
+%\end{proposition}
+%
+%Note that this result does not rule out the possibility that, for some amount of hash power, playing some $\pf{i}$ would turn out better than $\df$, but $\af$ would not. We know 
+%this is not the case for $i = 1$, and we can also prove it for $i > 1$, albeit at the cost of much more powerful machinery that we do not have the space to introduce. 
+%However, in the following section we do show that there are actually strategies leading to forks with less hash power. 
 
 \subsection{Giving up for more utility}
 
