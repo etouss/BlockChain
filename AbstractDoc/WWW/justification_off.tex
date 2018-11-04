@@ -22,10 +22,10 @@ For simplicity, here we assume that the game starts in the genesis block $\varep
 
 To see that we pay the correct amount for each block, assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by most currently circulating cryptocurrencies, by the pay-off functions considered in this paper, and by other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
 \begin{myprop}\label{prop-ub-block}
-For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \bS$, it holds that:
-\begin{eqnarray*}
-u^b_p(\bs) & \leq &  \beta^{|b|} \cdot M_p(b).
-\end{eqnarray*}
+For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \bS$, it holds that: \ \ $u^b_p(\bs)  \leq   \beta^{|b|} \cdot M_p(b)$.
+%\begin{eqnarray*}
+%u^b_p(\bs) & \leq &  \beta^{|b|} \cdot M_p(b).
+%\end{eqnarray*}
 \end{myprop}
 Thus, the utility obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that has to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$. 
 Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This tell us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
