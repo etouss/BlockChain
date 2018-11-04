@@ -1,12 +1,13 @@
 %!TEX root = main.tex
 
-\subsection{Evaluation of $u(\gup^k_\ell)$}
+\section{Closed form of $u(\gup^k_\ell)$}
+
 \label{sec-evaluation-G}
 In this section, we develop analytical expressions for the utilities when considering the strategy $\gup^k_\ell$ against a default player. In fact, it is possible to express $u(\gup^k_\ell)$ as a rational function (\ie, a quotient of two polynomials). In particular, these functions can be evaluated to any degree of precision, which allowed us to establish the results of section \ref{sec-dec}.
 
-\begin{subsubsection}{Scenario}
+
 There are two miners (or, more generally, pools of miners), labelled Miner 0 and Miner 1. Miner 0 follows the \cdf{} strategy, that is, they will always mine on top of the longest chain, regardless of where their past blocks are. On the other hand, Miner 1 plays with the $\gup^k_\ell$ strategy: given a portion of at most $k$ blocks not owned by her at the end of the blockchain, she forks at the beginning of this chain (we refer to $k$ as the disadvantage). When forking, she establishes a give-up length $\ell$ such that she will give up the fork if the main branch achieves to append $\ell$ blocks, orphaning all mined blocks on the fork. This scenario captures the fact that, with reasonable hash power, a pool does not want to fork too far behind, and will give up the fork if it does not prove successful, before reaching a hopeless situation.
-\end{subsubsection}
+
 
 
 %A_1 & = & \frac{\alpha \cdot \beta \cdot h}{1 - \alpha}\\
@@ -82,10 +83,11 @@ where $\Dyck_{j-1}$ are Dyck words with disadvantage $j-1$.
     % Graph branches
 
     \path[->]
-    (1,-1) edge (9.5,-1)
-    (R) edge (ghost);
+    (1,-1) edge (9.5,-1);
+    
 
     \path[-]
+    (R) edge (1,-1)
     (ghost) edge (ghost2)
     (R) edge (8,0);
 
@@ -153,11 +155,11 @@ $$q = 0^j\cdot 1\cdot d\cdot 1\cdot w, d\in \Dyck_{k-1}, |d|+k \leq 2\ell, w\in 
     % Graph branches
 
     \path[->]
-    (1,-1.5) edge (9.5,-1.5)
-    (0,0) edge (ghost);
+    (1,-1.5) edge (9.5,-1.5);
+    
 
     \path[-]
-    
+    (0,0) edge (1,-1.5)
     (R) edge (8,0);
 
     
@@ -216,10 +218,11 @@ where $\Pent_{n,m}$ are all the binary strings with $m$ zeroes such that in ever
     % Graph branches
 
     \path[->]
-    (R) edge (11)
-    (R) edge (ghost);
+    (R) edge (11);
+    
 
     \path[-]
+    (R) edge (1,-1)
     (ghost) edge (ghost2);
     
     \path[<->,dashed]
@@ -279,10 +282,11 @@ These states are of the form $q = 0^j\cdot 1\cdot e\cdot w, e\in \Pent_{k-1,\ell
     % Graph branches
 
     \path[->]
-    (R) edge (11)
-    (0) edge (ghost);
+    (R) edge (11);
+    
 
     \path[-]
+    (0,0) edge (1,-1.5)
     (ghost) edge (ghost2);
     
     \path[<->,dashed]
@@ -291,7 +295,7 @@ These states are of the form $q = 0^j\cdot 1\cdot e\cdot w, e\in \Pent_{k-1,\ell
     (7,.5) edge node {$\ell-k+1$} (10,.5)
     (2,-2) edge node [below] {$r=H(e)$}(6,-2);
 \end{tikzpicture} 
-\caption{(Case d) Miner 1 forked at some block, but gives up, since the upper branch attained $l$ blocks.}
+\caption{(Case d) Miner 1 forked at some block, but gave up, since the upper branch attained $l$ blocks.}
 \end{figure}
 
 
@@ -317,4 +321,106 @@ In this section, we define two sets of polynomials that control the combinatoria
 
 Recall that $\Dyck_{a,2b}$ is the set of binary strings of length $2b+a$ such that the number of ones equals the number of zeroes plus $a$, and such that for every prefix, the number of ones minus the number of zeroes is at most $a$. Now, define $\sigma_{a,b}:=|\Dyck_{a,2b}|$. Interpreting each 0 as a unitary $\uparrow$ step in $\ZZ^2$ and each 1 as a unitary $\rightarrow$ step, we have that $\sigma_{a,b}$ is the total number of $\{\uparrow,\rightarrow\}$ paths from $(0,0)$ to $(a,a+b)$ that lie within the trapezoid ${(0,0),(a,0),(a,a+b),(0,b)}$. We enumerate them in proposition \ref{enum-sigma}.
 
-Also, from section \ref{sec-evaluation-G}, the set $\Pent_{a,b}$ consists of all binary strings with $b$ zeroes such that in every prefix, the number of ones minus the number of zeroes does not exceed $a$. Also, define $\Pent_{a,b}^r$ the number of such strings which have exactly $r$ ones, and define $\theta_{a,b}^r:= |\Pent_{a,b}^r|$. As before, note that $\theta_{a,b}^r$ is the total number of $\{\uparrow,\rightarrow\}$ paths in $\ZZ^2$ from $(0,0)$ to $(r,b)$ that lie within the pentagon $\{(0,0),(0,a),(r,r-a), (r,b), (0,b)\}$ (this is a rectangle if $r<a$). We develop a linear recurrence for $\theta_{a,b}^r$ that solves in terms of $\sigma_{a,b}$ in proposition \ref{enum-theta}. \francisco{I'll continue this on Sunday 8AM.}
+Also, from section \ref{sec-evaluation-G}, the set $\Pent_{a,b}$ consists of all binary strings with $b$ zeroes such that in every prefix, the number of ones minus the number of zeroes does not exceed $a$. Also, define $\Pent_{a,b}^r$ the number of such strings which have exactly $r$ ones, and define $\theta_{a,b}^r:= |\Pent_{a,b}^r|$. As before, note that $\theta_{a,b}^r$ is the total number of $\{\uparrow,\rightarrow\}$ paths in $\ZZ^2$ from $(0,0)$ to $(r,b)$ that lie within the pentagon $\{(0,0),(0,a),(r,r-a), (r,b), (0,b)\}$ (this is a rectangle if $r<a$). We develop a linear recurrence for $\theta_{a,b}^r$ that solves in terms of $\sigma_{a,b}$ in proposition \ref{enum-theta}. 
+
+\begin{mydef}
+For positive integers $n,m$, let
+$$
+\left\{
+\begin{array}{lll}
+T_{n,m}(x) &=& \displaystyle \sum_{i = 0}^{m} \sigma_{n,i}\cdot x^i\\
+P_{n,m}(x) &=& \displaystyle \sum_{i = 0}^{m-1} \theta_{n-1,m-n+1}^i\cdot x^i
+\end{array}
+\right.
+$$
+\end{mydef}
+
+This polynomials arise when evaluating utility for states with two branches. These states can be enumerated by length of the fork, and sums like the following arise (recall that $\Dyck_{n,2m}$ are the Dyck draws with disadvantage $n+2m$):
+$$
+\sum_{d\in \Dyck_{n}} x^{(|d|-n)/2} = \sum_{i=0}^m \sum_{d\in \Dyck_{n,2i}} x^{(|d|-n)/2} = \sum_{i=0}^m x^i \bigg(\sum_{d\in\Dyck_{n,2i}} 1\bigg) = \sum_{i=0}^m x^i\cdot |\Dyck_{n,2i}| = T_{n,m}(x).
+$$
+
+For the sake of completeness, we compute closed forms for $\sigma_{a,b}$ and $\theta_{a,b}^r$ in the following section.
+
+
+
+ \subsection{Trapezoidal and Pentagonal Dyck paths}
+ \label{appendix-trapezoid}
+ 
+ \subsubsection{Counting paths in a trapezoid.} For nonnegative integers $a,b$, let $\mathcal L_{a,b}$ be the trapezoid in $\ZZ^2$ whose vertices are
+ $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ Also, let $\mathcal{T}_{a,b}$ be set of one-step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside $\mathcal L_{a,b}$, and  $\sigma_{a,b}$ the amount of such paths. Finally, let $C_n$ denote the $n$-th Catalan number. 
+ \begin{myprop}
+    \label{sigma-recurrence}
+    The sequence $\sigma:\NN^2\to \NN$ verifies the following recurrence:
+    $$\begin{cases}
+    \sigma_{a,b}=\sum_{i=0}^b\sigma_{a-1,i}\cdot C_{b-i}& \mbox{ for }a\geq 1,b\in \NN,\\
+    \sigma_{x,0}=1 & \mbox{ for }x\in \NN,\\
+    \sigma_{0,y}=C_y & \mbox{ for }y\in \NN.
+    \end{cases}$$
+ \end{myprop}
+ \begin{proof}
+    To prove this, we write $\mathcal T_{a,b}$ as a union of disjoint sets. As a first remark, note that every path in $\mathcal T_{a,b}$ touches the line $l=\overline{(a,0)(a+b,b)}$ at least once. For $i\in \{0,\dots,b\}$, let $P_i$ be the point $(a+i,i)\in l$ and $\mathcal T_{a,b}^{(i)}$ all paths in $\mathcal T_{a,b}$ that touch the line $l$ for the first time at $P_i$. We have the disjoint union
+    $$\mathcal T_{a,b}=\bigcup_{i=0}^b \mathcal T_{a,b}^{(i)}.$$
+    Also, note that a path in $\mathcal T_{a,b}$ touches $l$ for the first time in $P_i$ if and only if it passed through the point $P_i-(1,0)$ without exiting $\mathcal T_{a-1,i}$, followed by an east step and any path from $P_i$ to $(a+b,b)$. This yields
+    \begin{eqnarray*}
+        \sigma_{a,b}=\sum_{i=0}^{b}\mbox{(paths from $(0,0)$ to $P_i-(0,1))$}\cdot \mbox{(paths from $P_i$ to $(a+b,b))$}
+    \end{eqnarray*}
+    Note that the amount of paths from $P_i$ to $(a+b,b)$ is $C_{b-i}$, since both points belong to $l$, proving that $\sigma_{a,b}$ verifies the recurrence equation. The border cases $\sigma_{0,\cdot},\sigma_{\cdot,0}$ are straightforward to prove. 
+ \end{proof}
+ 
+ Now let us define the sequence of generating functions with respect to the second variable of $\sigma_{\cdot,\cdot}$ as follows:
+ $$\begin{array}{cl}
+ \phi_a:&\RR\to \RR\\
+ &x\mapsto \displaystyle \sum_{j=0}^{\infty}\sigma_{a,j}x^j
+ \end{array}$$
+ 
+ \begin{myprop}
+    For $x\in [-1/4,1/4]$ and $a\in \NN$ 
+    $$\phi_a(x)=c(x)^{a+1},$$
+    where $c(x):=\frac{1-\sqrt{1-4x}}{2x}$ is the generating function of the Catalan numbers.
+ \end{myprop}
+ \begin{proof}
+    We have $\sigma_{a,\cdot}=\sigma_{a-1,\cdot}\star C_\cdot$, where $\star$ is the convolution operator, therefore $\phi_a(x)=\phi_{a-1}(x)c(x)$. The result follows noting that $\phi_0(x)=c(x)$.
+ \end{proof}
+ 
+Extracting the sequence from the Taylor series of $\phi_a(x)$ around 0 and proving by induction gives
+ \begin{myprop}
+    For $(a,b)\in\NN^2$,
+    $$\sigma_{a,b}=\frac{(a+b)(a+2b)!}{b!(a+b+1)!}=\frac{a+1}{a+b+1}{a+2b\choose a+b}.$$
+ \end{myprop}
+
+
+\begin{subsubsection}{Counting paths in a pentagon.} Let $\mathcal{P}_{a,b}^r$ be the set of north-east unitary-step paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon $(0,0),(a,0),(r,r-a),(r,b),(0,b)$, and $\theta_{a,b}^r$ the amount of such paths. Also, let $\lambda$ be the diagonal line $\overline{(a,0)(r,r-a)}$. 
+\begin{myprop}
+    The sequence $\theta:\NN^3\to \NN$ verifies the following recurrence relation
+    $$
+    \displaystyle \theta_{a,b}^r = \theta_{a-1,b}^r + \sum_{i=0}^{r-a}\sigma_{a-1,i}\cdot \sigma_{a+b-r,r-a-i}.
+    $$
+ \end{myprop}
+ \begin{proof}
+ As in the proof of \ref{sigma-recurrence}, we write $\mathcal{P}_{a,b}^r$ as a disjoint union:
+
+ \begin{align*}
+ \mathcal{P}_{a,b}^r &= (\mbox{paths that do not touch }\lambda)\cup (\mbox{paths that touch }\lambda)\\
+                     &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{y\in \lambda} (\mbox{paths that touch }\lambda\mbox{ for the first time in y})\\
+                     &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{y\in \lambda} (\mbox{paths from }(0,0)\mbox{ to }y-(1,0))\cdot (1,0)\cdot (\mbox{paths from }y\mbox{ to }(r,b))\\
+                     &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{i = 0}^{r-a} (\mbox{paths from }(0,0)\mbox{ to }(a+i,i)-(1,0))\cdot (1,0)\cdot (\mbox{paths from }(a+i,i)\mbox{ to }(r,b)),
+ \end{align*}
+ where in the last equation, the symbol $\cdot$ stands for concatenation of paths. The recurrence follows noting that the paths that do not touch $\lambda$ are exactly $\mathcal{P}_{a-1,b}^r$, the paths from $(0,0)$ to $(a+i-1,i)$ are $\mathcal{T}_{a-1,i}$ and the paths from $(a+i,i)$ to $(r,b)$ are exactly $\mathcal{T}_{a+b-r,r-a-i}$ \end{proof}
+
+
+ \begin{myprop}
+ For positive integers $a,b,r$ it holds that
+ $$
+ \begin{cases}
+ \displaystyle\mbox{If }r\leq a,\quad \theta_{a,b}^r = {r+b\choose b},\\
+ \displaystyle\mbox{If }a<r,\quad \theta_{a,b}^r = \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}.\\
+ %\displaystyle\mbox{If }a<r<b,\quad \theta_{a,b}^r = \sigma_{b-r,r} + \sum_{i=1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
+ %\displaystyle\mbox{If }b<r\mbox{ and }a<r,\quad \theta_{a,b}^r = \sigma_{r-b,b} + \sum_{i=r-b+1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
+ \end{cases}
+ $$
+ \end{myprop}
+ \begin{proof}
+    If $r\leq a$, the polygon is simply a rectangle from $(0,0)$ to $(r,b)$. If $a<r\leq b$, then the result yields adding the recurrence relation from the base case $a=0$ and noting that $\theta_{0,b}^r = \sigma_{b-r,r}$. If $b<r$, then the base case is $a=r-b$ and $\theta_{r-b,b}^r = \sigma_{r-b,b}$.
+ \end{proof}
+\end{subsubsection}
