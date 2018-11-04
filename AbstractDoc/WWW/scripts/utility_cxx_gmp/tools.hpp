@@ -60,8 +60,42 @@ unsigned long int cut_to_long_int(mpf_class);
 
 void generate_plot(int, double[NUM_POINTS], double [][NUM_POINTS], std::string * );
 
+void generate_plot_mpf(int length, double xvals[NUM_POINTS], mpf_class yvals [][NUM_POINTS], std::string * names);
+
 // base^exp
 mpf_class custom_pow(mpf_class, int);
+
+mpz_class fact(int x);
+mpz_class choose(int x, int y);
+mpz_class choose_gen(int i, int j);
+mpf_class Cat_g(mpf_class x, int aa, int bb);
+mpz_class f(int aa, int r, int bb);
+mpz_class Pent_aux(int aa, int bb, int r);
+mpz_class Pent(int aa, int bb, int r);
+
+
+mpf_class a1(int k, int j, int l, mpf_class h);
+mpf_class sum_a1(int k, int l, mpf_class h);
+
+mpf_class a2(int k, int j, int l, mpf_class h);
+mpf_class sum_a2(int k, int l, mpf_class h);
+
+mpf_class b1(int k, int j, int l, mpf_class h);
+mpf_class sum_b1(int k, int l, mpf_class h);
+
+mpf_class b2(int k, int j, int l, mpf_class h);
+mpf_class sum_b2(int k, int l, mpf_class h);
+
+mpf_class E(int aa, int bb);
+
+mpf_class c(int k, int j, int l, mpf_class h);
+mpf_class sum_c(int k, int l, mpf_class h);
+
+mpf_class PP(int l, int j, mpf_class x);
+mpf_class d(int k, int j, int l, mpf_class h);
+mpf_class sum_d(int k, int l, mpf_class h);
+
+mpf_class util(int k, int l, mpf_class h);
 
 
 

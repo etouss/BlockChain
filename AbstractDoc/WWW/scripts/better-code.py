@@ -44,6 +44,9 @@ def fact(x):
 
 # choose function
 def choose(x, y):
+    if y > x:
+        return 0
+
     num = fact(x)
     den = fact(y) * fact(x - y)
 
@@ -70,7 +73,6 @@ def choose_gen(i, j):
 
 
 # pentagon sum, inner term
-
 def f(aa, r, bb):
     res = 0
 
@@ -117,7 +119,7 @@ def sum_a1(k, l, h):
     for j in range(1, k + 1):
         sum += a1(k, j, l, h)
 
-        return sum
+    return sum
 
 
 # part a2 of the equation
@@ -136,7 +138,7 @@ def sum_a2(k, l, h):
     for j in range(1, k + 1):
         sum += a2(k, j, l, h)
 
-        return sum
+    return sum
 
 
 # part b1 of the equation
@@ -355,7 +357,6 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
 
     plt.text(0.8, af(.95), '$\mathbf{AF}$', fontsize="large")
 
-
     ax.legend(labels, fontsize='xx-large')
 
     xticks = intersection_points[1:NUM_CURVES]
@@ -374,10 +375,11 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     return plt
 
 
+
 # Plot limits (x axis)
-start = .36
-end = .55
-min_y = 1.8e11
+start = 0 #  .36
+end = 1 #  .55
+min_y = 0 #  1.8e11
 step = 0.001
 
 NUM_CURVES = 4
