@@ -36,7 +36,7 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 
 \end{tikzpicture} 
 \end{center}
-\caption{Although two paths are competing to become a blockchain, the blocks up to 1001 will contribute to the reward in each case. \label{fig-simple-fork}}
+\caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in each case. \label{fig-simple-fork}}
 \end{figure}
 
 In order to model the aforementioned scenario we need to introduce some notation.
@@ -48,15 +48,22 @@ Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation
 Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
 
 
-As mentioned before, the pay-off function will reward a player for the blocks in $\meet(q)$. Thus, to define the pay-off, we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
-\begin{eqnarray*}
-\chi_p(b) & = & 
-\begin{cases}
-1 & \text{if } \owner(b) = p\\
-0 & \text{otherwise}
-\end{cases}
-\end{eqnarray*}
-We can finally define the payoff function we consider in this section, which we call \textbf{constant reward}. For a player $p$, we define it as 
+As mentioned before, the pay-off function rewards a player for the blocks in $\meet(q)$. Thus, to define it,
+%the pay-off, 
+we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
+$\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
+%\begin{eqnarray*}
+%\chi_p(b) & = & 
+%\begin{cases}
+%1 & \text{if } \owner(b) = p\\
+%0 & \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+%We can finally define 
+Hence, the pay-off function considered in this section, which is called \textbf{constant reward}, is defined as follows 
+%. For 
+for a player $p$:
+%, we define it as 
 \begin{eqnarray*}
 r_p(q) & = & 
 {\displaystyle c \cdot \sum_{b \in \meet(q)} \chi_p(b),}
@@ -82,10 +89,10 @@ $$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \c
 
 The question then is: can any player do better? As we show in the following theorem, the answer is no as the default strategy maximizes the utility. 
 \begin{mythm}\label{thm-conts_dom_str}
-Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$:
-\begin{eqnarray*}
-u_p(\bs) & \leq & u_p(\cdf)
-\end{eqnarray*}
+Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$: \ \ $u_p(\bs) \leq u_p(\cdf)$.
+%\begin{eqnarray*}
+%u_p(\bs) & \leq & u_p(\cdf)
+%\end{eqnarray*}
 \end{mythm} 
 
 \begin{proof}
@@ -136,9 +143,8 @@ u_p(\cdf) & \geq &(1-\beta) \cdot \sum_{q^* \in Q_{\bs}}   \sum_{q \in \sigma(q^
 For each state $q^* \in Q_{\bs}$, notice that if $q \in \sigma(q^*)$, then $|q| = |q^*|$ and the number blocks owned by $p$ in $q$ is the same as the number of blocks owned by $p$ in $q^*$. Thus, we have that $r_p(q) \geq r_p(q^*)$ since $q \in Q_{\cdf}$ and, therefore, every block owned by $p$ in $q$ is in $\bchain(q)$ and $\bchain(q) = \meet(q)$.
         Notice that it could be the case that $r_p(q) > r_p(q^*)$, as some blocks owned by $p$ in $q^*$  may not be in $\meet(q^*)$. We conclude that:
 \begin{align*}
-\sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot  r_p(q) \, \cdot \, & \pr^{\cdf}(q) \geq \\
-&\sum_{q \in \sigma(q^*)} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\cdf}(q) = \\
-&\beta^{|q^*|-1} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q).
+&\hspace{-2pt} \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot  r_p(q) \cdot \pr^{\cdf}(q) \geq \sum_{q \in \sigma(q^*)} \beta^{|q^*|-1} \cdot  r_p(q^*) \cdot \pr^{\cdf}(q)\\
+&\hspace{112pt} = \beta^{|q^*|-1} \cdot  r_p(q^*) \sum_{q \in \sigma(q^*)}  \pr^{\cdf}(q).
 \end{align*}
 % because $|q| = |q^*|$ and 
 %$q$ and $q^*$ have the same number of blocks owned by $0$. 

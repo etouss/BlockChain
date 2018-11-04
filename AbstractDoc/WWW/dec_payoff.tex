@@ -373,7 +373,10 @@ Let us now find a closed form for~$\Gamma$:
 \end{eqnarray*}
 %
 %Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). 
-The final equality is obtained by recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan number, so that the summation in the previous line defines the generating function of these numbers. Notice that function $\cat(x)$ is defined and continuous for $x \in [0,\frac{1}{4}]$ \francisco{I re-replaced $(0,1/4]$ by $[0,1/4]$, continuity at $0$ is important because we want to have the expected behaviour at $h=0$ or $h=1$}, and that $\alpha\cdot\beta^2 \cdot h \cdot (1-h) \in (0,\frac{1}{4}] $ since $\alpha \in (0,1]$, $\beta \in (0,1)$ and $h\cdot(1-h)\in [0,\frac{1}{4}]$ for every $h\in[0,1]$.
+The final equality is obtained by recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan number, so that the summation in the previous line defines the generating function of these numbers. 
+%Notice that function $\cat(x)$ is defined and continuous for $x \in [0,\frac{1}{4}]$, 
+%%\francisco{I re-replaced $(0,1/4]$ by $[0,1/4]$, continuity at $0$ is important because we want to have the expected behaviour at $h=0$ or $h=1$}, 
+%and that $\alpha\cdot\beta^2 \cdot h \cdot (1-h) \in (0,\frac{1}{4}] $ since $\alpha \in (0,1]$, $\beta \in (0,1)$ and $h\cdot(1-h)\in [0,\frac{1}{4}]$ for every $h\in[0,1]$.
 
 The closed form for $\Phi$ is computed analogously, yielding the claimed expression.
 \end{proof}
@@ -572,7 +575,7 @@ the utility for $\baf$ is always above than the utility for $\bpf{1}$ in that ca
  %Can we say the same for other similar strategies? Even though we can compute the utility of using any of the strategies $\pf{i}$, we cannot directly compare an infinite number of strategies. Instead, we prove the following general result. 
 %We can show something similar for all the other $\pf{i}$.
 \begin{proposition}\label{prop-fork_fix}
-Assume that $u_1(\bdf) \leq u_1(\baf)$ for some values of $\alpha$, $\beta$ and $h$. Then for such values,  $u_1(\bpf{i}) \leq u_1(\baf)$ for every $i > 0$.
+Assume that $u_1(\bdf) \leq u_1(\baf)$ for some values of $\alpha$, $\beta$ and $h$. Then for such values,  $u_1(\bpf{i}) \leq u_1(\baf)$ for every~$i > 0$.
 \end{proposition}
 
 \begin{figure}
