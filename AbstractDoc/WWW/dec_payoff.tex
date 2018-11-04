@@ -373,7 +373,7 @@ Let us now find a closed form for~$\Gamma$:
 \end{eqnarray*}
 %
 %Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). 
-The final equality is obtained by recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan number, so that the summation in the previous line defines the generating function of these numbers. Notice that function $\cat(x)$ is defined and continuous for $x \in (0,\frac{1}{4}]$, and that $\alpha\cdot\beta^2 \cdot h \cdot (1-h) \in (0,\frac{1}{4}] $ since $\alpha \in (0,1]$, $\beta \in (0,1)$ and $h\cdot(1-h)\in (0,\frac{1}{4})$ for every $h\in(0,1)$.
+The final equality is obtained by recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan number, so that the summation in the previous line defines the generating function of these numbers. Notice that function $\cat(x)$ is defined and continuous for $x \in [0,\frac{1}{4}]$ \francisco{I re-replaced $(0,1/4]$ by $[0,1/4]$, continuity at $0$ is important because we want to have the expected behaviour at $h=0$ or $h=1$}, and that $\alpha\cdot\beta^2 \cdot h \cdot (1-h) \in (0,\frac{1}{4}] $ since $\alpha \in (0,1]$, $\beta \in (0,1)$ and $h\cdot(1-h)\in [0,\frac{1}{4}]$ for every $h\in[0,1]$.
 
 The closed form for $\Phi$ is computed analogously, yielding the claimed expression.
 \end{proof}
@@ -565,7 +565,7 @@ folklore fact that is profitable to fork with more than half of the hash power. 
 one should be willing to fork even with a little less than half of the hash power, which has been noted before in  \cite{}. \marcelo{We are missing a citation here.}
 %\francisco{Should we mention that this is quite expectable from the strategies? i.e. the probability of being ahead at one point in time is almost one for $h > .4969$, so it is actually not very interesting.}
 
-Although at the scale of Figure \ref{fig-af-df-fo}, the curve for $\bpf{1}$ is too close to that of $\bdf$ to tell a difference, these curves are indeed distinct: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\bdf$. In fact, from the figure one can infer that if $\baf$ yields more utility to player $1$ than $\bdf$, 
+Although at the scale of Figure \ref{fig-af-df-fo}, the curve for $\bpf{1}$ is too close to that of $\bdf$ to tell a difference, these curves are indeed distinct: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\bdf$.\francisco{I find this phrase a bit dangerous. If we wanted to show that, we could (zoom, log-scale, another plot). I would bite here as a reviewer.} In fact, from the figure one can infer that if $\baf$ yields more utility to player $1$ than $\bdf$, 
 %(e.g. when $h>0.5$),
  then player $1$ should not use $\bpf{1}$ but rather keep on forking, as 
 the utility for $\baf$ is always above than the utility for $\bpf{1}$ in that case. In the following proposition, we show that this can be generalised to any value of $i$, showing that if $\baf$ defeats the default strategy, then the more you do a fork, the more you can defeat the default strategy.
