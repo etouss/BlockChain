@@ -96,19 +96,21 @@ where $\Dyck_{j-1}$ are Dyck words with disadvantage $j-1$.
     (1,.5) edge node {$j$} (5,.5)
     (6,.5) edge node {$r$} (8,.5);
 \end{tikzpicture} 
-\caption{(Case a) Miner 1 forked at $\varepsilon$ successfully, since $r+j \leq l$.}
+\caption{(Case a) Miner 1 forked at $\varepsilon$ successfully, since $r+j \leq \ell$.}
 \end{figure}
 
 
 We have
 \begin{align*}
-u_{a,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, d\in \Dyck_{j-1}, |d| \leq 2\ell-j}\beta^{|d|+j+1+|w|} \bigg(\sum_{i=0}^{(|d|+j)/2}\alpha^{i+1} + \alpha^{(|d|+j)/2 + 1} r(w)\bigg) h^{(|d|+j)/2 + 1}(1-h)^{(|d|+j)/2} \pr(w).
+u_{a,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, d\in \Dyck_{j-1}, |d| \leq 2\ell-j}\beta^{|d|+j+1+|w|}\cdot \bigg(\sum_{i=0}^{(|d|+j)/2}\alpha^{i+1} + \alpha^{(|d|+j)/2 + 1} r(w)\bigg)\cdot h^{(|d|+j)/2 + 1}\cdot (1-h)^{(|d|+j)/2}\cdot \pr(w).
 \end{align*}
 Simplifying this expression yields
 \begin{align*}
-u_{a,j}(h) &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j \cdot \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j}x^{(|d|-j)/2}(1-\alpha^{(|d|+j)/2 + 1})\bigg) \\
+u_{a,j}(h) &= 
+\frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j \cdot 
+\bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j}x^{(|d|-j)/2}\cdot (1-\alpha^{(|d|+j)/2 + 1})\bigg) \\
 & +
-\alpha\cdot\beta\cdot h \cdot(\alpha\cdot x)^j \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j} (\alpha\cdot x)^{(|d|-j)/2}\bigg)\cdot\bigg(\sum_{w\in\bstring} \beta^{|w|}\cdot r_1(w)\cdot \pr(w)\bigg)\\
+\alpha\cdot\beta\cdot h \cdot(\alpha\cdot x)^j\cdot \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j} (\alpha\cdot x)^{(|d|-j)/2}\bigg)\cdot\bigg(\sum_{w\in\bstring} \beta^{|w|}\cdot r_1(w)\cdot \pr(w)\bigg)\\
     &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j(T_{j-1,\ell-j}(x)-\alpha^{j+1}\cdot T_{j-1,\ell-j}(\alpha\cdot x)) + \alpha\cdot\beta\cdot h\cdot(\alpha \cdot x)^j\cdot T_{j-1,\ell-j}(\alpha\cdot x)\cdot u_1(\gup^k_\ell)(h),
 \end{align*}
 where $T_{n,m}$ is defined on section \ref{sec-trapezoid-pentagon}.
@@ -168,13 +170,22 @@ $$q = 0^j\cdot 1\cdot d\cdot 1\cdot w, d\in \Dyck_{k-1}, |d|+k \leq 2\ell, w\in 
     (1,-.5) edge node[below] {$k$} (5,-.5)
     (6,.5) edge node {$r$} (8,.5);
 \end{tikzpicture} 
-\caption{(Case b) Miner 1 forked successfully, since $r+k \leq l$.}
+\caption{(Case b) Miner 1 forked successfully, since $r+k \leq \ell$.}
 
 \end{figure}
 
 Analogously as before, we have
 \begin{align*}
-u_{b,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, d\in \Dyck_{k-1}, |d| \leq 2\ell-k}\beta^{j+|d|+k+1+|w|} \bigg(\alpha^{j-k}\cdot \sum_{i=0}^{(|d|+k)/2}\alpha^{i+1} + \alpha^{(|d|-k)/2 + j + 1} r(w)\bigg) h^{(|d|+k)/2 + 1}(1-h)^{(|d|-k)/2 + j} \pr(w).
+u_{b,j}(h) &= (1-\beta) \cdot
+ \sum_{
+ \mbox{\scriptsize
+ $\begin{array}{c}
+ w\in \bstring\\
+  d\in \Dyck_{k-1}\\
+  |d| \leq 2\ell-k
+  \end{array}$
+  }
+ }\beta^{j+|d|+k+1+|w|}\cdot \bigg(\alpha^{j-k}\cdot \bigg(\sum_{i=0}^{(|d|+k)/2}\alpha^{i+1}\bigg) + \alpha^{(|d|-k)/2 + j + 1} \cdot r(w)\bigg) \cdot h^{(|d|+k)/2 + 1}\cdot (1-h)^{(|d|-k)/2 + j}\cdot \pr(w).
 \end{align*}
 Developing and simplifying this expression as the latter case yields
 \begin{align*}
@@ -230,7 +241,7 @@ where $\Pent_{n,m}$ are all the binary strings with $m$ zeroes such that in ever
     (6,.5) edge node {$\ell-j+1$} (10,.5)
     (2,-1.5) edge node [below] {$r=H(e)$}(6,-1.5);
 \end{tikzpicture} 
-\caption{(Case c) Miner 1 forked at $\varepsilon$ but gave up, since the upper branch attained $l$ blocks.}
+\caption{(Case c) Miner 1 forked at $\varepsilon$ but gave up, since the upper branch attained $\ell$ blocks.}
 
 \end{figure}
 
@@ -240,8 +251,8 @@ u_{c,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, e\in \Pent_{j-1, \ell-j-1}} \
 \end{align*}
 This yields the following:
 \begin{align*}
-u_{c,j}(h) &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^l\cdot u_1(\gup^k_\ell)(h) \cdot  \sum_{e\in\Pent_{j-1,\ell-j-1}}(\beta\cdot h)^{H(e)}\\
-        &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^l \cdot P_{\ell,j}(\beta\cdot h) \cdot u_1(\gup^k_\ell)(h).
+u_{c,j}(h) &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^\ell\cdot u_1(\gup^k_\ell)(h) \cdot  \sum_{e\in\Pent_{j-1,\ell-j-1}}(\beta\cdot h)^{H(e)}\\
+        &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^\ell \cdot P_{\ell,j}(\beta\cdot h) \cdot u_1(\gup^k_\ell)(h).
 \end{align*}
 
 
@@ -295,7 +306,7 @@ These states are of the form $q = 0^j\cdot 1\cdot e\cdot w, e\in \Pent_{k-1,\ell
     (7,.5) edge node {$\ell-k+1$} (10,.5)
     (2,-2) edge node [below] {$r=H(e)$}(6,-2);
 \end{tikzpicture} 
-\caption{(Case d) Miner 1 forked at some block, but gave up, since the upper branch attained $l$ blocks.}
+\caption{(Case d) Miner 1 forked at some block, but gave up, since the upper branch attained $\ell$ blocks.}
 \end{figure}
 
 
@@ -371,7 +382,7 @@ For the sake of completeness, we compute closed forms for $\sigma_{a,b}$ and $\t
  Now let us define the sequence of generating functions with respect to the second variable of $\sigma_{\cdot,\cdot}$ as follows:
  $$\begin{array}{cl}
  \phi_a:&\RR\to \RR\\
- &x\mapsto \displaystyle \sum_{j=0}^{\infty}\sigma_{a,j}x^j
+ &x\mapsto \displaystyle \sum_{j=0}^{\infty}\sigma_{a,j}\cdot x^j
  \end{array}$$
  
  \begin{myprop}
@@ -387,7 +398,7 @@ Extracting the sequence from the Taylor series of $\phi_a(x)$ around 0 and provi
  \begin{myprop}
     \label{enum-sigma}
     For $(a,b)\in\NN^2$,
-    $$\sigma_{a,b}=\frac{(a+b)(a+2b)!}{b!(a+b+1)!}=\frac{a+1}{a+b+1}{a+2b\choose a+b}.$$
+    $$\sigma_{a,b}=\frac{(a+b)\cdot(a+2b)!}{b!\cdot(a+b+1)!}=\frac{a+1}{a+b+1}\cdot {a+2b\choose a+b}.$$
  \end{myprop}
 
 
@@ -403,7 +414,7 @@ Extracting the sequence from the Taylor series of $\phi_a(x)$ around 0 and provi
 
  \begin{align*}
  \mathcal{P}_{a,b}^r &= (\mbox{paths that do not touch }\lambda)\cup (\mbox{paths that touch }\lambda)\\
-                     &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{y\in \lambda} (\mbox{paths that touch }\lambda\mbox{ for the first time in y})\\
+                     &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{y\in \lambda} (\mbox{paths that touch }\lambda\mbox{ for the first time at $y\in \lambda$})\\
                      &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{y\in \lambda} (\mbox{paths from }(0,0)\mbox{ to }y-(1,0))\cdot (1,0)\cdot (\mbox{paths from }y\mbox{ to }(r,b))\\
                      &= (\mbox{paths that do not touch }\lambda)\cup \bigcup_{i = 0}^{r-a} (\mbox{paths from }(0,0)\mbox{ to }(a+i,i)-(1,0))\cdot (1,0)\cdot (\mbox{paths from }(a+i,i)\mbox{ to }(r,b)),
  \end{align*}

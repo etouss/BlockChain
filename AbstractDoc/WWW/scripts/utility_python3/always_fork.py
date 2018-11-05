@@ -4,7 +4,8 @@ import math
 
 # generating function of Catalan numbers:
 def f(x): 
-	return (1-np.sqrt(1-4*x))/(2*x)
+    return 2 / (1 + np.sqrt(1 - 4 * x))
+	#return (1-np.sqrt(1-4*x))/(2*x)
 
 # Data for plotting
 
@@ -65,3 +66,16 @@ ax.yaxis.label.set_fontsize(20)
 
 fig.savefig("test_AF.png")
 plt.show()
+
+start = 0
+end = 1
+step = .005
+
+s = ""
+for x in np.arange(start, end + step, step):
+    s += str(x) + ", "
+    s += str(int(default_comp(x))) + ", " + str(int(fo(x))) + str(int(af(x)))
+    s += "\n"
+
+print("Default, Fork Once, Always Fork")
+print(s)

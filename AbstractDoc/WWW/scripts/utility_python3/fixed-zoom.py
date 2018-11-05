@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # alpha and beta
-a = 0.9999967030
+a = 0.9999966993
 b = 0.9999996156
 
 
@@ -275,7 +275,7 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     linestyles = ['-', '--', '-.', ':']
     colors = [.3, .3, .3, .3]
     edgecolors = ['.8', '.8', '.8', '.8']
-    hatches = ['\\\\\\', '---', '///', '...']
+    # hatches = ['\\\\\\', '-', '///', '.']
 
     # Find intersection points, assuming between 0.35 and 0.75
     diff_list = []
@@ -312,7 +312,7 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
         plt.fill_between(section,
                          util(window[i], give_up[i], section),
                          facecolor='1',
-                         hatch=hatches[i],
+                         # hatch=hatches[i],
                          edgecolor=edgecolors[i])
 
     ax.plot(h,
@@ -356,12 +356,12 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     plt.text(0.8, af(.95), '$\mathbf{AF}$', fontsize="large")
 
 
-    ax.legend(labels, fontsize='xx-large')
+    # ax.legend(labels, fontsize='xx-large')
 
     xticks = intersection_points[1:NUM_CURVES]
     xticks.append(.5)
 
-    plt.axvline(x=0.50001, color=".5", linewidth=1)
+    #plt.axvline(x=0.50001, color=".5", linewidth=1)
 
     ax.set_xticks(xticks)
     ax.set_yticks([])
@@ -378,12 +378,42 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
 start = .36
 end = .55
 min_y = 1.8e11
-step = 0.001
-
+step = 0.005
 NUM_CURVES = 4
 window = [1, 1, 1, 1]
 give_up = [2, 3, 4, 5]
 
-plot = gen_main_plot(start, end, step, min_y, NUM_CURVES, window, give_up)
+s = ""
+for x in np.arange(start, end, step):
+    s += str(x) + ", " +str(int(default(x)))
+    for i in range(0, NUM_CURVES):
+        s += ", " + str(int(util(window[i], give_up[i], x)))
+    s += "\n"
 
-plot.show()
+
+print("hash, Default, G^1_2, G^1_3, G^1_4, G^1_5")
+print(s)
+
+
+# Find intersection points, assuming between 0.35 and 0.75
+intersection_points = []
+diff_list = []
+preimages = []
+
+for i in range(0, NUM_CURVES - 1):
+        # Make a list containing the difference
+        for x in np.arange(.35, .75, 0.001):
+            preimages.append(x)
+            diff_list.append(
+                abs(
+                    util(window[i], give_up[i], x) -
+                    util(window[i + 1], give_up[i + 1], x)))
+        # Get minimum
+        min_val, id_min = min((val, ix) for (ix, val) in enumerate(diff_list))
+        intersection_points.append(preimages[id_min])
+
+print("Intersections: ", intersection_points)
+
+# plot = gen_main_plot(start, end, step, min_y, NUM_CURVES, window, give_up)
+
+# plot.show()
