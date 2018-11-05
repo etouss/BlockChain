@@ -19,7 +19,7 @@ we use the following reward function $\rpa$ for all players $p \in \bP$, denoted
 \rpa(q) & = & 
 c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
 \end{eqnarray*}
-In this section, we show that when miners' fees decrease over time, doing a fork can be a good strategy. In fact, we explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the number of times a player can do a fork, the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that is profitable to fork with more than half of the hash power. Moreover, our exploration gives us in Section \ref{sec-giving-up} a concrete strategy that with less than half of the hash power 
+In this section, we show that when miners' fees decrease over time, doing a fork can be a good strategy. In fact, we explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that it is profitable to fork with more than half of the hash power. Moreover, our exploration in Section \ref{sec-giving-up} gives us a concrete strategy that with less than half of the hash power 
 %a little more than $46\%$ of the hash power 
 can be used to defeat the default strategy.
 
@@ -559,7 +559,7 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 With the closed forms for $u_1(\bdf)$ and $u_1(\baf)$,
 %and $u_1(\bpf{1})$, 
 we can compare the utilities of these strategies for player 1 for fixed values of $\alpha$ and $\beta$, but varying her hash power. In particular, we consider realistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
-a value of alpha that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999967030$. For 
+a value of alpha that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999966993$. For 
 $\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 
 %2017 \cite{interest}, 
 the last few years, which is approximately 2\%.\footnote{\url{https://data.worldbank.org/indicator/FR.INR.RINR?locations=US}}
