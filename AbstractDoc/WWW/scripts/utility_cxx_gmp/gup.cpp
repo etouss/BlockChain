@@ -17,10 +17,10 @@ int main(int argc, char** argv){
 
     mpf_class min = 1000000000000000000000000_mpf;
     double i_min = 0;
-    double step = 0.000001;
+    double step = 0.00000001;
     mpf_class x;
     for (double i = 0.4; i < 0.6; i = i + step){
-        x = abs(util(1, 4, i) - util(1, 5, i)) ;
+        x = abs(def(i) - always_fork(i)) ;
         if(x < min){
             i_min = i;
             min = x;
@@ -28,17 +28,6 @@ int main(int argc, char** argv){
     }
 
     cout << "4-5: " <<i_min << endl;
-    min = 1000000000000000000000000_mpf;
-    i_min = 0;
-    for (double i = 0.4; i < 0.6; i = i + step){
-        x = abs(def(i) - util(1, 4, i)) ;
-        if(x < min){
-            i_min = i;
-            min = x;
-        }
-    }
-
-    cout << "def-4: " << i_min << endl;
     
 }
 
