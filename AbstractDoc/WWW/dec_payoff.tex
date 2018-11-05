@@ -559,14 +559,14 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 With the closed forms for $u_1(\bdf)$ and $u_1(\baf)$,
 %and $u_1(\bpf{1})$, 
 we can compare the utilities of these strategies for player 1 for fixed values of $\alpha$ and $\beta$, but varying her hash power. In particular, we consider realistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
-a value of alpha that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999966993$. For 
+a value of $\alpha$ that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999966993$. For 
 $\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 
 %2017 \cite{interest}, 
 the last few years, which is approximately 2\%.\footnote{\url{https://data.worldbank.org/indicator/FR.INR.RINR?locations=US}}
 %amounts to 2.2077\%. 
 This gives us a value of $\beta = 0.9999996156$. 
 
-Figure \ref{fig-af-df-fo} shows the value of the utility of player $1$ for the combined strategies $\baf$ 
+Figure \ref{fig-plot-gup-fixwindow} shows the value of the utility of player $1$ for the combined strategies $\baf$ 
 %$\bpf{1}$ 
 and $\bdf$.
 %, and player $0$ always using $\df$. 
@@ -594,14 +594,18 @@ one should be willing to fork even with a little less than half of the hash powe
 %Assume that $u_1(\bdf) \leq u_1(\baf)$ for some values of $\alpha$, $\beta$ and $h$. Then for such values, $u_1(\bpf{i}) \leq u_1(\baf)$ for every~$i > 0$.
 %\end{proposition}
 
-\begin{figure}
- \centering
-    \includegraphics[width=0.46\textwidth]{plots/test_AF.png}
-    \caption{Utilities for player $1$ under strategies $\bdf$, $\bpf{1}$ and $\baf$. 
-    %The curve for $\bpf{1}$ is too close to that of $\df$ to tell a difference at this scale, but the difference does exist: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\df$. 
-    Notice that the utilities collapse to $\bdf$ when $h = 1$. This is always the highest amount that can be earned in our game.}
+\begin{figure*}
+    \subfigure[ADD SOME CAPTION]{
+        \input{plots/forking_strategies_chart.tex}
+        \label{fig-plot-gup-fixwindow}
+    }
+    \hfill
+    \subfigure[ADD SOME CAPTION]{
+        \input{plots/forking_strategies_zoom_chart.tex}
         \label{fig-af-df-fo}
-\end{figure}
+    }
+    \caption{ADD SOME CAPTION}
+\end{figure*}
 %
 %Note that this result does not rule out the possibility that, for some amount of hash power, playing some $\pf{i}$ would turn out better than $\df$, but $\af$ would not. We know 
 %this is not the case for $i = 1$, and we can also prove it for $i > 1$, albeit at the cost of much more powerful machinery that we do not have the space to introduce. 
@@ -739,15 +743,6 @@ branch is small, so player 1 should give up as early as possible. However, the m
 $46\%$ of the hash power, player $1$ already should start using strategy $\gup^1_4$ to defeat the default strategy, and with a little more power, $\gup^1_5$. We know that player~$1$ should use $\af$ not before 
 $h = 0.499$, so this gives us a lot of extra room to look for optimal strategies if we are willing to fork (especially considering that every percentage of hash power in popular cryptocurrencies 
 may cost millions).
-
-\begin{figure}
-  \centering
-    \includegraphics[width=0.46\textwidth]{plots/GUP.png}
-    \caption{Utility for player $1$ under strategies $\bgup^1_2, \dots, \bgup^1_5$. Shaded areas indicate which strategy yields higher utility at a given hash power. 
-    The rightmost box represents a zoom around $h = 0.46$,
-    %and $h = 0.5$, 
-    and the curve for $\bgup^1_4$ meets that of the default strategy ($\bdf$) at $h = 0.467$. All data was generated with arbitrary floating point precision (with the GNU Multiple Precision Arithmetic Library).\label{fig-plot-gup-fixwindow}}
-\end{figure}
 
 Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight for our forks. However, 
 Figure \ref{fig-plot-gup-fixwindow} is important because we have found that strategy $\gup^1_4$ is the strategy that beats the default strategy under the least amount of hash power 
