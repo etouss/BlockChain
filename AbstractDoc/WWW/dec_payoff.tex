@@ -643,8 +643,10 @@ one should be willing to fork even with a little less than half of the hash powe
 \subsection{Giving up for more utility}
 \label{sec-giving-up}
 
-By adding a little more flexibility to the strategy of always forking, we can identify approaches that make a fork profitable with less hash power. 
-The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to carry out when doing a fork, and a parameter $k$ that regulates how far back the miner is willing to do a fork, when confronted with a chain of blocks she does not own. We denote these strategies by $\gup_\ell^k$. Both parameters can be seen as a refinement of the way $\af$ works; indeed, $\af$ would be equivalent to the strategy $\gup_\infty^\infty$ where player $1$ is willing to keep fights of any length and to do a fork at the beginning of any chain of blocks she does not own.  
+%By adding a little more flexibility to the strategy of always forking, we can identify approaches that make a fork profitable with less hash power. The families of strategies that we study in this section involve two parameters. First, a \textit{give-up} parameter $\ell$ that mandates the maximum length of the fight the miner is willing to carry out when doing a fork, and a parameter $k$ that regulates how far back the miner is willing to do a fork, when confronted with a chain of blocks she does not own. We denote these strategies by $\gup_\ell^k$. 
+
+By adding a little more flexibility to the strategy of always forking, we can identify approaches that make a fork profitable with less hash power. The families of strategies that we study in this section involve two parameters. The first parameter, denoted by $k$, regulates how far back the miner will do a fork, when confronted with a chain of blocks she does not own. The second parameter, called the \textit{give-up} time, and denoted by $\ell$, tells us the maximum number of blocks that the player's opponent is allowed to extend the current blockchain with before the player gives up mining on the forking branch. If the player does not manage to transform her fork into the new blockchain before her opponent mines $\ell$ blocks, she will restart the strategy treating the tail of the current blockchain as the new genesis block. We denote these strategies by $\gup_\ell^k$. 
+
 
 \begin{figure}
 \begin{center}
@@ -653,8 +655,8 @@ The families of strategies that we study in this section involve two parameters.
     % The graph
 	\node [state] at (-10.5,0) (aR) {$\varepsilon$};
 	\node [state] at (-9,0) (a0) {$0$};
-	\node [state] at (-7.5,0) (a00) {$0$};
-	\node [state] at (-6,0) (a000) {$0$};
+	\node [state] at (-7.5,0) (a00) {$00$};
+	\node [state] at (-6,0) (a000) {$000$};
 	\node [state] at (-9,-1.4) (aAF) {$\af$};
 	\node [state] at (-7.5,-1.4) (aG) {$\gup_4^2$};
 	\node [state] at (-12,-0.70) {(a)};
@@ -705,14 +707,14 @@ The families of strategies that we study in this section involve two parameters.
 \end{figure}
 
 \begin{example}
-Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when confronted with chains of zero, one or two blocks owned by player $0$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three 
+Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when the state is $\{\varepsilon\}, \{\varepsilon,0\}$, and $\{\varepsilon,0,00\}$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three 
 %unowned new 
 blocks owned by player 0, 
 %in the blockchain, 
-as shown in Figure \ref{fig-gup} (a). In this case, $\af$ would again try to do a fork from her own block, which in this case is the genesis block as no block belongs to player 1. On the other hand, $\gup_4^2$ would try to do a fork instead on the dotted line, that is, the second block that does not belong to her.
+as shown in Figure \ref{fig-gup} (a). In this case, $\af$ would again try to do a fork from the genesis block as no block belongs to player 1. On the other hand, $\gup_4^2$ would try to do a fork instead on the dotted line, that is, the second block that does not belong to her.
 The second difference is provided by the give-up time, which is shown in Figure~\ref{fig-gup}~(b). Normally, $\af$ is willing to continue forking regardless of the hope of winning, therefore the move for the state in Figure \ref{fig-gup} (b) would still be to mine upon her own block $11$. On the other hand, $\gup_4^2$ has already seen 4 blocks from the start of the fork, so with this strategy player $1$ instead gives up and tries to mine upon $0000$, rebooting the strategy as if 
 %this last block 
-$0000$ was the genesis block. 
+$0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that is, the strategy where player $1$ is willing to keep fighting for a fork of any length, and to do a fork at the beginning of any chain of blocks she does not own.  
 \end{example}
 
 Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$. 
@@ -726,7 +728,7 @@ where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, 
 \end{theorem}
 %\francisco{optional: We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in appendix \ref{sec-evaluation-G}.} 
 In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them, as we did before, 
-for $\alpha = 0.9999967030$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives 
+for $\alpha = 0.9999966993$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives 
 %us an 
 interesting 
 %feel 
