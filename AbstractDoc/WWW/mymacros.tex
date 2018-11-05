@@ -178,5 +178,31 @@
 
 \newcommand{\pol}{\text{\it P}}
 
+%% MARTIN
 
+\newcommand{\plotfilezoom}[1]{
+    \pgfplotstableread{#1}{\table}
+    \pgfplotstablegetcolsof{#1}
+    \pgfmathtruncatemacro\numberofcols{\pgfplotsretval-1}
+    \pgfplotsinvokeforeach{1,...,\numberofcols}{
+        \pgfplotstablegetcolumnnamebyindex{##1}\of{\table}\to{\colname}
+        \addlegendentryexpanded{\colname}
+    }
+    \addplot[thick, solid] table [y index=1] {#1};
+    \addplot[thick, dashed] table [y index=2] {#1};
+    \addplot[solid] table [y index=3] {#1};
+}
 
+\newcommand{\plotfile}[1]{
+    \pgfplotstableread{#1}{\table}
+    \pgfplotstablegetcolsof{#1}
+    \pgfmathtruncatemacro\numberofcols{\pgfplotsretval-1}
+    \pgfplotsinvokeforeach{1,...,\numberofcols}{
+        \pgfplotstablegetcolumnnamebyindex{##1}\of{\table}\to{\colname}
+        \addlegendentryexpanded{\colname}
+    }
+    \addplot[thick, solid] table [y index=1] {#1};
+    \addplot[thick, dashed] table [y index=2] {#1};
+    \addplot[solid] table [y index=3] {#1};
+    \addplot[thick, dash dot] table [y index=4] {#1};
+}
