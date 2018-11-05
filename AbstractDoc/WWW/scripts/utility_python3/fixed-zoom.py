@@ -302,8 +302,8 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
                 util(window[i], give_up[i], h),
                 linestyle=linestyles[i],
                 color=str(colors[i]))
-        labels.append("$\mathbf{G}^{k = " + str(window[i]) +
-                      "}_{\ell = " + str(give_up[i]) + "}$")
+        labels.append("$\mathbf{G}^{" + str(window[i]) +
+                      "}_{" + str(give_up[i]) + "}$")
 
         section = np.arange(intersection_points[i],
                             intersection_points[i + 1] + step,
@@ -322,13 +322,13 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
 
     plt.text(0.1, default(.14), '$\mathbf{DF}$', fontsize="large")
 
-    ax.plot(h,
+    """ax.plot(h,
             af(h),
             color='.5',
             linewidth=.8
-            )
+            )"""
 
-    """plt.text(.38,
+    plt.text(.38,
              2e11,
              "$\mathbf{G}^1_2$",
              backgroundcolor="white",
@@ -351,14 +351,14 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
              "$\mathbf{G}^1_5$",
              backgroundcolor="white",
              fontsize="large",
-             bbox=dict(facecolor='1'))"""
+             bbox=dict(facecolor='1'))
 
     plt.text(0.8, af(.95), '$\mathbf{AF}$', fontsize="large")
 
 
     ax.legend(labels, fontsize='xx-large')
 
-    xticks = []
+    xticks = intersection_points[1:NUM_CURVES]
     xticks.append(.5)
 
     plt.axvline(x=0.50001, color=".5", linewidth=1)
@@ -374,27 +374,10 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     return plt
 
 
-def max_util(h):
-
-    max_k = 0
-    max_l = 0
-    max_value = 0
-    for i in range(2, 10):
-        for j in range(i + 1, 10):
-            if util(i, j, h) > max_value:
-                max_value = util(i, j, h)
-                max_k = i
-                max_l = j
-
-    return max_k, max_l
-
-
-"""for x in np.arange(0.35, 1, .01):
-    print(x, max_util(x))"""
 # Plot limits (x axis)
-start = 0
-end = 1
-min_y = 0
+start = .36
+end = .55
+min_y = 1.8e11
 step = 0.001
 
 NUM_CURVES = 4
