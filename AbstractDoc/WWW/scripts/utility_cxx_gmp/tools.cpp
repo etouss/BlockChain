@@ -2,8 +2,8 @@
 
 using namespace std;
 
-
-mpf_class a = 0.9999967030_mpf;
+mpf_class a = 0.9999966993_mpf;
+//mpf_class a = 0.9999967030_mpf;
 mpf_class b = 0.9999996156_mpf;
 
 
