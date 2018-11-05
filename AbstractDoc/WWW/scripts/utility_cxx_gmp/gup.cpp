@@ -11,9 +11,9 @@ int main(int argc, char** argv){
     int LIMIT = 100;
     
 
-    generate_gup_plot(0, 1);
+    //generate_gup_plot(0, 1);
     
-    return 0;
+    //return 0;
 
     mpf_class min = 1000000000000000000000000_mpf;
     double i_min = 0;
@@ -27,8 +27,18 @@ int main(int argc, char** argv){
         }
     }
 
-    cout << i_min << endl;
-    
+    cout << "4-5: " <<i_min << endl;
+    min = 1000000000000000000000000_mpf;
+    i_min = 0;
+    for (double i = 0.4; i < 0.6; i = i + step){
+        x = abs(def(i) - util(1, 4, i)) ;
+        if(x < min){
+            i_min = i;
+            min = x;
+        }
+    }
+
+    cout << "def-4: " << i_min << endl;
     
 }
 
