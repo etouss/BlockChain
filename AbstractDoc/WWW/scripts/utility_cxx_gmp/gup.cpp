@@ -4,9 +4,32 @@ using namespace std;
 
 int main(int argc, char** argv){
     
+
+    mpf_class max = 0;
+    mpf_class k_max = 0;
+    mpf_class l_max = 0;
+    int LIMIT = 100;
+    
+
     generate_gup_plot(0, 1);
     
     return 0;
+
+    mpf_class min = 1000000000000000000000000_mpf;
+    double i_min = 0;
+    double step = 0.000001;
+    mpf_class x;
+    for (double i = 0.4; i < 0.6; i = i + step){
+        x = abs(util(1, 4, i) - util(1, 5, i)) ;
+        if(x < min){
+            i_min = i;
+            min = x;
+        }
+    }
+
+    cout << i_min << endl;
+    
+    
 }
 
 
