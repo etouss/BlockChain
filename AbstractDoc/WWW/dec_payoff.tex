@@ -576,7 +576,8 @@ which means that player~$1$ should use $\baf$ as soon as she controls more than 
 This confirms the 
 folklore fact that is profitable to fork with more than half of the hash power. 
 %\marcelo{Is it the same value for $F[1]$?}
-Notice that if the proportinionhash power of player 1 is less than $0.4969$ of the total hash power, the utility of player 1 for $\baf$ is negligible, since in this strategy player 1 is involved indefinitely in fights he cannot win. On the other hand, above $0.4969$
+Notice that if the proportion of hash power of player 1 is less than $0.4969$ of the total hash power, the utility of player 1 for $\baf$ is negligible, since in this strategy player 1 is involved indefinitely in fights she cannot win. On the other hand, above $0.4969$
+\francisco{Attention, this is incomplete.}
 This confirms the 
 folklore fact that is profitable to fork with more than half of the hash power. However, it is interesting to note that
 % this is not exactly the case: 
@@ -740,8 +741,7 @@ information about the advantages of this family of strategies.
 We fix $k = 1$, plot the utility of strategies $\bgup^1_2$ through $\bgup^1_5$, and shade those areas in which one of the utilities is greater. As we see, for a 
 fork window $k = 1$, the optimal amount time player $1$ should be willing to fight for a branch before giving up depends on the hash power. With little hash power the likelihood of winning a 
 branch is small, so player 1 should give up as early as possible. However, the more hash power she obtains, the better it is to wait more. Interestingly, with a little more than 
-$46\%$ of the hash power, player $1$ already should start using strategy $\gup^1_4$ to defeat the default strategy, and with a little more power, $\gup^1_5$. We know that player~$1$ should use $\af$ not before 
-$h = 0.499$, so this gives us a lot of extra room to look for optimal strategies if we are willing to fork (especially considering that every percentage of hash power in popular cryptocurrencies 
+$46.7\%$ of the hash power, player $1$ already should start using strategy $\gup^1_4$ to defeat the default strategy, and with more than $48.6\%$ power, she should adopt $\gup^1_5$. We know that player~$1$ should use $\af$ not before around $h = 0.4969$, so this gives us a lot of extra room to look for optimal strategies if we are willing to fork (especially considering that every percentage of hash power in popular cryptocurrencies 
 may cost millions).
 
 Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight for our forks. However, 
