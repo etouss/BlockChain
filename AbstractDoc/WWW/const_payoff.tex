@@ -1,12 +1,14 @@
 %!TEX root = main.tex
 
 
-\section{Equilibria in games with constant payoff}
+\section{Equilibria %in games 
+with constant reward}
 \label{sec-const_rew}
 
-The first version of the game we analyse is when the payoff function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this may not reflect many blockchain's protocol, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this easy case serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, the results we obtain here could serve as a good recommendation for blockchain's protocol to enforce fair behaviour of the miners when their income consist only of transaction fees.
+The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
 
-\subsection{Defining constant pay-off}
+
+\subsection{Defining constant reward}
 When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
 
 \begin{figure}
@@ -19,8 +21,8 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 	\node [state] at (2.1,0) (10) {$10$};
 	\node [state] at (3.3,0) (100) {$100$};
 	\node [state] at (4.6,0) (1001) {$1001$};
-	\node [state] at (5.9,0.75) (10011) {$10011$};
-	\node [state] at (5.9,-0.75) (10010) {$10010$};	
+	\node [state] at (5.9,0.70) (10011) {$10011$};
+	\node [state] at (5.9,-0.70) (10010) {$10010$};	
 	
 	% Graph edges
 	\path[->]
@@ -29,8 +31,7 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 	(10) edge (100)
 	(100) edge (1001)
 	(1001) edge (10011)
-	(1001) edge (10010)
-	; 	
+	(1001) edge (10010); 	
 	
 
 
@@ -39,7 +40,7 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 \caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in each case. \label{fig-simple-fork}}
 \end{figure}
 
-In order to model the aforementioned scenario we need to introduce some notation.
+In order to model the aforementioned scenario, we need to introduce some notation.
 Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$ when considered as strings. Then we define: 
 \begin{eqnarray*}
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
@@ -47,11 +48,16 @@ Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation
 \end{eqnarray*}
 Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
 
-
-As mentioned before, the pay-off function rewards a player for the blocks in $\meet(q)$. Thus, to define it,
-%the pay-off, 
-we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
-$\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
+Now we have the ingredients to introduce a reward function that pays a player according to her blocks
+%As mentioned before, miners are rewarding according to their
+% function rewards a player for the 
+ in $\meet(q)$. More precisely, the reward function considered in this section, which is called \textbf{constant reward}, is defined as follows 
+%. For 
+for a player $p$:
+%Thus, to define it,
+%%the pay-off, 
+%we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
+%$\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
 %\begin{eqnarray*}
 %\chi_p(b) & = & 
 %\begin{cases}
@@ -60,15 +66,16 @@ $\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
 %\end{cases}
 %\end{eqnarray*}
 %We can finally define 
-Hence, the pay-off function considered in this section, which is called \textbf{constant reward}, is defined as follows 
-%. For 
-for a player $p$:
+%Hence, the pay-off function considered in this section, which is called \textbf{constant reward}, is defined as follows 
+%%. For 
+%for a player $p$:
 %, we define it as 
 \begin{eqnarray*}
 r_p(q) & = & 
 {\displaystyle c \cdot \sum_{b \in \meet(q)} \chi_p(b),}
 \end{eqnarray*}
-where $c$ is a positive real number. As mentioned above, this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the pay-off function is defined for the blockchain of $q$.
+where $c$ is a positive real number, $\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
+Notice that this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the reward function is defined for the blockchain of $q$.
 % when the latter is defined for the state $q$.
 %Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
 % and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
@@ -164,8 +171,10 @@ As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain that:
 \begin{mycor}\label{cor-conts_equlibria}
 For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
 \end{mycor} 
-
-While constant-block reward do not faithfully model the reality of most crypto-currencies, in the Bitcoin protocol the reward decreases every approximately four years, we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour on miners when block rewards consist only of transaction fees. If a blockchain protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of block, assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem \ref{thm-conts_dom_str} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. On one hand such constraint on transaction fees insure the neutrality of the blockchain, on the other hand if the market value of the crypto-currency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
+While constant-block reward does not faithfully model the reality of most cryptocurrencies, 
+%in the Bitcoin protocol the reward decreases every approximately four years, 
+we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. On the one hand, such constraint on transaction fees ensures the neutrality of the %blockchain,
+protocol. On the other hand, if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
 % \subsection{The default strategy is an equilibrium}
 %
 %Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
