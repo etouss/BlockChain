@@ -324,11 +324,11 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
 
     plt.text(0.1, default(.14), '$\mathbf{DF}$', fontsize="large")
 
-    """ax.plot(h,
+    ax.plot(h,
             af(h),
             color='.5',
             linewidth=.8
-            )"""
+            )
 
     plt.text(.38,
              2e11,
@@ -375,11 +375,10 @@ def gen_main_plot(start, end, step, y0, NUM_CURVES, window, give_up):
     return plt
 
 
-
 # Plot limits (x axis)
-start = 0 #  .36
-end = 1 #  .55
-min_y = 0 #  1.8e11
+start = 0 # .36
+end = 1 # .55
+min_y = 0 # 1.8e11
 step = 0.001
 
 NUM_CURVES = 4
