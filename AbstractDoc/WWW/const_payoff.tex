@@ -12,7 +12,8 @@ The first version of the game we analyse is when the reward function $r_p(q)$ pa
 When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
 
 \begin{figure}
-\begin{center}
+%\begin{center}
+\centering
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
 
     % The graph
@@ -36,8 +37,8 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 
 
 \end{tikzpicture} 
-\end{center}
-\caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in each case. \label{fig-simple-fork}}
+%\end{center}
+\caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in both paths. \label{fig-simple-fork}}
 \end{figure}
 
 In order to model the aforementioned scenario, we need to introduce some notation.
@@ -88,7 +89,7 @@ Notice that this is called the default strategy as it reflects the desired behav
 by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. 
 %Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
 
-We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, $i$ blocks will be placed in the blockchain defined by the game, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
+We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, the blockchain defined by the game will have $i$ blocks, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
 $$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ = \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
 
 %% Juan: I think it is way too nahive to put the analytical form of this
@@ -104,7 +105,7 @@ Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the ut
 
 \begin{proof}
 Let $\bs= (s_0, \ldots, s_{m-1})$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
-Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\cdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step according to the strategy $\bs$ if $q_2 = a(q_1)$, where $a = s_{p'}(q_1)$ for some $p' \in \bP$;
+Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\bdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step according to the strategy $\bs$ if $q_2 = a(q_1)$, where $a = s_{p'}(q_1)$ for some $p' \in \bP$;
 %q_1 \cup \{ b \cdot p' \}$, where $b \in \bB$, $p' \in \bP$ and $b \cdot p' \not\in q_1$ 
 %(recall that $\bB = \{0, \ldots, m-1\}^*$ and 
 %(recall that $\bP = \{0, \ldots, m-1\}$); 
