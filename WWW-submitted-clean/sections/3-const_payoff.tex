@@ -1,0 +1,352 @@
+%!TEX root = main.tex
+
+
+\section{Equilibria %in games 
+with constant reward}
+\label{sec-const_rew}
+
+The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
+
+
+\subsection{Defining constant reward}
+When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
+
+\begin{figure}
+%\begin{center}
+\centering
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (0,0) (R) {$\varepsilon$};
+	\node [state] at (1,0) (1) {$1$};
+	\node [state] at (2.1,0) (10) {$10$};
+	\node [state] at (3.3,0) (100) {$100$};
+	\node [state] at (4.6,0) (1001) {$1001$};
+	\node [state] at (5.9,0.70) (10011) {$10011$};
+	\node [state] at (5.9,-0.70) (10010) {$10010$};	
+	
+	% Graph edges
+	\path[->]
+	(R) edge (1)
+	(1) edge (10)
+	(10) edge (100)
+	(100) edge (1001)
+	(1001) edge (10011)
+	(1001) edge (10010); 	
+	
+
+
+\end{tikzpicture} 
+%\end{center}
+\caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in both paths. \label{fig-simple-fork}}
+\end{figure}
+
+In order to model the aforementioned scenario, we need to introduce some notation.
+Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$ when considered as strings. Then we define: 
+\begin{eqnarray*}
+\longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
+\meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}.
+\end{eqnarray*}
+Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
+
+Now we have the ingredients to introduce a reward function that pays a player according to her blocks
+%As mentioned before, miners are rewarding according to their
+% function rewards a player for the 
+ in $\meet(q)$. More precisely, the reward function considered in this section, which is called \textbf{constant reward}, is defined as follows 
+%. For 
+for a player $p$:
+%Thus, to define it,
+%%the pay-off, 
+%we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
+%$\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
+%\begin{eqnarray*}
+%\chi_p(b) & = & 
+%\begin{cases}
+%1 & \text{if } \owner(b) = p\\
+%0 & \text{otherwise}
+%\end{cases}
+%\end{eqnarray*}
+%We can finally define 
+%Hence, the pay-off function considered in this section, which is called \textbf{constant reward}, is defined as follows 
+%%. For 
+%for a player $p$:
+%, we define it as 
+\begin{eqnarray*}
+r_p(q) & = & 
+{\displaystyle c \cdot \sum_{b \in \meet(q)} \chi_p(b),}
+\end{eqnarray*}
+where $c$ is a positive real number, $\chi_p(b) = 1$ if $\owner(b) = p$, and $\chi(p) = 0$ otherwise.
+Notice that this function is well defined since $\meet(q)$ always exists. Moreover, if $q$ has a blockchain, then we have that $\meet(q) = \bchain(q)$ and, hence, the reward function is defined for the blockchain of $q$.
+% when the latter is defined for the state $q$.
+%Here we use notation $b[i]$ for the $i$-th symbol in $b$, where $i \in \{1, \ldots, |b|\}$. 
+% and $d \in \mathbb{N}$. Here the number $d$ is the amount of confirmations needed to spend the block (6 in the case of Bitcoin).
+ 
+ \subsection{The default strategy maximizes the utility}
+
+Let us start with analysing the most obvious strategy for all players: regardless of what everyone else does, keep mining on the blockchain, which is called the \emph{default} strategy.
+More precisely, a player following the default strategy tries to mine upon the final block that appears in the blockchain of a state $q$. If the blockchain in $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player tries to mine on the final block of one of these paths according to her rewards in them; she chooses the one that maximizes her reward, which in the case of constant reward means the path that contains the largest number of blocks belonging to her (if there is more than one of these paths, then between the final blocks of these paths she chooses the first according to a lexicographic order on the strings in $\{0, \ldots, m-1\}^*$). 
+Notice that this is called the default strategy as it reflects the desired behaviour of the miners participating in the Bitcoin network. For a player $p$, let us denote this strategy 
+by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. 
+%Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
+
+We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, the blockchain defined by the game will have $i$ blocks, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
+$$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ = \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
+
+%% Juan: I think it is way too nahive to put the analytical form of this
+%$$u_p(\bs \mid q_0) = c\cdot h_p \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \text{,}\ \ \ \ \text{ which evaluates to }\frac{c\cdot h_p}{(1-\beta)^2}.$$ %(recall that $q_0$ is the genesis block). 
+
+The question then is: can any player do better? As we show in the following theorem, the answer is no as the default strategy maximizes the utility. 
+\begin{mythm}\label{thm-conts_dom_str}
+Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$: \ \ $u_p(\bs) \leq u_p(\cdf)$.
+%\begin{eqnarray*}
+%u_p(\bs) & \leq & u_p(\cdf)
+%\end{eqnarray*}
+\end{mythm} 
+
+\begin{proof}
+Let $\bs= (s_0, \ldots, s_{m-1})$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
+Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\bdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step according to the strategy $\bs$ if $q_2 = a(q_1)$, where $a = s_{p'}(q_1)$ for some $p' \in \bP$;
+%q_1 \cup \{ b \cdot p' \}$, where $b \in \bB$, $p' \in \bP$ and $b \cdot p' \not\in q_1$ 
+%(recall that $\bB = \{0, \ldots, m-1\}^*$ and 
+%(recall that $\bP = \{0, \ldots, m-1\}$); 
+that is, we have that $q_2$ can be reached from $q_1$ in one step according to $\bs$ if $q_2$ is the result of applying the action $s_{p'}(q_1)$ to $q_1$ for some player $p'$.
+% $\mine(p', b, q_1)$, where $\mine(p', b, q_1)$ is a valid action for player $p'$. 
+Then for each state $q \in Q_{\bs}$, consider all distinct sequences $\rho = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
+$q_i$ in one step according to $\bs$ ($i \in \{1, \ldots, n-1\}$), $q_0 = \varepsilon$ and $q_n = q$. To each such a sequence $\rho = q_0,\dots,q_n$, associate a block $b_\rho$ of length $n$ as follows.
+% in $\{0,1\}^*$ 
+For every $i \in \{1, \ldots, n\}$, if for a player $p' \in \bP$, it holds that $s_{p'}(q_{i-1}) = a_{p'}$ and $q_{i} = a_{p'}(q_{i-1})$, then $i$-th symbol of $b_\rho$ is $p'$. Notice that the $i$-th symbol of $b_\rho$ is well defined as $q \in Q_\bs$ and the sets of actions for two distinct players are disjoint.
+%Notice that if $b_i = 1$, then $q_{i} = a_1(q_{i-1})$ with $a_1 = \df_1(q_{i-1})$. 
+Finally, define $\sigma(q)$ as the set of all states $q' \in Q_\cdf$ consisting of a single path whose final block is a block $b_\rho$ associated to a sequence $\rho$ for $q$; formally, we have that:
+\begin{multline*}
+\sigma(q) \ = \ \big\{q' \in Q_\cdf \mid \text{there exists a sequence } \rho \text{ for } q\\ \text{ such that } q' = \{ b \in \bB \mid b \preceq b_\rho \}\big\}.
+\end{multline*}
+%Erase if too hane holding:
+Intuitively, if $\rho$ is a sequence for $q$, then the $i$-th symbol of $b_{\rho}$ tells us which player won the $i$-th round of the mining game. The state $q'\in \sigma(q)$ associated with $b_\rho$ simply recreates what would have happened if this was the order in which the players were mining the blocks when they use $\cdf$ as their strategy.
+%for which there exist a sequence $\rho$ and a corresponding block $b_\rho$ such that $q' = \{ b \in \bB \mid b \preceq b_\rho \}$
+%and where 
+%$q^*$ is the smallest prefix closed set of strings containing $w$. 
+%
+In this proof, we need the following property of the mapping $\sigma$.
+
+\begin{myclaim}
+\label{claim-nonempty-inter-gen}
+For every pair of distinct states $q,q'$ in $Q_{\bs}$, the sets $\sigma(q)$ and $\sigma(q')$ are disjoint. 
+\end{myclaim}
+
+Recall that the utility of player $p$ using combined strategy $\cdf$ 
+%at the genesis tree 
+is defined as:
+\begin{eqnarray*}
+u_p(\cdf) & = & (1-\beta) \cdot \sum_{q \in \bQ} \beta^{|q|-1} \cdot r_p(q) \cdot \pr^{\cdf}(q).
+\end{eqnarray*}
+If we choose to sum only over the states in the images under $\sigma$ of the states of $Q_\bs$, then by Claim \ref{claim-nonempty-inter-gen} we have that:
+\begin{eqnarray*}
+u_p(\cdf) & \geq & (1-\beta) \cdot \sum_{q \in \sigma(q^*) \,:\, q^* \in Q_{\bs}} \beta^{|q|-1} \cdot r_p(q) \cdot \pr^{\cdf}(q).
+\end{eqnarray*}
+%because Claim \ref{claim-nonempty-inter} guarantees that we are not summing each state in $Q_\df$ more than once. %We 
+Rearranging the term in the right-hand side, we obtain:
+\begin{eqnarray*}
+u_p(\cdf) & \geq &(1-\beta) \cdot \sum_{q^* \in Q_{\bs}} \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot r_p(q) \cdot \pr^{\cdf}(q).
+\end{eqnarray*}
+For each state $q^* \in Q_{\bs}$, notice that if $q \in \sigma(q^*)$, then $|q| = |q^*|$ and the number blocks owned by $p$ in $q$ is the same as the number of blocks owned by $p$ in $q^*$. Thus, we have that $r_p(q) \geq r_p(q^*)$ since $q \in Q_{\cdf}$ and, therefore, every block owned by $p$ in $q$ is in $\bchain(q)$ and $\bchain(q) = \meet(q)$. Notice that it could be the case that $r_p(q) > r_p(q^*)$, as some blocks owned by $p$ in $q^*$ may not be in $\meet(q^*)$. We conclude that:
+\begin{align*}
+&\hspace{-2pt} \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot r_p(q) \cdot \pr^{\cdf}(q) \geq \sum_{q \in \sigma(q^*)} \beta^{|q^*|-1} \cdot r_p(q^*) \cdot \pr^{\cdf}(q)\\
+&\hspace{112pt} = \beta^{|q^*|-1} \cdot r_p(q^*) \sum_{q \in \sigma(q^*)} \pr^{\cdf}(q).
+\end{align*}
+% because $|q| = |q^*|$ and 
+%$q$ and $q^*$ have the same number of blocks owned by $0$. 
+Moreover, by definition of $\pr^{\cdf}$ and $\pr^\bs$, we have that:
+\begin{eqnarray*}
+\sum_{q \in \sigma(q^*)} \pr^{\cdf}(q) & = & \pr^{\bs}(q^*).
+\end{eqnarray*}
+Combining the previous results and considering that $\pr^{\bs}(q^*) = 0$ for every $q^* \in \bQ \smallsetminus Q_{\bs}$, we conclude that: 
+\begin{eqnarray*}
+u_p(\cdf) & \geq & (1-\beta) \cdot \sum_{q^* \in Q_\bs} \bigg(\beta^{|q^*|-1} \cdot r_p(q^*) \sum_{q \in \sigma(q^*)} \pr^{\cdf}(q)\bigg)\\
+& = &(1-\beta) \cdot \sum_{q^* \in Q_\bs} \beta^{|q^*|-1} \cdot r_p(q^*) \cdot \pr^{\bs}(q^*)\\
+& = &(1-\beta) \cdot \sum_{q^* \in \bQ} \beta^{|q^*|-1} \cdot r_p(q^*) \cdot \pr^{\bs}(q^*)\\
+& = & u_p(\bs), 
+\end{eqnarray*}
+which was to be shown.
+\end{proof}
+As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain that:
+\begin{mycor}\label{cor-conts_equlibria}
+For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
+\end{mycor} 
+While constant-block reward does not faithfully model the reality of most cryptocurrencies, 
+%in the Bitcoin protocol the reward decreases every approximately four years, 
+we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. Thus, such constraint on transaction fees would ensure the neutrality of the %blockchain,
+protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
+% \subsection{The default strategy is an equilibrium}
+%
+%Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
+%the \emph{default} strategy, as it reflects the desired behaviour of the miners participating in the Bitcoin network. 
+%For a player $p$, let us denote this strategy 
+%by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
+%
+%We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, $i$ blocks will be placed in the blockchain defined by the game, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
+%$$u_p(\cdf \mid \varepsilon) \ \ = \ \ h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ = \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)^2}.$$
+%
+%%% Juan: I think it is way too nahive to put the analytical form of this
+%%$$u_p(\bs \mid q_0) = c\cdot h_p \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \text{,}\ \ \ \ \text{ which evaluates to }\frac{c\cdot h_p}{(1-\beta)^2}.$$ %(recall that $q_0$ is the genesis block). 
+%
+%The question then is: can any player do better? As we show, the answer is no if we assume that the rest of the players behave according to $\cdf$. More precisely, we have the following result. 
+%
+%\begin{mythm}\label{thm-conts_equlibria}
+%For every $\beta \in [0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
+%\end{mythm} 
+%
+%\begin{proof}
+%Let $p \in \bP$ be a player and $s_p$ be an arbitrary strategy for~$p$. We need to show that the utility of $(\cdf_{-p},s_p)$ is not higher than the utility of $\cdf$ for player $p$, that is, we need to show that $u_p((\cdf_{-p},s_p) \mid \varepsilon) \leq u_p(\cdf \mid \varepsilon)$. 
+%
+%First, observe that it is enough to consider a two-player game, as all the players except $p$ can be merged into a single player whose hash power is the sum of the hash power 
+%of each player $p' \neq p$. 
+%%of the aggregated players. 
+%Thus, we consider $\bP = \{0,1\}$, and for readability we assume that $p = 0$ (the other case being symmetric). Notice that under these assumptions, it holds that $(\cdf_{-p},s_p) = (s_0, \df_1)$. 
+%
+%For a combined strategy $\bs$, let $Q_\bs = \{q \in \bQ \mid \pr^\bs(q \mid \varepsilon) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
+%Moreover, define a mapping $\sigma: Q_{(s_0,\df_1)} \rightarrow 2^{Q_\cdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step if $q_2 = q_1 \cup \{ b \cdot p' \}$, where $b \in \{0,1\}^*$, $p' \in \bP$ and $b \cdot p' \not\in q_1$; that is, we have that $q_2$ can be reached from $q_1$ in one step if $q_2$ is the result of applying action $\mine(p', b, q_1)$, where $\mine(p', b, q_1)$ is a valid action for player $p'$. 
+%Then for each state $q \in Q_{(s_0,\df_1)}$, enumerate all distinct sequences $\pi = q_0,\dots,q_n$ such that $q_{i+1}$ can be reached from 
+%$q_i$ in one step ($i \in \{1, \ldots, n-1\}$) , $q_0 = \varepsilon$ and $q_n = q$. To each such sequence $\pi$, associate a block $b_\pi = b_1 \cdots b_n$
+%% in $\{0,1\}^*$ 
+%such that:
+%\begin{eqnarray*}
+%b_i & = &
+%\begin{cases}
+%0 & \text{if } q_{i} = a_0(q_{i-1}), \text{ where } a_0 = s_0(q_{i-1}) \\
+%1 & \text{if } q_{i} = a_1(q_{i-1}), \text{ where } a_1 = \df_1(q_{i-1})
+%\end{cases}
+%\end{eqnarray*}
+%%Notice that if $b_i = 1$, then $q_{i} = a_1(q_{i-1})$ with $a_1 = \df_1(q_{i-1})$. 
+%Finally, define $\sigma(q)$ as the set of all states $q' \in Q_\cdf$ for which there exist a sequence $\pi$ and a corresponding block $b_\pi$ such that $q' = \{ b \in \{0,1\}^* \mid b \preceq b_\pi \}$.
+%%and where 
+%%$q^*$ is the smallest prefix closed set of strings containing $w$. 
+%
+%In this proof, we need the following property of the mapping $\sigma$.
+%
+%\begin{myclaim}
+%\label{claim-nonempty-inter}
+%For every pair of distinct states $q,q'$ in $Q_{(s_0,\df_1)}$, the sets $\sigma(q)$ and $\sigma(q')$ are disjoint. 
+%\end{myclaim}
+%
+%\begin{proof}
+%For the sake of contradiction, assume that
+%%Assume for contradiction two different states 
+%$q,q'$ are two distinct states in $Q_{(s_0,\df_1)}$ such that both $\sigma(q)$ and $\sigma(q')$ contain a state $q^* \in Q_\cdf$. By definition of $Q_\cdf$, there is a block 
+%%$w$ 
+%$b^*$ such that $q^* = \{b \in \{0,1\}^* \mid b \preceq b^*\}$.
+%% is the closure (over prefixes) of $w$. 
+%By definition of mapping $\sigma$, there exist a sequence $\pi = q_0,\dots,q_n$ for $q$ and a sequence $\pi' = q_0',\dots,q_n'$ for $q'$ such that $b^* = b_\pi$ and $b^* = b_{\pi'}$. If 
+%$\pi = \pi'$, then $q = q'$ as $q = q_n$ and $q' = q'_n$. Hence, we have that $\pi \neq \pi'$.
+%%, so $\pi$ must be different from $\pi'$. 
+%Let $i$ be the first position where $\pi$ and $\pi'$ differ,
+%%are different, 
+%so that 
+%sequences $q_0,\dots,q_{i-1}$ and $q_0,\dots,q'_{i-1}$ are the same and $q_i \neq q_i'$ (notice that $i \in \{1, \ldots, n\}$ since $q_0 = q'_0 = \varepsilon$).
+%%except for the last state. 
+%Then both $q_i$ and $q_i'$ are reachable from $q_{i-1}$ in one step. Therefore, it follows that 
+%%by the construction of our game 
+%one of $q_i$, $q_i'$ is the result of applying action $s_0(q_{i-1})$ and the other is the result of applying $\df_1(q_{i-1})$, which implies that the symbols in the $i$-th positions of $b_\pi$ and $b_{\pi'}$ are different. Hence, we conclude that $b_\pi \neq b_{\pi'}$, which leads to a contradiction since $b^* = b_\pi$ and $b^* = b_{\pi'}$.
+%%is different from the symbol in the $
+%%the word generated from $\pi$ and $\pi'$ is not the same. 
+%\end{proof}
+%Recall that the utility of player $0$ using combined strategy $\cdf$ 
+%%at the genesis tree 
+%is defined as:
+%\begin{eqnarray*}
+%u_0(\cdf \mid \varepsilon) & = & \sum_{q \in \bQ} \beta^{|q|} \cdot r_0(q) \cdot \pr^{\cdf}(q \mid \varepsilon).
+%\end{eqnarray*}
+%If we choose to sum only over the states in the images under $\sigma$ of the states of $Q_{(s_0,\df_1)}$, then by Claim \ref{claim-nonempty-inter} we have that:
+%\begin{eqnarray*}
+%u_0(\cdf \mid \varepsilon) & \geq & \sum_{q \in \sigma(q^*) \,:\, q^* \in Q_{(s_0,\df_1)}} \beta^{|q|} \cdot r_0(q) \cdot \pr^{\cdf}(q \mid \varepsilon).
+%\end{eqnarray*}
+%%because Claim \ref{claim-nonempty-inter} guarantees that we are not summing each state in $Q_\df$ more than once. %We 
+%Rearranging the term in the right-hand side, we obtain:
+%\begin{eqnarray*}
+%u_0(\cdf \mid \varepsilon) & \geq &\sum_{q^* \in Q_{(s_0,\df_1)}} \sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot r_0(q) \cdot \pr^{\cdf}(q \mid \varepsilon).
+%\end{eqnarray*}
+%For each state $q^* \in Q_{(s_0,\df_1)}$, notice that:
+%\begin{align*}
+%\sum_{q \in \sigma(q^*)} \beta^{|q|} \cdot r_0(q) \, \cdot \, & \pr^{\df}(q \mid \varepsilon) \geq \\
+%&\sum_{q \in \sigma(q^*)} \beta^{|q^*|} \cdot r_0(q^*) \cdot \pr^{\df}(q \mid \varepsilon) = \\
+%&\beta^{|q^*|} \cdot r_0(q^*) \sum_{q \in \sigma(q^*)} \pr^{\df}(q \mid \varepsilon),
+%\end{align*}
+% because $|q| = |q^*|$ and 
+%$q$ and $q^*$ have the same number of blocks owned by $0$. By definition, we also have that:
+%\begin{eqnarray*}
+%\sum_{q \in \sigma(q^*)} \pr^{\cdf}(q \mid \varepsilon) & = & \pr^{(s_0,\df_1)}(q^* \mid \varepsilon).
+%\end{eqnarray*}
+%Summing up and rearranging, we conclude that: 
+%\begin{eqnarray*}
+%u_0(\cdf \mid \varepsilon) & \geq & \sum_{q^* \in Q_{(s_0,\df_1)}} \beta^{|q^*|} \cdot r_0(q^*) \cdot \pr^{(s_0,\df_1)}(q^* \mid \varepsilon)\\
+%& = & u_0((s_0,\df_1) \mid \varepsilon), 
+%\end{eqnarray*}
+%which was to be shown.
+%\end{proof}
+%
+%
+%While constant block rewards do not faithfully model reality, since in the Bitcoin protocol the reward decreases every 200.000 blocks or so, we would like to argue why Theorem \ref{thm-conts_equlibria} could serve as a good recommendation on how to enforce good behaviour on miners at the moment block rewards become insignificant. More precisely, if block rewards are negligible, the transaction fees will dictate the miners' pay-off, so the protocol could place a (constant) total fee limit on newly created blocks. Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem \ref{thm-conts_equlibria} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.
+
+
+%The remainder of this section is devoted to explaining the proof of Theorem \ref{thm-conts_equlibria}.
+
+%
+%\subsection{Greedy strategies and proof of Theorem \ref{thm-conts_equlibria}} 
+%
+%We begin by showing that $\df$ is an equilibrium when we slightly restrict the space of strategies that the player use, and concentrate on the so called {\em greedy} strategies. Intuitively, under greedy strategies, the players refrain from forking on top of blocks that appear before their latest block when there is no blockchain, or their latest block in the blockchain, when the latter is defined. Greedy strategies can be formally defined as follows. 
+%Given a player $p \in \bP$ and a state $q \in \bQ$, let:
+%\begin{multline*}
+%\longest(q,p) \ = \ \{ b \in q \mid (b = \varepsilon \text{ or } \owner(b) = p),\\
+%\text{ and for every } b' \in q \text{ such that } \owner(b') = p : |b'| \leq |b|\}
+%\end{multline*}
+%Notice that $\varepsilon \in \longest(p,q)$ if and only if there is no $b \in q$ such that $\owner(b) = p$. Moreover, define $\length(q,p)$ as the length of an arbitrary string in $\longest(q,p)$ (all of them have the same length).
+%\begin{mydef}\label{def-greedy}
+%Given $p \in \bP$, $b \in \bB$ and $q \in \bQ$, an action $\mine(p,b,q)$ is {\em greedy} if $\mine(p,b,q)$ is a valid action and $\length(q,p) \leq |b|$.
+%
+%Moreover, a combined strategy $\bs = (s_0, s_1, \ldots, s_{m-1})$ is {\em greedy} if for every $p \in \bP$ and $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, it holds that $s_p(q)$ is a greedy action.
+%\end{mydef}
+%
+%For now, we only consider greedy strategies. 
+%%
+%%Under greedy strategies, players refrain to fork on top of blocks that appear before their latest block, or their latest block in the blockchain. 
+%The consequence of this is that every state in an $m$-player game under greedy strategies cannot have more than $m$ paths contesting for the blockchain. More precisely:% (see Lemma \ref{lem-length-greedy} in Appendix \ref{sec-char-states-greedy}). %This is captured b the following technical lemma: 
+%\begin{mylem}\label{lem-length-greedy}
+%Let $\bs$ be a greedy strategy. Then for every $q \in \bQ$ such that $\pr^{\bs}(q \mid \varepsilon) > 0$, the following conditions hold:
+%\begin{enumerate}
+%\item For every $p \in \bP$ $:$ $|\longest(q,p)| = 1$ 
+%
+%\item There exists $I \subseteq \bP$ such that$:$
+%\begin{eqnarray}\label{eq-max-set}
+%\longest(q) & = & \bigcup_{p \in I} \longest(q,p).
+%\end{eqnarray}
+%Moreover, if $q \neq \{\varepsilon\}$, then there exists a unique $I \subseteq \longest(q,p)$ such that \eqref{eq-max-set} holds.
+%\end{enumerate}
+%\end{mylem}
+%
+%The key property of greedy strategies needed to show that $\df$ is an equilibrium, is the fact that if two strategies are optimal for a player $p$, then they can not differentiate two states $q$ and $q'$ in which the subtree rooted at $\longest(q,p)$ and $\longest(q',p)$, respectively, are isomorphic. A strategy $s$ for a player $p$ is called a {\em basic strategy}, if $s(q)=s(q')$, whenever the subtree of $q$ rooted at $\longest(q,p)$ is isomorphic to the subtree of $q'$ rooted at $\longest(q',p)$. We can show that for greedy strategies the following holds:
+%
+%\begin{mylem}
+%\label{lem-meet}
+%Consider a game with $m$ players and let $s_p$ be a greedy strategy for player $p$. Then there is a basic strategy $s'_p$ such that $u_p((s_{-p},s'_p) \mid \varepsilon) \geq u_p((s_{-p},s_p) \mid \varepsilon)$ for any set $s_{-p}$ of basic greedy strategies. 
+%\end{mylem}
+%
+%
+%With this lemma at hand, we can now show that $\df$ is indeed a stationary equilibrium when we are considering only greedy strategies.
+%
+%\begin{mythm}%\label{thm-conts_equlibria}
+%For any $0 \leq \beta \leq 1$, the strategy $\df$ is a $\beta$-discounted stationary equilibrium under greedy strategies. 
+%\end{mythm} 
+%
+%\etienne{In order for the theorem to be true we have to considere stable DF strategy and not whatever df strategy. I think the easiest way to add this constraint without too much work is directly in the definition of greedy strategy ! A greedy action is ok, but to be a greedy strategy you also have to be stable.}
+%EXPLAIN SOME BASIC IDEAS BEHIND THE PROOF.
+%
+%Having established that $\df$ is an equilibrium under greedy strategies, we will now show that this restriction is not necessary, as any non greedy strategy can be replaced by a greedy one in an equilibrium. That is, we can show the following:
+%
+%LEMMA REUTTER-TOUSSAINT
+%
+%EXPLAIN WHY THE LEMMA SHOW THAT DF IS GREAT.
+%
+%
+%%We conclude this section by some remarks on the potential significance of Theorem \ref{thm-conts_equlibria}. As we have already mentioned, constant block rewards do not faithfully model reality, since in the Bitcoin protocol the reward decreases every 200.000 blocks or so. However, we would like to argue that Theorem \ref{thm-conts_equlibria} can serve as a good recommendation on how to enforce good behaviour on miners (assuming they will use the utility function as an indicator of their monetary gain), at the moment block rewards become insignificant. More precisely, if block rewards are insignificant, and the transaction fees dictate the miners' pay-off, the protocol could place a (constant) fee limit on newly created blocks. Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem \ref{thm-conts_equlibria} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.
+%
+%
+%%We already mentioned that constant block rewards do not faithfully model reality, since in the Bitcoin protocol the reward decreases every 200.000 blocks or so. However, we would like to argue that Theorem \ref{thm-conts_equlibria} can serve as a good recommendation on how to enforce good behaviour on miners (assuming they will use the utility function as an indicator of their monetary gain), at the moment block rewards become insignificant. More precisely, if block rewards are insignificant, and the transaction fees dictate the miners' pay-off, the protocol could place a (constant) fee limit on newly created blocks. Assuming that the volume of transactions is high, the blocks would regularly achieve the maximal reward, thus making the block reward constant. Theorem \ref{thm-conts_equlibria} then tells the miners that their best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run.

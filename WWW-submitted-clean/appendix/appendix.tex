@@ -1,0 +1,482 @@
+%!TEX root = main.tex
+
+\section{Proofs and Intermediate Results}
+\subsection{Convergence of the utility function}
+\label{sec-conver}
+
+To ensure that the utility function $u_p(\bs \mid q_0)$ is well defined, we impose the restriction that for every payoff function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. In this section, we prove that this is indeed a sufficient condition for $u_p(\bs \mid q_0)$ to be a real number, for which we first need a technical lemma. 
+
+\begin{mylem}\label{lem-prop-k}
+Let $q_0 \in \bQ$ and $\bs$ be a combined strategy. Then for every $k \geq 0$, it holds that
+\begin{eqnarray*}
+\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k}} \pr^{\bs}(q \mid q_0) & = & 1.
+\end{eqnarray*}
+\end{mylem}
+
+\begin{proof}
+We prove the lemma by induction on $k$. For $k=0$ the property trivially holds since $\pr^{\bs}(q_0 \mid q_0) = 1$. Thus, assuming that the property holds for $k$, we need to prove that it holds for $k+1$. We have that:
+\begin{align*}
+&\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k+1}} \pr^{\bs}(q \mid q_0) \ =\\
+&\hspace{30pt}\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k+1}} 
+\bigg(\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}} \pr^{\bs}(q' \mid q_0) \cdot \pr(q',\bs(q'),q)\bigg) \ = \\
+&\hspace{30pt}\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}}
+\bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k+1}} 
+ \pr^{\bs}(q' \mid q_0) \cdot \pr(q',\bs(q'),q)\bigg) \ =\\
+ &\hspace{30pt}\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}}
+\pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k+1}} 
+  \pr(q',\bs(q'),q)\bigg) \ =\\
+&\hspace{30pt}\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}}
+\pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q,\ |q| - |q_0| = k+1,\ \bs(q') = (a_0, \ldots, a_{m-1}) \text{ {\rm and}}\\
+\text{{\rm there exists }} p \in \{0, \ldots, m-1\} \text{ {\rm such that} } q = a_p(q')}}
+  \pr(q',\bs(q'),q)\bigg) \ =\\
+  &\hspace{30pt}\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}}
+\pr^{\bs}(q' \mid q_0) \cdot \bigg(\sum_{\substack{p \in \{0, \ldots, m-1\} \, : \\ \bs(q) = (a_0, \ldots, a_{m-1})}} \pr(q',\bs(q'),a_p(q'))\bigg) \ =\\
+&\hspace{30pt}\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}}
+\pr^{\bs}(q' \mid q_0).
+\end{align*}
+Hence, given that
+\begin{eqnarray*}
+\sum_{\substack{q' \in \bQ \,: \\ q_0 \subseteq q' \text{ {\rm and} } |q'| - |q_0| = k}}
+\pr^{\bs}(q' \mid q_0) & = & 1
+\end{eqnarray*}
+by induction hypothesis, we conclude that
+\begin{eqnarray*}
+\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = k+1}}
+\pr^{\bs}(q \mid q_0) & = & 1.
+\end{eqnarray*}
+\end{proof}
+
+\begin{myprop}\label{prop-conv}
+Let $p \in \{0, \ldots, m-1\}$, $q_0 \in \bQ$ and $\bs$ be a combined strategy. If there exist a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every $q \in \bQ$, then $u_p(\bs \mid q_0)$ is a real number.
+\end{myprop}
+
+\begin{proof}
+Notice that if $P$ is a zero polynomial, then the property trivially holds. Thus, we assume that $P$ is a nonzero polynomial. 
+Then we have that:
+\begin{eqnarray}
+\notag
+u_p(\bs \mid q_0) & =  & (1-\beta) \cdot \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)\\
+\notag
+& = & (1-\beta) \cdot \sum_{n=0}^\infty \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} \beta^{|q|-|q_0|} \cdot  r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg)\\
+\label{eq-gen-form}
+& = & (1-\beta) \cdot \sum_{n=0}^\infty \beta^n \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} r_p(q) \cdot \pr^{\bs}(q \mid q_0)\bigg).
+\end{eqnarray}
+Let $f : \mathbb{N} \to \mathbb{R}$ be a function defined as:
+\begin{eqnarray*}
+f(n) & = & \sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} r_p(q) \cdot \pr^{\bs}(q \mid q_0).
+\end{eqnarray*}
+Notice that this function is well-defined as there exists a finite number of states $q \in \bQ$ such that $|q| - |q_0| = n$. Then by equation \eqref{eq-gen-form}, we have that:
+\begin{eqnarray*}
+u_p(\bs \mid q_0) & = & (1-\beta) \cdot \sum_{n=0}^\infty \beta^n \cdot f(n).
+\end{eqnarray*}
+Therefore, to show that $u_p(\bs \mid q_0)$ is a real number, we need to show that the series $ \sum_{n=0}^\infty \beta^n \cdot f(n)$ converges, for which we prove that the series $ \sum_{n=0}^\infty |\beta^n \cdot f(n)|$ converges (that is, we show that $ \sum_{n=0}^\infty \beta^n \cdot f(n)$ converges absolutely, which is known to imply that this series is convergent). By definition of function $f$, we have that:
+\begin{eqnarray}
+\notag
+|f(n)| & = & \bigg| \sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} r_p(q) \cdot \pr^{\bs}(q \mid q_0) \bigg|\\
+\notag
+& \leq & \sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} |r_p(q)| \cdot \pr^{\bs}(q \mid q_0)\\
+\notag
+& \leq & \sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} P(n) \cdot \pr^{\bs}(q \mid q_0)\\
+\label{eq-f-abs}
+& = & P(n) \cdot \bigg(\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} \pr^{\bs}(q \mid q_0)\bigg).
+\end{eqnarray}
+We have by Lemma \ref{lem-prop-k} that
+\begin{eqnarray*}
+\sum_{\substack{q \in \bQ \,: \\ q_0 \subseteq q \text{ {\rm and} } |q| - |q_0| = n}} \pr^{\bs}(q \mid q_0) & = & 1.
+\end{eqnarray*}
+Hence, we conclude by equation \eqref{eq-f-abs} that:
+\begin{eqnarray*}
+|f(n)| & \leq & P(n).
+\end{eqnarray*}
+Thus, we have that:
+\begin{eqnarray}\label{eq-bound-p}
+\sum_{n=0}^\infty |\beta^n \cdot f(n)| \ = \ \sum_{n=0}^\infty \beta^n \cdot |f(n)|
+\ \leq \ \sum_{n=0}^\infty \beta^n \cdot P(n).
+\end{eqnarray}
+Given that every term in the series $\sum_{n=0}^\infty |\beta^n \cdot f(n)|$ is non-negative, to show that this series converges it is enough to prove that it is bound by a (non-negative) real number. Thus, by equation \eqref{eq-bound-p}, to finish the proof we need to show that the series $\sum_{n=0}^\infty \beta^n \cdot P(n)$ converges. By this can be easily established by using the Ratio Test, as we have that $\beta \in (0,1)$ and
+\begin{eqnarray*}
+\lim_{n \to \infty} \frac{\beta^{n+1} \cdot P(n+1)}{\beta^{n} \cdot P(n)} \ = \ \beta \cdot \lim_{n \to \infty} \frac{P(n+1)}{P(n)}
+\ = \ \beta,
+\end{eqnarray*}
+since $\lim_{n \to \infty} \frac{P(n+1)}{P(n)} = 1$ as $P$ is a nonzero polynomial.
+This concludes the proof of the proposition.
+\end{proof}
+
+\subsection{Proof of Proposition \ref{prop-ub-block}}
+We have that:
+\begin{eqnarray*}
+u_p(\bs ) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  r_p(b,q) \cdot \pr^{\bs}(q )\\
+& \leq & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  M_p(b) \cdot \pr^{\bs}(q )\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot   \pr^{\bs}(q )\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\sum_{q \in \bQ \,:\, b \in q \text{ and } |q| = i} \beta^{|q|-1} \cdot   \pr^{\bs}(q )\bigg)\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, b \in q \text{ and } |q| = i} \pr^{\bs}(q )\bigg)\\
+& \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q )\bigg).
+\end{eqnarray*}
+By lemma \ref{lem-prop-k}, we have that $\sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q ) = 1$. Hence, we conclude that:
+\begin{eqnarray*}
+u_p(\bs ) & \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\beta^{i-1} \cdot \sum_{q \in \bQ \,:\, |q| = i} \pr^{\bs}(q )\bigg)\\
+& = & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \beta^{i-1}\\
+& = & (1 - \beta) \cdot  \beta^{|b|} \cdot M_p(b) \cdot  \sum_{i=|b|+1}^\infty \beta^{i-1-|b|}\\
+& = & (1 - \beta) \cdot  \beta^{|b|} \cdot M_p(b) \cdot \sum_{j=0}^\infty \beta^{j}\\
+& = & (1 - \beta) \cdot  \beta^{|b|} \cdot M_p(b) \cdot \frac{1}{1-\beta}\\
+& = & \beta^{|b|} \cdot M_p(b), 
+\end{eqnarray*}
+which was to be shown. 
+
+\subsection*{Proof of Claim \ref{claim-nonempty-inter-gen}}
+
+For the sake of contradiction, assume that
+%Assume for contradiction two different  states 
+$q,q'$ are two distinct states in $Q_{\bs}$ such that both $\sigma(q)$ and $\sigma(q')$ contain a state $q^* \in Q_\cdf$. By definition of $Q_\cdf$, there exists a block 
+%$w$ 
+$b^*$ such that $q^* = \{b \in \bB \mid b \preceq b^*\}$.
+% is the closure (over prefixes) of $w$. 
+By definition of mapping $\sigma$, there exist a sequence $\rho = q_0,\dots,q_n$ for $q$ and a sequence $\rho' = q_0',\dots,q_n'$ for $q'$ such that $b^* = b_\rho$ and $b^* = b_{\rho'}$. If 
+$\rho = \rho'$, then $q = q'$ as $q = q_n$ and $q' = q'_n$. Hence, we have that $\rho \neq \rho'$.
+%, so $\rho$ must be different from $\rho'$. 
+Let $i$ be the first position where $\rho$ and $\rho'$ differ,
+%are different, 
+so that 
+sequences $q_0,\dots,q_{i-1}$ and $q_0,\dots,q'_{i-1}$ are the same and $q_i \neq q_i'$ (notice that $i \in \{1, \ldots, n\}$ since $q_0 = q'_0 = \varepsilon$).
+%except for the last state. 
+Then both $q_i$ and $q_i'$ are reachable from $q_{i-1}$ in one step. Therefore, it follows that 
+%by the construction of our game 
+$q_i = a_{p_1}(q_{i-1})$ and $q'_i = a_{p_2}(q_{i-1})$, where $a_{p_1} = s_{p_1}(q_{i-1})$, $a_{p_2} = s_{p_2}(q_{i-1})$ and $p_1 \neq p_2$. Hence, we have that the symbols in the $i$-th positions of $b_\rho$ and $b_{\rho'}$ are different, from which we conclude that $b_\rho \neq b_{\rho'}$, and reach a contradiction since $b^* = b_\rho$ and $b^* = b_{\rho'}$.
+%is different from the symbol in the $
+%the word generated from $\pi$ and $\pi'$ is not the same. 
+
+
+\subsection*{Proof of Lemma \ref{lem:default_utility}}
+By the definition of utility we have:
+\begin{eqnarray*}
+u_1(\bdf) & = & (1-\beta) \cdot \sum_{q\in \bQ}\beta^{|q|-1}\cdot r(q)\cdot \pr^{\bdf}(q).
+\end{eqnarray*}
+Separating the sum by the state size, we can write:
+\begin{eqnarray*}
+u_1(\cdf) & = & (1-\beta) \cdot \sum_{i=1}^{\infty}\beta^{i-1} \cdot  \bigg(\sum_{\substack{q \in \bQ \,: |q| = i}} r_1(q) \cdot 
+\pr^{\cdf}(q)\bigg).
+\end{eqnarray*}
+By encoding each state $q\in\bQ$ as a binary string $w\in \bstring$ (as in the proof of Theorem \ref{thm:always_fork} ) we can compute the utility as follows:
+\begin{eqnarray*}
+u_1(\cdf)& = & (1-\beta) \cdot c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot\bigg(\sum_{w\in\{0,1\}^i}  \bigg( \sum_{j=1}^{i}w[j] \cdot \alpha^j \bigg)\cdot 
+\pr^{\cdf}(q_w)\bigg),
+\end{eqnarray*}
+where $w[j]$ is the $j$-th symbol of the string $w$ and $q_w = \{ b \in \bB \mid b \preceq w\}$. 
+Notice that in the equation above, we use the fact that when playing $\cdf$ each state contains a single blockchain (and nothing else), thus implying that for every word $w\in \{0,1\}^*$, it holds that $\meet(q_w) = \bchain(q_w)$ and $\chi_1(b) = \owner(b) = w[j]$, for every block $b \in q_w$ such that $|b| = j \geq 1$. By rearranging the order of the summation we obtain:
+\begin{eqnarray*}
+u_1(\cdf )& = &(1-\beta) \cdot c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \bigg(\sum_{j=1}^{i} \alpha^j \cdot\bigg(\sum_{w\in\{0,1\}^i}   w[j]\cdot 
+\pr^{\cdf}(q_w)\bigg)\bigg)
+\end{eqnarray*}
+Using the fact that that mining any block for player 1 is an independent Bernoulli trial with probability of success $h$, and the fact that $\pr^{\cdf}(\{q_w \mid w\in \{0,1\}^i \text{ and } w[j]=1\})=h$ and $\pr^{\cdf}(\{q_w \mid w\in \{0,1\}^i \text{ and } w[j]=0\})=(1-h)$, for all $i \geq 1$ and $j \in \{1, \ldots, i\}$, we can conclude that $\sum_{w\in\{0,1\}^i}   w[j] \cdot \pr^{\cdf}(q_w) = \expected(w[j]) = h$, thus yielding:
+\begin{eqnarray*}	
+u_1(\cdf) \ = \ (1-\beta) \cdot c\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \bigg(\sum_{j=1}^{i} \alpha^j \cdot \expected(w[j])\bigg) \ = \ (1-\beta) \cdot c \cdot h \cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \bigg(\sum_{j=1}^{i} \alpha^j\bigg) .
+\end{eqnarray*}
+Computing the final summation, we get:
+\begin{eqnarray*}	
+u_1(\cdf) & = & (1-\beta) \cdot c \cdot h\cdot \sum_{i=0}^{\infty}\beta^{i} \cdot \frac{\alpha\cdot (1-\alpha^i)}{1-\alpha}\\
+ & = & (1-\beta) \cdot c \cdot h\cdot \frac{\alpha}{1-\alpha} \cdot \bigg(\sum_{i=0}^{\infty}\beta^{i} - \sum_{i=0}^{\infty}(\alpha \cdot \beta)^i \bigg).
+\end{eqnarray*}
+Using the fact that $\sum_{i=0}^{\infty}x^i= \frac{1}{1-x}$ for $x \in (0,1)$, we obtain the desired result:
+\begin{eqnarray*}
+u_1(\cdf) & = & h\cdot c\cdot\frac{\alpha\cdot\beta}{(1-\alpha\cdot\beta)}.
+\end{eqnarray*}
+
+\subsection{Proof of Theorem \ref{thm:always_fork}}
+Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and from the proof of Theorem \ref{thm-conts_dom_str} recall the definition of sequence $\rho$ for a state $q$, and recall the construction of string $b_\rho$ from such a sequence $\rho$.
+%the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
+By using these elements, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
+\begin{eqnarray*}
+\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
+\end{eqnarray*}
+Intuitively, $\tau(q)$ is the set of all moves that players 0 and 1 can do in $|q|-1$ steps according to $\baf$ that lead them to the state $q$ when starting in the genesis block. As such, they are coded as sequences of zeros and ones that tell us which player puts a block at the stage $i$ of the game, for $i \in \{ 1,\ldots, |q|-1\}$. It is straightforward to verify the following:
+\begin{myclaim}\label{claim-words-app} For every $q, q'\in Q_\baf$, it holds that:
+\begin{itemize}
+\item[(a)] If $q\neq q'$, then $\tau(q)$ is disjoint from $\tau(q')$.
+\item[(b)] $\pr^{\baf}(q) = \sum_{w \in \tau(q)} \pr(w)$, where $\pr(w)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is  defined as 
+$h^{n_1}(1-h)^{n_0}$.
+\end{itemize}
+\end{myclaim}
+In particular, Claim \ref{claim-words-app} (a) can be proved exactly in the same way Claim \ref{claim-nonempty-inter-gen} is proved. Notice that Claim \ref{claim-words-app} (a)
+%The first property in Claim \ref{claim-words} 
+tells us that a sequence of actions of players 0 and 1 uniquely determines a state of the game. 
+Moreover,  Claim \ref{claim-words-app} (b)
+%The second property 
+tells us that the probability of a state $q$ is the sum of probabilities of all the sequences of actions of players 0 and 1 that end up in $q$ when started in the genesis block. Observe that since the actions of players 0 and 1 are independent trials, with  probabilities $1-h$ and $h$, respectively, the probability of a state where player 0 wins $n_0$ rounds and player 1 wins $n_1$ rounds is $h^{n_1}(1-h)^{n_0}$, as stated in the claim.
+
+%Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q \mid \varepsilon) > 0\}$ be all states that can be reached from the genesis using strategy $\baf$, and recall 
+%the mapping $\sigma: Q_\baf \rightarrow \{0,1\}^*$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the definition of $\sigma$ we have that for any state $q \in Q_\baf$ one verifies 
+%$\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \sigma(q)} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
+%$h^{n_1}(1-h)^{n_0}$. Further, by Claim \ref{claim-nonempty-inter-gen} the inverse  $\sigma^{-1}: \{0,1\}^* \rightarrow Q_\baf$ is a total function.  
+
+For every $w \in \{0,1\}^*$, there exists a unique state $q \in Q_{\baf}$ such that $w \in \tau(q)$. Given Claim \ref{claim-words} (a), to prove this claim we only need to prove the existence of such a state $q$. If $w = \varepsilon$, then $q = \{\varepsilon\}$. On the other hand, if $w = p_1 \cdots p_n$ with $n \geq 1$ and each $p_i \in \{0,1\}$, then $q = q_n$ in a sequence $q_0, \ldots, q_n$ of states defined by the rules: (1) $q_0 = \varepsilon$; and (2) for every $i \in \{1, \ldots, n\}$, it holds that $q_{i} = a_{i}(q_{i-1})$, where $a_{i} = \df_0(q_{i-1})$ if $p_i = 0$, and $a_{i} = \af(q_{i-1})$ if $p_i = 1$.
+Thus, we conclude that the utility of player $1$ can be rewritten as follows:
+\begin{eqnarray*}
+u_1(\baf) & = & (1-\beta)\cdot \sum_{q \in \bQ} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+& = & (1-\beta)\cdot\sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr^{\baf}(q)\\
+& = & (1-\beta)\cdot\sum_{q \in \bQ_{\baf}} \beta^{|q|-1} \cdot  r_1(q) \cdot \bigg(\sum_{w \in \tau(q)} \pr(w)\bigg)\\
+& = &  (1-\beta)\cdot\sum_{q \in \bQ_{\baf}} \sum_{w \in \tau(q)} \beta^{|q|-1} \cdot  r_1(q) \cdot \pr(w)\\
+& = &  (1-\beta)\cdot\sum_{q \in \bQ_{\baf}} \sum_{w \in \tau(q)} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w)\\
+& = & (1-\beta)\cdot\sum_{w \in \{0,1\}^*} \beta^{|w|} \cdot  r_1(w) \cdot \pr(w),
+\end{eqnarray*}
+given that $|w| = |q| -1$ for every $w \in \tau(q)$, and assuming that $r_1(w)$ is defined as $r_1(q)$ for the only state $q$ such that $w \in \tau(q)$.
+
+
+
+%Since $\varepsilon\subseteq q$, for any state $q\in \bQ$, by the definition of utility we have that: 
+
+%$$u_1(\baf\mid\varepsilon) = \sum_{q\in \bQ}\beta^{|q|}\cdot r(q)\cdot \pr^{\baf}(q\mid \varepsilon).$$
+
+%Applying the idea of coding the states in a two player game as sequences of binary numbers, we can write the above as:
+
+%\begin{equation}\label{eq:def_utility}
+%u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
+%\end{equation}
+
+We now  describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\tau$) in which player $1$ owns at least one block in the blockchain for the {\em first time}. 
+The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4-app} (a). This state is created when player $q$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4-app} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
+won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4-app} (c). 
+In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word} \cite{stanley2015catalan}: a word with the same number of $0$s and $1$s, but such that 
+no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ has more blocks than player $0$). 
+Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. As it turns out, the number of Dyck words of length $2m$ is the $m$-th Catalan number~\cite{stanley2015catalan}. We use $\Dyck$ to denote the set of all Dyck words. Notice that by definition all elements of $\Dyck$ are of even length.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
+
+    % The graph
+	\node [state] at (-3,0) (aR) {$\varepsilon$};
+	\node [state] at (-1.5,0) (a1) {$1$};
+	\node [state] at (-2.3,-1.7) {(a)};
+
+	% Graph edges
+	\path[->]
+	(aR) edge (a1);  	
+
+    % The graph
+	\node [state] at (0,0) (bR) {$\varepsilon$};
+	\node [state] at (1.5,0.75) (b1) {$1$};
+	\node [state] at (1.5,-0.75) (b0) {$0$};
+
+	\node [state] at (3,0.75) (b11) {$11$};	
+	\node [state] at (1.6,-1.7) {(b)};
+	
+	% Graph edges
+	\path[->]
+	(bR) edge (b0)
+	(bR) edge (b1)
+	(b1) edge (b11);
+
+
+    % The graph
+	\node [state] at (4.7,0) (cR) {$\varepsilon$};
+	\node [state] at (6.2,0.75) (c1) {$1$};
+	\node [state] at (6.2,-0.75) (c0) {$0$};
+
+	\node [state] at (7.7,-0.75) (c00) {$00$};
+	
+	\node [state] at (7.7,0.75) (c11) {$11$};	
+	\node [state] at (9.2,0.75) (c111) {$111$};	
+	\node [state] at (7.1,-1.7) {(c)};
+
+	
+	% Graph edges
+	\path[->]
+	(cR) edge (c0)
+	(c0) edge (c00)
+	(cR) edge (c1)
+	(c1) edge (c11)
+	(c11) edge (c111);
+
+\end{tikzpicture} 
+\end{center}
+
+\caption{States in a game played according to strategy $\baf$. \label{fig:proof-theorem-4-app}}
+\end{figure}
+
+Since all states where player $1$ receives a reward involve putting a block in the blockchain, all words 
+$w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$ with $d \in \Dyck$. Now let $q$ be the only state such that  $d\cdot 1\cdot w' \in \tau(q)$.
+% be the state represented by $d\cdot 1\cdot w'$. 
+State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
+with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w'$). 
+We can then calculate the reward for $q$ as: 
+\begin{eqnarray*}
+%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+r_1(q) & = & r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+\end{eqnarray*}
+Hence, we obtain $u_1(\baf)$ is equal to:
+\begin{eqnarray*}
+ (1-\beta)\cdot\sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \big[r_1(d\cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w)\big] \cdot \pr(d\cdot 1 \cdot w).
+\end{eqnarray*}
+%
+%The product of probabilities is obtained since winning a block is an independent trial. 
+Splitting up the summation we get that $ u_1(\baf)$ is equal to:
+\begin{eqnarray*}
+(1-\beta)\cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d\cdot 1) \cdot \pr(d\cdot 1\cdot w) +
+ (1-\beta)\cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r_1(w) \cdot \pr(d\cdot 1 \cdot w).
+\end{eqnarray*}
+%
+We denote the first term in the equation above by $\Phi$. 
+By definition of the probability of a word, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
+Next, we use this fact in the expression for $u_1(\baf)$ to split the second term into the elements that depend only on $d$, and the ones that depend only on $w$:
+%
+\begin{eqnarray*}
+ u_1(\baf) & = & \Phi  + 
+  \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot 
+ \bigg((1-\beta)\cdot\sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w)  \cdot \pr(w)\bigg).
+\end{eqnarray*}
+%
+Since the term $(1-\beta)\cdot\sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w)  \cdot \pr(w)$ is precisely $u_1(\baf)$, we have that:
+%
+\begin{eqnarray*}
+ u_1(\baf) & = & \Phi + 
+ \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot  u_1(\baf).
+\end{eqnarray*}
+%
+By denoting with $\Gamma$ the term $\sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)$, we get the equation:
+\begin{eqnarray*}
+u_1(\baf) & = &  \frac{\Phi}{1-\Gamma}.
+\end{eqnarray*}
+Let us now find a closed form for $\Gamma$ and $\Phi$, starting with $\Gamma$. In what follows, we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$ (recall that all Dyck words are of even length):
+%
+\begin{eqnarray*}
+\Gamma & = & \sum_{d\in \Dyck} \beta^{|d|+1}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\\
+ & = & \alpha\cdot \beta \cdot \sum_{d\in \Dyck} \beta^{|d|}\cdot  \alpha^{\frac{|d|}{2}}\cdot \pr(d\cdot 1) \\
+  & = & \alpha\cdot \beta \cdot \sum_{\ell = 0}^{\infty} \sum_{d\in \Dyck_{2\ell}} (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+   & = &  \alpha\cdot \beta \cdot \sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| \cdot (\alpha\cdot \beta^2)^{\ell}\cdot h^{\ell}\cdot (1-h)^{\ell}\cdot h\\
+   & = &  \alpha\cdot \beta \cdot h \cdot \sum_{\ell = 0}^{\infty} |\Dyck_{2\ell}| \cdot (\alpha\cdot \beta^2 \cdot h \cdot (1-h))^{\ell}\\
+    & = &  \alpha\cdot \beta \cdot h \cdot \cat(\alpha\cdot\beta^2 \cdot h \cdot (1-h)).
+\end{eqnarray*}
+%
+%Here the third equality follows since all Dyck words are of even length (we use $\Dyck_{2\ell}$ to denote the set of all Dyck words of length $2\ell$). 
+The final equality is obtained by recalling the fact that $|\Dyck_{2\ell}|$ is the $\ell$-th Catalan number, so that the summation in the previous line defines the generating function of these numbers. Notice that function $\cat(x)$ is defined and continuous for $x \in (0,\frac{1}{4}]$, and that $\alpha\cdot\beta^2 \cdot h \cdot (1-h) \in (0,\frac{1}{4}] $ since $\alpha \in (0,1]$, $\beta \in (0,1)$ and $h\cdot(1-h)\in (0,\frac{1}{4})$ for every $h\in(0,1)$.
+
+%The final equality is obtained using the fact that the $\ell$-th Catalan number is equal to the number of Dyck words of length $2\ell$ \cite{??}, thus the summation in the previous line defines the generating function of Catalan numbers.
+
+Finally, we compute a closed form for $\Phi$. First, recall that:
+\begin{eqnarray*}
+\Phi & = & (1-\beta) \cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d \cdot 1) \cdot \pr(d \cdot 1 \cdot w)\\
+& = & (1-\beta) \cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d \cdot 1) \cdot \pr(d \cdot 1) \cdot \pr(w)
+\end{eqnarray*}
+Splitting the part that depends on $d$ and the part that depends on $w$, we get:
+\begin{eqnarray*}
+\Phi & = & (1-\beta) \cdot \bigg(\sum_{d\in \Dyck}  \beta^{|d|+1}\cdot r_1(d \cdot 1) \cdot \pr(d \cdot 1)\bigg) \cdot  \bigg(\sum_{w\in \{0,1\}^*} \beta^{|w|}\cdot \pr(w)\bigg).
+\end{eqnarray*}
+To calculate $\sum_{w\in \{0,1\}^*} \beta^{|w|}\cdot \pr(w)$, observe that for all $w$ of some fixed length $\ell$, we are adding only a single factor $\beta^{|w|}$ to the entire sum, or more formally,  %For instance, when $\ell=2$ we will calculate $\beta^2\cdot (\pr^{\baf}(00\mid \varepsilon)+\pr^{\baf}(01\mid \varepsilon)+\pr^{\baf}(10\mid \varepsilon)+\pr^{\baf}(11\mid \varepsilon)) = \beta^2\cdot 1$. More formally, 
+$\sum_{w\in \{0,1\}^{\ell}} \beta^{|w|}\cdot \pr(w) = \beta^{\ell}$. Therefore:
+\begin{eqnarray*}
+\Phi & = & (1-\beta) \cdot \bigg(\sum_{d\in \Dyck}  \beta^{|d|+1}\cdot r_1(d \cdot 1) \cdot \pr(d \cdot 1)\bigg) \cdot \bigg(\sum_{\ell = 0}^\infty \beta^\ell\bigg)\\
+& = & (1-\beta) \cdot \bigg(\sum_{d\in \Dyck}  \beta^{|d|+1}\cdot r_1(d \cdot 1) \cdot \pr(d \cdot 1)\bigg) \cdot \bigg(\frac{1}{1-\beta}\bigg)\\
+& = & \sum_{d\in \Dyck}  \beta^{|d|+1}\cdot r_1(d \cdot 1) \cdot \pr(d \cdot 1).
+\end{eqnarray*}
+Calculating $\pr(d \cdot 1)$ and removing the extra $\beta$ factor, we now get:
+\begin{eqnarray*}
+\Phi & = & \beta \cdot \sum_{d\in \Dyck}  \beta^{|d|} \cdot h^{\frac{|d|}{2}+1}\cdot (1-h)^{\frac{|d|}{2}}\cdot r_1(d \cdot 1).
+\end{eqnarray*}
+By calculating $r_1(d \cdot 1)$ explicitly, we obtain:
+\begin{eqnarray*}
+\Phi & = & \beta \cdot \sum_{d\in \Dyck}  \beta^{|d|} \cdot h^{\frac{|d|}{2}+1}\cdot (1-h)^{\frac{|d|}{2}}\cdot \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \cdot c\bigg).
+\end{eqnarray*}
+By representing all Dyck words via their lengths, we obtain:
+\begin{eqnarray*}
+\Phi & = & \beta \cdot \sum_{\ell=0}^{\infty}\sum_{d\in \Dyck_{2\ell}} \beta^{2 \ell }\cdot h^{\ell +1} \cdot (1-h)^{\ell}\cdot  \bigg(\sum_{i=1}^{\ell+1}\alpha^i\ \cdot c \bigg)\\
+& = & \alpha\cdot \beta\cdot h \cdot c \cdot \sum_{\ell=0}^{\infty}\sum_{d\in \Dyck_{2\ell}}  (\beta^{2}\cdot h\cdot (1-h))^{\ell}\cdot \bigg(\sum_{i=0}^{\ell}\alpha^i\bigg).
+\end{eqnarray*}
+Considering that $\sum_{i=0}^{\ell}\alpha^i = \frac{1-\alpha^{\ell+1}}{1-\alpha}$, we obtain:
+\begin{eqnarray*}
+\Phi & = & \alpha\cdot \beta\cdot h \cdot c \cdot \sum_{\ell=0}^{\infty}\sum_{d\in \Dyck_{2\ell}}  (\beta^{2}\cdot h\cdot (1-h))^{\ell}\cdot \bigg(\frac{1-\alpha^{\ell+1}}{1-\alpha}\bigg).
+\end{eqnarray*}
+Since none of the terms of the summation depends on the specific word $d$, we get:
+\begin{eqnarray*}
+\Phi & = & \frac{\alpha\cdot \beta\cdot h \cdot c}{(1-\alpha)} \cdot \sum_{\ell=0}^{\infty} |\Dyck_{2\ell}| \cdot (\beta^{2}\cdot h\cdot (1-h))^{\ell}\cdot (1-\alpha^{\ell+1}).
+\end{eqnarray*}
+Therefore, we have that:
+\begin{eqnarray*}
+\Phi & = & \frac{\alpha\cdot \beta\cdot h \cdot c}{(1-\alpha)} \cdot \bigg[\bigg(\sum_{\ell=0}^{\infty} |\Dyck_{2\ell}| \cdot (\beta^{2}\cdot h\cdot (1-h))^{\ell}\bigg) - \bigg(\sum_{\ell=0}^{\infty} |\Dyck_{2\ell}| \cdot (\beta^{2}\cdot h\cdot (1-h))^{\ell} \cdot \alpha^{\ell + 1}\bigg)\bigg]\\
+& = & \frac{\alpha\cdot \beta\cdot h \cdot c}{(1-\alpha)} \cdot \bigg[\bigg(\sum_{\ell=0}^{\infty} |\Dyck_{2\ell}| \cdot (\beta^{2}\cdot h\cdot (1-h))^{\ell}\bigg) - \bigg(\alpha \cdot \sum_{\ell=0}^{\infty} |\Dyck_{2\ell}| \cdot (\beta^{2}\cdot h\cdot (1-h) \cdot \alpha)^{\ell}\bigg)\bigg]
+\end{eqnarray*}
+Hence, by using the definition of the generating function for Catalan numbers, we finally conclude that:
+\begin{eqnarray*}
+\Phi  & =  & \frac{\alpha\cdot \beta\cdot h \cdot c}{(1-\alpha)} \cdot \big[\cat(\beta^2\cdot h\cdot (1-h))-\alpha\cdot \cat(\alpha\cdot \beta^2\cdot h\cdot (1-h))\big].
+\end{eqnarray*}
+
+\begin{comment}
+\subsection{Proof of Proposition \ref{prop-fork_fix}}
+
+Let $Q_\pf{j} = \{q \in \bQ \mid \pr^{(\df_0,\pf{j})}(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\pf{j}$, that is, forking $j$ times successfully and then continue with the default behaviour. As in the proof of theorem \ref{thm:always_fork}, we define $\tau:Q_\pf{j} \mapsto 2^{\{0,1\}^*}$ as follows:
+\begin{eqnarray*}
+\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
+\end{eqnarray*}
+We obtain the same properties as those of said proof. In particular, for every pair of distinct words $w \neq w' \in \{0, 1\} ^*$, there exist two unique distinct states $q \neq q' \in Q_\pf{j}$,  such that $w \in \tau(q)$ and $w' \in \tau(q')$.
+Recall that a successful fork is represented by a word of the from $d\cdot 1$ where $d \in \Dyck$ is a Dyck draw. Therefore, extending the pattern, the states reached after $j$ successful forks are represented by words of the form $d_1 \cdot 1^+ \cdot d_2 \cdot 1^+ \cdots d_j \cdot 1$ where $(d_1, \cdots, d_j) \in \Dyck^j$. We denote the set of words of this form by
+\begin{equation*}W_j = \{d_1 \cdot 1^+ \cdot d_2 \cdot 1^+ \cdots d_j \cdot 1 \mid (d_1, \cdots, d_j) \in \Dyck^j\}.
+\end{equation*}
+
+%Therefore for any words $w = d_1 \cdot 1^{i_1} \cdot d_2 \cdot 1^{i_2} \cdots d_j \cdot 1 \in W_j$ and $w' \in \{0, 1\} ^*$ we have $\pr^\pf{j}(w) = \pr^\baf(w)$, and $\pr^\pf{j}(w\cdot w') = \pr^\baf(w)\cdot \pr^\df(w')$.
+Hence, for any words $w = d_1 \cdot 1^{i_1} \cdot d_2 \cdot 1^{i_2} \cdots d_j \cdot 1 \in W_j$ (where $i_1,i_2\dots, i_{j-1}$ are positive integers) and $w' \in \{0, 1\} ^*$ we can express the reward under the $\pf{j}$ strategy for $w\cdot w'$ as
+\begin{eqnarray*}
+%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+%r^{\pf{j}}_1(w\cdot w') & = & \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}}+\bigg(\sum_{k=1}^{j-1} \alpha^{i_k + 1}\bigg) + \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1^{\bdf}(w'),
+% francisco:
+r^{\pf{j}}_1(w\cdot w') & = \displaystyle \bigg(\sum_{i=0}^{\sum_{k=1}^{j-1} (|d_k|/2 + i_k)}\alpha^{i+1} \bigg) + \alpha^{1+\sum_{k=1}^{j-1} (|d_k|/2 + i_k)}\cdot r_1^{\bdf}(w')
+\end{eqnarray*}
+where, as usual $r_1^{\bdf}(w')$ is the reward of a word under $\bdf$ strategy:
+\begin{eqnarray*}
+r_1^{\bdf}(w') & = & \sum_{w\cdot 1 \preceq w'} \alpha^{|w\cdot 1|}.
+\end{eqnarray*}
+
+Hence, we have:
+\begin{eqnarray*}
+u_1((\df_0,\pf{j}))& = & (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot r^{\pf{j}}_1(w\cdot w') \cdot \pr(w\cdot w')\\
+u_1((\df_0,\pf{j})) & = & (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot \big[ \frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1 + \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1^{\bdf}(w') \big] \cdot \pr(w\cdot w')
+\end{eqnarray*}
+
+Splitting up the summation we get:
+\begin{eqnarray*}
+u_1((\df_0,\pf{j}))& = & (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot (\frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1) \cdot \pr(w\cdot w')
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \sum_{w'\in \{0,1\}^*}\beta^{|w'|+|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1^{\bdf}(w') \cdot \pr(w\cdot w')
+\end{eqnarray*}
+
+By definition of the probability of a string, we have that $\pr(w\cdot w') = \pr(w)\cdot \pr(w')$, so we can split the terms into the elements that depend only on $w$, and the ones that depend only on $w'$:
+\begin{eqnarray*}
+u_1((\df_0,\pf{j}))& = & (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot (\frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1) \cdot \pr(w)\cdot \sum_{w'\in \{0,1\}^*}  \beta^{|w'|} \cdot \pr(w')
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr(w) \cdot  \sum_{w'\in \{0,1\}^*} \beta^{|w'|} \cdot r^{\bdf}_1(w') \cdot\pr(w') \\
+u_1((\df_0,\pf{j}))& = & \sum_{w \in W_j}  \beta^{|w|}\cdot (\frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1) \cdot \pr(w)
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr(w) \cdot  u_1(\bdf) \\
+\end{eqnarray*}
+
+Applying the same method for any words $w = d_1 \cdot 1^{i_1} \cdot d_2 \cdot 1^{i_2} \cdots d_j \cdot 1 \in W_j$ and $w' \in \{0, 1\} ^*$ we can calculate the reward under $\baf$ strategy for $w\cdot w'$ as:
+\begin{eqnarray*}
+%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
+r^{\baf}_1(w\cdot w') & = & \frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1 + \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1}\cdot r_1^{\baf}(w').
+\end{eqnarray*}
+
+Hence we obtain:
+\begin{eqnarray*}
+u_1(\baf)& = & (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot (\frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1) \cdot \pr(w)\cdot \sum_{w'\in \{0,1\}^*}  \beta^{|w'|} \cdot \pr(w')
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr(w) \cdot  \sum_{w'\in \{0,1\}^*} \beta^{|w'|} \cdot r^{\baf}_1(w') \cdot\pr(w')\\
+u_1(\baf)& = & \sum_{w \in W_j}  \beta^{|w|}\cdot(\frac{\sum_{k=1}^{j} |d_k|}{2}+\sum_{k=1}^{j-1} i_k + 1)  \cdot \pr(w)
+\\ && + (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr(w) \cdot  u_1(\baf)
+\end{eqnarray*}
+
+Therefore we have: 
+\begin{eqnarray*}
+u_1(\baf) - u_1((\df_0,\pf{j})) & = & (1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr(w) \cdot (u_1(\baf) - u_1(\bdf))
+\end{eqnarray*}
+
+And as we clearly have:
+\begin{eqnarray*}
+(1-\beta)\cdot\sum_{w \in W_j}  \beta^{|w|}\cdot \alpha^{\frac{\sum_{k=1}^{j} |d_k|}{2}+(\sum_{k=1}^{j-1} i_k) +1} \cdot \pr(w) \geq 0
+\end{eqnarray*}
+Moreover by assumption:
+\begin{eqnarray*}
+u_1(\baf) - u_1(\bdf) \geq 0
+\end{eqnarray*}
+We finally obtain:
+\begin{eqnarray*}
+u_1(\baf) - u_1((\df_0,\pf{j})) \geq 0
+\end{eqnarray*}
+ 
+
+
+\end{comment}
+
