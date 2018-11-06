@@ -1,6 +1,6 @@
 %!TEX root = main.tex
 
-\subsection{On the pay-off and utility of a miner}
+\subsection{On the reward and utility of a miner}
 \label{sec-pay-uti}
 %If we assume that long forks are impossible, a reward function which give miners their complete payoff as soon as a block is burried deep enough in the blockchain can be build \cite{mininggames:2016}. However the goal of a game-theoretical formalisation is to prove assumption such as: \textit{long forks are impossible}. Therefore long fork is a situation that our model should not only allow, but also reward in agreement with the cryptocurrency's payment system. And what does the rules state? When a long fork happens each block buried deep enough in the new blockchain generate a one-time payment to their miner, while the blocks from the previous longest chain become invalid. However this rule can not be enforce by a stochastic game's reward function. Indeed, consider a situation where two distinct chains are competing to be the longest, and finally settle. One of the chain has become the blockchain, hence according to the rule, only its blocks which had not generate payment before should give reward to their owner. But due to the memoryless nature of reward functions in stochastic games, there is no possibility to distinguish already and never paid blocks from each others.
 
