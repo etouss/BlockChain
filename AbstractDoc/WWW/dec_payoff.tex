@@ -566,24 +566,20 @@ the last few years, which is approximately 2\%.\footnote{\url{https://data.world
 %amounts to 2.2077\%. 
 This gives us a value of $\beta = 0.9999996156$. 
 
-Figure \ref{fig-plot-gup-fixwindow} shows the value of the utility of player $1$ for the combined strategies $\baf$ 
-%$\bpf{1}$ 
-and $\bdf$.
-%, and player $0$ always using $\df$. 
-The point where the utility for $\baf$ and $\bdf$ meet is $h = 0.4969 \pm 0.000001$,
-% \francisco{Confirmed with the c++ scripts with thousands of bits of precision actually}, 
-which means that player~$1$ should use $\baf$ as soon as she controls more than this proportion of the hash power. 
-This confirms the 
-folklore fact that is profitable to fork with more than half of the hash power. 
-%\marcelo{Is it the same value for $F[1]$?}
-Notice that if the proportion of hash power of player 1 is less than $0.4969$ of the total hash power, the utility of player 1 for $\baf$ is negligible, since in this strategy player 1 is involved indefinitely in fights she cannot win. On the other hand, above $0.4969$
-\francisco{Attention, this is incomplete.}
-This confirms the 
-folklore fact that is profitable to fork with more than half of the hash power. However, it is interesting to note that
-% this is not exactly the case: 
-one should be willing to fork even with a little less than half of the hash power, which has been noted before in \cite{mininggames:2016} although in a model without discounted reward.
-%\marcelo{We are missing a citation here.}
-%\francisco{Should we mention that this is quite expectable from the strategies? i.e. the probability of being ahead at one point in time is almost one for $h > .4969$, so it is actually not very interesting.}
+%Figure \ref{fig-plot-gup-fixwindow} shows the value of the utility of player $1$ for the combined strategies $\baf$ and $\bdf$. The point where the utility for $\baf$ and $\bdf$ meet is $h = 0.4969 \pm 0.000001$, which means that player~$1$ should use $\baf$ as soon as she controls more than this proportion of the hash power.  This confirms the folklore fact that is profitable to fork with more than half of the hash power. Notice that if the proportinionhash power of player 1 is less than $0.4969$ of the total hash power, the utility of player 1 for $\baf$ is negligible, since in this strategy player 1 is involved indefinitely in fights he cannot win. On the other hand, above $0.4969$
+%This confirms the folklore fact that is profitable to fork with more than half of the hash power. However, it is interesting to note that
+%one should be willing to fork even with a little less than half of the hash power, which has been noted before in \cite{mininggames:2016} although in a model without discounted reward.
+
+Figure \ref{fig-plot-gup-fixwindow} shows the value of the utility of player $1$ for the combined strategies $\baf$ and $\bdf$. The plot data was generated using GMP C++ multi precision library \cite{gmp}. The point where the utility for $\baf$ and $\bdf$ meet is $h = 0.499805 \pm 0.000001$, which means that player~$1$ should use $\baf$ as soon as she controls more than this proportion of the hash power. On the other hand, the more her hash power is below this threshold, the more she should adopt the default strategy. This follows since in this case she will indefinitely be involved in fights she cannot win.
+
+It is interesting to note that this value $h$ is strictly less than $0.5$ (a similar result was obtained in \cite{mininggames:2016},  although in a model without discounted reward). This captures the fact that even with less than half of the hash power, player 1 can still win a finite number of initial blocks, which receive a significant reward due to having a low discount factor. It can be shown that the hash power where $\baf$ and $\bdf$ meet tends to $0.5$ when $\alpha$ and $\beta$ tend to 1. Overall, our result confirms the folklore fact that it is profitable to fork with more than half of the hash power. 
+
+%This is a consequence of using the fact that with less then half of hash power $\baf$ will insist on an unsuccessful branch, but will still receive a portion of the reward (for the blocks won on the current blockchain) multiplied by the appropriate discount factors $\alpha$ and $\beta$. 
+
+
+
+
+
 
 %Although at the scale of Figure \ref{fig-af-df-fo}, the curve for $\bpf{1}$ is too close to that of $\bdf$ to tell a difference, these curves are indeed distinct: after about $h = 0.5$, the curve for $\bpf{1}$ is always higher than that of $\bdf$.\francisco{I find this phrase a bit dangerous. If we wanted to show that, we could (zoom, log-scale, another plot). I would bite here as a reviewer.} In fact, from the figure one can infer that if $\baf$ yields more utility to player $1$ than $\bdf$, 
 %%(e.g. when $h>0.5$),
@@ -733,7 +729,7 @@ where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, 
 \end{theorem}
 %\francisco{optional: We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in appendix \ref{sec-evaluation-G}.} 
 In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them, as we did before, 
-for $\alpha = 0.9999966993$ and $\beta = 0.9999996156$. Figure \ref{fig-plot-gup-fixwindow} gives 
+for $\alpha = 0.9999966993$ and $\beta = 0.9999996156$. Figure \ref{fig-af-df-fo} gives 
 %us an 
 interesting 
 %feel 
