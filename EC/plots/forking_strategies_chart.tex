@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+\begin{axis}[
+    xmin=0,
+    xmax=1,
+    ymin=0,
+    ymax=1,
+    height=7cm,
+    width=.7\linewidth,
+    ylabel={Utility},
+    ylabel near ticks,
+    ytick=\empty,
+    xtick={0,0.1,...,1},
+    legend pos=north west,
+]
+\plotfile{../plots/forking_strategies_data.csv}
+\end{axis}
+\end{tikzpicture}

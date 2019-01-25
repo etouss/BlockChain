@@ -1,0 +1,42 @@
+%\documentclass[sigconf,nonacm]{acmart}
+\documentclass[format=acmsmall, review=false]{acmart}
+
+\usepackage{acm-ec-19}
+\usepackage{booktabs} % For formal tables
+
+%\usepackage[ruled]{algorithm2e} % For algorithms
+%\renewcommand{\algorithmcfname}{ALGORITHM}
+%\SetAlFnt{\small}
+%\SetAlCapFnt{\small}
+%\SetAlCapNameFnt{\small}
+%\SetAlCapHSkip{0pt}
+%\IncMargin{-\parindent}
+
+\input{../extras/packages}
+\input{../extras/mymacros}
+
+\allowdisplaybreaks
+
+\begin{document}
+\title{Cryptocurrency Mining through Stochastic Lenses}
+
+\input{../sections/abstract}
+
+\maketitle
+
+\input{../sections/1-intro}
+\input{../sections/2-formalization}
+\input{../sections/3-const_payoff}
+\input{../sections/4-dec_payoff}
+\input{../sections/5-conclusions}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../extras/bibliography}
+
+\newpage
+\onecolumn
+\appendix
+\input{../appendix/appendix}
+\input{../appendix/closed_forms}
+
+\end{document}
