@@ -19,9 +19,10 @@ we use the following reward function $\rpa$ for all players $p \in \bP$, denoted
 \rpa(q) & = & 
 c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
 \end{eqnarray*}
-In this section, we show that when miners' fees decrease over time, forking can be a good strategy. In fact, we explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that it is profitable to fork with more than half of the hash power. Moreover, our exploration in Section \ref{sec-giving-up} gives us a concrete strategy that with less than half of the hash power 
+In this section, we show that when miners' fees decrease over time, forking can be a good strategy. We explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that it is profitable to fork with more than half of the hash power. Moreover, our exploration in Section \ref{sec-giving-up} gives us a concrete strategy that with less than half of the hash power 
 %a little more than $46\%$ of the hash power 
-can be used to defeat the default strategy.
+can be used to defeat the default strategy. \textbf{Juan: has any other model done this? cite!}
+\textbf{Juan: write this and see what happens} We finish with some remarks about obtaining a nash equilibrium under decreasing fees. 
 
 %Thus, it is natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
 %circumstances. 
@@ -127,7 +128,7 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 \end{tikzpicture} 
 \end{center}
 %\caption{Dashed arrows are used to indicate when player~1 did a fork. Initially, player $0$ mines on the genesis block $\varepsilon$ including block $0$. Player 1 then decides to fork on the genesis block, and continue mining in this new brach until it becomes the blockchain, which happens in this case when player 1 mines on top of block $1$ generating block $11$. But then again player 1 loses a block when player 0 mines on top of block $111$ generating block $1110$, so she decides to fork on top of block $111$ until the new brach becomes the blockchain. Up to this point in the mining game, the blockchain is given by the path $\{\varepsilon, 1, 11, 111, 1111, 11111\}$ that only contains blocks belonging to player 1.}
-\caption{Dashed arrows are used to indicate when player~1 does a fork. The first block (block 0) is mined by player 0. At this point, player 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When player 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
+\caption{Dashed arrows indicate when player~1 does a fork. The first block (block 0) is mined by player 0. At this point, player 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When player 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
 %
 %until the new brach becomes the blockchain
 %which is represented by a dashed arrow, after she manages to Player Following the block 0 player 1 tries to win a fork starting at $\varepsilon$. After winning the initial fork, if she loses another block (as in the block 110), she will try to fork again. When playing $\baf$, the word $w$ describing this state is $011011$.}
@@ -220,7 +221,7 @@ We now describe all the states in which player 1 receives a non-zero reward in t
 The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4} (a). This state is created when player $1$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
 won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4} (c). 
 In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word}: a word with the same number of $0$s and $1$s, but such that 
-no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ had more blocks than player $0$). Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. As it turns out, the number of Dyck words of length $2m$ is the $m$-th Catalan number~\cite{stanley2015catalan}. We denote by $\Dyck_{2m}$ the set of Dyck words of length $2m$, and by $\Dyck$ the set of all Dyck words.
+no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no point player $1$ had more blocks than player $0$). Note that the only Dyck word of length $0$ is $\varepsilon$, the next Dyck word by length is $01$, and then $0011$ and $0101$, etc. The number of Dyck words of length $2m$ is the $m$-th Catalan number~\cite{stanley2015catalan}. We denote by $\Dyck_{2m}$ the set of Dyck words of length $2m$, and by $\Dyck$ the set of all Dyck words.
 
 \begin{figure}
 %\begin{center}
@@ -332,10 +333,12 @@ We can then calculate the reward for $q$ as $r_1(q) = r_1(d \cdot 1) + \alpha^{\
 %r_1(q) & = & r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
 %\end{eqnarray*}
 %Hence, we obtain $u_1(\baf)$ is equal to:
-\begin{multline*}
-u_1(\baf) \ = \ (1-\beta) \cdot \sum_{d\in \Dyck} \sum_{w\in \{0,1\}^*} \bigg(\beta^{|d|+1+|w|}\cdot \\
+%\begin{multline*}
+\begin{align*}
+u_1(\baf) \ = \ (1-\beta) \cdot \sum_{d\in \Dyck} \sum_{w\in \{0,1\}^*} \bigg(\beta^{|d|+1+|w|}\cdot 
  \big[r_1(d\cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w)\big] \cdot \pr(d\cdot 1 \cdot w)\bigg).
-\end{multline*}
+\end{align*}
+%\end{multline*}
 %
 %The product of probabilities is obtained since winning a block is an independent trial. 
 Splitting up the summation, we get that $ u_1(\baf)$ is equal to:
@@ -348,10 +351,10 @@ We denote the first term in the equation above by $\Phi$.
 By definition of the probability of a word, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
 Next, we use this fact in the expression for $u_1(\baf)$ to split the second term into the elements that depend only on $d$, and the ones that depend only on $w$:
 %
-\begin{multline*}
- u_1(\baf) \ = \Phi \ + \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot \\
+\begin{align*}
+ u_1(\baf) \ = \Phi \ + \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot 
  \bigg((1-\beta) \cdot \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w) \cdot \pr(w)\bigg).
-\end{multline*}
+\end{align*}
 %
 Since the term $(1-\beta) \cdot \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w) \cdot \pr(w)$ is precisely $u_1(\baf)$, we have that:
 %
@@ -655,13 +658,13 @@ By adding a little more flexibility to the strategy of always forking, we can id
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.61,state/.style={circle,inner sep=2pt}]
 
     % The graph
-	\node [state] at (-10.5,0) (aR) {$\varepsilon$};
-	\node [state] at (-9,0) (a0) {$0$};
-	\node [state] at (-7.5,0) (a00) {$00$};
-	\node [state] at (-6,0) (a000) {$000$};
-	\node [state] at (-9,-1.4) (aAF) {$\af$};
-	\node [state] at (-7.5,-1.4) (aG) {$\gup_4^2$};
-	\node [state] at (-12,-0.70) {(a)};
+	\node [state] at (-19.5,0) (aR) {$\varepsilon$};
+	\node [state] at (-18,0) (a0) {$0$};
+	\node [state] at (-16.5,0) (a00) {$00$};
+	\node [state] at (-15,0) (a000) {$000$};
+	\node [state] at (-18,-1.4) (aAF) {$\af$};
+	\node [state] at (-16.5,-1.4) (aG) {$\gup_4^2$};
+	\node [state] at (-21,-0.70) {(a)};
 
 	% Graph edges
 	\path[->]
@@ -674,17 +677,28 @@ By adding a little more flexibility to the strategy of always forking, we can id
 	(a0) edge (aG);
 	
     % The graph
-	\node [state] at (-10.5,-2.8) (bR) {$\varepsilon$};
-	\node [state] at (-9,-2.8) (b0) {$0$};
-	\node [state] at (-7.5,-2.8) (b00) {$00$};
-	\node [state] at (-6,-2.8) (b000) {$000$};
-	\node [state] at (-4,-2.8) (b0000) {$0000$};
-	\node [state] at (-9,-4.3) (b1) {$1$};
-	\node [state] at (-7.5,-4.3) (b11) {$11$};
-	\node [state] at (-5.5,-4.3) (bAF) {$\af$};
-	\node [state] at (-1.5,-2.8) (bG) {$\gup_4^2$};
-	\node [state] at (-12,-3.70) {(b)};
+%	\node [state] at (-10.5,-2.8) (bR) {$\varepsilon$};
+%	\node [state] at (-9,-2.8) (b0) {$0$};
+%	\node [state] at (-7.5,-2.8) (b00) {$00$};
+%	\node [state] at (-6,-2.8) (b000) {$000$};
+%	\node [state] at (-4,-2.8) (b0000) {$0000$};
+%	\node [state] at (-9,-4.3) (b1) {$1$};
+%	\node [state] at (-7.5,-4.3) (b11) {$11$};
+%	\node [state] at (-5.5,-4.3) (bAF) {$\af$};
+%	\node [state] at (-1.5,-2.8) (bG) {$\gup_4^2$};
+%	\node [state] at (-12,-3.70) {(b)};
 
+	\node [state] at (-10.5,0) (bR) {$\varepsilon$};
+	\node [state] at (-9,0) (b0) {$0$};
+	\node [state] at (-7.5,0) (b00) {$00$};
+	\node [state] at (-6,0) (b000) {$000$};
+	\node [state] at (-4,0) (b0000) {$0000$};
+	\node [state] at (-9,-1.4) (b1) {$1$};
+	\node [state] at (-7.5,-1.4) (b11) {$11$};
+	\node [state] at (-5.5,-1.4) (bAF) {$\af$};
+	\node [state] at (-1.5,0) (bG) {$\gup_4^2$};
+	\node [state] at (-12,-0.7) {(b)};
+	
 	% Graph edges
 	\path[->]
 	(bR) edge (b0)
@@ -734,11 +748,7 @@ The second difference is provided by the give-up time, which is shown in Figure~
 $0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that is, the strategy where player $1$ is willing to keep fighting for a fork of any length, and to do a fork at the beginning of any chain of blocks she does not own.  \qed
 \end{example}
 
-
-
-
-
-Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$. 
+Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$.
 To compute an analytical form for $u_1(\bgup_\ell^k)$, we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the 
 %disadvantage and give-up 
 parameters $k$ and $\ell$. We obtain the following.
