@@ -766,38 +766,36 @@ proof of this theorem,
 of polynomials related to Dyck words, which describe the combinatorial nature of
 the game. The complete proof is given in appendix \ref{sec-evaluation-G}.
 
-{\sc Proof sketch.} First, consider the beginning of the game,
-i.e., where  players are mining on $\varepsilon$. From this point, and until
-both players are mining on top of the same block, five cases can arise. In the
-first case, miner 1 (playing with $G_\ell^k$) immediately appends a block $b$
-on top of $\varepsilon$, after which both players will mine on top of $b$ (as
-dictated by their strategies). The second and third cases are those in which
-which miner 0 appends $j\leq k$ blocks on top of $\varepsilon$ and miner 1
-appends another block on $\varepsilon$, eventually winning the fork (case 2) or
-giving up (case 3), and again, after this point both strategies will dictate to
-mine on top of the same block. The last two cases occur when miner 0
-appends $j>k$ blocks on top of $\varepsilon$, after which miner 1 manages to
-append a block at position $j-k$ and eventually wins (case 4) or capitulates
-(case 5).  
-
-These five cases separate the space of possible states with
-positive reward for miner 1 into disjoint sets, which can be analyzed
-separately using combinatorial computations. After any of the states discussed
-above, both players mine on the same block and therefore the strategies advise
-similar actions as in the beginning of the game (this happens because of the
-way these strategies are defined).  Thus, as in the case of Theorem
+{\sc Proof sketch.} Consider the beginning of the game,
+i.e., where both players are mining on $\varepsilon$ and there are no other
+blocks. From this point, and until both players are mining again on the same
+block, five scenarios can arise. In the first case, miner 1 (playing with
+$G_\ell^k$) immediately appends a block $b$ on top of $\varepsilon$, after
+which both players will mine on top of $b$ (as dictated by their strategies).
+The second and third cases are those in which which miner 0 appends $j\leq k$
+blocks on top of $\varepsilon$ and miner 1 appends another block on
+$\varepsilon$, eventually winning the fork (case 2) or giving up (case 3), and
+again, after this point both strategies will dictate to mine on top of the same
+block. The last two cases occur when miner 0 appends $j>k$ blocks on top of
+$\varepsilon$, after which miner 1 manages to append a block at position $j-k$,
+starting a fork and eventually winning (case 4) or surrendering (case 5).
+These five cases separate the space of possible states with positive reward for
+miner 1 into disjoint sets, which can be analyzed separately using
+combinatorial computations. After any of the states discussed above, both
+players mine on the same block and therefore the strategies advise similar
+actions as in the beginning of the game (this happens because of the way these
+strategies are defined).  Thus, as in the case of Theorem
 \ref{thm:always_fork}, we have an equation of the form $u_1(\bgup^k_\ell)  =
 \Phi_{\ell, k}+\Gamma_{\ell, k}\cdot u_1(\bgup^k_\ell)$, where $\Phi_{\ell, k}$
 is the contribution of such cycles (given by the above cases) and
-$\Gamma_{\ell, k}$ is a proper shifting factor. In order to obtain expressions
-for these quantities, we again represent states as unitary north-east paths
+$\Gamma_{\ell, k}$ is a proper shifting factor.  In order to obtain expressions
+for these quantities, we represent states as unitary north-east paths
 inside polygons in $\ZZ^2$, where north and east steps represent blocks
-appended by miner 0 and miner 1 respectively.  With this in mind, we establish
-the following combinatorial results: \begin{lemma} For nonnegative integers
-    $a,b$, let $\sigma_{a,b}$ be the amount of one-step north-east paths from
-    $(0,0)$ to $(a+b,b)$ that stay inside of the trapezoid
-    $\{(0,0),(a,0),(0,b),(a+b,b)\}.$
- We have that
+appended by miner 0 and miner 1 respectively.  With this in mind, we first
+establish the following combinatorial results: \begin{lemma} For nonnegative
+    integers $a,b$, let $\sigma_{a,b}$ be the amount of one-step north-east
+    paths from $(0,0)$ to $(a+b,b)$ that stay inside of the trapezoid
+    $\{(0,0),(a,0),(0,b),(a+b,b)\}.$ We have that
 \begin{eqnarray*}
 \sigma_{a,b} & = & \frac{(a+b)\cdot(a+2b)!}{b!\cdot(a+b+1)!}=\frac{a+1}{a+b+1}\cdot {a+2b\choose a+b}.
 \end{eqnarray*}
