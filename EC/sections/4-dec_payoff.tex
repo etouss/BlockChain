@@ -1,4 +1,4 @@
-%!TEX root = main.tex
+%!TEX root = ../main/main.tex
 
 \section{Decreasing Reward}
 \label{sec-dec}
@@ -21,8 +21,8 @@ c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
 \end{eqnarray*}
 In this section, we show that when miners' fees decrease over time, forking can be a good strategy. We explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that it is profitable to fork with more than half of the hash power. Moreover, our exploration in Section \ref{sec-giving-up} gives us a concrete strategy that with less than half of the hash power 
 %a little more than $46\%$ of the hash power 
-can be used to defeat the default strategy. \textbf{Juan: has any other model done this? cite!}
-\textbf{Juan: write this and see what happens} We finish with some remarks about obtaining a nash equilibrium under decreasing fees. 
+can be used to defeat the default strategy. \juan{has any other model done this? cite!}
+\juan{write this and see what happens} We finish with some remarks about obtaining a nash equilibrium under decreasing fees. 
 
 %Thus, it is natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
 %circumstances. 
@@ -772,8 +772,8 @@ cases are given when Miner 0 appends $j>k$ blocks on top of
 $\varepsilon$, after which Miner 1 forks on block $j-k$ and wins (respectively,
 looses) the fork.
 
-        \end{enumerate}
-\end{enumerate}
+%        \end{enumerate}
+%\end{enumerate}
 
 Because how these strategies are defined, after each of these states, the
 behaviour repeats but replacing $\varepsilon$ by a later block $b$. Therefore,
