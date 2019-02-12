@@ -1,12 +1,12 @@
-%!TEX root = main.tex
+%!TEX root = ../main/main.tex
 
 \section{A Game-theoretic Formalization of Cryptocurrency Mining}
 \label{sec-formalization}
 
 The mining game is played by a set $\bP = \{0, 1, , \ldots, m-1\}$ of players, with $m \geq 2$.
-In this game, each player has some reward depending on the number of blocks she owns. Every block must point to a previous block, except for the first block which is called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
+In this game, each player has some reward depending on the number of blocks she owns. Every block must point to a previous block, except for the first block which is called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such a tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
 
-The key question for each player is, then, where do I put my next block? In bitcoin, miners are only allowed to spend their reward if their blocks belongs to the \emph{blockchain}, which is simply the longest chain of blocks in the current state. Thus, players face essentially two possibilities: to put their blocks right after the end of the blockchain, or try to \emph{fork}, betting that a smaller chain will eventually become the blockchain. As the likelihood of mining the next block is directly related to the comparative hash power of a player, it makes sense to model mining as an infinite stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power.
+The key question for each player is, then, where do I put my next block? The general rule in cryptocurrencies is that miners are only allowed to spend their reward if their blocks belongs to the \emph{blockchain}, which is simply the longest chain of blocks in the current state. Thus, players face essentially two possibilities: to put their blocks right after the end of the blockchain, or try to \emph{fork}, betting that a smaller chain will eventually become the blockchain. As the likelihood of mining the next block is directly related to the comparative hash power of a player, we model mining as an infinite stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power.
 
 In what follows, we first define the components of the infinite stochastic games considered in this paper, and the notions of strategy, utility and equilibrium for such games. Our formalization is similar to others presented in the literature \cite{mininggames:2016}, except for the way in which miners are rewarded and the way in which these rewards are accumulated in the utility function. Hence, we analyse them in more detail in Section \ref{sec-pay-uti}, emphasizing the properties of these two elements that are fundamental for our formalization.
 
@@ -15,7 +15,7 @@ In what follows, we first define the components of the infinite stochastic games
 \subsection{The definition of the game}
 \subsubsection{Blocks, states and the notion of blockchain}\label{sub:states}
 
-In a game played by $m$ players, a block is defined as a string $b$ over the alphabet $\{0,1,\ldots$, $m-1\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{0,1,\ldots , m-1\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \smallsetminus \{\varepsilon\}) \rightarrow \{0,1, \ldots ,m-1\}$ such that $\owner(b)$ is equal to the last symbol of $b$. As in \cite{mininggames:2016}, a state of the game is defined as a tree of blocks. More precisely, a state of the game, or just state, is a finite and nonempty set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{0,1,\ldots, m-1\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with $\varepsilon$ as the root.
+In a game played by $m$ players, a block is defined as a string $b$ over the alphabet $\{0,1,\ldots$, $m-1\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{0,1,\ldots , m-1\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \smallsetminus \{\varepsilon\}) \rightarrow \{0,1, \ldots ,m-1\}$ such that $\owner(b)$ is equal to the last symbol of $b$. As in~\cite{mininggames:2016}, a state of the game is defined as a tree of blocks. More precisely, a state of the game, or just state, is a finite and nonempty set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{0,1,\ldots, m-1\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with $\varepsilon$ as the root.
 %
 The intuition here is that each element of $q$ corresponds to a block that was put into the state $q$ by some player. The genesis block corresponds to $\varepsilon$. When a player $p$ decides to mine on top of a block $b$, she puts another block into the state defined by the string $b\cdot p$, where we use notation $b_1 \cdot b_2$ for the concatenation of two strings $b_1$ and $b_2$.
 %
@@ -24,7 +24,7 @@ Finally, let $\bQ$ be the set of all possible states in a game played by $m$ pla
 
 The {\em blockchain} of a state $q$, denoted by $\bchain(q)$, is the path $\pi$ in $q$ of largest length, in the case that this path is unique.
 %, in which case we denote it by $\bchain(q)$ \francisco{``in which case'' and ``in this case'' is redundant}. 
-If two or more different paths in $q$ are tied for the longest, then we say that the blockchain in $q$ does not exist, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function). Notice that if $\bchain(q) = \pi$, then $\pi$ has to be a path in $q$ from the genesis block $\varepsilon$ to a leaf of $q$.
+If two or more different paths in $q$ are tied for the longest, then we say that the blockchain in $q$ does not exist, and we assume that $\bchain(q)$ is not defined (so that $\bchain(\cdot)$ is a partial function). Notice that if $\bchain(q) = \pi$, then $\pi$ has to be a path in $q$ from the genesis block $\varepsilon$ to a leaf of~$q$.
 %If the blockchain of $q$ is defined, say $b = \bchain(q)$, then a block $b' \in q$ is said to belong to the blockchain of $q$ if $b' \in \epath(b)$, that is, if $b'$ is a block in the path from the root $\varepsilon$ to $b$ in the state $q$.
 
 \begin{example}\label{ex-mining}
@@ -79,8 +79,10 @@ We have that $\bchain(q')$ is not defined since the paths $\pi_1 = \{\varepsilon
 \end{example}
 
 
-Real-life Bitcoin blocks also contain transactions that indicate movement of money in the system, and thus there are
-several different blocks that a player $p$ can use to extend the current state when mining upon a block $b$ (e.g, depending on the ordering of transactions, or the nonce being used to announce the block). Since we are interested %primarily 
+Real-life cryptocurrencies also contain transactions that indicate movement of money in the system, and thus there are
+several different blocks that a player $p$ can use to extend the current state when mining upon a block $b$ (e.g., depending on the ordering of transactions).
+%, or the nonce being used to announce the block). 
+Since we are interested %primarily 
 in miners behaviour, we just focus on the owner of the block following $b$, and do not consider the possibility of two different blocks belonging to $p$ being added on top of $b$. 
 %Alternatively, if we consider the Bitcoin protocol, we could say that all the different blocks that $p$ can put on top of $b$ are considered as~equivalent.
 %\juan{moving this to the reward section}
@@ -91,10 +93,10 @@ On each step, each miner
 % looking to maximize their rewards 
 chooses a block in the current state, and attempts to mine on top of this block. Thus, in each turn, each of the players race to place the next block in the state, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different state from which the game continues.
 
-Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by $\mine(p,b,q)$ an action played in the mining game in which player $p$ mines on top of block $b$. Such an action $\mine(p,b,q)$ is considered to be valid if $b \in q$ and $b\cdot p \not\in q$. The set of valid actions for player $p$ is collected in the set:
-\begin{multline*}
-\bA_p \ = \ \{ \mine(p,b,q) \mid b \in \bB, q \in \bQ \text{ and}\\\mine(p,b,q) \text{ is a valid action}\}.
-\end{multline*}
+Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by $\mine(p,b,q)$ an action played in the mining game in which player $p$ mines on top of block $b$. Such an action $\mine(p,b,q)$ is considered to be valid if $b \in q$ and $b\cdot p \not\in q$. The set of valid actions for player $p$ is collected in the~set:
+\begin{eqnarray*}
+\bA_p & = & \{ \mine(p,b,q) \mid b \in \bB, q \in \bQ \text{ and } \mine(p,b,q) \text{ is a valid action}\}.
+\end{eqnarray*}
 Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a$ to $q$, denoted by $a(q)$, is defined as the state $q \cup \{b \cdot p\}$. Finally, we denote by $\bA$ the set of combined actions for the $m$ players, that is, $\bA = \bA_0 \times \bA_1 \times \cdots \times \bA_{m-1}$.
 
 \subsubsection{The pay-off of a miner}
@@ -106,8 +108,9 @@ Most cryptocurrencies based on blockchain follow this miner's payment rules:
 (1) Miners receive a one-time reward per each block they mine. For example, in Bitcoin, each miner will receive a pre-set reward when she mines a block (12.5BTC at the time of writing).
 %
 %\noindent
-(2) The only blocks that are valid are those in the blockchain; if a block is not in the blockchain then the reward given for mining this block cannot be spent. To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
-
+(2) The only blocks that are valid are those in the blockchain; if a block is not in the blockchain then the reward given for mining this block cannot be spent. 
+%%%%%MARCELO: remove the next sentence to avoid mentioning Bitcoin
+%To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
 So how should the reward function look like? The first naive idea is to give miners the block reward as soon as they put a block at the top of the current blockchain. This provides some incentive to extend the blockchain, however, it does not completely protect the system from forks that (potentially malicious) miners might want to initiate. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two blocks (110 and 111) competing to be in the blockchain, and consider 111 to be the last block added to reach $q'$. If player 0 already cashed in the reward for the block 110 (since this was awarded immediately), she has no further incentive to mine on top of this block, as the block 1110 would give her an equal reward. This can then allow a malicious miner (1 in this example) to do a local fork (e.g. the block 111), where for instance some transactions are being blocked, and does not provide an incentive for other miners to protect the other branch competing to be the blockchain. The way that the Bitcoin protocol goes around this is by paying for blocks which are buried deep into the blockchain.
 % (they have been confirmed one hundred times). 
 This now gives a strong incentive to player 0 to mine on top of the block 110, since she cannot cash in her reward immediately after mining this block, but only once it has been extended many times.
@@ -181,7 +184,7 @@ to impose a discount for future rewards using a factor $\beta \in (0,1)$.
 
 \begin{mydef}
 \label{def-utility}
-The $\beta$--discounted utility of player $p$ for the strategy $\bs$ from the state $q_0$ in
+The $\beta$--discounted utility of a player $p$ for a strategy $\bs$ from a state $q_0$ in
 the mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 \begin{eqnarray*}
 u_p(\bs \mid q_0) & = & (1 - \beta) \cdot \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0).
@@ -193,7 +196,7 @@ Notice that the value $u_p(\bs \mid q_0)$ may not be defined if the series $\sum
 As a last ingredient in our formalization, we need to introduce the notion stationary equilibrium.
 Given a player $p \in \bP$, a combined strategy $\bs \in \bS$, with $\bs = (s_0,s_1, \ldots, s_{m-1})$, and a strategy $s$ for player $p$ ($s \in \bS_p$), we denote by $(\bs_{-p}, s)$ the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$.
 \begin{mydef}
-A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from the state $q_0$ in the %infinite
+A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from a state $q_0$ in the %infinite
 mining game if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that:
 \begin{eqnarray*}u_p(\bs \mid q_0) & \geq & u_p ((\bs_{-p},s) \mid q_0).
 \end{eqnarray*}
@@ -204,22 +207,38 @@ mining game if for every player $p \in \bP$ and every strategy $s$ for player $p
 %If we assume that long forks are impossible, a reward function which give miners their complete payoff as soon as a block is burried deep enough in the blockchain can be build \cite{mininggames:2016}. However the goal of a game-theoretical formalisation is to prove assumption such as: \textit{long forks are impossible}. Therefore long fork is a situation that our model should not only allow, but also reward in agreement with the cryptocurrency's payment system. And what does the rules state? When a long fork happens each block buried deep enough in the new blockchain generate a one-time payment to their miner, while the blocks from the previous longest chain become invalid. However this rule can not be enforce by a stochastic game's reward function. Indeed, consider a situation where two distinct chains are competing to be the longest, and finally settle. One of the chain has become the blockchain, hence according to the rule, only its blocks which had not generate payment before should give reward to their owner. But due to the memoryless nature of reward functions in stochastic games, there is no possibility to distinguish already and never paid blocks from each others.
 
 %Hence we 
-We design our pay-off model to mimic the incentives of the payment system of Bitcoin and other cryptocurrencies. More precisely, given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. 
-%the reward of a player $p$ in a state $q$, denoted $r_p(q)$ is defined as $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q) > 0$ is the reward that player $p$ receives for a block $b$ she owns in the blockchain of the state $q$, and equals zero if $\bchain(q)$ is not defined. 
-Then to enforce the fact that the block reward for the block $b$ is not granted immediately, we pay in Definition \ref{def-utility} a 
-%($\beta$-discounted) 
-portion of $r_p(b,q)$, for each state $q$ where $b$ is in. In other words, if a miner owns a block, then she will be rewarded for this block in every state where this block is part of the blockchain, in which case $r_p(b,q) > 0$. %This type of reward functions is general enough to express other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}.
+As mentioned before, 
+we design our pay-off model with the goal in mind of incentivising players to mine in the blockchain, and to keep the mined blocks in there. In this sense, the payment of a miner for a block $b$ should be proportional to the amount of time $b$ has been in the blockchain; in particular, the miner should be penalised if $b$ ceases to be in the blockchain, and this penalty should decrease over time. In what follows, we explain how our pay-off model meets this goal. 
 
-This means that we might pay the miner infinitely many times for a single block. A natural question is then whether we overpay for the blocks. This is where the discount factors in our definition of utility come into play.  More precisely, we pay a portion of block $b$'s reward each time it is included in the current blockchain. In other words, 
+%makemimic the incentives of the payment system of Bitcoin and other cryptocurrencies. More precisely, 
+Given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalizations of cryptomining \cite{mininggames:2016}. 
+%the reward of a player $p$ in a state $q$, denoted $r_p(q)$ is defined as $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q) > 0$ is the reward that player $p$ receives for a block $b$ she owns in the blockchain of the state $q$, and equals zero if $\bchain(q)$ is not defined. 
+Then 
+%to incentivise miners to put and keep blocks in the blockchain, 
+the reward for a mined block $b$ 
+%the fact that the block reward for the block 
+is not granted immediately according to  Definition \ref{def-utility}, instead 
+%we pay in Definition \ref{def-utility} 
+a portion of $r_p(b,q)$ is paid in each state $q$ where $b$ is in.
+%($\beta$-discounted) 
+%portion of $r_p(b,q)$, for each state $q$ where $b$ is in. 
+In other words, if a miner owns a block, then she will be rewarded for this block in every state where this block is part of the blockchain, in which case $r_p(b,q) > 0$. In this way, there is a clear incentive for players to mine and keep blocks in the blockchain, and there is a penalty when a block $b$ ceases to be in the blockchain, which is reduced over time.
+
+%This type of reward functions is general enough to express other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}.
+
+In our model, 
+%This means that 
+we might pay the miner infinitely many times for a single block. A natural question is then whether we are overpaying for the blocks. This is where the discount factors in our definition of utility come into play.  More precisely, we pay a portion of block $b$'s reward each time it is included in the %current 
+blockchain. In other words, 
 when a player mines a new block, she will receive the full amount for this block only if she manages to maintain the block in the blockchain up to infinity. Otherwise, if this block 
-ceases to be in the blockchain, we only pay a fraction of the full amount. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
+ceases to be in the blockchain, we only pay a fraction of the full amount and, thus, we penalise the owner of this block. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
 \begin{eqnarray*}
 u_p^b(\bs) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in \bchain(q)} \beta^{|q|-1} \cdot  r_p(q,b) \cdot \pr^{\bs}(q).
 \end{eqnarray*}
 For simplicity, here we assume that the game starts in the genesis block $\varepsilon$, and not in an arbitrary state $q_0$. The discount factor in this case is $\beta^{|q|-1}$, since $|\{\varepsilon\}|= 1$.  
 
 
-To see that we pay the correct amount for each block, assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by most currently circulating cryptocurrencies, by the pay-off functions considered in this paper, and by other game-theoretical formalizations of Bitcoin mining \cite{mininggames:2016}. Then we have that:
+To see that we pay the correct amount for each block, assume that there is a maximum value for the reward of a block $b$ for player $p$, which is denoted by $M_p(b)$. Thus, we have that there exists $q_1 \in \bQ$ such that $b \in q_1$ and $M_p(b) = r_p(b,q_1)$, and for every $q_2 \in \bQ$ such that $b \in q_2$, it holds that $r_p(b,q_2) \leq M_p(b)$. Again, such an assumption is satisfied by most currently circulating cryptocurrencies, by the pay-off functions considered in this paper, and by other game-theoretical formalizations of cryptomining \cite{mininggames:2016}. Then we have that:
 \begin{myprop}\label{prop-ub-block}
 For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \bS$, it holds that: \ \ $u^b_p(\bs)  \leq   \beta^{|b|} \cdot M_p(b)$.
 %\begin{eqnarray*}
