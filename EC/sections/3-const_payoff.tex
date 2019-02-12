@@ -5,7 +5,10 @@
 with constant reward}
 \label{sec-const_rew}
 
-The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
+The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. This is important for understanding what happens 
+when currencies such as Ethereum or Monero switch to tail-emission, and it also helps us to establish the main techniques we use. 
+%While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. 
+Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
 
 
 \subsection{Defining constant reward}
@@ -38,6 +41,7 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 
 \end{tikzpicture} 
 %\end{center}
+\vspace*{-10pt}
 \caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in both paths. \label{fig-simple-fork}}
 \end{figure}
 
@@ -49,12 +53,12 @@ Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation
 \end{eqnarray*}
 Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
 
-Now we have the ingredients to introduce a reward function that pays a player according to her blocks
-%As mentioned before, miners are rewarding according to their
-% function rewards a player for the 
- in $\meet(q)$. More precisely, the reward function considered in this section, which is called \textbf{constant reward}, is defined as follows 
-%. For 
-for a player $p$:
+The reward function we consider in this section, which is called \textbf{constant reward}, is then defined for a player $p$ as follows : 
+%
+%Now we have the ingredients to introduce a reward function that pays a player according to her blocks
+% in $\meet(q)$. More precisely, the reward function considered in this section, which is called \textbf{constant reward}, is defined as follows 
+%for a player $p$:
+%
 %Thus, to define it,
 %%the pay-off, 
 %we need to identify who is the owner of each one of these blocks, which is done by considering the function $\chi_p$, for each $p \in \bP$. More precisely, given $b \in \bB$, we have that:
@@ -89,7 +93,7 @@ Notice that this is called the default strategy as it reflects the desired behav
 by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. 
 %Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
 
-We can now easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, the blockchain defined by the game will have $i$ blocks, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
+We can easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, the blockchain defined by the game will have $i$ blocks, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
 $$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ = \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
 
 %% Juan: I think it is way too nahive to put the analytical form of this
@@ -116,10 +120,10 @@ $q_i$ in one step according to $\bs$ ($i \in \{1, \ldots, n-1\}$), $q_0 = \varep
 % in $\{0,1\}^*$ 
 For every $i \in \{1, \ldots, n\}$, if for a player $p' \in \bP$, it holds that $s_{p'}(q_{i-1}) = a_{p'}$ and $q_{i} = a_{p'}(q_{i-1})$, then $i$-th symbol of $b_\rho$ is $p'$. Notice that the $i$-th symbol of $b_\rho$ is well defined as $q \in Q_\bs$ and the sets of actions for two distinct players are disjoint.
 %Notice that if $b_i = 1$, then $q_{i} = a_1(q_{i-1})$ with $a_1 = \df_1(q_{i-1})$. 
-Finally, define $\sigma(q)$ as the set of all states $q' \in Q_\cdf$ consisting of a single path whose final block is a block $b_\rho$ associated to a sequence $\rho$ for $q$; formally, we have that:
-\begin{multline*}
-\sigma(q) \ = \ \big\{q' \in Q_\cdf \mid \text{there exists a sequence } \rho \text{ for } q\\ \text{ such that } q' = \{ b \in \bB \mid b \preceq b_\rho \}\big\}.
-\end{multline*}
+Finally, define $\sigma(q)$ as the set of all states $q' \in Q_\cdf$ consisting of a single path whose final block is a block $b_\rho$ associated to a sequence $\rho$ for $q$; or, formally:
+\begin{align*}
+\sigma(q) \ = \ \big\{q' \in Q_\cdf \mid \text{there exists a sequence } \rho \text{ for } q \text{ such that } q' = \{ b \in \bB \mid b \preceq b_\rho \}\big\}.
+\end{align*}
 %Erase if too hane holding:
 Intuitively, if $\rho$ is a sequence for $q$, then the $i$-th symbol of $b_{\rho}$ tells us which player won the $i$-th round of the mining game. The state $q'\in \sigma(q)$ associated with $b_\rho$ simply recreates what would have happened if this was the order in which the players were mining the blocks when they use $\cdf$ as their strategy.
 %for which there exist a sequence $\rho$ and a corresponding block $b_\rho$ such that $q' = \{ b \in \bB \mid b \preceq b_\rho \}$
@@ -148,7 +152,7 @@ Rearranging the term in the right-hand side, we obtain:
 \begin{eqnarray*}
 u_p(\cdf) & \geq &(1-\beta) \cdot \sum_{q^* \in Q_{\bs}} \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot r_p(q) \cdot \pr^{\cdf}(q).
 \end{eqnarray*}
-For each state $q^* \in Q_{\bs}$, notice that if $q \in \sigma(q^*)$, then $|q| = |q^*|$ and the number blocks owned by $p$ in $q$ is the same as the number of blocks owned by $p$ in $q^*$. Thus, we have that $r_p(q) \geq r_p(q^*)$ since $q \in Q_{\cdf}$ and, therefore, every block owned by $p$ in $q$ is in $\bchain(q)$ and $\bchain(q) = \meet(q)$. Notice that it could be the case that $r_p(q) > r_p(q^*)$, as some blocks owned by $p$ in $q^*$ may not be in $\meet(q^*)$. We conclude that:
+For each state $q^* \in Q_{\bs}$, if $q \in \sigma(q^*)$, then $|q| = |q^*|$ and the number blocks owned by $p$ in $q$ is the same as the number of blocks owned by $p$ in $q^*$. Thus, since $q \in Q_{\cdf}$, we have that $r_p(q) \geq r_p(q^*)$, and therefore every block owned by $p$ in $q$ is in $\bchain(q)$ and $\bchain(q) = \meet(q)$. Notice that it is possible that $r_p(q) > r_p(q^*)$, as some blocks owned by $p$ in $q^*$ may not be in $\meet(q^*)$. We conclude that:
 \begin{align*}
 &\hspace{-2pt} \sum_{q \in \sigma(q^*)} \beta^{|q|-1} \cdot r_p(q) \cdot \pr^{\cdf}(q) \geq \sum_{q \in \sigma(q^*)} \beta^{|q^*|-1} \cdot r_p(q^*) \cdot \pr^{\cdf}(q)\\
 &\hspace{112pt} = \beta^{|q^*|-1} \cdot r_p(q^*) \sum_{q \in \sigma(q^*)} \pr^{\cdf}(q).
@@ -159,7 +163,7 @@ Moreover, by definition of $\pr^{\cdf}$ and $\pr^\bs$, we have that:
 \begin{eqnarray*}
 \sum_{q \in \sigma(q^*)} \pr^{\cdf}(q) & = & \pr^{\bs}(q^*).
 \end{eqnarray*}
-Combining the previous results and considering that $\pr^{\bs}(q^*) = 0$ for every $q^* \in \bQ \smallsetminus Q_{\bs}$, we conclude that: 
+Combining the previous results and considering that $\pr^{\bs}(q^*) = 0$ for every $q^* \in \bQ \smallsetminus Q_{\bs}$, we have: 
 \begin{eqnarray*}
 u_p(\cdf) & \geq & (1-\beta) \cdot \sum_{q^* \in Q_\bs} \bigg(\beta^{|q^*|-1} \cdot r_p(q^*) \sum_{q \in \sigma(q^*)} \pr^{\cdf}(q)\bigg)\\
 & = &(1-\beta) \cdot \sum_{q^* \in Q_\bs} \beta^{|q^*|-1} \cdot r_p(q^*) \cdot \pr^{\bs}(q^*)\\
@@ -172,10 +176,16 @@ As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain that:
 \begin{mycor}\label{cor-conts_equlibria}
 For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
 \end{mycor} 
-While constant-block reward does not faithfully model the reality of most cryptocurrencies, 
-%in the Bitcoin protocol the reward decreases every approximately four years, 
-we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. Thus, such constraint on transaction fees would ensure the neutrality of the %blockchain,
-protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
+%While constant-block reward does not faithfully model the reality of most cryptocurrencies,  
+%we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. Thus, such constraint on transaction fees would ensure the neutrality of the %blockchain,
+%protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
+
+Hence, miners looking to maximise their crypto-wealth are better of with the default strategy. Interestingly, previous work has shown that this may not be the case if 
+we model the game and incentives for miners in a different way. For example, in \cite{mininggames:2016}, authors prove that the default strategy is not optimal under a setting in which, 
+essentially, miners are rewarded for the fraction of blocks they own against the total number of blocks, and no financial discount is assumed. This poses an interesting problem, 
+as miner's behaviour can really deviate depending on what are their short and long term goals. We believe that a further comparison and understanding of how these different 
+results are interpreted together is an interesting direction for future work. 
+
 % \subsection{The default strategy is an equilibrium}
 %
 %Let us start with analysing the most obvious strategies for all players: regardless of what everyone else does, keep mining on the blockchain. We call this 
