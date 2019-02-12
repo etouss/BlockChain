@@ -92,9 +92,9 @@ On each step, each miner
 chooses a block in the current state, and attempts to mine on top of this block. Thus, in each turn, each of the players race to place the next block in the state, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the likely it is that she will mine the next block before the rest of the players. Once a player places a block, this block is added to the current state, obtaining a different state from which the game continues.
 
 Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by $\mine(p,b,q)$ an action played in the mining game in which player $p$ mines on top of block $b$. Such an action $\mine(p,b,q)$ is considered to be valid if $b \in q$ and $b\cdot p \not\in q$. The set of valid actions for player $p$ is collected in the set:
-\begin{multline*}
-\bA_p \ = \ \{ \mine(p,b,q) \mid b \in \bB, q \in \bQ \text{ and}\\\mine(p,b,q) \text{ is a valid action}\}.
-\end{multline*}
+$$
+\bA_p \ = \ \{ \mine(p,b,q) \mid b \in \bB, q \in \bQ \text{ and }\mine(p,b,q) \text{ is a valid action}\}.
+$$
 Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a$ to $q$, denoted by $a(q)$, is defined as the state $q \cup \{b \cdot p\}$. Finally, we denote by $\bA$ the set of combined actions for the $m$ players, that is, $\bA = \bA_0 \times \bA_1 \times \cdots \times \bA_{m-1}$.
 
 \subsubsection{The pay-off of a miner}
