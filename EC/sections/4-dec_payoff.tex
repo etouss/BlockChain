@@ -755,10 +755,63 @@ parameters $k$ and $\ell$. We obtain the following.
 \begin{theorem}\label{thm-dificil}
 For every pair of positive integers $\ell, k$ such that $k< \ell$, we have that:
 $$u_1(\bgup^k_\ell) = \frac{\Phi_{\ell,k}}{1-\Gamma_{\ell,k}},$$
-where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, $\beta$ and $h$ (that is, divisions of polynomials of  $\alpha$, $\beta$ and $h$).
+where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, $\beta$ and $h$.% (that is, divisions of polynomials of  $\alpha$, $\beta$ and $h$).
 \end{theorem}
-%\francisco{optional: We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in appendix \ref{sec-evaluation-G}.} 
-In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies. We use this theorem to analyse these strategies, plotting them, as we did before, 
+We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in the
+proof of this theorem (appendix \ref{sec-evaluation-G}), involving two sets
+of polynomials related to Dyck words, which describe the combinatorial nature of
+the game.
+
+\paragraph{Outline of the proof.} First, consider the beginning of the game,
+i.e., where both players are mining on $\varepsilon$. Miner 1, playing with
+$G_\ell^k$, can obtain positive reward from five types of arising states. In the
+first case, she immediately puts a block in top of $\varepsilon$. The second and
+third cases are those in which Miner 0 appends $j\leq k$ blocks on top of
+$\varepsilon$ and Miner 1 starts a fork on $\varepsilon$, eventually winning (respectively, loosing). The last two
+cases are given when Miner 0 appends $j>k$ blocks on top of
+$\varepsilon$, after which Miner 1 forks on block $j-k$ and wins (respectively,
+looses) the fork.
+
+        \end{enumerate}
+\end{enumerate}
+
+Because how these strategies are defined, after each of these states, the
+behaviour repeats but replacing $\varepsilon$ by a later block $b$. Therefore,
+we again have an equation of the form
+$$u_1(\bgup^k_\ell)=\Phi+\Gamma\cdot u_1(\bgup^k_\ell),$$
+where $\Phi$ is the contribution of the above states, and $\Gamma$ is a proper
+shifting factor. In order to obtain these quantities, we need to describe the
+probabilities and combinatorics of the above states. To do this, we again
+represent states as unitary north-east paths inside polygons in $\ZZ^2$. In our
+case, the pair of strategies imply that all paths stay within pentagons,
+moreover, we establish the following combinatorial results:
+\begin{lemma}
+   For nonnegative integers $a,b,r$, let $\sigma_{a,b}$ be the amount of
+ one-step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside of the
+ trapezoid $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ We have
+$$ 
+    \displaystyle \sigma_{a,b}=\frac{(a+b)\cdot(a+2b)!}{b!\cdot(a+b+1)!}=\frac{a+1}{a+b+1}\cdot {a+2b\choose a+b}.
+    $$
+    Also, let $\theta_{a,b}^r$ be the
+ amount of such paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon
+ $(0,0),(a,0),(r,r-a),(r,b),(0,b)$. We have the following
+ $$
+ \begin{cases}
+ \displaystyle\mbox{If }r\leq a,\quad \theta_{a,b}^r = {r+b\choose b},\\
+ \displaystyle\mbox{If }a<r,\quad \theta_{a,b}^r = \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}.\\
+ %\displaystyle\mbox{If }a<r<b,\quad \theta_{a,b}^r = \sigma_{b-r,r} + \sum_{i=1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
+ %\displaystyle\mbox{If }b<r\mbox{ and }a<r,\quad \theta_{a,b}^r = \sigma_{r-b,b} + \sum_{i=r-b+1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
+ \end{cases}
+ $$
+ \end{lemma}
+As it turns out, the utility $u(\bgup_\ell^k)$ in this case is given as a
+combination of the generating polynomials related to these sequences, which we
+refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}, completing the
+proof.\hfill $\square$
+\medskip
+
+%In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies.
+We use this theorem to analyse these strategies, plotting them, as we did before, 
 for $\alpha = 0.9999966993$ and $\beta = 0.9999996156$. Figures  \ref{fig-plot-gup-fixwindow} and \ref{fig-af-df-fo} give 
 %us an 
 interesting 
