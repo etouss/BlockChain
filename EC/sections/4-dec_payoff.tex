@@ -722,6 +722,20 @@ By adding a little more flexibility to the strategy of always forking, we can id
 \label{fig-gup}}
 \end{figure}
 
+
+
+
+\begin{example}
+Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when the state is $\{\varepsilon\}, \{\varepsilon,0\}$, and $\{\varepsilon,0,00\}$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three 
+%unowned new 
+blocks owned by player 0, 
+%in the blockchain, 
+as shown in Figure \ref{fig-gup}(a). In this case, $\af$ would again try to do a fork from the genesis block as no block belongs to player~1. On the other hand, $\gup_4^2$ would try to do a fork instead on the dotted line, that is, the second block that does not belong to her.
+The second difference is provided by the give-up time, which is shown in Figure~\ref{fig-gup}(b). Normally, $\af$ is willing to continue forking regardless of the hope of winning, therefore the move for the state in Figure \ref{fig-gup}(b) would still be to mine upon her own block $11$. On the other hand, $\gup_4^2$ has already seen 4 blocks from the start of the fork, so with this strategy player $1$ instead gives up and tries to mine upon $0000$, rebooting the strategy as if 
+%this last block 
+$0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that is, the strategy where player $1$ is willing to keep fighting for a fork of any length, and to do a fork at the beginning of any chain of blocks she does not own.  \qed
+\end{example}
+
 \begin{figure*}
     \subfigure[Utilities for player 1 of combined strategies, $\bdf$, $\bgup^1_4$, $\bgup^1_5$ and $\baf$]{
         \input{../plots/forking_strategies_chart.tex}
@@ -736,18 +750,6 @@ By adding a little more flexibility to the strategy of always forking, we can id
     \caption{Comparing the utilities of three forking strategies against the default strategy}
 \end{figure*}
 
-
-\begin{example}
-Let us consider how $\gup_4^2$ would be different from $\af$. Since $k = 2$, both strategies take the same action when the state is $\{\varepsilon\}, \{\varepsilon,0\}$, and $\{\varepsilon,0,00\}$, namely, mining at $\varepsilon$. Hence, assume that both strategies are facing a chain of three 
-%unowned new 
-blocks owned by player 0, 
-%in the blockchain, 
-as shown in Figure \ref{fig-gup}(a). In this case, $\af$ would again try to do a fork from the genesis block as no block belongs to player~1. On the other hand, $\gup_4^2$ would try to do a fork instead on the dotted line, that is, the second block that does not belong to her.
-The second difference is provided by the give-up time, which is shown in Figure~\ref{fig-gup}(b). Normally, $\af$ is willing to continue forking regardless of the hope of winning, therefore the move for the state in Figure \ref{fig-gup}(b) would still be to mine upon her own block $11$. On the other hand, $\gup_4^2$ has already seen 4 blocks from the start of the fork, so with this strategy player $1$ instead gives up and tries to mine upon $0000$, rebooting the strategy as if 
-%this last block 
-$0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that is, the strategy where player $1$ is willing to keep fighting for a fork of any length, and to do a fork at the beginning of any chain of blocks she does not own.  \qed
-\end{example}
-
 Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$.
 To compute an analytical form for $u_1(\bgup_\ell^k)$, we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the 
 %disadvantage and give-up 
@@ -758,56 +760,66 @@ $$u_1(\bgup^k_\ell) = \frac{\Phi_{\ell,k}}{1-\Gamma_{\ell,k}},$$
 where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, $\beta$ and $h$.% (that is, divisions of polynomials of  $\alpha$, $\beta$ and $h$).
 \end{theorem}
 We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in the
-proof of this theorem (appendix \ref{sec-evaluation-G}), involving two sets
+proof of this theorem,
+%(appendix \ref{sec-evaluation-G}),
+ involving two sets
 of polynomials related to Dyck words, which describe the combinatorial nature of
 the game.
 
-\paragraph{Outline of the proof.} First, consider the beginning of the game,
-i.e., where both players are mining on $\varepsilon$. Miner 1, playing with
-$G_\ell^k$, can obtain positive reward from five types of arising states. In the
+{\sc Proof sketch.} First, consider the beginning of the game,
+i.e., where  players are mining on $\varepsilon$. Miner 1, playing with
+$G_\ell^k$, can obtain positive reward from five types of states. In the
 first case, she immediately puts a block in top of $\varepsilon$. The second and
-third cases are those in which Miner 0 appends $j\leq k$ blocks on top of
-$\varepsilon$ and Miner 1 starts a fork on $\varepsilon$, eventually winning (respectively, loosing). The last two
-cases are given when Miner 0 appends $j>k$ blocks on top of
-$\varepsilon$, after which Miner 1 forks on block $j-k$ and wins (respectively,
+third cases are those in which miner 0 appends $j\leq k$ blocks on top of
+$\varepsilon$ and miner 1 starts a fork on $\varepsilon$, eventually winning (respectively, loosing). The last two
+cases are occur  when miner 0 appends $j>k$ blocks on top of
+$\varepsilon$, after which miner 1 forks on  the block $j-k$ and wins (respectively,
 looses) the fork.
-
+\marcelo{I don't understand the use of "(respectively, looses)" in this paragraph. Isn't miner 1 supposed to have a positive reward?}
 %        \end{enumerate}
 %\end{enumerate}
 
-Because how these strategies are defined, after each of these states, the
+Because of how these strategies are defined, after each of the states mentioned in the previous paragraph, the
 behaviour repeats but replacing $\varepsilon$ by a later block $b$. Therefore,
-we again have an equation of the form
-$$u_1(\bgup^k_\ell)=\Phi+\Gamma\cdot u_1(\bgup^k_\ell),$$
-where $\Phi$ is the contribution of the above states, and $\Gamma$ is a proper
+as in the case of Theorem \ref{thm:always_fork}, we have an equation of the form
+%\begin{eqnarray*}
+$u_1(\bgup^k_\ell)  =  \Phi_{\ell, k}+\Gamma_{\ell, k}\cdot u_1(\bgup^k_\ell)$,
+%\\end{eqnarray*}
+where $\Phi_{\ell, k}$ is the contribution of the states mentioned in the previous paragraph, and $\Gamma_{\ell, k}$ is a proper
 shifting factor. In order to obtain these quantities, we need to describe the
 probabilities and combinatorics of the above states. To do this, we again
-represent states as unitary north-east paths inside polygons in $\ZZ^2$. In our
+represent states as unitary north-east paths inside polygons in $\ZZ^2$. \marcelo{As far as I can see, this is the first time we mention north-east paths. We could introduce them in the proof of  Theorem \ref{thm:always_fork}, or we could explain them here. I like the first alternative as this shows that we are using the same idea in both proofs, although the combinatorics get more complicated in this case.}
+In our
 case, the pair of strategies imply that all paths stay within pentagons,
 moreover, we establish the following combinatorial results:
+\marcelo{The sentence "In our
+case, the pair of strategies imply that all paths stay within pentagons" is not clear. We need a longer explanation showing why this type of paths is used in the proof.}
 \begin{lemma}
    For nonnegative integers $a,b,r$, let $\sigma_{a,b}$ be the amount of
  one-step north-east paths from $(0,0)$ to $(a+b,b)$ that stay inside of the
- trapezoid $\{(0,0),(a,0),(a+b,b),(0,b)\}.$ We have
-$$ 
-    \displaystyle \sigma_{a,b}=\frac{(a+b)\cdot(a+2b)!}{b!\cdot(a+b+1)!}=\frac{a+1}{a+b+1}\cdot {a+2b\choose a+b}.
-    $$
+ trapezoid $\{(0,0),(a,0),(0,b),(a+b,b)\}.$ \marcelo{Why is $r$ mentioned here? As far as I can see, $r$ is not used in the following equation.} We have that
+\begin{eqnarray*}
+\sigma_{a,b} & = & \frac{(a+b)\cdot(a+2b)!}{b!\cdot(a+b+1)!}=\frac{a+1}{a+b+1}\cdot {a+2b\choose a+b}.
+\end{eqnarray*}
     Also, let $\theta_{a,b}^r$ be the
  amount of such paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon
- $(0,0),(a,0),(r,r-a),(r,b),(0,b)$. We have the following
- $$
+ $(0,0),(a,0),(r,r-a),(r,b),(0,b)$. Then we have the following
+\begin{eqnarray*}
+\theta_{a,b}^r & = & 
  \begin{cases}
- \displaystyle\mbox{If }r\leq a,\quad \theta_{a,b}^r = {r+b\choose b},\\
- \displaystyle\mbox{If }a<r,\quad \theta_{a,b}^r = \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}.\\
+ {\displaystyle {r+b\choose b}} & \text{If } r \leq a\\
+ {\displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}} &  \text{If } a<r\\
  %\displaystyle\mbox{If }a<r<b,\quad \theta_{a,b}^r = \sigma_{b-r,r} + \sum_{i=1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
  %\displaystyle\mbox{If }b<r\mbox{ and }a<r,\quad \theta_{a,b}^r = \sigma_{r-b,b} + \sum_{i=r-b+1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
  \end{cases}
- $$
+ \end{eqnarray*}
  \end{lemma}
 As it turns out, the utility $u(\bgup_\ell^k)$ in this case is given as a
 combination of the generating polynomials related to these sequences, which we
 refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}, completing the
-proof.\hfill $\square$
+proof. \marcelo{It is not clear how the lemma and the coefficients $\theta_{a,b}^r$ are used in the proof. Please explain (we don't need to include every details, just an explanation that gives an idea of how this lemma is used and why the coefficients $\theta_{a,b}^r$ are important for the proof).} 
+\qed
+
 \medskip
 
 %In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies.
@@ -831,7 +843,7 @@ as we have found that
 %strategy 
 $\gup^1_4$ is the strategy that beats the default strategy under the least amount of hash power 
 amongst any combination of values for $k$ and $\ell$ with $k < \ell \leq 100$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
-the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. We remark that the analysis 
+the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. We notice that the analysis 
 we can do through 2- or 3-dimensional plots is only one part of the picture, and that a game-theoretical analysis of these strategies is an interesting area for future work. 
 
 
