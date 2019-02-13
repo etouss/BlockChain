@@ -1,4 +1,4 @@
-%!TEX root = main.tex
+%!TEX root = ../main/main.tex
 
 \section{Introduction}
 
@@ -9,8 +9,9 @@ are  verified and appended to the record. Typically, transactions are assembled 
 marked as valid transactions. 
 %Apart from the set of transactions, the block will contain a pointer to some previous block, so that the record naturally forms a tree of blocks. 
 %The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}.
-To provide an incentive to generate and verify these new blocks, protocols reward agents creating new blocks with an amount of currency, which is known as the \emph{block reward}, and is the way in which new currency is created. For example, in Bitcoin this amount was originally 50BTC and halves approximately every four years (the current reward is 12.5BTC). 
-But since blocks give a reward, nodes will naturally want to generate blocks \footnote{In order to encourage including all the transactions that are correct according to the cryptocurrency rules, the miners also receive a small {\em transaction fee} for each transaction they include in a block. As in currently used cryptocurrencies fees rarely exceed 10\% of the mining reward \cite{TotalMiningRevenue,TotalMiningFees}, we focus on block rewards when gauging the miner's economic motivation for participating in the protocol.}. If we expect the currency to have any value, generating new blocks must then be hard. Under the proof-of-work framework, participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of blocks per second that a miner can solve is referred to as her \emph{hash power}. Nodes who participate in the generation of blocks are called \emph{miners}. Coming back to the Bitcoin example, the hard problem corresponds to breaking hash functions: 
+To provide an incentive to generate and verify these new blocks, protocols reward agents creating new blocks with an amount of currency, which is known as the \emph{block reward}, and it is also the way in which new currency is created. For example, in Bitcoin this amount was originally 50BTC and halves approximately every four years (the current reward is 12.5BTC). 
+%But since blocks give a reward, nodes will naturally want to generate blocks 
+Thus, agents would naturally want to generate blocks.\footnote{In order to encourage including all the transactions that are correct according to the cryptocurrency rules, the miners also receive a small {\em transaction fee} for each transaction they include in a block. As in currently used cryptocurrencies fees rarely exceed 10\% of the mining reward \cite{TotalMiningRevenue,TotalMiningFees}, we focus on block rewards when gauging the miner's economic motivation for participating in the protocol.} If we expect the currency to have any value, generating new blocks must then be hard. Under the proof-of-work framework, participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. Coming back to the Bitcoin example, the hard problem corresponds to breaking hash functions: 
 in Bitcoin, a block is \emph{valid} in the protocol if its hash value, when interpreted as a number, is less than a certain threshold. Since hash functions are unpredictable, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
 
 
@@ -24,7 +25,7 @@ Miners looking to maximise their rewards may then attempt to create new branches
 incentivised to branch, or \emph{fork}, the blockchain? What is the optimal strategy of miners assuming they have a rational behaviour? Also, since certainly a mining war is undesirable for a cryptocurrency, how can we design new protocols where miners do not have incentives to fork? 
 
 With several cryptocurrencies bringing new rules and parameters to the question, distilling a clean model that can answer these questions while simultaneously covering 
-all practical nuances of currencies is far from trivial (this was also stated in e.g. \cite{mininggames:2016}). Instead, we abstract from these rules and focus on 
+all practical nuances of currencies is far from trivial (e.g., see \cite{mininggames:2016}). Instead, we abstract from these rules and focus on 
 a scenario where the wealth of players is simply given by the number of blocks they have on the blockchain. More precisely, our game is based solely on the following rules. 
 \begin{enumerate}
 \item Each player $i$ has a fixed value $h_i$ signifying the proportion of the hash power of this player against the total hash power. 
