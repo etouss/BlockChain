@@ -286,11 +286,11 @@ where $\Pent_{n,m}$ are all the binary strings with $m$ zeroes such that in ever
 
 We have
 \begin{align*}
-u_{c,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, e\in \Pent_{j-1, \ell-j-1}} \beta^{\ell+H(e)+|w|+2}\cdot \alpha^{\ell+1}\cdot r_1(w) \cdot h^{H(e)+1}\cdot(1-h)^{\ell+1}\cdot \pr(w).
+u_{c,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, e\in \Pent_{j-1, \ell-j+1}} \beta^{\ell+H(e)+|w|+2}\cdot \alpha^{\ell+1}\cdot r_1(w) \cdot h^{H(e)+1}\cdot(1-h)^{\ell+1}\cdot \pr(w).
 \end{align*}
 This yields the following:
 \begin{align*}
-u_{c,j}(h) &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^\ell\cdot u_1(\gup^k_\ell)(h) \cdot  \sum_{e\in\Pent_{j-1,\ell-j-1}}(\beta\cdot h)^{H(e)}\\
+u_{c,j}(h) &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^\ell\cdot u_1(\gup^k_\ell)(h) \cdot  \sum_{e\in\Pent_{j-1,\ell-j+1}}(\beta\cdot h)^{H(e)}\\
         &= \alpha\cdot x\cdot (\alpha\cdot\beta\cdot(1-h))^\ell \cdot P_{\ell,j}(\beta\cdot h) \cdot u_1(\gup^k_\ell)(h).
 \end{align*}
 
@@ -351,7 +351,7 @@ These states are of the form $q = 0^j\cdot 1\cdot e\cdot w, e\in \Pent_{k-1,\ell
 
 As in case (c), we compute
 \begin{align*}
-u_{d,j}(h) &= (1-\beta) \cdot \!\!\!\!\!\!\!\!\!\sum_{w\in \bstring, e\in \Pent_{k-1, \ell-k-1}}\!\!\!\!\!\!\beta^{\ell+j-k+H(e)+|w|+2}\cdot \alpha^{\ell+j-k+1}\cdot r_1(w) \cdot h^{H(e)+1}\cdot(1-h)^{\ell+j-k+1}\cdot \pr(w)\\
+u_{d,j}(h) &= (1-\beta) \cdot \!\!\!\!\!\!\!\!\!\sum_{w\in \bstring, e\in \Pent_{k-1, \ell-k+1}}\!\!\!\!\!\!\beta^{\ell+j-k+H(e)+|w|+2}\cdot \alpha^{\ell+j-k+1}\cdot r_1(w) \cdot h^{H(e)+1}\cdot(1-h)^{\ell+j-k+1}\cdot \pr(w)\\
         &= \alpha\cdot x\cdot(\alpha\cdot\beta\cdot(1-h))^{j+\ell-k}\cdot P_{\ell,k}(\beta\cdot h) \cdot u_1(\gup^k_\ell)(h).
 \end{align*}
 
@@ -369,7 +369,7 @@ where $\Phi$ is the total contribution of one fork (successful or not) and $\Gam
 
 In this section, we define two sets of polynomials that control the combinatorial nature of our game. They arise as generating polynomials of the sequences of states of fixed length. 
 
-Recall that $\Dyck_{a,2b}$ is the set of binary strings of length $2b+a$ such that the number of ones equals the number of zeroes plus $a$, and such that for every prefix, the number of ones minus the number of zeroes is at most $a$. Now, define $\sigma_{a,b}:=|\Dyck_{a,2b}|$. Interpreting each 0 as a unitary $\uparrow$ step in $\ZZ^2$ and each 1 as a unitary $\rightarrow$ step, we have that $\sigma_{a,b}$ is the total number of $\{\uparrow,\rightarrow\}$ paths from $(0,0)$ to $(a,a+b)$ that lie within the trapezoid ${(0,0),(a,0),(a,a+b),(0,b)}$. We enumerate them in proposition \ref{enum-sigma}.
+Recall that $\Dyck_{a,2b}$ is the set of binary strings of length $2b+a$ such that the number of ones equals the number of zeroes plus $a$, and such that for every prefix, the number of ones minus the number of zeroes is at most $a$. Now, define $\sigma_{a,b}:=|\Dyck_{a,2b}|$. Interpreting each 0 as a unitary $\uparrow$ step in $\ZZ^2$ and each 1 as a unitary $\rightarrow$ step, we have that $\sigma_{a,b}$ is the total number of $\{\uparrow,\rightarrow\}$ paths from $(0,0)$ to $(a+b,b)$ that lie within the trapezoid ${(0,0),(a,0),(a+b,b),(0,b)}$. We enumerate them in proposition \ref{enum-sigma}.
 
 Also, from section \ref{sec-evaluation-G}, the set $\Pent_{a,b}$ consists of all binary strings with $b$ zeroes such that in every prefix, the number of ones minus the number of zeroes does not exceed $a$. Also, define $\Pent_{a,b}^r$ the number of such strings which have exactly $r$ ones, and define $\theta_{a,b}^r:= |\Pent_{a,b}^r|$. As before, note that $\theta_{a,b}^r$ is the total number of $\{\uparrow,\rightarrow\}$ paths in $\ZZ^2$ from $(0,0)$ to $(r,b)$ that lie within the pentagon $\{(0,0),(0,a),(r,r-a), (r,b), (0,b)\}$ (this is a rectangle if $r<a$). We develop a linear recurrence for $\theta_{a,b}^r$ that solves in terms of $\sigma_{a,b}$ in proposition \ref{enum-theta}. 
 
