@@ -40,8 +40,13 @@ Our goal is to produce a model of mining in a cryptocurrency that can help in an
 With several cryptocurrencies bringing new rules and parameters to these questions, distilling a clean model that can answer these questions while simultaneously covering 
 all practical nuances of currencies is far from being trivial~\cite{mininggames:2016}. 
 Instead, 
-we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the full reward for a block $b$ is divided into several payments, and the miner loses some of them when $b$ does not belong in the blockchain. 
-Since we do not want to impose a limit on the time in which a cryptocurrency is going to be used, we assume that the reward for a block $b$ is divided into an infinite number of payments, and we also suppose that the penalty for a block leaving the blockchain decreases with time. This latter condition is used to ensure that miners are rewarded according to the effort put into maintaining their blocks in the blockchain.
+we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the reward for a block $b$ is divided into an infinite number of payments, and the miner loses some of them whenever $b$ does not belong in the blockchain. We also suppose that the penalty for a block leaving the blockchain decreases with time, which ensures that miners are rewarded according to the effort put into maintaining their blocks in the blockchain.
+%%Our goal is to produce a model of mining in a cryptocurrency that can help in answering these questions. 
+%%With several cryptocurrencies bringing new rules and parameters to these questions, distilling a clean model that can answer these questions while simultaneously covering 
+%%all practical nuances of currencies is far from being trivial~\cite{mininggames:2016}. 
+%%Instead, 
+%%we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the full reward for a block $b$ is divided into several payments, and the miner loses some of them when $b$ does not belong in the blockchain. 
+%%Since we do not want to impose a limit on the time in which a cryptocurrency is going to be used, we assume that the reward for a block $b$ is divided into an infinite number of payments, and we also suppose that the penalty for a block leaving the blockchain decreases with time. This latter condition is used to ensure that miners are rewarded according to the effort put into maintaining their blocks in the blockchain.
 %
 In our work, this incentive takes the form of a discounted utility.
 %
