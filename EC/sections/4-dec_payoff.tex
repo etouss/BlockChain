@@ -21,8 +21,8 @@ c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
 \end{eqnarray*}
 In this section, we show that when miners' fees decrease over time, forking can be a good strategy. We explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that it is profitable to fork with more than half of the hash power. Moreover, our exploration in Section \ref{sec-giving-up} gives us a concrete strategy that with less than half of the hash power 
 %a little more than $46\%$ of the hash power 
-can be used to defeat the default strategy. \juan{has any other model done this? cite!}
-\juan{write this and see what happens} We finish with some remarks about obtaining a nash equilibrium under decreasing fees. 
+can be used to defeat the default strategy. %\juan{has any other model done this? cite!}
+%\juan{write this and see what happens} We finish with some remarks about obtaining a nash equilibrium under decreasing fees. 
 
 %Thus, it is natural to ask whether mining on top of the existing blockchain continues to be an optimal strategy under these 
 %circumstances. 
@@ -92,7 +92,7 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 %\end{itemize}
 
 \begin{figure}
-\begin{center}
+\centering
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.6,state/.style={circle,inner sep=2pt}]
 
     % The graph
@@ -126,8 +126,8 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 %	(111) edge (1111);
 
 \end{tikzpicture} 
-\end{center}
 %\caption{Dashed arrows are used to indicate when player~1 did a fork. Initially, player $0$ mines on the genesis block $\varepsilon$ including block $0$. Player 1 then decides to fork on the genesis block, and continue mining in this new brach until it becomes the blockchain, which happens in this case when player 1 mines on top of block $1$ generating block $11$. But then again player 1 loses a block when player 0 mines on top of block $111$ generating block $1110$, so she decides to fork on top of block $111$ until the new brach becomes the blockchain. Up to this point in the mining game, the blockchain is given by the path $\{\varepsilon, 1, 11, 111, 1111, 11111\}$ that only contains blocks belonging to player 1.}
+\vspace*{-10pt}
 \caption{Dashed arrows indicate when player~1 does a fork. The first block (block 0) is mined by player 0. At this point, player 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When player 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
 %
 %until the new brach becomes the blockchain
@@ -271,7 +271,7 @@ no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no poin
 %
 %\end{tikzpicture} 
 %\end{center}
-\begin{center}
+\centering
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.61,state/.style={circle,inner sep=2pt}]
 
     % The graph
@@ -317,8 +317,7 @@ no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no poin
 	(c11) edge (c111);
 
 \end{tikzpicture} 
-\end{center}
-
+\vspace*{-5pt}
 \caption{States in a game played according to strategy $\baf$. \label{fig:proof-theorem-4}}
 \end{figure}
 
@@ -561,7 +560,8 @@ The closed form for $\varphi$ is computed in a similar way, constructing again g
 %The utility of player 1 for the combined strategy $\bpf{1} = (\df_0, \pf{1})$ can be calculated using similar ideas as in the proof of Theorem \ref{thm:always_fork}, which gives rise to a closed form for $u_1(\bpf{1})$ (we omit this calculation due to the lack of space). 
 With the closed forms for $u_1(\bdf)$ and $u_1(\baf)$,
 %and $u_1(\bpf{1})$, 
-we can compare the utilities of these strategies for player 1 for fixed values of $\alpha$ and $\beta$, but varying her hash power. In particular, we consider realistic values of $\alpha$ and $\beta$ as follows. For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
+we can compare the utilities of these strategies for player 1 for fixed and realistic values of $\alpha$ and $\beta$, but varying her hash power. 
+For $\alpha$ we calculate the compound version of the discount in Bitcoin, that is, 
 a value of $\alpha$ that would divide the reward by half every 210.000 blocks, \ie $\alpha = 0.9999966993$. For 
 $\beta$ we calculate the 10-minute rate that is equivalent to the US real interest rate in 
 %2017 \cite{interest}, 
@@ -654,7 +654,7 @@ By adding a little more flexibility to the strategy of always forking, we can id
 
 
 \begin{figure}
-\begin{center}
+\centering
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.61,state/.style={circle,inner sep=2pt}]
 
     % The graph
@@ -714,8 +714,7 @@ By adding a little more flexibility to the strategy of always forking, we can id
 	
 
 \end{tikzpicture} 
-\end{center}
-
+\vspace*{-5pt}
 \caption{Difference between $\af$ and $\gup^2_4$ in terms of actions of these strategies in two states. 
 %In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
 %fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$).
@@ -747,13 +746,17 @@ $0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that i
         \input{../plots/forking_strategies_zoom_chart.tex}
         \label{fig-af-df-fo}
     }
+    \vspace*{-7pt}
     \caption{Comparing the utilities of three forking strategies against the default strategy}
 \end{figure*}
 
-Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$.
-To compute an analytical form for $u_1(\bgup_\ell^k)$, we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the 
+Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$. We obtain an analytical form similar to that of Theorem \ref{thm:always_fork}, except in 
+this case the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the 
 %disadvantage and give-up 
-parameters $k$ and $\ell$. We obtain the following.
+parameters $k$ and $\ell$.
+%To compute an analytical form for $u_1(\bgup_\ell^k)$, we proceed as in the proof of Theorem \ref{thm:always_fork}. In this case, the set of paths leading to winning states has a more complex combinatorial nature, as expected when taking into account the 
+%disadvantage and give-up 
+%parameters $k$ and $\ell$. We obtain the following.
 \begin{theorem}\label{thm-dificil}
 For every pair of positive integers $\ell, k$ such that $k< \ell$, we have that:
 $$u_1(\bgup^k_\ell) = \frac{\Phi_{\ell,k}}{1-\Gamma_{\ell,k}},$$
@@ -778,21 +781,28 @@ miner 1 appends another block on $\varepsilon$, eventually winning the fork
 will dictate to mine on top of the same block. The last two cases occur when
 miner 0 appends $j>k$ blocks on top of $\varepsilon$, after which miner 1
 manages to append a block at position $j-k$, starting a fork and eventually
-winning (case 4) or surrendering (case 5).  These five cases separate the space
+winning (case 4) or again giving up (case 5).  These five cases separate the space
 of possible states with positive reward for miner 1 into disjoint sets, which
-can be analyzed separately using combinatorial computations. After any of the
+can be analysed separately using combinatorial computations. After any of the
 states discussed above, both players mine on the same block and therefore the
-strategies advise similar actions as in the beginning of the game (this happens
-because of the way these strategies are defined).  Thus, as in the case of
+strategies advise similar actions as in the beginning of the game. 
+%(this happens because of the way these strategies are defined).  
+Thus, as in the case of
 Theorem
 \ref{thm:always_fork}, we have an equation of the form $u_1(\bgup^k_\ell)  =
 \Phi_{\ell, k}+\Gamma_{\ell, k}\cdot u_1(\bgup^k_\ell)$, where $\Phi_{\ell, k}$
 is the utility contribution of the set of the above finite states and and
-$\Gamma_{\ell, k}$ is a proper shifting factor.  In order to obtain expressions
-for these quantities, we represent states as unitary north-east paths
+$\Gamma_{\ell, k}$ is a proper shifting factor.  
+Once again, an important combinatorial challenge of this proof is to quantify the number of different 
+paths leading to these states where both player mine the same block. 
+We represent them as 
+%In order to obtain expressions
+%for these quantities, we represent states as 
+unitary north-east paths
 inside polygons in $\ZZ^2$, where north and east steps represent blocks
-appended by miner 0 and miner 1 respectively.  With this in mind, we first
-establish the following combinatorial results: \begin{lemma} For nonnegative
+appended by miner 0 and miner 1 respectively.  
+To count these paths we provide the following combinatorial result. 
+\begin{lemma} For nonnegative
     integers $a,b$, let $\sigma_{a,b}$ be the amount of one-step north-east
     paths from $(0,0)$ to $(a+b,b)$ that stay inside of the trapezoid
     $\{(0,0),(a,0),(0,b),(a+b,b)\}.$ We have that
@@ -812,18 +822,22 @@ establish the following combinatorial results: \begin{lemma} For nonnegative
  \end{cases}
  \end{eqnarray*}
  \end{lemma}
-After writing the utility in this case, as given in definition \ref{def-utility},
-and separating the summation over the set of states into these five cases, the
-result is given as a combination of the generating polynomials associated to
-these sequences, which we
-refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}, completing the
-proof. 
+ For the proof, we write the utility as given in definition \ref{def-utility}, separate the summation 
+ over the set of five cases explained above, and then show that these sums can be expressed in terms of the 
+ generating polynomial associated to the sequences $\sigma_{a,b}$ and $\theta_{a,b}^r$, which we
+refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}.
+%After writing the utility in this case, as given in definition \ref{def-utility},
+%and separating the summation over the set of states into these five cases, the
+%result is given as a combination of the generating polynomials associated to
+%these sequences, which we
+%refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}, completing the
+%proof. 
 \qed
 
 \medskip
 
 %In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies.
-We use this theorem to analyse these strategies, plotting them, as we did before, 
+We use Theorem \ref{thm-dificil} to analyse these strategies, plotting them, as we did before, 
 for $\alpha = 0.9999966993$ and $\beta = 0.9999996156$. Figures  \ref{fig-plot-gup-fixwindow} and \ref{fig-af-df-fo} give 
 %us an 
 interesting 
@@ -843,9 +857,10 @@ as we have found that
 %strategy 
 $\gup^1_4$ is the strategy that beats the default strategy under the least amount of hash power 
 amongst any combination of values for $k$ and $\ell$ with $k < \ell \leq 100$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
-the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. We notice that the analysis 
-we can do through 2- or 3-dimensional plots is only one part of the picture, and that a game-theoretical analysis of these strategies is an interesting area for future work. 
+the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. 
 
+The analysis we can do  through 2- or 3-dimensional plots is only one part of the picture, and that a game-theoretical analysis of these strategies is an interesting area for future work. 
+Furthermore, one can also show that the techniques used to prove theorems \ref{thm:always_fork} and \ref{thm-dificil} can be in fact generalised for any strategy satisfying the condition that the game somehow resets (albeit with a shift on utilities) when both players mine upon the last block of the blockchain. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

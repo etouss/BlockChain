@@ -46,14 +46,14 @@ P_{n,m}$, see \ref{sec-trapezoid-pentagon}). In what follows, let $x = \beta^2
 The game begins with both players mining on $\varepsilon$, and assume that
 Miner 0 first appends $j$ blocks. Here, five types of states can arise:
 \begin{itemize}
-    \item[(0)] (Case $j=0$) Miner 1 immediately appends a block $b$ on top of
+    \item[(-)] (Case $j=0$) Miner 1 immediately appends a block $b$ on top of
         $\varepsilon$ and now both players will mine on top of $b$.
     \item[(a)] After miner 0 appends $j\leq k$ blocks on top of $\varepsilon$,
         miner 1 appends one block on top of $\varepsilon$ and starts the fork.
-        Miner 1 wins the fork, gaining at most $j+\ell+1$ blocks.
+        Miner 1 wins the fork before player $0$ puts $\ell$ total blocks. Thus, player $1$ gains at most $\ell+1$ blocks.
     \item[(b)] After miner 0 appends $j > k$ blocks on top of $\varepsilon$,
-        miner 1 appends one block at position $j-k$. Miner 1 wins the fork,
-        gaining at most $k+\ell+1$ blocks.  \item[(c)] After miner 0 appends
+        miner 1 appends one block at position $j-k$. Miner 1 wins the fork before player $0$ puts $\ell$ extra blocks. 
+        Thus, player $1$ gains at most $\ell+1$ blocks.  \item[(c)] After miner 0 appends
         $j\leq k$ blocks on top of $\varepsilon$, miner 1 appends one block on
         top of $\varepsilon$ and starts the fork. Miner 0's branch achieves
         length $\ell+1$ and miner 1 gives up.  \item[(d)] After miner 0 appends
@@ -67,15 +67,18 @@ This recursive behaviour allows us to compute the utility of single forks in
 the same spirit as in \ref{thm:always_fork}, and then use proper shifting to
 establish an equation in $u_1(\gup^k_\ell)(h)$. In other words, we have
 
-$$u_1(\gup^k_\ell)(h) = u_0(h) + \sum_{j=1}^k (u_{a,j}(h) + u_{c,j}(h)) +
+$$u_1(\gup^k_\ell)(h) = u_{-}(h) + \sum_{j=1}^k (u_{a,j}(h) + u_{c,j}(h)) +
 \sum_{j=k+1}^\infty (u_{b,j}(h) + u_{d,j}(h)),$$ where each term corresponds to
 the total utility contributed by the cases above. In what follows, we develop
 expressions for each of these terms.
 
-\begin{subsubsection}{Case (0)} Every state $q$ in this case is of the form
+For a binary word $d$, we use $\#_0(d)$ to denote the number of $0$'s in $d$, and $\#_1(d)$ for the number of $1$'s. 
+
+
+\begin{subsubsection}{Case (-)} Every state $q$ in this case is of the form
     $1\cdot w$, where $w\in \bstring$, and thus the utility amounts to
 \begin{align*}
-u_0(h) &= (1-\beta) \cdot \sum_{w\in \bstring}\beta^{1+|w|} (\alpha + \alpha\cdot r_1(w))\cdot h \cdot \pr(w).\\
+u_{-}(h) &= (1-\beta) \cdot \sum_{w\in \bstring}\beta^{1+|w|} (\alpha + \alpha\cdot r_1(w))\cdot h \cdot \pr(w).\\
     &= (1-\beta) \cdot\frac{\alpha\cdot \beta \cdot h}{1-\beta} + \alpha\cdot\beta\cdot h \cdot(1-\beta)\cdot\sum_{w\in \bstring}\beta^{|w|} r_1(w) \cdot \pr(w)\\
     &= \alpha\cdot \beta \cdot h + \alpha\cdot\beta\cdot h\cdot u_1(\gup^k_\ell)(h),
 \end{align*}
@@ -85,7 +88,8 @@ u_0(h) &= (1-\beta) \cdot \sum_{w\in \bstring}\beta^{1+|w|} (\alpha + \alpha\cdo
 \begin{subsubsection}{Case (a)}
 These states are all of the form 
 $$q = 0^j\cdot 1\cdot d\cdot 1\cdot w, d\in \Dyck_{j-1}, |d|+j \leq 2\ell, w\in \bstring,$$ 
-where $\Dyck_{j-1}$ are Dyck words with disadvantage $j-1$. 
+where $\Dyck_{j-1}$ are Dyck words with disadvantage $j-1$: binary words $d$ such that (1) $\#_1(d) = \#_0(d) + j-1$ and (2), each prefix $u$ of $d$ is such that 
+$\#_1(u) - \#_0(u) \leq j-1$.
 
 \begin{figure}[ht!]
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 1.0,state/.style={circle,inner sep=2pt}]
