@@ -2,7 +2,14 @@
 
 \section{Introduction}
 
-The Bitcoin Protocol \cite{Bitcoin,DBLP:books/daglib/0040621,NC17}, or Nakamoto Protocol, introduces a novel decentralized network-consensus mechanism that is trustless and open for anyone connected to the Internet. To support such an open and dynamic topology, the protocol requires an underlying currency (a so-called \emph{cryptocurrency} \cite{NC17}) to encourage/discourage participants to/from taking certain actions. The largest network running this protocol at the time of writing is the Bitcoin network, and its underlying cryptocurrency is Bitcoin (BTC). Following the success of Bitcoin, several other cryptocurrencies have been created. Some of them are simple replicas of Bitcoin with slight modifications of the protocol parameters (e.g. Litecoin~\cite{Litecoin} or Bitcoin Cash~\cite{Bcash}), while some of them introduce interesting new modifications on top of the protocol to provide further functionalities (e.g. Ethereum~\cite{Ethereum,E17} or Monero~\cite{Monero}).
+The Bitcoin Protocol \cite{Bitcoin,DBLP:books/daglib/0040621,NC17}, or Nakamoto Protocol, introduces a novel decentralized network-consensus mechanism that is trustless and open for anyone connected to the Internet. To support such an open and dynamic topology, the protocol requires an underlying currency (a so-called \emph{cryptocurrency} \cite{NC17}) to encourage/discourage participants to/from taking certain actions. The largest network running this protocol at the time of writing is the Bitcoin network, and its underlying cryptocurrency is Bitcoin (BTC). Following the success of Bitcoin, several other cryptocurrencies have been created. Some of them are simple replicas of Bitcoin with slight modifications of the protocol parameters (e.g. Litecoin\footnote{\url{https://litecoin.org}}
+%~\cite{Litecoin} 
+or Bitcoin Cash\footnote{\url{https://www.bitcoincash.org}}),
+%~\cite{Bcash}), 
+while some of them introduce interesting new modifications on top of the protocol to provide further functionalities (e.g. Ethereum\footnote{\url{https://ethereum.org}}
+%~\cite{Ethereum,E17} 
+or Monero\footnote{\url{https://getmonero.org}}).
+%~\cite{Monero}).
 
 The data structure used in these protocols is an append-only record of transactions, and one of its most important components is the way new transactions 
 are  verified and appended to the record. Typically, transactions are assembled into \emph{blocks}, which become candidates to be appended to the record once they are 
@@ -11,38 +18,73 @@ marked as valid transactions.
 %The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}.
 To provide an incentive to generate and verify these new blocks, protocols reward agents creating new blocks with an amount of currency, which is known as the \emph{block reward}, and it is also the way in which new currency is created. For example, in Bitcoin this amount was originally 50BTC and halves approximately every four years (the current reward is 12.5BTC). 
 %But since blocks give a reward, nodes will naturally want to generate blocks 
-Thus, agents would naturally want to generate blocks.\footnote{In order to encourage including all the transactions that are correct according to the cryptocurrency rules, the miners also receive a small {\em transaction fee} for each transaction they include in a block. As in currently used cryptocurrencies fees rarely exceed 10\% of the mining reward \cite{TotalMiningRevenue,TotalMiningFees}, we focus on block rewards when gauging the miner's economic motivation for participating in the protocol.} If we expect the currency to have any value, generating new blocks must then be hard. Under the proof-of-work framework, participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. Coming back to the Bitcoin example, the hard problem corresponds to breaking hash functions: 
+Thus, agents would naturally want to generate blocks. If we expect the currency to have any value, generating new blocks must then be hard. Under the proof-of-work framework, participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. Coming back to the Bitcoin example, the hard problem corresponds to breaking hash functions: 
 in Bitcoin, a block is \emph{valid} in the protocol if its hash value, when interpreted as a number, is less than a certain threshold. Since hash functions are unpredictable, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
 
 
 
 Miners are not told where to append the new blocks they produce. The only requirement is that new blocks must include a pointer to a previous block in the data structure, 
 which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. 
-In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a transaction or a block reward in a block in the blockchain, the longest branch in the tree. Protocols normally add additional rules to specify when a currency is ready to be spent. In Bitcoin, for example, a block reward is considered ready to spend only when there are 
+In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a transaction or a block reward in a block in the blockchain.\footnote{In order to encourage including all the transactions that are correct according to the cryptocurrency rules, the miners also receive a small {\em transaction fee} for each transaction they include in a block. As in currently used cryptocurrencies fees rarely exceed 10\% of the mining reward \cite{TotalMiningRevenue,TotalMiningFees}, we focus on block rewards when gauging the miner's economic motivation for participating in the protocol.}
+%, the longest branch in the tree. 
+Protocols normally add additional rules to specify when a currency is ready to be spent. In Bitcoin, for example, a block reward is considered ready to spend only when there are 
 at least 100 blocks appended after it in the blockchain, but this changes with each cryptocurrency.
 
-Miners looking to maximise their rewards may then attempt to create new branches out of the blockchain, to produce a longer branch that contains more of their blocks (and earn more block rewards) or to produce a branch that contains less block of a user they are trying to harm. This opens up several interesting questions: under what circumstances are miners 
-incentivised to branch, or \emph{fork}, the blockchain? What is the optimal strategy of miners assuming they have a rational behaviour? Also, since certainly a mining war is undesirable for a cryptocurrency, how can we design new protocols where miners do not have incentives to fork? 
+Miners looking to maximise their rewards may then attempt to create new branches out of the blockchain, to produce a longer branch that contains more of their blocks (and earn more block rewards) or to produce a branch that contains less blocks of a user they are trying to harm. This opens up several interesting questions: under what circumstances are miners 
+incentivised to produce a branch in, or \emph{fork}, the blockchain? What is the optimal strategy of miners assuming they have a rational behaviour? Also, since certainly a mining war is undesirable for a cryptocurrency, how can we design new protocols where miners do not have incentives to fork? 
 
-With several cryptocurrencies bringing new rules and parameters to the question, distilling a clean model that can answer these questions while simultaneously covering 
-all practical nuances of currencies is far from trivial (e.g., see \cite{mininggames:2016}). Instead, we abstract from these rules and focus on 
-a scenario where the wealth of players is simply given by the number of blocks they have on the blockchain. More precisely, our game is based solely on the following rules. 
-\begin{enumerate}
-\item Each player $i$ has a fixed value $h_i$ signifying the proportion of the hash power of this player against the total hash power. 
-\item In each step, each player tries to append a new block somewhere in the tree of blocks. The probability that player $i$ succeeds is $h_i$.
-\item The utility of players depend on how many blocks they have in the blockchain: in every step they want to have as many blocks as possible in the blockchain.
-\end{enumerate}
-\noindent
-The first two rules are the standard way of simulating a mining game when one assumes each player controls a fixed amount of hash power. The third rule complies with the idea that the wealth in our model is given by the number of blocks in the blockchain. This framework is relevant when studying cryptocurrencies as a closed system, where miners do not wish to spend the money right away but rather simply accumulate wealth in 
-this cryptocurrency, for example because they speculate a price increase in the long term, or because they want to be able to cash-out their wealth at any point in time. As our framework allow us to consider any potential branching strategy, even one which endanger the trust in the cryptocurrency, it is fair to assume that the real world value of the currency can be really volatile, hence the incentive for a miner to be able cash-out at any point.
-We remark that this framework takes us on a different path that most of current literature, wherein one typically looks to mine with the objective of cashing-out as soon as possible or after a randomized amount of time \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal our framework is complementary with theses studies, as it allows us to confirm the assumptions upon which their models are based. 
+
+%As far as I know, nobody has a good model of how miners cash out their coins, and we cannot say that it is the best to cash out as soon as coins are available according to the protocol (for example, if they are in a block in the blockchain with 100 blocks further ahead), in particular given the volatility that you mention. Given this, we want to study the limit situation where there is a penalty for a miner if a block stops being in the blockchain, and he does not receive all the payment for this block. We also want to include the condition that the penalty decreases with time (the longer the block is in the blockchain, the smaller the penalty). The interesting question then is whether in a limit situation like this it can still be convenient for the miners to fork, and the interesting thing is that the answer is yes when the payment per block decreases with time (the use of alpha). This confirms the results obtained before but with a much stronger assumption.
+
+Our goal is to produce a model of mining in a cryptocurrency that can help in answering these questions. 
+With several cryptocurrencies bringing new rules and parameters to these questions, distilling a clean model that can answer these questions while simultaneously covering 
+all practical nuances of currencies is far from being trivial~\cite{mininggames:2016}. 
+Instead, 
+we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the full reward for a block $b$ is divided into several payments, and the miner loses some of them when $b$ stops being in the blockchain. 
+Since we do not want to impose a limit on the time in which a cryptocurrency is going to be used, we assume that the reward for a block $b$ is divided into an infinite number of payments, and we also suppose that the penalty for a block stopping being in the blockchain decreases with time. This latter condition is used to ensure that miners are rewarded according to the effort put into maintaining their blocks in the blockchain. Moreover, in our formalization of mining in a cryptocurrency,
+%a scenario where the wealth of players is simply given by the number of blocks they have on the blockchain. More precisely, our game is based solely on the following rules. 
+we consider two other simple rules; for each player $i$, she 
+%\begin{enumerate}
+%\item 
+%player $i$ 
+has a fixed associated value $h_i$ specifying her proportion of the hash power 
+%of $i$
+%this player 
+against the total hash power, and  
+%\item 
+%In each step, 
+%each player tries 
+she tries in each step to append a new block somewhere in the tree of blocks, being 
+%The 
+%probability that player $i$ succeeds is $h_i$.
+$h_i$ her probability of succeeding. 
+%\item The utility of players depend on how many blocks they have in the blockchain: in every step they want to have as many blocks as possible in the blockchain.
+%\end{enumerate}
+%\noindent
+
+The last two rules mentioned above 
+%The first two rules 
+are the standard way of 
+%simulating 
+formalizing mining in a cryptocurrency 
+%game 
+when assuming that each player controls a fixed amount of hash power. On the other hand, the way a miner is rewarded for a block in our model
+% third rule complies with the idea that the wealth in our model is given by the number of blocks in the blockchain. This framework is relevant when studying cryptocurrencies as a closed system, where miners do not wish to spend the money right away but rather simply accumulate wealth in 
+%this cryptocurrency, for example because they speculate a price increase in the long term, or because they want to be able to cash-out their wealth at any point in time. As our framework allow us to consider any potential branching strategy, even one which endanger the trust in the cryptocurrency, it is fair to assume that the real world value of the currency can be really volatile, hence the incentive for a miner to be able cash-out at any point.
+%We remark that this framework 
+takes us on a different path from most of current literature, wherein agents typically mine 
+%looks to mine 
+with the objective of cashing-out as soon as possible or after a randomized amount of time \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with theses studies, as it allows to confirm some of the results obtained in these papers under a stronger incentive for agents to mine in the blockchain.
+%the assumptions upon which their models are based. 
 
 \smallskip
-\noindent{\bf Contributions.}  We model mining as an infinite stochastic game in which miners are expected to maximize their long-term utility. One of the benefits of our approach is that using  a few basic design parameters we can in fact accommodate different cryptocurrencies, and not focus solely on e.g. Bitcoin. These parameters also allow us to account for fundamental factors such as deflation, or discount in the block reward. Another benefit of our proposal is the fact that we can reason about all possible mining strategies, without the need to focus on a specific subclass. 
+\noindent{\bf Contributions.}  Our first contribution is to provide a model of mining 
+%We model mining 
+as an infinite stochastic game in which miners are expected to maximize their long-term utility. One of the benefits of our approach is that using  a few basic design parameters we can in fact accommodate different cryptocurrencies, and not focus solely on Bitcoin. These parameters also allow us to account for fundamental factors such as deflation, or discount in the block reward. Another benefit of our proposal is the fact that we can reason about all possible mining strategies, without the need to focus on a specific subclass. 
 
 The second contribution of our work is a set of results about optimal behaviour of miners in different cryptocurrencies. We study mining under two scenarios: 
 first under the assumption that block rewards are constant (as it will eventually be in cryptocurrencies with tail-emission such as Monero or Ethereum), and then 
-assuming rewards decrease over time (e.g. Bitcoin). 
+assuming rewards decrease over time (as in Bitcoin). 
 
 In the first scenario of constant rewards, we show that the default strategy of always mining on the latest block of the blockchain is indeed a Nash equilibrium.
 It shows that if miners want to accumulate wealth in terms of the same currency  or if it is important for them to be able to cash-out at any time, then they should not fork. Especially this result shows that, with constant reward, the commonly accepted assumption that long forks should not happen is true. 
@@ -58,7 +100,7 @@ prove better than default with a bit less than 50\% of hash power.
 These results tend to show that, with decreasing reward, the assumption that long forks should not happen holds upon reasonable hash power repartition.
 
 \smallskip
-\noindent{\bf Related works.} We remark that this framework shares similiraties but takes us on a different path that most of current literature offering a game-theoretic characterisation for blockchain mining, most notably \cite{mininggames:2016,biais2018blockchain}.
+\noindent{\bf Related work.} We remark that this framework shares similiraties but takes us on a different path that most of current literature offering a game-theoretic characterisation for blockchain mining, most notably \cite{mininggames:2016,biais2018blockchain}.
 Both study when the miners may have an insensitive to deviate from the default behaviour. However due to the complexity of the protocol, they had to make some assumptions. In \cite{} Kiayias and al. assume that only one block per depth generate reward, and that a player can not own 2 blocks at the same depth. Therefore their analysis do not take into account some potential branching strategy. In \cite{} Biais and al. assume that the reward of a block depends on the proportion of hash-power dedicated to blockchains containing the block at a random time and they define the payoff of a miner as the expectation of those rewards. Hence their analyse does not take into account the fact that a miner may not randomly cash-out its rewards. 
 In our work we assume that the reward given to a block owner increase as long as the block stays in the main chain, which create less bias when we want to study any possible branching strategy, due to the expected volatile cryptocurrency's value. However as our results tend to show that long fork should not happen under a reasonable hash-power repartition, we acknowledge that the framworks proposed in \cite{mininggames:2016,biais2018blockchain} offer a more refined model to study miner's behaviour when the cryptocurrency value is more stable.  
 
@@ -74,7 +116,8 @@ There are also work regarding miners' strategies in multi-cryptocurrency markets
 
 \smallskip
 \noindent
-{\bf Organization of the paper.} We present our game-theoretic formalization of cryptocurrency mining in Section \ref{sec-formalization}. Our results for constant and decreasing rewards are presented in Sections \ref{sec-const_rew} and~\ref{sec-dec}, respectively. Finally, some concluding remarks are given in Section~\ref{sec-con-r}. We provide the main details of the proofs of the results in the paper; however, due to the lack of space, complete proofs of all results are provided in the full version of this paper, which can be found at \url{https://anonymous.4open.science/repository/08eff11e-78b1-4836-837a-cff08348a8c8}. Besides, independent Python and C++ scripts used in the paper for the utility evaluation and plots generation can also be found in this repository.
+{\bf Organization of the paper.} We present our game-theoretic formalization of cryptocurrency mining in Section \ref{sec-formalization}. Our results for constant and decreasing rewards are presented in Sections \ref{sec-const_rew} and~\ref{sec-dec}, respectively. Finally, some concluding remarks are given in Section~\ref{sec-con-r}. We provide the main details of the proofs of the results in the paper; however, due to the lack of space, complete proofs of all results are provided in an appendix.
+%full version of this paper, which can be found at \url{https://anonymous.4open.science/repository/08eff11e-78b1-4836-837a-cff08348a8c8}. Besides, independent Python and C++ scripts used in the paper for the utility evaluation and plots generation can also be found in this repository.
 
 
 
