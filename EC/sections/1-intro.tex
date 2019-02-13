@@ -40,8 +40,12 @@ Our goal is to produce a model of mining in a cryptocurrency that can help in an
 With several cryptocurrencies bringing new rules and parameters to these questions, distilling a clean model that can answer these questions while simultaneously covering 
 all practical nuances of currencies is far from being trivial~\cite{mininggames:2016}. 
 Instead, 
-we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the full reward for a block $b$ is divided into several payments, and the miner loses some of them when $b$ stops being in the blockchain. 
-Since we do not want to impose a limit on the time in which a cryptocurrency is going to be used, we assume that the reward for a block $b$ is divided into an infinite number of payments, and we also suppose that the penalty for a block stopping being in the blockchain decreases with time. This latter condition is used to ensure that miners are rewarded according to the effort put into maintaining their blocks in the blockchain. Moreover, in our formalization of mining in a cryptocurrency,
+we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the full reward for a block $b$ is divided into several payments, and the miner loses some of them when $b$ does not belong in the blockchain. 
+Since we do not want to impose a limit on the time in which a cryptocurrency is going to be used, we assume that the reward for a block $b$ is divided into an infinite number of payments, and we also suppose that the penalty for a block leaving the blockchain decreases with time. This latter condition is used to ensure that miners are rewarded according to the effort put into maintaining their blocks in the blockchain.
+%
+In our work, this incentive takes the form of a discounted utility.
+%
+Moreover, in our formalization of mining in a cryptocurrency,
 %a scenario where the wealth of players is simply given by the number of blocks they have on the blockchain. More precisely, our game is based solely on the following rules. 
 we consider two other simple rules; for each player $i$, she 
 %\begin{enumerate}
@@ -74,7 +78,7 @@ when assuming that each player controls a fixed amount of hash power. On the oth
 %We remark that this framework 
 takes us on a different path from most of current literature, wherein agents typically mine 
 %looks to mine 
-with the objective of cashing-out as soon as possible or after a randomized amount of time \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the results obtained in these papers under a stronger incentive for agents to mine in the blockchain.
+with the objective of cashing-out as soon as possible or after a randomized amount of time \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the results obtained in these articles under stronger incentives for agents to mine in the blockchain.
 %the assumptions upon which their models are based. 
 
 \smallskip
@@ -87,15 +91,15 @@ first under the assumption that block rewards are constant (as it will eventuall
 assuming rewards decrease over time (as in Bitcoin). 
 
 In the first scenario of constant rewards, we show that the default strategy of always mining on the latest block of the blockchain is indeed a Nash equilibrium.
-It shows that if miners want to accumulate wealth in terms of the same currency  or if it is important for them to be able to cash-out at any time, then they should not fork. Especially this result shows that, with constant reward, the commonly accepted assumption that long forks should not happen is true. 
+This means that, if miners want to accumulate wealth in terms of the same currency  or if it is important for them to be able to cash-out at any time, they should not fork. Moreover, this result shows that, with constant reward, the commonly accepted assumption that long forks should not happen is true. 
 
-For the second scenario when rewards decrease over time, we prove that strategies that involve forking the blockchain
+On the other hand, if block reward decreases over time, we prove that strategies that involve forking the blockchain
 can be a better option than the default strategy. 
-Thus we study what is the best strategy for miners when assuming everyone else is playing the default strategy. As we see, the 
+We study what is the best strategy for miners when assuming everyone else is playing the default strategy. As we see, the 
 choice of a better strategy here depends on the hash power, the rate at which 
 block rewards decrease over time, and the usual financial discount rate. This confirms once again the commonly held belief that
 players should start deviating from the default strategy 
-when they approach 50\% of the network's hash power (also known as 51\% attack). And we can go further, and devise more complex strategies that 
+when they approach 50\% of the network's hash power (also known as 51\% attack). Going further, we devise more complex strategies that 
 prove better than default with a bit less than 50\% of hash power. 
 These results tend to show that, with decreasing reward, the assumption that long forks should not happen holds upon reasonable hash power repartition.
 
