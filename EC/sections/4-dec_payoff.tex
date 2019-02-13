@@ -217,7 +217,7 @@ given that $|w| = |q| -1$ for every $w \in \tau(q)$, and assuming that $r_1(w)$ 
 %u_1(\baf\mid\varepsilon) = \sum_{w\in \{0,1\}^*}\beta^{|w|}\cdot r(w)\cdot \pr^{\baf}(w\mid \varepsilon).
 %\end{equation}
 
-We now describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\tau$) in which player$1$ owns at least one block in the blockchain for the {\em first time}. 
+We now describe all the states in which player 1 receives a non-zero reward in terms of words. For this, let us consider the set $S$ of all words $w \in \{0,1\}^*$ that represent states $q$ (via $\tau$) in which player $1$ owns at least one block in the blockchain for the {\em first time}. 
 The smallest of them is $w = 1$, which represents the state in Figure \ref{fig:proof-theorem-4} (a). This state is created when player $1$ wins the first move of the game, successfully mining upon the genesis block. Next is the word $011$, representing the state in Figure \ref{fig:proof-theorem-4} (b). To arrive at this state player $0$ must have mined the first block, player $1$ forked, and then player $1$ 
 won the following block (on her forking branch). The next words in $S$ are $00111$ and $01011$, both representing the state in Figure \ref{fig:proof-theorem-4} (c). 
 In general, the words in the set $S$ have the form $d\cdot 1$, where $d$ is a \emph{Dyck word}: a word with the same number of $0$s and $1$s, but such that 
@@ -663,7 +663,7 @@ By adding a little more flexibility to the strategy of always forking, we can id
 	\node [state] at (-16.5,0) (a00) {$00$};
 	\node [state] at (-15,0) (a000) {$000$};
 	\node [state] at (-18,-1.4) (aAF) {$\af$};
-	\node [state] at (-16.5,-1.4) (aG) {$\gup_4^2$};
+	\node [state] at (-16.5,-1.4) (aG) {$\gup_3^2$};
 	\node [state] at (-21,-0.70) {(a)};
 
 	% Graph edges
@@ -859,8 +859,8 @@ $\gup^1_4$ is the strategy that beats the default strategy under the least amoun
 amongst any combination of values for $k$ and $\ell$ with $k < \ell \leq 100$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
 the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. 
 
-The analysis we can do  through 2- or 3-dimensional plots is only one part of the picture, and that a game-theoretical analysis of these strategies is an interesting area for future work. 
-Furthermore, one can also show that the techniques used to prove theorems \ref{thm:always_fork} and \ref{thm-dificil} can be in fact generalised for any strategy satisfying the condition that the game somehow resets (albeit with a shift on utilities) when both players mine upon the last block of the blockchain. 
+The analysis we can do  through 2- or 3-dimensional plots is only one part of the picture, and a game-theoretical analysis of these strategies is an interesting area for future work. 
+Furthermore, the techniques used to prove theorems \ref{thm:always_fork} and \ref{thm-dificil} can be in fact generalised for any pair of strategies satisfying arguably natural conditions: There is always a point in the future in which both players mine upon the last block of the blockchain, and the corresponding state can be treated as if it was $\varepsilon$ (after proper shifting).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
