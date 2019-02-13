@@ -309,13 +309,14 @@ Hence, we obtain $u_1(\baf)$ is equal to:
 \end{eqnarray*}
 %
 %The product of probabilities is obtained since winning a block is an independent trial. 
-Splitting up the summation we get that $ u_1(\baf)$ is equal to:
-\begin{eqnarray*}
-(1-\beta)\cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d\cdot 1) \cdot \pr(d\cdot 1\cdot w) +
- (1-\beta)\cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r_1(w) \cdot \pr(d\cdot 1 \cdot w).
-\end{eqnarray*}
+% %Splitting up the summation we get that $ u_1(\baf)$ is equal to:
+% \begin{eqnarray*}
+% (1-\beta)\cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d\cdot 1) \cdot \pr(d\cdot 1\cdot w) +
+%  (1-\beta)\cdot \sum_{d\in \Dyck}  \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot  \alpha^{\frac{|d|}{2}+1}\cdot r_1(w) \cdot \pr(d\cdot 1 \cdot w).
+% \end{eqnarray*}
 %
-We denote the first term in the equation above by $\Phi$. 
+We now split up this expression into two sums, and denote the first sum (\ie
+the one not containing the term $r_1(w)$) by $\Phi$.
 By definition of the probability of a word, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
 Next, we use this fact in the expression for $u_1(\baf)$ to split the second term into the elements that depend only on $d$, and the ones that depend only on $w$:
 %
