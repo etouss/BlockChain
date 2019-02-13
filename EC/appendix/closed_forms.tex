@@ -3,10 +3,25 @@
 \subsection{Proof of Theorem \ref{thm-dificil}}
 
 \label{sec-evaluation-G}
-In this section, we develop analytical expressions for the utilities when considering the strategy $\gup^k_\ell$ against a default player. In fact, it is possible to express $u(\gup^k_\ell)$ as a rational function (\ie, a quotient of two polynomials). In particular, these functions can be evaluated to any degree of precision, which allowed us to establish the results of section \ref{sec-dec}.
+In this section, we develop analytical expressions for the utilities when
+considering the strategy $\gup^k_\ell$ against a default player. In fact, it is
+possible to express $u(\gup^k_\ell)$ as a rational function (\ie, a quotient of
+two polynomials). In particular, these functions can be evaluated to any degree
+of precision, which allowed us to establish the results of section
+\ref{sec-dec}.
 
 
-There are two miners (or, more generally, pools of miners), labelled Miner 0 and Miner 1. Miner 0 follows the \cdf{} strategy, that is, they will always mine on top of the longest chain, regardless of where their past blocks are. On the other hand, Miner 1 plays with the $\gup^k_\ell$ strategy: given a portion of at most $k$ blocks not owned by her at the end of the blockchain, she forks at the beginning of this chain (we refer to $k$ as the disadvantage). When forking, she establishes a give-up length $\ell$ such that she will give up the fork if the main branch achieves to append $\ell$ blocks, orphaning all mined blocks on the fork. This scenario captures the fact that, with reasonable hash power, a pool does not want to fork too far behind, and will give up the fork if it does not prove successful, before reaching a hopeless situation.
+There are two miners (or, more generally, pools of miners), labelled Miner 0
+and Miner 1. Miner 0 follows the \cdf{} strategy, that is, they will always
+mine on top of the longest chain, regardless of where their past blocks are. On
+the other hand, Miner 1 plays with the $\gup^k_\ell$ strategy: given a portion
+of at most $k$ blocks not owned by her at the end of the blockchain, she forks
+at the beginning of this chain (we refer to $k$ as the disadvantage). When
+forking, she establishes a give-up length $\ell$ such that she will give up the
+fork if the main branch achieves to append $\ell$ blocks, orphaning all mined
+blocks on the fork. This scenario captures the fact that, with reasonable hash
+power, a pool does not want to fork too far behind, and will give up the fork
+if it does not prove successful, before reaching a hopeless situation.
 
 
 
@@ -14,33 +29,54 @@ There are two miners (or, more generally, pools of miners), labelled Miner 0 and
 %A_2 & = & \alpha \cdot \beta \cdot h\\
 
 \begin{mythm}
-Miner 1, with hash power $h$, fixes a disadvantage $k$, a give-up length $\ell$, and plays with $\gup^k_\ell$. Miner 0 plays with $\cdf$. 
+Miner 1, with hash power $h$, fixes a disadvantage $k$, a give-up length
+$\ell$, and plays with $\gup^k_\ell$. Miner 0 plays with $\cdf$. 
 The utility of miner 1 is given by
 $$
 u_1(\gup^k_\ell)(h) = \frac{\Phi_{k,\ell}(h)}{1-\Gamma_{k,\ell}(h)},
 $$
 where $\Phi_{k,\ell},\Gamma_{k,\ell}$ are polynomials in $h$ (with coefficients depending on $k,\ell,\alpha$ and $\beta$).
 \end{mythm}
-In the proof of this theorem, we develop precise expressions for $\Phi_{k,\ell}, \Gamma_{k,\ell}$. These are combinations of two sets of polynomials we call Trapezoidal and Pentagonal Dyck polynomials ($T_{n,m}, P_{n,m}$, see \ref{sec-trapezoid-pentagon}). In what follows, let $x = \beta^2 \cdot h \cdot (1 - h)$ for the ease of notation.
+In the proof of this theorem, we develop precise expressions for
+$\Phi_{k,\ell}, \Gamma_{k,\ell}$. These are combinations of two sets of
+polynomials we call Trapezoidal and Pentagonal Dyck polynomials ($T_{n,m},
+P_{n,m}$, see \ref{sec-trapezoid-pentagon}). In what follows, let $x = \beta^2
+\cdot h \cdot (1 - h)$ for the ease of notation.
 \begin{proof}
-The game begins with both players mining on $\varepsilon$, and assume that Miner 0 first appends $j$ blocks. Here, five types of states can arise:
+The game begins with both players mining on $\varepsilon$, and assume that
+Miner 0 first appends $j$ blocks. Here, five types of states can arise:
 \begin{itemize}
-    \item[(0)] (Case $j=0$) Miner 1 immediately appends a block $b$ on top of $\varepsilon$ and now both players will mine on top of $b$.
-    \item[(a)] After miner 0 appends $j\leq k$ blocks on top of $\varepsilon$, miner 1 appends one block on top of $\varepsilon$ and starts the fork. Miner 1 wins the fork, gaining at most $j+\ell+1$ blocks.
-    \item[(b)] After miner 0 appends $j > k$ blocks on top of $\varepsilon$, miner 1 appends one block at position $j-k$. Miner 1 wins the fork, gaining at most $k+\ell+1$ blocks.
-    \item[(c)] After miner 0 appends $j\leq k$ blocks on top of $\varepsilon$, miner 1 appends one block on top of $\varepsilon$ and starts the fork. Miner 0's branch achieves length $\ell+1$ and miner 1 gives up.
-    \item[(d)] After miner 0 appends $j > k$ blocks on top of $\varepsilon$, miner 1 appends one block at position $j-k$. Miner 0's branch achieves length $\ell+1$ and miner 1 gives up.
+    \item[(0)] (Case $j=0$) Miner 1 immediately appends a block $b$ on top of
+        $\varepsilon$ and now both players will mine on top of $b$.
+    \item[(a)] After miner 0 appends $j\leq k$ blocks on top of $\varepsilon$,
+        miner 1 appends one block on top of $\varepsilon$ and starts the fork.
+        Miner 1 wins the fork, gaining at most $j+\ell+1$ blocks.
+    \item[(b)] After miner 0 appends $j > k$ blocks on top of $\varepsilon$,
+        miner 1 appends one block at position $j-k$. Miner 1 wins the fork,
+        gaining at most $k+\ell+1$ blocks.  \item[(c)] After miner 0 appends
+        $j\leq k$ blocks on top of $\varepsilon$, miner 1 appends one block on
+        top of $\varepsilon$ and starts the fork. Miner 0's branch achieves
+        length $\ell+1$ and miner 1 gives up.  \item[(d)] After miner 0 appends
+$j > k$ blocks on top of $\varepsilon$, miner 1 appends one block at position
+$j-k$. Miner 0's branch achieves length $\ell+1$ and miner 1 gives up.
 \end{itemize}
 
-A key observation is that after one of this cases, both players will mine over the same block, and reboot the strategies as if this block were $\varepsilon$. This recursive behaviour allows us to compute the utility of single forks in the same spirit as in \ref{thm:always_fork}, and then use proper shifting to establish an equation in $u_1(\gup^k_\ell)(h)$. In other words, we have
+A key observation is that after one of this cases, both players will mine over
+the same block, and reboot the strategies as if this block were $\varepsilon$.
+This recursive behaviour allows us to compute the utility of single forks in
+the same spirit as in \ref{thm:always_fork}, and then use proper shifting to
+establish an equation in $u_1(\gup^k_\ell)(h)$. In other words, we have
 
-$$u_1(\gup^k_\ell)(h) = u_0(h) + \sum_{j=1}^k (u_{a,j}(h) + u_{c,j}(h)) + \sum_{j=k+1}^\infty (u_{b,j}(h) + u_{d,j}(h)),$$
-where each term corresponds to the total utility contributed by the cases above. In what follows, we develop expressions for each of these terms.
+$$u_1(\gup^k_\ell)(h) = u_0(h) + \sum_{j=1}^k (u_{a,j}(h) + u_{c,j}(h)) +
+\sum_{j=k+1}^\infty (u_{b,j}(h) + u_{d,j}(h)),$$ where each term corresponds to
+the total utility contributed by the cases above. In what follows, we develop
+expressions for each of these terms.
 
-\begin{subsubsection}{Case (0)} Every state $q$ in this case is of the form $1\cdot w$, where $w\in \bstring$, and thus the utility amounts to
+\begin{subsubsection}{Case (0)} Every state $q$ in this case is of the form
+    $1\cdot w$, where $w\in \bstring$, and thus the utility amounts to
 \begin{align*}
 u_0(h) &= (1-\beta) \cdot \sum_{w\in \bstring}\beta^{1+|w|} (\alpha + \alpha\cdot r_1(w))\cdot h \cdot \pr(w).\\
-    &= (1-\beta) \frac{\alpha\cdot \beta \cdot h}{1-\beta} + \alpha\cdot\beta\cdot h \cdot(1-\beta) \sum_{w\in \bstring}\beta^{|w|} r_1(w) \cdot \pr(w)\\
+    &= (1-\beta) \cdot\frac{\alpha\cdot \beta \cdot h}{1-\beta} + \alpha\cdot\beta\cdot h \cdot(1-\beta)\cdot\sum_{w\in \bstring}\beta^{|w|} r_1(w) \cdot \pr(w)\\
     &= \alpha\cdot \beta \cdot h + \alpha\cdot\beta\cdot h\cdot u_1(\gup^k_\ell)(h),
 \end{align*}
 \end{subsubsection}
@@ -102,16 +138,17 @@ where $\Dyck_{j-1}$ are Dyck words with disadvantage $j-1$.
 
 We have
 \begin{align*}
-u_{a,j}(h) &= (1-\beta) \cdot \sum_{w\in \bstring, d\in \Dyck_{j-1}, |d| \leq 2\ell-j}\beta^{|d|+j+1+|w|}\cdot \bigg(\sum_{i=0}^{(|d|+j)/2}\alpha^{i+1} + \alpha^{(|d|+j)/2 + 1} r(w)\bigg)\cdot h^{(|d|+j)/2 + 1}\cdot (1-h)^{(|d|+j)/2}\cdot \pr(w).
+    \scriptsize    \frac{u_{a,j}(h)}{1-\beta} &\scriptsize =\sum_{\begin{array}{c}\scriptscriptstyle w\in \bstring\\ \scriptscriptstyle d\in \Dyck_{j-1}\\ \scriptscriptstyle |d| \leq 2\ell-j\end{array}}\beta^{|d|+j+1+|w|}\cdot \bigg(\alpha^{\frac{|d|+j}{2}+1} \cdot r(w)+\sum_{i=0}^{\frac{|d|+j}{2}}\alpha^{i+1} \bigg)\cdot h^{\frac{|d|+j}{2}+ 1}\cdot (1-h)^{\frac{|d|+j}{2}}\cdot \pr(w).
 \end{align*}
 Simplifying this expression yields
 \begin{align*}
 u_{a,j}(h) &= 
 \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j \cdot 
-\bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j}x^{(|d|-j)/2}\cdot (1-\alpha^{(|d|+j)/2 + 1})\bigg) \\
-& +
-\alpha\cdot\beta\cdot h \cdot(\alpha\cdot x)^j\cdot \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j} (\alpha\cdot x)^{(|d|-j)/2}\bigg)\cdot\bigg(\sum_{w\in\bstring} \beta^{|w|}\cdot r_1(w)\cdot \pr(w)\bigg)\\
-    &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j(T_{j-1,\ell-j}(x)-\alpha^{j+1}\cdot T_{j-1,\ell-j}(\alpha\cdot x)) + \alpha\cdot\beta\cdot h\cdot(\alpha \cdot x)^j\cdot T_{j-1,\ell-j}(\alpha\cdot x)\cdot u_1(\gup^k_\ell)(h),
+\bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j}x^{\frac{|d|-j}{2}}\cdot (1-\alpha^{\frac{|d|+j}{2}+1})\bigg)\\
+& 
++\alpha\cdot\beta\cdot h \cdot(\alpha\cdot x)^j\cdot \bigg(\sum_{d\in \Dyck_{j-1}, |d|\leq 2l - j} (\alpha\cdot x)^{\frac{|d|-j}{2}}\bigg)\cdot\bigg(\sum_{w\in\bstring} \beta^{|w|}\cdot r_1(w)\cdot \pr(w)\bigg)\\
+    &= \frac{\alpha\cdot\beta\cdot h}{1-\alpha}\cdot x^j\big(T_{j-1,\ell-j}(x)-\alpha^{j+1}\cdot T_{j-1,\ell-j}(\alpha\cdot x)) \;+\\
+    &+ \alpha\cdot\beta\cdot h\cdot(\alpha \cdot x)^j\cdot T_{j-1,\ell-j}(\alpha\cdot x)\cdot u_1(\gup^k_\ell)(h),
 \end{align*}
 where $T_{n,m}$ is defined on section \ref{sec-trapezoid-pentagon}.
 
