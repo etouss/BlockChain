@@ -192,8 +192,8 @@ The framework just described corresponds to a Markov chain; in particular, the p
 We have all the ingredients to define the utility of players given a particular strategy. 
 %We finally have all the necessary ingredients to define the utility of a player in a mining game given a particular strategy. 
 As is common
-when looking at personal utilities, we define it as the summation of the expected rewards, and choose
-to impose a discount for future rewards using a factor $\beta \in (0,1)$.
+when looking at personal utilities, we define it as the summation of the expected rewards,
+and, addressing the claimed incentives on maintaining the blocks in the main branch, we work with a discount for future rewards using a factor $\beta \in (0,1)$. 
 
 \begin{mydef}
 \label{def-utility}
@@ -226,11 +226,11 @@ we design our pay-off model with the goal of incentivising players to mine in th
 %makemimic the incentives of the payment system of Bitcoin and other cryptocurrencies. More precisely, 
 Given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalisations of cryptomining \cite{mininggames:2016,koutsoupias2018blockchain}. 
 %the reward of a player $p$ in a state $q$, denoted $r_p(q)$ is defined as $r_p(q)= \sum_{b \in \bchain(q)} r_p(b,q)$, where $r_p(b,q) > 0$ is the reward that player $p$ receives for a block $b$ she owns in the blockchain of the state $q$, and equals zero if $\bchain(q)$ is not defined. 
-Then 
+% Then 
 %to incentivise miners to put and keep blocks in the blockchain, 
-the reward for a mined block $b$ 
+The reward for a mined block $b$ 
 %the fact that the block reward for the block 
-is not granted immediately according to  Definition \ref{def-utility}, instead 
+is not granted immediately according to  Definition \ref{def-utility}, instead,
 %we pay in Definition \ref{def-utility} 
 a portion of $r_p(b,q)$ is paid in each state $q$ where $b$ is in.
 %($\beta$-discounted) 
@@ -238,14 +238,14 @@ a portion of $r_p(b,q)$ is paid in each state $q$ where $b$ is in.
 In other words, if a miner owns a block, then she will be rewarded for this block in every state where this block is part of the blockchain, in which case $r_p(b,q) > 0$. 
 %In this way, there is a clear incentive for players to mine and keep blocks in the blockchain, and there is a penalty when a block $b$ ceases to be in the blockchain, which is reduced with time.
 
-Hence, we pay a portion of a block's reward each time it is included in the blockchain, and even though we can pay infinitely many times for each block, the 
-discount factor in the definition of utility ensures we do not overpay.  
+Hence, in our model, a miner is payed a portion of a block's reward each time it is included in the blockchain, and even though  she gets payed infinitely many times for each block, the 
+discount factor in the definition of utility ensures that there is no overpay.
 %In our model, 
 %we might pay the miner infinitely many times for a single block. A natural question is then whether we are overpaying for the blocks. This is where the discount factors in our definition of utility come into play, as we pay a portion of block $b$'s reward each time it is included in the %current 
 %blockchain. 
 In other words, 
 when a player mines a new block, she will receive the full amount for this block only if she manages to maintain the block in the blockchain up to infinity. Otherwise, if this block 
-ceases to be in the blockchain, we only pay a fraction of the full amount and, thus, we penalise the owner of this block. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
+ceases to be in the blockchain, the miner receives only a fraction of the full amount and, thus, is penalised. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
 \begin{eqnarray*}
 u_p^b(\bs) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in \bchain(q)} \beta^{|q|-1} \cdot  r_p(q,b) \cdot \pr^{\bs}(q).
 \end{eqnarray*}
