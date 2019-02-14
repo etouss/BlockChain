@@ -811,18 +811,15 @@ To count these paths we provide the following combinatorial result.
 \begin{eqnarray*}
 \sigma_{a,b} & = & \frac{(a+b)\cdot(a+2b)!}{b!\cdot(a+b+1)!}=\frac{a+1}{a+b+1}\cdot {a+2b\choose a+b}.
 \end{eqnarray*}
-    Also, for nonnegative integers $a,b,r$, let $\theta_{a,b}^r$ be the
+    Also, for nonnegative integers $a,b,r$ such that $r>a$, let $\theta_{a,b}^r$ be the
  amount of such paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon
  $\{(0,0),(a,0),(r,r-a),(r,b),(0,b)\}$. Then we have the following
-\begin{eqnarray*}
-\theta_{a,b}^r & = & 
- \begin{cases}
- {\displaystyle {r+b\choose b}} & \quad \text{If } r \leq a\\
- {\displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}} &  \quad \text{If } a<r\\
+ $$
+\theta_{a,b}^r = 
+ \displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \bigg(\sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}} \bigg).
  %\displaystyle\mbox{If }a<r<b,\quad \theta_{a,b}^r = \sigma_{b-r,r} + \sum_{i=1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
  %\displaystyle\mbox{If }b<r\mbox{ and }a<r,\quad \theta_{a,b}^r = \sigma_{r-b,b} + \sum_{i=r-b+1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
- \end{cases}
- \end{eqnarray*}
+ $$
  \end{lemma}
  For the proof, we write the utility as given in Definition \ref{def-utility}, separate the summation 
  over the set of five cases explained above, and then show that these sums can be expressed in terms of the 
