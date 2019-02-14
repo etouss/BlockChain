@@ -44,7 +44,7 @@ we abstract from these rules and focus on the limit situation in which a miner d
 %, thus imposing a strong incentive for miners to put their blocks in the blockchain. 
 More precisely, the reward for a block $b$ is divided into an infinite number of payments, and the miner loses some of them whenever $b$ does not belong to the blockchain. 
 Since older blocks in the blockchain are easier to maintain, we also ensure that the penalty for a block leaving the blockchain decreases with time. 
-This limit situation represents miners who have a strong incentive to put--and maintain--their blocks in the blockchain, and is relevant when studying cryptocurrencies 
+This limit situation imposes a strong incentive for miners to put--and maintain--their blocks in the blockchain, and is relevant when studying cryptocurrencies
 as a closed system, where miners do 
 not wish to spend money right away but rather be able to cash-out their wealth at any point in time. 
 %
@@ -95,23 +95,21 @@ with the objective of cashing-out as soon as possible or after an  amount of tim
 %the assumptions upon which their models are based. 
 
 \smallskip
-\noindent{\bf Contributions.}  Our first contribution is to provide a model of mining as an infinite stochastic game, in which maximising the utility corresponds to both 
+\noindent{\bf Contributions.}  Our first contribution 
+%is to provide a
+is model for blockchain mining, given as an infinite stochastic game in which maximising the utility corresponds to both 
 putting blocks in the blockchain and maintaining them there for as long as possible. A
 %One of the 
-benefit of our model is that using a few basic design parameters we can 
+benefit of our model is that using few basic design parameters we can 
 %in fact 
 accommodate different cryptocurrencies, and not focus solely on Bitcoin,
 % These parameters also 
- allowing us to account for fundamental factors such as deflation, or discount in the block reward. 
- Besides,
- %Another benefit of 
- we can reason about all possible branching strategies in our proposal, 
- %our proposal is the fact that , 
- without the need to focus on a specific subclass. 
-
-The second contribution of our work is a set of results about optimal strategies in two different scenarios that arise from different cryptocurrencies. First, 
-we study mining under the assumption that block rewards are constant (as it will eventually be in cryptocurrencies with tail-emission such as Monero or Ethereum), and then 
-assuming rewards decrease over time (as in Bitcoin). 
+while also allowing us to account for fundamental factors such as deflation, or discount in the block reward. 
+%  Besides,
+%  we can reason about all possible branching strategies in our proposal, 
+%  without the need to focus on a specific subclass. 
+The second contribution of our work is a set of results about optimal strategies in two different scenarios. First, 
+we study mining under the assumption that block rewards are constant (as it will eventually be in cryptocurrencies with tail-emission such as Monero or Ethereum), and secondly, assuming that per-block reward decreases over time (as in Bitcoin). 
 
 In the first scenario of constant rewards, we show that the default strategy of always mining on the latest block of the blockchain is indeed a Nash equilibrium and, in fact, 
 provides the highest possible utility for all players. 
@@ -138,12 +136,17 @@ most previous work (see e.g. \cite{mininggames:2016,biais2018blockchain}).
 %These results tend to show that, with decreasing reward, the assumption that long forks should not happen holds upon reasonable hash power repartition.
 
 \smallskip
-\noindent{\bf Related work.} 
-The closest papers in spirit are \cite{mininggames:2016,biais2018blockchain}, both of which offer a game-theoretical model of blockchain's mining game and study when miners have incentives to deviate from the default behaviour. Due to the complexity of the protocol they had to make some assumptions, in \cite{mininggames:2016} Kiayias and al. assume that only one block per depth generate reward, and that a player can not own 2 blocks at the same depth. Therefore their analysis do not take into account some potential branching strategies. In \cite{biais2018blockchain} Biais and al. assume that the reward of a block depends on the proportion of hash-power dedicated to blockchains containing it at a time a priori chosen. Hence their analyse does not take into account the fact that a miner may want to adapt his cash-out strategy based on the situation. 
-In our work we are able to consider any branching strategies, even those which endanger the cryptocurrency's value therefore one can expect the value to be highly volatile. In such situation assuming that miners have an incentive to be able to cash-out at any point in time is more adequate. Interestingly as our results tend to show that long fork should not happen under a reasonable hash-power repartition, it justifies that only one block per depth generate reward if the cash-out delay is long enough.
+\noindent{\bf Related work.} We remark that this framework shares similiraties but takes us on a different path that most of current literature offering a game-theoretic characterisation for blockchain mining, most notably \cite{mininggames:2016,biais2018blockchain}.
+%, in which miners have incentives to deviate from the default behaviour.
+In these articles, some non-standard assumptions were made, \francisco{is this too agressive?} mainly due to the complexity of the mining protocol. For instance, in \cite{mininggames:2016} Kiayias et.al. assumes that only one block per depth generates reward and that a player can not own two blocks at the same depth.\francisco{Please rephrase the previous sentence} In \cite{biais2018blockchain} Biais et.al. assumes that the reward of a block depends on the proportion of hash-power dedicated to blockchains containing it at a time chosen a priori. These assumptions do not take into account potential branching strategies, or the fact that a miner may want to adapt his cash-out strategy based on the situation. 
+In our work, we assume that the reward given to a block owner is distributed over time, as long as the block stays on the main chain. This, we believe, is adequate to study any possible branching strategy, due to the expected volatile cryptocurrency's value.
+Our results imply that long forks should not happen under reasonable hash-power distritutions, in which case we acknowledge that the assumptions made in the mentioned works are justified when the cryptocurrency value is considered stable.
 
-There are other studies that approach mining from a game-theoretical point of view. The main difference with our work is in the choice of the reward function \cite{economics_of_mining2013,selfishmining2014,optimalselfishmining2017,biais2018blockchain,instabilitywithoutreward:2016} these papers use, or the restriceted space of mining strategies they considere  \cite{economics_of_mining2013,selfishmining2014,optimalselfishmining2017}. Recently the perks of adding a new functionality to bitcoin's mining protocol have been studied \cite{koutsoupias2018blockchain}, and the paper shows that a pay-forward option would secure optimality of the default behaviour, even when miners' rewards are mainly transaction's fee. 
-There are also work regarding miners' strategies in multi-cryptocurrency markets \cite{dhamal2018stochastic,spiegelman2018game}. The main difference with our work is that we focus on a single cryptocurrency in a closed world setting. Finally, there are a number of papers on network properties of the Bitcoin protocol, as well as technical considerations regarding its security and privacy (see e.g. the survey by Conti et al. \cite{conti2018survey}). One interesting result here is that the network's specificity of the protocol could give participants an incentive to deviate from default behaviour~\cite{bitcoin_attacks_2013,ddos_attacks2014,empirical_dos_attacks2014}.   
+Cryptocurrency mining has already been approached from a game-theoretical point of view. The main difference with our work is in the choice of the reward function \cite{economics_of_mining2013,selfishmining2014,optimalselfishmining2017,biais2018blockchain,instabilitywithoutreward:2016}, or the space of mining strategies considered \cite{economics_of_mining2013,selfishmining2014,optimalselfishmining2017}. Recently, the perks of adding new functionalities to bitcoin's mining protocol have been studied: In \cite{koutsoupias2018blockchain}, it is shown that a pay-forward option would ensure optimality of the default behaviour, even when miner rewards are mainly given as transaction fees.
+These is also interesting work regarding mining strategies in multi-cryptocurrency markets \cite{dhamal2018stochastic,spiegelman2018game}, and a number of articles on network properties of the Bitcoin protocol, as well as technical considerations regarding its security and privacy (see e.g. the survey by Conti et al. \cite{conti2018survey}). Remarkably, it is concluded that some network settings can inflict undesired mining behaviour ~\cite{bitcoin_attacks_2013,ddos_attacks2014,empirical_dos_attacks2014}.   
+
+
+% The main difference with our work is that we focus on a single cryptocurrency in a closed world setting (e.g. we do not reason about  the exchange rate of the studied cryptocurrency with the US dollar or another cryptocurrency). Finally, there are a number of papers on network properties of the Bitcoin protocol, as well as technical considerations regarding its security and privacy (see e.g. the survey by Conti et al. \cite{conti2018survey}). One interesting result here is that the network's specificity of the protocol could give participants an incentive to deviate from default behaviour~\cite{bitcoin_attacks_2013,ddos_attacks2014,empirical_dos_attacks2014}.   
 
 %More specifically,  Kroll et al. \cite{economics_of_mining2013} focus on a subset of strategies they call \emph{monotonic}, and prove a 
 %Nash equilibria for these strategies when assuming a constant payoff model. Eyal and Sirer~\cite{selfishmining2014}  and later Sapirshtein et al. in \cite{optimalselfishmining2017} studied a different strategy known as \emph{selfish mining}, in which miners may withhold some of their newly created blocks. Their main result is that, assuming that all other miners are following the default strategy and that block rewards remain constant, a miner with strictly less than 50\% of the network's hash power can increase his income by not always revealing block immediately (thus proving that the default strategy is not a Nash equilibrium). Carlsten et al. \cite{instabilitywithoutreward:2016} studied the \emph{tail} behavior of Bitcoin in which the block reward becomes negligible compared to the mining fees, proving that in such situation miners have further incentives to deviate from the default strategy. 
