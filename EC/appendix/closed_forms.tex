@@ -441,7 +441,7 @@ Extracting the sequence from the Taylor series of $\phi_a(x)$ around 0 and provi
  \end{myprop}
 
 
-\begin{subsubsection}{Counting paths in a pentagon.} Let $\mathcal{P}_{a,b}^r$ be the set of north-east unitary-step paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon $(0,0),(a,0),(r,r-a),(r,b),(0,b)$, and $\theta_{a,b}^r$ the amount of such paths. Also, let $\lambda$ be the diagonal line $\overline{(a,0)(r,r-a)}$. 
+ \begin{subsubsection}{Counting paths in a pentagon.} For nonnegative integers $a,b,r$ such that $r>a$, let $\mathcal{P}_{a,b}^r$ be the set of north-east unitary-step paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon $(0,0),(a,0),(r,r-a),(r,b),(0,b)$, and $\theta_{a,b}^r$ the amount of such paths. If $r\leq a$ define $\theta_{a,b}^r$ as the amount of paths from $(0,0)$ to $(r,b)$ that do not exit the rectangle $(0,0),(r,0),(r,b),(0,b)$.
 \begin{myprop}
     The sequence $\theta:\NN^3\to \NN$ verifies the following recurrence relation
     $$
@@ -449,7 +449,7 @@ Extracting the sequence from the Taylor series of $\phi_a(x)$ around 0 and provi
     $$
  \end{myprop}
  \begin{proof}
- As in the proof of \ref{sigma-recurrence}, we write $\mathcal{P}_{a,b}^r$ as a disjoint union:
+ As in the proof of \ref{sigma-recurrence}, we write $\mathcal{P}_{a,b}^r$ as a disjoint union. Let $\lambda$ be the diagonal line $\overline{(a,0)(r,r-a)}$.
 
  \begin{align*}
  \mathcal{P}_{a,b}^r &= (\mbox{paths that do not touch }\lambda)\cup (\mbox{paths that touch }\lambda)\\
