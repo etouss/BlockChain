@@ -19,7 +19,7 @@ we use the following reward function $\rpa$ for all players $p \in \bP$, denoted
 %{\displaystyle c \cdot \sum_{i=1}^{|\meet(q)|} \alpha^i \cdot \chi_p(\meet(q),i)} \end{eqnarray*}
 \begin{eqnarray*}
 \rpa(q) & = & 
-c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b),
+c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b).
 \end{eqnarray*}
 In this section, we show that when miners' fees decrease over time, forking can be a good strategy. We explore in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. Interestingly, for such strategies we confirm the folklore fact that it is profitable to fork with more than half of the hash power. Moreover, our exploration in Section \ref{sec-giving-up} gives us a concrete strategy that with less than half of the hash power 
 %a little more than $46\%$ of the hash power 
@@ -57,7 +57,7 @@ The first observation is that in this case we can reduce the $m$ player game to 
 In order to determine whether there is an incentive for player~1 to fork, we first need to determine her utility when she is playing according to the default strategy $\cdf = (\df_0,\df_1)$. 
 
 \begin{lemma}\label{lem:default_utility}
-If $h$ is the hash power of player 1, then:
+If $h$ is the hash power of player 1, then
 %and the strategy deployed by the two players is $\cdf$, then the utility of player 1 is given by the expression:
 \begin{eqnarray*}
 u_1(\cdf) & = & h\cdot c\cdot\frac{\alpha\cdot\beta}{(1-\alpha\cdot\beta)}.
@@ -149,7 +149,7 @@ perhaps more interestingly, we can also answer a more analytical question: given
 Answering both questions requires us to compute the utility for the strategy $\baf=(\df_0,\af)$. 
 
 \begin{theorem}\label{thm:always_fork}
-If $h$ is the hash power of player 1, then:
+Let $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ denote the generating function of Catalan numbers.  If $h$ is the hash power of player 1, then
 %%, $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. Then:
 \begin{eqnarray*}
 u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where}
@@ -161,7 +161,6 @@ u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where}
 \Gamma & \ = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h)),
 \end{align*}
 %}
-and $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ is the generating function of Catalan numbers.
 \end{theorem}
 
 %ADD FORK ONCE
@@ -181,11 +180,11 @@ $\tau(q) = \{ b_\rho \mid \rho \text{ is a sequence for } q\}$.
 %\tau(q) & = & \{ b_\rho \mid \rho \text{ is a sequence for } q\}.
 %\end{eqnarray*}
 Intuitively, $\tau(q)$ is the set of all moves that players 0 and 1 can do in $|q|-1$ steps according to $\baf$ that lead them to the state $q$ when starting in the genesis block. As such, they are coded as sequences of zeros and ones that tell us which player puts a block at the stage $i$ of the game, for $i \in \{ 1,\ldots, |q|-1\}$. It is straightforward to verify the following:
-\begin{myclaim}\label{claim-words} For every $q, q'\in Q_\baf$, it holds that:
+\begin{myclaim}\label{claim-words} For every $q, q'\in Q_\baf$, it holds that
 \begin{itemize}
 \item[(a)] If $q\neq q'$, then $\tau(q)$ is disjoint from $\tau(q')$.
-\item[(b)] $\pr^{\baf}(q) = \sum_{w \in \tau(q)} \pr(w)$, where $\pr(w)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is defined as 
-$h^{n_1}(1-h)^{n_0}$.
+\item[(b)]
+$\pr^{\baf}(q) = \sum_{w \in \sigma(q)} \pr(w)$, where, if $w$ has $n_0$ zeroes and $n_1$ ones, $\pr(w)=h^{n_1}(1-h)^{n_0}$. 
 \end{itemize}
 \end{myclaim}
 In particular, Claim \ref{claim-words} (a) can be proved exactly in the same way Claim \ref{claim-nonempty-inter-gen} is proved. Notice that Claim \ref{claim-words} (a)
@@ -328,7 +327,7 @@ $w$ with $r_1(w) > 0$ are therefore of the form $d\cdot 1\cdot w'$ with $d \in \
 % be the state represented by $d\cdot 1\cdot w'$. 
 State $q$ can be seen as a tree with two branches: one only with blocks earned by player $0$, and the other one 
 with at least ${\frac{|d|}{2}+1}$ blocks owned by player $1$ (plus maybe more, depending on $w'$). 
-We can then calculate the reward for $q$ as $r_1(q) = r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w')$, obtaining that:
+The reward for $q$ is given by $r_1(q) = r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w')$, yielding
 %\begin{eqnarray*}
 %%r_1(q) & = & \bigg(\sum_{i=1}^{\frac{|d|}{2}+1}\alpha^i \bigg)+ \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
 %r_1(q) & = & r_1(d \cdot 1) + \alpha^{\frac{|d|}{2}+1}\cdot r_1(w').
@@ -342,22 +341,21 @@ u_1(\baf) \ = \ (1-\beta) \cdot \sum_{d\in \Dyck} \sum_{w\in \{0,1\}^*} \bigg(\b
 %\end{multline*}
 %
 %The product of probabilities is obtained since winning a block is an independent trial. 
-Splitting up the summation, we get that $ u_1(\baf)$ is equal to:
+Splitting up the summation, we get that $ u_1(\baf)$ equals
 \begin{align*}
 &(1-\beta) \cdot \sum_{d\in \Dyck} \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot r_1(d\cdot 1) \cdot \pr(d\cdot 1\cdot w) \ +\\
  & (1-\beta) \cdot \sum_{d\in \Dyck} \sum_{w\in \{0,1\}^*}\beta^{|d|+1+|w|}\cdot \alpha^{\frac{|d|}{2}+1}\cdot r_1(w) \cdot \pr(d\cdot 1 \cdot w).
 \end{align*}
 %
 We denote the first term in the equation above by $\Phi$. 
-By definition of the probability of a word, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$. 
-Next, we use this fact in the expression for $u_1(\baf)$ to split the second term into the elements that depend only on $d$, and the ones that depend only on $w$:
+By independence of the words $w,d$, we have that $\pr(d\cdot 1\cdot w) = \pr(d\cdot 1)\cdot \pr(w)$, which allows to factor the second sum:
 %
 \begin{align*}
  u_1(\baf) \ = \Phi \ + \bigg(\sum_{d\in \Dyck} \beta^{|d|+1}\cdot \alpha^{\frac{|d|}{2}+1}\cdot \pr(d\cdot 1)\bigg) \cdot 
  \bigg((1-\beta) \cdot \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w) \cdot \pr(w)\bigg).
 \end{align*}
 %
-Since the term $(1-\beta) \cdot \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w) \cdot \pr(w)$ is precisely $u_1(\baf)$, we have that:
+Since the term $(1-\beta) \cdot \sum_{w\in \{0,1\}^*} \beta^{|w|} \cdot r_1(w) \cdot \pr(w)$ is precisely $u_1(\baf)$, we have that
 %
 \begin{eqnarray*}
  u_1(\baf) & = & \Phi + 
@@ -397,7 +395,7 @@ The closed form for $\Phi$ is computed analogously, yielding the claimed express
 \begin{proof}
 Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis using strategy $\baf$, and recall 
 the mapping $\sigma: Q_\baf \rightarrow \{0,1\}^*$ introduced in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the definition of $\sigma$ we have that for any state $q \in Q_\baf$ one verifies 
-$\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \sigma(q)} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ for a word $w$ with $n_0$ zeroes and $n_1$ ones is simply 
+$\pr^{\baf}(q \mid \varepsilon) = \sum_{w \in \sigma(q)} \pr(w \mid \varepsilon)$, where $\pr(w \mid \varepsilon)$ is simply $h^{n_1}(1-h)^{n_0}$, where $n_0, n_1$ are the amount of zeroes and ones in $w$.
 $h^{n_1}(1-h)^{n_0}$. Further, by Claim \ref{claim-nonempty-inter-gen} the inverse $\sigma^{-1}: \{0,1\}^* \rightarrow Q_\baf$ is a total function. 
 All of this means that we can rewrite the utility of player $1$ using $\baf$ as: 
 \begin{multline*}
@@ -793,7 +791,7 @@ Thus, as in the case of
 Theorem
 \ref{thm:always_fork}, we have an equation of the form $u_1(\bgup^k_\ell)  =
 \Phi_{\ell, k}+\Gamma_{\ell, k}\cdot u_1(\bgup^k_\ell)$, where $\Phi_{\ell, k}$
-is the utility contribution of the set of the above finite states and and
+is the utility contribution of the set of the above finite states and
 $\Gamma_{\ell, k}$ is a proper shifting factor.  
 Once again, an important combinatorial challenge of this proof is to quantify the number of different 
 paths leading to these states where both player mine the same block. 
@@ -826,7 +824,7 @@ To count these paths we provide the following combinatorial result.
  \end{lemma}
  For the proof, we write the utility as given in definition \ref{def-utility}, separate the summation 
  over the set of five cases explained above, and then show that these sums can be expressed in terms of the 
- generating polynomial associated to the sequences $\sigma_{a,b}$ and $\theta_{a,b}^r$, which we
+ generating polynomials associated to the sequences $\sigma_{a,b}$ and $\theta_{a,b}^r$, which we
 refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}.
 %After writing the utility in this case, as given in definition \ref{def-utility},
 %and separating the summation over the set of states into these five cases, the
