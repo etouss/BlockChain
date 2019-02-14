@@ -813,12 +813,9 @@ To count these paths we provide the following combinatorial result.
 \end{eqnarray*}
     Also, for nonnegative integers $a,b,r$ such that $r>a$, let $\theta_{a,b}^r$ be the
  amount of such paths from $(0,0)$ to $(r,b)$ that do not exit the pentagon
- $\{(0,0),(a,0),(r,r-a),(r,b),(0,b)\}$. Then we have the following
+ $\{(0,0),(a,0),(r,r-a),(r,b),(0,b)\}$. Then we have the following:
  $$
-\theta_{a,b}^r = 
- \displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \bigg(\sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}} \bigg).
- %\displaystyle\mbox{If }a<r<b,\quad \theta_{a,b}^r = \sigma_{b-r,r} + \sum_{i=1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
- %\displaystyle\mbox{If }b<r\mbox{ and }a<r,\quad \theta_{a,b}^r = \sigma_{r-b,b} + \sum_{i=r-b+1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
+\theta_{a,b}^r = \displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \bigg(\sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j} \bigg).
  $$
  \end{lemma}
  For the proof, we write the utility as given in Definition \ref{def-utility}, separate the summation 
