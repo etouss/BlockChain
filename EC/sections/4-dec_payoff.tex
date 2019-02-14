@@ -7,7 +7,7 @@
 %the reward given for mining blocks is reduced by half every 200.000 blocks or so. Thus the natural question, do the results above continue to hold under these 
 %circumstances? Our answer is a resounding no, and now forking can be a valid strategy depending on the hash power of a player (and the other parameters of the game). 
 
-Miner's fees in many cryptocurrencies, including Bitcoin and Monero, are not constant, but diminish over time.
+Miner's fees in many cryptocurrencies, including Bitcoin and Monero, are not constant, but decrease over time.
 %~\cite{Bitcoin,Monero,Litecoin,Bcash}. 
 We model such 
 %diminishing 
@@ -767,7 +767,9 @@ proof of this theorem,
 %(appendix \ref{sec-evaluation-G}),
  involving two sets
 of polynomials related to Dyck words, which describe the combinatorial nature of
-the game. The complete proof is given in appendix \ref{sec-evaluation-G}.
+the game. In what follows we give a sketch of the proof of this theorem. The complete proof is given in appendix \ref{sec-evaluation-G}.
+
+\medskip
 
 {\sc Proof sketch.} Consider the beginning of the game, where both players are
 mining on $\varepsilon$ and there are no other blocks. From this point, and
@@ -784,7 +786,7 @@ manages to append a block at position $j-k$, starting a fork and eventually
 winning (case 4) or again giving up (case 5).  These five cases separate the space
 of possible states with positive reward for miner 1 into disjoint sets, which
 can be analysed separately using combinatorial computations. After any of the
-states discussed above, both players mine on the same block and therefore the
+states discussed above, both players mine on the same block and, therefore, the
 strategies advise similar actions as in the beginning of the game. 
 %(this happens because of the way these strategies are defined).  
 Thus, as in the case of
@@ -800,7 +802,7 @@ We represent them as
 %for these quantities, we represent states as 
 unitary north-east paths
 inside polygons in $\ZZ^2$, where north and east steps represent blocks
-appended by miner 0 and miner 1 respectively.  
+appended by miner 0 and miner 1, respectively.  
 To count these paths we provide the following combinatorial result. 
 \begin{lemma} For nonnegative
     integers $a,b$, let $\sigma_{a,b}$ be the amount of one-step north-east
@@ -815,14 +817,14 @@ To count these paths we provide the following combinatorial result.
 \begin{eqnarray*}
 \theta_{a,b}^r & = & 
  \begin{cases}
- {\displaystyle {r+b\choose b}} & \text{If } r \leq a\\
- {\displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}} &  \text{If } a<r\\
+ {\displaystyle {r+b\choose b}} & \quad \text{If } r \leq a\\
+ {\displaystyle \sigma_{|b-r|,\min(r,b)} + \sum_{i=\max(1,r-b+1)}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j}} &  \quad \text{If } a<r\\
  %\displaystyle\mbox{If }a<r<b,\quad \theta_{a,b}^r = \sigma_{b-r,r} + \sum_{i=1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
  %\displaystyle\mbox{If }b<r\mbox{ and }a<r,\quad \theta_{a,b}^r = \sigma_{r-b,b} + \sum_{i=r-b+1}^a  \sum_{j=0}^{r-i}\sigma_{i-1,j}\cdot \sigma_{i+b-r,r-i-j},\\
  \end{cases}
  \end{eqnarray*}
  \end{lemma}
- For the proof, we write the utility as given in definition \ref{def-utility}, separate the summation 
+ For the proof, we write the utility as given in Definition \ref{def-utility}, separate the summation 
  over the set of five cases explained above, and then show that these sums can be expressed in terms of the 
  generating polynomials associated to the sequences $\sigma_{a,b}$ and $\theta_{a,b}^r$, which we
 refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}.
