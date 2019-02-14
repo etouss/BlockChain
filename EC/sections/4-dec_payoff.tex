@@ -129,7 +129,7 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 
 \end{tikzpicture} 
 %\caption{Dashed arrows are used to indicate when player~1 did a fork. Initially, player $0$ mines on the genesis block $\varepsilon$ including block $0$. Player 1 then decides to fork on the genesis block, and continue mining in this new brach until it becomes the blockchain, which happens in this case when player 1 mines on top of block $1$ generating block $11$. But then again player 1 loses a block when player 0 mines on top of block $111$ generating block $1110$, so she decides to fork on top of block $111$ until the new brach becomes the blockchain. Up to this point in the mining game, the blockchain is given by the path $\{\varepsilon, 1, 11, 111, 1111, 11111\}$ that only contains blocks belonging to player 1.}
-\vspace*{-10pt}
+%\vspace*{-10pt}
 \caption{Dashed arrows indicate when player~1 does a fork. The first block (block 0) is mined by player 0. At this point, player 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When player 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
 %
 %until the new brach becomes the blockchain
@@ -318,7 +318,7 @@ no prefix of $d$ has more $1$s than $0$s (this intuitively means that at no poin
 	(c11) edge (c111);
 
 \end{tikzpicture} 
-\vspace*{-5pt}
+%\vspace*{-5pt}
 \caption{States in a game played according to strategy $\baf$. \label{fig:proof-theorem-4}}
 \end{figure}
 
@@ -714,7 +714,7 @@ By adding a little more flexibility to the strategy of always forking, we can id
 	
 
 \end{tikzpicture} 
-\vspace*{-5pt}
+
 \caption{Difference between $\af$ and $\gup^2_3$ in terms of actions of these strategies in two states. 
 %In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
 %fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$).
@@ -746,7 +746,7 @@ $0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that i
         \input{../plots/forking_strategies_zoom_chart.tex}
         \label{fig-af-df-fo}
     }
-    \vspace*{-7pt}
+
     \caption{Comparing the utilities of three forking strategies against the default strategy}
 \end{figure*}
 
@@ -783,8 +783,8 @@ miner 1 appends another block on $\varepsilon$, eventually winning the fork
 will dictate to mine on top of the same block. The last two cases occur when
 miner 0 appends $j>k$ blocks on top of $\varepsilon$, after which miner 1
 manages to append a block at position $j-k$, starting a fork and eventually
-winning (case 4) or again giving up (case 5).  These five cases separate the space
-of possible states with positive reward for miner 1 into disjoint sets, which
+winning (case 4) or again giving up (case 5).  These five cases partition the space
+of possible states with positive reward for miner 1, which 
 can be analysed separately using combinatorial computations. After any of the
 states discussed above, both players mine on the same block and, therefore, the
 strategies advise similar actions as in the beginning of the game. 
@@ -796,7 +796,7 @@ Theorem
 is the utility contribution of the set of the above finite states and
 $\Gamma_{\ell, k}$ is a proper shifting factor.  
 Once again, an important combinatorial challenge of this proof is to quantify the number of different 
-paths leading to these states where both player mine the same block. 
+paths leading to states in which both players mine the same block. 
 We represent them as 
 %In order to obtain expressions
 %for these quantities, we represent states as 
@@ -819,7 +819,7 @@ To count these paths we provide the following combinatorial result.
  $$
  \end{lemma}
  For the proof, we write the utility as given in Definition \ref{def-utility}, separate the summation 
- over the set of five cases explained above, and then show that these sums can be expressed in terms of the 
+ over the five cases explained above, and then show that these sums can be expressed in terms of the 
  generating polynomials associated to the sequences $\sigma_{a,b}$ and $\theta_{a,b}^r$, which we
 refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}.
 %After writing the utility in this case, as given in definition \ref{def-utility},
