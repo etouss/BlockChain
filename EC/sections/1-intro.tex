@@ -47,7 +47,7 @@ Since older blocks in the blockchain are easier to maintain, we also ensure that
 This limit situation represents miners who have a strong incentive to put--and maintain--their blocks in the blockchain, and is relevant when studying cryptocurrencies 
 as a closed system, where miners do 
 not wish to spend money right away but rather be able to cash-out their wealth at any point in time. 
-
+%
 % , which ensures that miners are rewarded according to the effort put into maintaining their blocks in the blockchain.
 %%Our goal is to produce a model of mining in a cryptocurrency that can help in answering these questions. 
 %%With several cryptocurrencies bringing new rules and parameters to these questions, distilling a clean model that can answer these questions while simultaneously covering 
@@ -91,14 +91,25 @@ when assuming that each player controls a fixed amount of hash power. On the oth
 %We remark that this framework 
 takes us on a different path from most of current literature, wherein agents typically mine 
 %looks to mine 
-with the objective of cashing-out as soon as possible or after an a pirori chosen amount of time \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the assumptions and results obtained in these articles with agents who have stronger incentives to mine in the blockchain.
+with the objective of cashing-out as soon as possible or after an  amount of time chosen a priori   \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the assumptions and results obtained in these articles with agents who have stronger incentives to mine and keep their blocks in the blockchain.
 %the assumptions upon which their models are based. 
 
 \smallskip
 \noindent{\bf Contributions.}  Our first contribution is to provide a model of mining as an infinite stochastic game, in which maximising the utility corresponds to both 
-putting block in the blockchain and maintaining them there for as long as possible. One of the benefits of our model is that using a few basic design parameters we can in fact accommodate different cryptocurrencies, and not focus solely on Bitcoin. These parameters also allow us to account for fundamental factors such as deflation, or discount in the block reward. Another benefit of our proposal is the fact that we can reason about all possible branching strategies, without the need to focus on a specific subclass. 
+putting blocks in the blockchain and maintaining them there for as long as possible. A
+%One of the 
+benefit of our model is that using a few basic design parameters we can 
+%in fact 
+accommodate different cryptocurrencies, and not focus solely on Bitcoin,
+% These parameters also 
+ allowing us to account for fundamental factors such as deflation, or discount in the block reward. 
+ Besides,
+ %Another benefit of 
+ we can reason about all possible branching strategies in our proposal, 
+ %our proposal is the fact that , 
+ without the need to focus on a specific subclass. 
 
-The second contribution of our work is a set of results about optimal strategies in two different scenarios that arise from different cryptocurrencies. First 
+The second contribution of our work is a set of results about optimal strategies in two different scenarios that arise from different cryptocurrencies. First, 
 we study mining under the assumption that block rewards are constant (as it will eventually be in cryptocurrencies with tail-emission such as Monero or Ethereum), and then 
 assuming rewards decrease over time (as in Bitcoin). 
 
@@ -113,7 +124,9 @@ block rewards decrease over time, and the usual financial discount rate. We conf
 players should start deviating from the default strategy 
 when they approach 50\% of the network's hash power (also known as 51\% attack), but we go further: there are more complex strategies that 
 prove better than default even with less than 50\% of the hash power. These results complement and improve our current understanding of mining strategies, 
-as our model imposes much stronger assumptions against forking than 
+as our model imposes stronger 
+%assumptions 
+incentives against forking than 
 most previous work (see e.g. \cite{mininggames:2016,biais2018blockchain}).
 
 %We study what is the best strategy for miners when assuming everyone else is playing the default strategy. As we see, the 
