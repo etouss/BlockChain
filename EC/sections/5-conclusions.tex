@@ -2,12 +2,16 @@
 \label{sec-con-r}
 
 Our model of mining via a stochastic game allows for an intuitive representation of miners' actions as strategies, 
-and gives us a way of understanding the incentive of miners. 
+and gives us a way of understanding the rational behaviour of miners looking to accumulate cryptocurrency wealth. 
+In this respect, we would like to identify strategies that are a nash equilibrium for the case of decreasing rewards. However, this has proven 
+to be a difficult task. For starters, in the two player game one can show that the default strategy can never be part of such an 
+equilibrium, no matter how small the hash power is for one of the players. This means that one must look for much more complex strategies if one 
+wants to find such an equilibrium. 
+
 One of the advantages of our model is its generality: it can be adapted to specify more complex 
 actions, study other forms of reward and include cooperation between miners. 
 We are currently looking at strategies that involve withholding 
 a mined block to the rest of the network, for which we need a slight extension of the notions of action and state. 
 We would also like to study incentives under different models of cooperation between miners, and 
 also other forms of equilibria in a dynamic setting. 
-Lastly, we are interested in studying how to modify the Bitcoin protocol in order to ensure that the default behaviour is a 
-stationary equilibrium for any hash-power configuration. 
+
