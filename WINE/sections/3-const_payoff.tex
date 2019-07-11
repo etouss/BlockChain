@@ -14,6 +14,7 @@ Furthermore, as argued in this section, the results obtained here could serve as
 \subsection{Defining constant reward}
 When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
 
+\vspace*{-25pt}
 \begin{figure}
 %\begin{center}
 \centering
@@ -41,12 +42,13 @@ When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$
 
 \end{tikzpicture} 
 %\end{center}
-\vspace*{-10pt}
+\vspace*{-15pt}
 \caption{Although two paths are competing to become the blockchain, the blocks up to 1001 will contribute to the reward in both paths. \label{fig-simple-fork}}
 \end{figure}
 
-In order to model the aforementioned scenario, we need to introduce some notation.
-Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use notation $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$ when considered as strings. Then we define: 
+%To model the aforementioned scenario, we need to introduce some notation.
+Recall that a block $b$ is a string over the alphabet $\bP$, and we use notation $|b|$ for the length of $b$ as a string. Moreover, given blocks $b_1, b_2$, we use %notation 
+$b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$ when considered as strings. Then we define: 
 \begin{eqnarray*}
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
 \meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}.

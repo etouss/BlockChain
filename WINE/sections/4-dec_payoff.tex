@@ -93,6 +93,7 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 %would continue mining on block $1110$ instead of forking again. 
 %\end{itemize}
 
+\vspace{-20pt}
 \begin{figure}
 \centering
 \begin{tikzpicture}[->,>=stealth',auto,thick, scale = 0.6,state/.style={circle,inner sep=2pt}]
@@ -129,7 +130,7 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 
 \end{tikzpicture} 
 %\caption{Dashed arrows are used to indicate when player~1 did a fork. Initially, player $0$ mines on the genesis block $\varepsilon$ including block $0$. Player 1 then decides to fork on the genesis block, and continue mining in this new brach until it becomes the blockchain, which happens in this case when player 1 mines on top of block $1$ generating block $11$. But then again player 1 loses a block when player 0 mines on top of block $111$ generating block $1110$, so she decides to fork on top of block $111$ until the new brach becomes the blockchain. Up to this point in the mining game, the blockchain is given by the path $\{\varepsilon, 1, 11, 111, 1111, 11111\}$ that only contains blocks belonging to player 1.}
-%\vspace*{-10pt}
+\vspace*{-10pt}
 \caption{Dashed arrows indicate when player~1 does a fork. The first block (block 0) is mined by player 0. At this point, player 1 decides to fork (mining the block 1), and successfully mines the blocks 11 and 111 on this branch. When player 0 mines the block 1110, player 1 decides to fork again, mining the blocks 1111 and 11111.}
 %
 %until the new brach becomes the blockchain
@@ -140,9 +141,13 @@ in $\af$, player~$1$ tries to have all the blocks in the blockchain. This strate
 %\medskip
 %\noindent
 %\textbf{Strategy $\af$}. 
-\subsubsection{The utility of always forking}
+\noindent
+\textbf{The utility of always forking.}
+%\subsubsection{The utility of always forking}
 %As we explained, the idea of $\af$ for player $1$ is to fork every time she loses a block, trying to own all blocks in the blockchain. 
-The question we want to answer is twofold. On the one hand, we want to know whether $\af$ is a better strategy than $\df_1$ for player $1$, under the assumption that player $0$ uses $\df_0$, and under some specific values of $\alpha$, $\beta$ and $h$. 
+We want to answer two questions. 
+%The question we want to answer is twofold. 
+On the one hand, we want to know whether $\af$ is a better strategy than $\df_1$ for player $1$, under the assumption that player $0$ uses $\df_0$, and under some specific values of $\alpha$, $\beta$ and $h$. 
 %Since we know how to compute the utility for $\bdf = (\df_0,\df_1)$, this amounts to computing the utility for player $1$ for the combined strategy $(\df_0,\af)$. 
 On the other hand, and 
 perhaps more interestingly, we can also answer a more analytical question: given realistic values of $\alpha$ and $\beta$, how much hash power does player $1$ need to consider following $\af$ instead of $\df_1$? 
@@ -166,10 +171,12 @@ u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where}
 %ADD FORK ONCE
 
 %Of course, if player 1 knows that her utility will be higher when she forks in the genesis block as opposed to playing the default strategy, then why not repeat the fork every time she loses a block? After all, if she is likely to win one fork, she is likely to win multiple forks as well. Let $F_\infty$ be a strategy for player 1 where she tries to have all the blocks in the blockchain. That is, in $\af$, player one will fork every time she loses a single block. This strategy is depicted in Figure \ref{fig:always_fork}. We can now obtain the following.
-
-Before presenting the proof of Theorem \ref{thm:always_fork}, let us give some intuition about it. Player 1, adopting the AF strategy, will always start the game mining on $\varepsilon$, regardless of how many blocks player 0 manages to append, and continues until her branch is the longest. Therefore, the only states that contribute to player 1's utility are those in where she made at least one successful fork (all others states give zero reward to her). Having player 1 achieved the longest branch once, say, at block $b$, both players will now mine on $b$ and the situation repeats as if $b$ were $\varepsilon$, with proper shifting in the reward and $\beta$-discount. In other words, we have
+Let us give some intuition on this result. 
+%Before presenting the proof of Theorem \ref{thm:always_fork}, let us give some intuition about it. 
+Player 1, adopting the AF strategy, will always start the game mining on $\varepsilon$, regardless of how many blocks player 0 manages to append, and continues until her branch is the longest. Therefore, the only states that contribute to player 1's utility are those in where she made at least one successful fork (all others states give zero reward to her). Having player 1 achieved the longest branch once, say, at block $b$, both players will now mine on $b$ and the situation repeats as if $b$ were $\varepsilon$, with proper shifting in the reward and $\beta$-discount. In other words, we have
 $u_1(\baf) = \Phi + \Gamma\cdot u_1(\baf),$
-where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor, from which we obtain the expression for $u_1(\baf)$ given in Theorem \ref{thm:always_fork}.
+where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor, from which we obtain the expression for $u_1(\baf)$ given above. 
+%in Theorem \ref{thm:always_fork}.
 
 %%%%%this is already in the appendix
 \begin{comment}
@@ -716,7 +723,7 @@ By adding a little more flexibility to the strategy of always forking, we can id
 	
 
 \end{tikzpicture} 
-
+\vspace*{-25pt}
 \caption{Difference between $\af$ and $\gup^2_3$ in terms of actions of these strategies in two states. 
 %In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
 %fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$).
@@ -738,6 +745,7 @@ $0000$ was the genesis block. Note that in fact $\af=\gup_\infty^\infty$, that i
 \end{example}
 
 \begin{figure*}
+\vspace*{-30pt}
     \subfigure[Utilities for player 1 of combined strategies, $\bdf$, $\bgup^1_4$, $\bgup^1_5$ and $\baf$]{
         \input{../plots/forking_strategies_chart.tex}
         \label{fig-plot-gup-fixwindow}
@@ -764,13 +772,12 @@ For every pair of positive integers $\ell, k$ such that $k< \ell$, we have that:
 $$u_1(\bgup^k_\ell) = \frac{\Phi_{\ell,k}}{1-\Gamma_{\ell,k}},$$
 where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, $\beta$ and $h$.% (that is, divisions of polynomials of  $\alpha$, $\beta$ and $h$).
 \end{theorem}
-We develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$ in the
-proof of this theorem,
-%(appendix \ref{sec-evaluation-G}),
- involving two sets
+In the proof of this theorem we develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$.  %(appendix \ref{sec-evaluation-G}),
+They involve two sets
 of polynomials related to Dyck words, which describe the combinatorial nature of
-the game. In what follows we give a sketch of the proof of this theorem. The complete proof is given in appendix \ref{sec-evaluation-G}.
+the game. %In what follows we give a sketch of the proof of this theorem. The complete proof is given in appendix \ref{sec-evaluation-G}.
 
+\begin{comment}
 \medskip
 
 {\sc Proof sketch.} Consider the beginning of the game, where both players are
@@ -833,6 +840,7 @@ refer to as \textit{Trapezoidal and Pentagonal Dyck polynomials}.
 \qed
 
 \medskip
+\end{comment}
 
 %In other words, given specific values of $k$ and $\ell$, we can still compute the utility of these strategies.
 We use Theorem \ref{thm-dificil} to analyse these strategies, plotting them, as we did before, 
