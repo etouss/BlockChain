@@ -764,13 +764,14 @@ $0000$ was the genesis block. Note also that $\af=\gup_\infty^\infty$.
         \label{fig-plot-gup-fixwindow}
     }
     \hfill
-    \subfigure[Zoom in around the values of the hash power where $\bdf$ intersects with $\bgup^1_4$ and $\bgup^1_5$.
+    \subfigure[Zoom in around the intersection%around the values of the hash power where $\bdf$ intersects with $\bgup^1_4$ and $\bgup^1_5$.
 ]{
         \input{../plots/forking_strategies_zoom_chart.tex}
         \label{fig-af-df-fo}
     }
 \vspace*{-10pt}
     \caption{Comparing the utilities of three forking strategies against the default strategy}
+    \label{fig-complex-strategies}
 \end{figure*}
 
 Define $\bgup_\ell^k$ as the combined strategy $(\df_0, \gup_\ell^k)$. We obtain an analytical form similar to that of Theorem \ref{thm:always_fork}, except in 
@@ -870,16 +871,13 @@ branch is small, so player 1 should give up as early as possible. However, the m
 $46.7\%$ of the hash power, player $1$ already should start using strategy $\gup^1_4$ to defeat the default strategy, and with more than $48.6\%$ hash power, she should adopt $\gup^1_5$. We know that player~$1$ should use $\af$ not before around $h = 0.499805$, so this gives us a lot of extra room to look for optimal strategies if we are willing to fork (especially considering that every percentage of hash power in popular cryptocurrencies 
 may cost millions).
 
-Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight for our forks. However, we decided to include only combined strategies $\bgup^1_4$ and $\bgup^1_5$ in Figures \ref{fig-plot-gup-fixwindow} and \ref{fig-af-df-fo},
-%is important because 
-as we have found that 
-%strategy 
-$\gup^1_4$ is the strategy that beats the default strategy under the least amount of hash power 
+Plots for strategies with $k > 1$ present a similar behaviour: the more hash power we have, the more we should be willing to fight for our forks. The strategies we include 
+in Figure \ref{fig-complex-strategies} beat the default strategy under the least amount of hash power 
 amongst any combination of values for $k$ and $\ell$ with $k < \ell \leq 100$. The comparison is much less straightforward when looking at varying values of both $k$ and $\ell$, but in general, 
-the more hash power the bigger the window of blocks one should aim to do a fork, and the more time one should wait before giving up. 
+the more hash power the bigger the window of blocks one should aim to do a fork, and the more one should wait before giving up. 
 
-The analysis we can do  through 2- or 3-dimensional plots is only one part of the picture, and a game-theoretical analysis of these strategies is an interesting area for future work. 
-Furthermore, the techniques used to prove theorems \ref{thm:always_fork} and \ref{thm-dificil} can be in fact generalised for any pair of strategies satisfying arguably natural conditions: There is always a point in the future in which both players mine upon the last block of the blockchain, and the corresponding state can be treated as if it was $\varepsilon$ (after proper shifting).
+%The analysis we can do  through 2- or 3-dimensional plots is only one part of the picture, and a game-theoretical analysis of these strategies is an interesting area for future work. 
+%Furthermore, the techniques used to prove theorems \ref{thm:always_fork} and \ref{thm-dificil} can be in fact generalised for any pair of strategies satisfying arguably natural conditions: There is always a point in the future in which both players mine upon the last block of the blockchain, and the corresponding state can be treated as if it was $\varepsilon$ (after proper shifting).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
