@@ -8,13 +8,13 @@ with constant reward}
 The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. This is important for understanding what happens 
 when currencies such as Ethereum or Monero switch to tail-emission, and it also helps us to establish the main techniques we use. 
 %While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. 
-Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
+%Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
 
 
 \subsection{Defining constant reward}
 When considering the constant reward $c$ for each block, $r_p(q)$ will equal $c$ times the number of blocks owned by $p$ in the blockchain $\bchain(q)$ of $q$, when the latter is defined. On the other hand, when $\bchain(q)$ is not defined it might seem tempting to simply define $r_p(q) = 0$. However, even if there is more than one longest path from the root of $q$ to its leaves, it might be the case that all such paths share a common subpath. In fact, this often happens in the Bitcoin's network, when two blocks were mined on top of the same block (with a small time delay). While in this situation the blockchain is not defined, the miners know that they will at least be able to collect their reward on the portion of the state these two paths agree on. Figure \ref{fig-simple-fork} illustrates this situation. 
 
-\vspace*{-25pt}
+%\vspace*{-25pt}
 \begin{figure}
 %\begin{center}
 \centering
@@ -95,7 +95,7 @@ Notice that this is called the default strategy as it reflects the desired behav
 by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. 
 %Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
 
-We can easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, the blockchain defined by the game will have $i$ blocks, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. This means that the total utility for player $p$ amounts to 
+We can easily calculate the utility of player $p$ under $\cdf$. Intuitively, a player $p$ will receive a fraction $h_p$ of the next block that is being placed in the blockchain, corresponding to her hash power. Therefore, at stage $i$ of the mining game, the blockchain defined by the game will have $i$ blocks, and the expected amount of blocks owned by the player $p$ will be $h_p\cdot i$. The total utility for player $p$ is then
 $$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \ \ = \ \ h_p\cdot c \cdot \frac{\beta}{(1-\beta)}.$$
 
 %% Juan: I think it is way too nahive to put the analytical form of this
@@ -109,7 +109,9 @@ Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the ut
 %\end{eqnarray*}
 \end{mythm} 
 
-As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain
+A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from a state $q_0$ in the %infinite
+mining game for $m$ players if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that $u_p(\bs \mid q_0)  \geq  u_p ((\bs_{-p},s) \mid q_0)$ (here 
+as usual we use $(\bs_{-p}, s)$ to denote the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$). As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain
 \begin{mycor}\label{cor-conts_equlibria}
 For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
 \end{mycor} 
@@ -117,11 +119,10 @@ For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted station
 %we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. Thus, such constraint on transaction fees would ensure the neutrality of the %blockchain,
 %protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
 
-Hence, miners looking to maximise their crypto-wealth are better of with the default strategy. Interestingly, previous work has shown that this may not be the case if 
-we model the game and incentives for miners in a different way. For example, in \cite{mininggames:2016}, authors prove that the default strategy is not optimal under a setting in which, 
-essentially, miners are rewarded for the fraction of blocks they own against the total number of blocks, and no financial discount is assumed. This poses an interesting problem, 
-as miner's behaviour can really deviate depending on what are their short and long term goals. We believe that a further comparison and understanding of how these different 
-results are interpreted together is an interesting direction for future work. 
+Hence, miners looking to maximise their crypto-wealth are better of with the default strategy. Interestingly, previous work shows this may not be the case if 
+we model the game and incentives for miners in a different way. For example, the default strategy is not optimal under a setting in which 
+miners are rewarded for the fraction of blocks they own against the total number of blocks, and no financial discount is assumed \cite{mininggames:2016}. 
+This suggests that miner's behaviour can really deviate depending on what are their short and long term goals, and we believe this is an interesting direction for future work. 
 
 % \subsection{The default strategy is an equilibrium}
 %

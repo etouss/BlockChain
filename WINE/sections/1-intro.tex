@@ -13,10 +13,15 @@ or Monero%\footnote{\url{https://getmonero.org}}).
 ~\cite{Monero}).
 
 The data structure used in these protocols is an append-only record of transactions, which are assembled into \emph{blocks} and appended to the record once they 
-are marked as valid. The incentive to generate and verify new blocks is an amount of currency, which is known as the \emph{block reward}. But then this means that generating 
-new blocks must be hard. Under the proof-of-work framework, participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. In Bitcoin, for example, the hard problem corresponds to finding blocks with a hash value that, when interpreted as a number, is less than a certain threshold. Since hash functions are pseudo-random, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
+are marked as valid. The incentive to generate and verify new blocks is an amount of currency, which is known as the \emph{block reward}. 
+In order to give value to the currencies, the 
+%But then this means that generating 
+%new blocks must be hard. Under the 
+proof-of-work framework mandates that participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. In Bitcoin, for example, the hard problem corresponds to finding blocks with a hash value that, when interpreted as a number, is less than a certain threshold. Since hash functions are pseudo-random, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
 Miners are not told where to append the new blocks they produce. The only requirement is that new blocks must include a pointer to a previous block in the data structure, 
-which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a transaction or a block reward in a block in the blockchain. 
+which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a 
+%transaction or a block reward in a 
+block in the blockchain. 
 
 %The data structure used in these protocols is an append-only record of transactions, and one of its most important components is the way new transactions 
 %are  verified and appended to the record. Typically, transactions are assembled into \emph{blocks}, which become candidates to be appended to the record once they are 
