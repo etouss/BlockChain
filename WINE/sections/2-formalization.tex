@@ -5,11 +5,11 @@
 
 %In what follows we define the components of the infinite stochastic game considered in this paper. 
 The mining game is played by a set $\bP = \{0, 1, , \ldots, m-1\}$ of players, with $m \geq 2$.
-In this game, each player has some reward depending on the number of blocks she owns. Every block must point to a previous block, except for the first block which is called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such a tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
+In this game, each player gains some reward depending on the number of blocks she owns. Every block must point to a previous block, except for the first block which is called the {\em genesis block}. Thus, the game defines a tree of blocks. Each block is put by one player, called the {\em owner} of this block. Each such a tree is called a {\em state of the game}, or just {\em state}, and it represents the knowledge that each player has about the blocks that have been mined thus far.
 
-The key question for each player is, then, where do I put my next block? The general rule in cryptocurrencies is that miners are only allowed to spend their reward if their blocks belongs to the \emph{blockchain}, which is simply the longest chain of blocks in the current state. Thus, players face essentially two possibilities: to put their blocks right after the end of the blockchain, or try to \emph{fork}, betting that a smaller chain will eventually become the blockchain. As the likelihood of mining the next block is directly related to the comparative hash power of a player, we model mining as an infinite stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power.
+The key question for each player is, then, where do I put my next block? The general rule in cryptocurrencies is that miners are only allowed to spend their reward if their blocks belongs to the \emph{blockchain}, which is simply the longest chain of blocks in the current state. Thus, players face essentially two possibilities: put their blocks right after the end of the blockchain, or try to \emph{fork}, betting that a smaller chain will eventually become the blockchain. As the likelihood of mining the next block is directly related to the comparative hash power of a player, we model mining as an infinite stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power.
 
-In what follows we define the components of the game considered in this paper. Our formalisation is similar others in the literature \cite{mininggames:2016,koutsoupias2018blockchain}, except for the way in which miners are rewarded and the way in which these rewards are accumulated in the utility function. These elements are fundamental in our formalisation, and  hence we provide a detailed analysis in Appendix \ref{sec-pay-uti}. 
+In what follows we define the components of the game considered in this paper. Our formalisation is similar to others in the literature \cite{mininggames:2016,koutsoupias2018blockchain}, except for the way in which miners are rewarded and the way in which these rewards are accumulated in the utility function. These elements are fundamental in our formalisation, and  hence we provide a detailed analysis in Appendix \ref{sec-pay-uti}. 
 %Hence, we analyse them in more detail in Section \ref{sec-pay-uti}, emphasizing the properties of these two elements that are fundamental for our formalization.
 
 % Let us now turn to the formal definition of the game.
@@ -69,19 +69,27 @@ $|q| = 8$, as $q$ is a set consisting of eight blocks (including the genesis blo
 	\node [state] at (1.5,-0.75) (n1) {$1$};
 	\node [state] at (3.3,-0.75) (n11) {$11$};
 	\node [state] at (5.4,0) (n110) {$110$};
+	\node [state] at (7.6,0) (n110x) {$\cdots$};
+	\node [state] at (10.4,0) (n110x0) {$11\underbrace{0\cdots0}_{n}$};
 	\node [state] at (5.4,-1.5) (n111) {$111$};
+	\node [state] at (7.6,-1.5) (n111x) {$\cdots$};
+	\node [state] at (10.4,-1.5) (n111x1) {$11\underbrace{1\cdots1}_{n}$};
 
 	\path[->]
 	(r) edge (n1)
 	(r) edge (n0)
 	(n1) edge (n11)
 	(n11) edge (n110)
-	(n11) edge (n111);
+	(n110) edge (n110x)
+	(n110x) edge (n110x0)
+	(n11) edge (n111)
+	(n111) edge (n111x)
+	(n111x) edge (n111x1);
 \end{tikzpicture}
 \end{center}
 \vspace{-10pt}
 %In this case, 
-We have that $\bchain(q')$ is not defined since the paths $\pi_1 = \{\varepsilon, 1, 11, 110\}$ and $\pi_2 = \{\varepsilon, 1, 11, 111\}$ are tied for the longest path in $q'$. \qed
+We have that $\bchain(q')$ is not defined since the paths $\pi_1 = \{\varepsilon, 1, 11, 110, \cdots, 110^n\}$ and $\pi_2 = \{\varepsilon, 1, 11, 111, \cdots, 111^n\}$ are tied for the longest path in $q'$. \qed
 \end{example}
 
 
@@ -115,15 +123,14 @@ Most cryptocurrencies follow these rules for miner payment:
 %, and Bitcoin in particular. 
 %
 %\noindent
-(1) Miners receive a one-time reward per each block they mine. %(in Bitcoin it is 12.5BTC at the time of writing).
+(1) Miners receive a possibly delayed one-time reward per each block they mine. %(in Bitcoin it is 12.5BTC at the time of writing).
 %
 %\noindent
 (2) The only blocks that are valid are those in the blockchain; if a block is not in the blockchain then the reward given for mining this block cannot be spent. 
 %%%%%MARCELO: remove the next sentence to avoid mentioning Bitcoin
 %To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
 
-The second rule means that we cannot just give miners the block reward as soon as they put a block at the top of the current blockchain, because players then loose the incentive 
-to maintain their blocks in the blockchain. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two blocks (110 and 111) competing to be in the blockchain, and consider 111 to be the last block added to reach $q'$. If player 0 already cashed in the reward for the block 110 (since this was awarded immediately), she has no further incentive to mine on top of this block, as the block 1110 would give her an equal reward. 
+The second rule enforce that we cannot just give miners the full block reward when they put a block at the top of the current blockchain or after a delay, because invalid blocks may eventually give the same reward as valid ones. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two paths ($\pi_1$ and $\pi_2$) competing to be the blockchain, and consider $\pi_2$ to be the latest path to be mined upon to reach $q'$. If player $0$ had already been fully paid for any blocks $110^i$, where $i \leq n$, then if $\pi_2$ win the race and become the blockchain, such block $110^i$ would become invalid but still has given full reward to player $0$.
 
 %In Section \ref{sec-pay-uti}, we explain how our pay-off model can be used to pay for blocks and at the same time to ensure that players try to maintain their blocks in the blockchain. 
 In the following sections we will show how different reward functions can be used to understand different mining scenarios that arise in different cryptocurrencies. 

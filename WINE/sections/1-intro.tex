@@ -13,7 +13,7 @@ or Monero%\footnote{\url{https://getmonero.org}}).
 ~\cite{Monero}).
 
 The data structure used in these protocols is an append-only record of transactions, which are assembled into \emph{blocks} and appended to the record once they 
-are marked as valid. The incentive to generate and verify new blocks is an amount of currency, which is known as the \emph{block reward}. 
+are marked as valid. The incentive to generate valid new blocks is an amount of currency, which is known as the \emph{block reward}. 
 In order to give value to the currencies, the 
 %But then this means that generating 
 %new blocks must be hard. Under the 
@@ -52,8 +52,8 @@ all practical nuances of currencies is far from trivial~\cite{mininggames:2016}.
 Instead, we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain. 
 %, thus imposing a strong incentive for miners to put their blocks in the blockchain. 
 More precisely, the reward for a block $b$ is divided into an infinite number of payments, and the miner loses some of them whenever $b$ does not belong to the blockchain. 
-Since older blocks in the blockchain are easier to maintain, we also ensure that the penalty for a block leaving the blockchain decreases over time. 
-This limit situation imposes a strong incentive for miners to put--and maintain--their blocks in the blockchain, and is relevant when studying cryptocurrencies
+Since older blocks in the blockchain could have already been cashed-out, we ensure that the penalty for a block leaving the blockchain decreases over time. 
+This limit situation represents miners with a strong incentive to put--and maintain--their blocks in the blockchain, and is relevant when studying cryptocurrencies
 as a closed system, where miners do 
 not wish to spend money right away but rather be able to cash-out their wealth at any point in time. 
 %
@@ -101,7 +101,7 @@ On the other hand, the way a miner is rewarded for a block in our model
 %We remark that this framework 
 takes us on a different path from most of current literature, wherein agents typically mine 
 %looks to mine 
-with the objective of cashing-out as soon as possible or after an amount of time chosen a priori   \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the assumptions and results obtained in these articles with agents who have stronger incentives to mine and keep their blocks in the blockchain.
+with the objective of cashing-out as soon as possible or after an amount of time chosen a priori   \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the assumptions and results obtained in these articles with miners who have stronger motives to mine and keep their blocks in the blockchain.
 %the assumptions upon which their models are based. 
 
 
@@ -132,9 +132,9 @@ block rewards decrease over time, and the usual financial discount rate. We conf
 players should start deviating from the default strategy 
 when they approach 50\% of the network's hash power (also known as 51\% attack), but we go further: there are more complex strategies that 
 prove better than default even with less than 50\% of the hash power. These results complement and improve our current understanding of mining strategies, 
-as our model imposes stronger 
+as our model proposes fairer 
 %assumptions 
-incentives against forking than 
+incentives to forking strategies than 
 most previous work (see e.g. \cite{mininggames:2016,biais2018blockchain}).
 
 %We study what is the best strategy for miners when assuming everyone else is playing the default strategy. As we see, the 
