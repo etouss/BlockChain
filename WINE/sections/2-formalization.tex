@@ -117,9 +117,9 @@ Moreover, given $a \in \bA_p$ with $a = \mine(p,b,q)$, the result of applying $a
 
 \smallskip
 \noindent
-\textbf{The pay-off of a miner.}
+\textbf{Miner's Pay-off.}
 %The next and last component of our game is the reward for miners: how much do they earn for each mined block. 
-Most cryptocurrencies follow these rules for miner payment:
+Most cryptocurrencies follow these rules for miner's payment:
 %, and Bitcoin in particular. 
 %
 %\noindent
@@ -201,11 +201,18 @@ $$
 \sum_{\substack{q' \in \bQ \,:\\ q_0 \subseteq q' \text{ and } |q'| - |q_0| = k-1}}
  \pr^{\bs}(q' \mid q_0) \cdot \pr(q', \bs(q'), q).
  $$
-In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$. Notice that this is well defined, since there can be at most one player $p$ whose action in the state $q'$ leads us to the state $q$.
-For the sake of presentation, the probability of reaching a state $q$ from the initial state $\{\varepsilon\}$ (consisting only of the genesis block $\varepsilon$) is denoted by $\pr^{\bs}(q)$, instead of $\pr^{\bs}(q \mid \{\varepsilon\})$. 
+In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = q$, then $\pr(q', \bs(q'), q) = h_p$. Otherwise, we have that $\pr(q', \bs(q'), q) = 0$ 
+(this is well defined since there can be at most one player $p$ whose action in the state $q'$ leads us to the state $q$). 
+%. Notice that this is well defined, since there can be at most one player $p$ whose action in the state $q'$ leads us to the state $q$. 
+For readability we write $\pr^{\bs}(q)$ instead of $\pr^{\bs}(q \mid \{\varepsilon\})$ to denote the probability of reaching state $q$ from the intial state $\{\varepsilon\}$ that contains 
+only the genesis block. 
+%(consisting only of the genesis block $\varepsilon$).
+%For the sake of presentation, the probability of reaching a state $q$ from the initial state $\{\varepsilon\}$ (consisting only of the genesis block $\varepsilon$) is denoted by $\pr^{\bs}(q)$, instead of $\pr^{\bs}(q \mid \{\varepsilon\})$. 
 %Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$.
 %It should be noticed that 
-The framework just described corresponds to a Markov chain; in particular, the probability of reaching a state from an initial state is defined in the standard way for Markov chains~\cite{MU05}. However, we are not interested in the steady distribution for such a Markov chain and, thus, we do not explore this connection in this paper.
+%The framework just described corresponds to a Markov chain; in particular, the probability of reaching a state from an initial state is defined in the standard way for Markov chains~\cite{MU05}. However, we are not interested in the steady distribution for such a Markov chain and, thus, we do not explore this connection in this paper.
+The framework just described corresponds to a Markov chain \cite{MU05}, but we do not explore this connection in this paper because we are not interested in the steady distributions of these chains. 
+
 
 Finally, we define the utility of players given a particular strategy. 
 %We have all the ingredients to define the utility of players given a particular strategy. 
@@ -223,7 +230,8 @@ the mining game, denoted by $u_p(\bs \mid q_0)$, is defined as:
 u_p(\bs \mid q_0) & = & (1 - \beta) \cdot \sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0).
 \end{eqnarray*}
 \end{mydef}
-Notice that the value $u_p(\bs \mid q_0)$ may not be defined if the series $\sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0)$ diverges. To avoid this problem, from now on we assume that for every pay-off function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. Under this simple yet general condition, which is satisfied by the pay-off functions considered in this paper and in other game-theoretical formalisation's of Bitcoin mining \cite{mininggames:2016}, it is possible to prove that $u_p(\bs \mid q_0)$ is a real number. Moreover, as for the definition of the probability of reaching a state from the initial state $\{\varepsilon\}$, we use notation $u_p(\bs)$ for the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from $\{\varepsilon\}$, instead of $u_p(\bs \mid \{\varepsilon\})$. 
+Notice that the value $u_p(\bs \mid q_0)$ may not be defined if this series %$\sum_{q \in \bQ \,:\, q_0 \subseteq q} \beta^{|q|-|q_0|} \cdot r_p(q) \cdot \pr^{\bs}(q \mid q_0)$
+diverges. To avoid this problem, from now on we assume that for every pay-off function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. Under this simple yet general condition, which is satisfied by the pay-off functions considered in this paper and in other game-theoretical formalisation's of Bitcoin mining \cite{mininggames:2016}, it is possible to prove that $u_p(\bs \mid q_0)$ is a real number. Moreover, as for the definition of the probability of reaching a state from the initial state $\{\varepsilon\}$, we use notation $u_p(\bs)$ for the $\beta$--discounted utility of player $p$ for the strategy $\bs$ from $\{\varepsilon\}$, instead of $u_p(\bs \mid \{\varepsilon\})$. 
 %(see Appendix \ref{sec-conver} for a proof of this property).
 
 %As a last ingredient in our formalization, we introduce the notion stationary equilibrium.
