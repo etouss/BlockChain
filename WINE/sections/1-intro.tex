@@ -2,27 +2,33 @@
 
 \section{Introduction}
 
-The Bitcoin Protocol \cite{Bitcoin,DBLP:books/daglib/0040621,NC17}, or Nakamoto Protocol, introduces a novel decentralized network-consensus mechanism that is trustless and open for anyone connected to the Internet. To support such an open and dynamic topology, the protocol requires an underlying currency (a so-called \emph{cryptocurrency} \cite{NC17}) to encourage/discourage participants to/from taking certain actions. The largest network running this protocol at the time of writing is the Bitcoin network, and its underlying cryptocurrency is Bitcoin (BTC). Following the success of Bitcoin, several other cryptocurrencies have been created. Some of them are replicas of Bitcoin with slight modifications (e.g. Litecoin%\footnote{\url{https://litecoin.org}}
+The Bitcoin Protocol \cite{Bitcoin,DBLP:books/daglib/0040621,NC17}, or Nakamoto Protocol, introduces a novel decentralized network-consensus mechanism that is trustless and open for anyone connected to the Internet. This open and dynamic topology is supported by means of an 
+%To support such an open and dynamic topology, the protocol requires an 
+underlying currency (a so-called \emph{cryptocurrency} \cite{NC17}), to encourage/discourage participants to/from taking certain actions. The largest network running this protocol at the time of writing is the Bitcoin network, and its underlying cryptocurrency is Bitcoin (BTC). The success of Bitcoin lead the way for several other cryptocurrencies; some of them 
+%Following the success of Bitcoin, several other cryptocurrencies have been created. Some of them 
+are replicas of Bitcoin with slight modifications (e.g. Litecoin%\footnote{\url{https://litecoin.org}}
 ~\cite{Litecoin} 
 or Bitcoin Cash%\footnote{\url{https://www.bitcoincash.org}}),
 ~\cite{Bcash}), 
-while others introduce interesting new modifications on top of the protocol to provide further functionalities 
+while others introduce more involved modifications 
+%introduce more involved  interesting new modifications on top of the protocol to provide further functionalities 
 (e.g. Ethereum%\footnote{\url{https://ethereum.org}}
 ~\cite{Ethereum,E17} 
 or Monero%\footnote{\url{https://getmonero.org}}).
 ~\cite{Monero}).
 
-The data structure used in these protocols is an append-only record of transactions, which are assembled into \emph{blocks} and appended to the record once they 
+The data structure used in these protocols is an append-only record of transactions, which are assembled into \emph{blocks}, and appended to the record once they 
 are marked as valid. The incentive to generate valid new blocks is an amount of currency, which is known as the \emph{block reward}. 
 In order to give value to the currencies, the 
 %But then this means that generating 
 %new blocks must be hard. Under the 
 proof-of-work framework mandates that participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. In Bitcoin, for example, the hard problem corresponds to finding blocks with a hash value that, when interpreted as a number, is less than a certain threshold. Since hash functions are pseudo-random, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
+
 Miners are not told where to append the new blocks they produce. The only requirement is that new blocks must include a pointer to a previous block in the data structure, 
 which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a 
 %transaction or a block reward in a 
 block in the blockchain. 
-
+%
 %The data structure used in these protocols is an append-only record of transactions, and one of its most important components is the way new transactions 
 %are  verified and appended to the record. Typically, transactions are assembled into \emph{blocks}, which become candidates to be appended to the record once they are 
 %marked as valid. 
@@ -31,15 +37,15 @@ block in the blockchain.
 %To provide an incentive to generate and verify these new blocks, protocols reward agents creating new blocks with an amount of currency, which is known as the \emph{block reward}, and it is also the way in which new currency is created. For example, in Bitcoin this amount was originally 50BTC and halves approximately every four years, which is informally known as Bitcoin's \emph{deflation} (the current reward is 12.5BTC). 
 %But since blocks give a reward, nodes will naturally want to generate blocks 
 %Thus, agents would naturally want to generate blocks. If we expect the currency to have any value, generating new blocks must then be hard. Under the proof-of-work framework, participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. Coming back to the Bitcoin example, the hard problem corresponds to finding blocks with a hash value that, when interpreted as a number, is less than a certain threshold. Since hash functions are pseudo-random, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
-
-
+%
+%
 %Miners are not told where to append the new blocks they produce. The only requirement is that new blocks must include a pointer to a previous block in the data structure, 
 %which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. 
 %In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a transaction or a block reward in a block in the blockchain.\footnote{In order to encourage including all the transactions that are correct according to the cryptocurrency rules, the miners also receive a small {\em transaction fee} for each transaction they include in a block. As in currently used cryptocurrencies fees rarely exceed 10\% of the mining reward \cite{TotalMiningRevenue,TotalMiningFees}, we focus on block rewards when gauging the miner's economic motivation for participating in the protocol.}
 %, the longest branch in the tree. 
 %Protocols normally add additional rules to specify when a currency is ready to be spent. In Bitcoin, for example, a block reward is considered ready to spend only when there are 
 %at least 100 blocks appended after it in the blockchain.
-
+%
 Miners looking to maximise their rewards may then attempt to create new branches out of the blockchain, to produce a longer branch that contains more of their blocks (and earn more block rewards) or to produce a branch that contains less blocks of a user they are trying to harm. This opens up several interesting questions: under what circumstances are miners 
 encouraged to produce a new branch in the blockchain? What is the optimal strategy of miners assuming they have a rational behaviour? Also, since certainly a mining war is undesirable for a cryptocurrency, how can we design new protocols where miners do not have incentives to deviate from the main branch? 
 
@@ -49,7 +55,7 @@ encouraged to produce a new branch in the blockchain? What is the optimal strate
 Our goal is to provide a model of mining that considers the decreasing block reward over time and the economic concept of \emph{discount}, i.e. the fact that miners prefer to be rewarded sooner than later, and that can help in answering the previous questions. 
 With several cryptocurrencies adding new rules and parameters to mining protocols, distilling a clean model that can answer these questions while simultaneously covering 
 all practical nuances of currencies is far from trivial~\cite{mininggames:2016}. 
-Instead, we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain. 
+Instead, we abstract from these rules and focus on the limit situation in which a miner does not receive the full reward for a block if it stops being in the blockchain. 
 %, thus imposing a strong incentive for miners to put their blocks in the blockchain. 
 More precisely, the reward for a block $b$ is divided into an infinite number of payments, and the miner loses some of them whenever $b$ does not belong to the blockchain. 
 Since older blocks in the blockchain could have already been cashed-out, we ensure that the penalty for a block leaving the blockchain decreases over time. 
@@ -65,11 +71,12 @@ not wish to spend money right away but rather be able to cash-out their wealth a
 %%we abstract from these rules and focus on the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain, thus imposing a strong incentive for miners to put their blocks in the blockchain. In other words, the full reward for a block $b$ is divided into several payments, and the miner loses some of them when $b$ does not belong in the blockchain. 
 %%Since we do not want to impose a limit on the time in which a cryptocurrency is going to be used, we assume that the reward for a block $b$ is divided into an infinite number of payments, and we also suppose that the penalty for a block leaving the blockchain decreases with time. This latter condition is used to ensure that miners are rewarded according to the effort put into maintaining their blocks in the blockchain.
 %
-In our work, this incentive takes the form of a discounted utility.
+%In our work, this incentive takes the form of a discounted utility.
 %
-Moreover, in our formalization of mining in a cryptocurrency,
+In terms of how mining is performed, we consider these two simple rules: each player $i$ 
+%Moreover, in our formalization of mining in a cryptocurrency,
 %a scenario where the wealth of players is simply given by the number of blocks they have on the blockchain. More precisely, our game is based solely on the following rules. 
-we consider two other simple rules: each player $i$ 
+%we consider two other simple rules: each player $i$ 
 %\begin{enumerate}
 %\item 
 %player $i$ 
