@@ -28,8 +28,8 @@ While in this situation the blockchain is not defined, the miners know that they
 	\node [state] at (2.1,0) (10) {$10$};
 	\node [state] at (3.3,0) (100) {$100$};
 	\node [state] at (4.6,0) (1001) {$1001$};
-	\node [state] at (5.9,0.70) (10011) {$10011$};
-	\node [state] at (5.9,-0.70) (10010) {$10010$};	
+	\node [state] at (5.9,0.60) (10011) {$10011$};
+	\node [state] at (5.9,-0.60) (10010) {$10010$};	
 	
 	% Graph edges
 	\path[->]
@@ -91,8 +91,13 @@ Notice that this function is well defined since $\meet(q)$ always exists. Moreov
  
  \subsection{The default strategy maximizes the utility}
 
-Let us start with analysing the most obvious strategy for all players: regardless of what everyone else does, keep mining on the blockchain, which is called the \emph{default} strategy.
-More precisely, a player following the default strategy tries to mine upon the final block that appears in the blockchain of a state $q$. If the blockchain in $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player tries to mine on the final block of one of these paths according to her rewards in them; she chooses the one that maximizes her reward, which in the case of constant reward means the path that contains the largest number of blocks belonging to her (if there is more than one of these paths, then between the final blocks of these paths she chooses the first according to a lexicographic order on the strings in $\{0, \ldots, m-1\}^*$). 
+Let us start with analysing the %most obvious 
+simplest strategy, which we call the \emph{default} strategy: regardless of what everyone else does, keep mining on the blockchain. 
+%, which is called the .
+More precisely, a player following the default strategy tries to mine upon the final block that appears in the blockchain of a state $q$. If the blockchain in $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player tries to mine on the final block of the path that maximizes her reward, which in the case of constant 
+reward corresponds to the path containing the largest number of blocks belonging to her  
+%one of these paths according to her rewards in them; she chooses the one that maximizes her reward, which in the case of constant reward means the path that contains the largest number of blocks belonging to her 
+(if there is more than one of these paths, then between the final blocks of these paths she chooses the first according to a lexicographic order on the strings in $\{0, \ldots, m-1\}^*$). 
 Notice that this is called the default strategy as it reflects the desired behaviour of the miners participating in the Bitcoin network. For a player $p$, let us denote this strategy 
 by $\df_p$, and consider the combined strategy $\cdf = (\df_0,\df_1,\dots,\df_{m-1})$. 
 %Notice that under this strategy, each state $q$ consists of a single path from the genesis block $\varepsilon$ to the final block in $\bchain(q)$.
@@ -121,8 +126,10 @@ For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted station
 %we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. Thus, such constraint on transaction fees would ensure the neutrality of the %blockchain,
 %protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
 
-Hence, miners looking to maximise their crypto-wealth are better of with the default strategy. Interestingly, previous work shows this may not be the case if 
-we model the game and incentives for miners in a different way. For example, the default strategy is not optimal under a setting in which 
+Hence, miners looking to maximise their %crypto-wealth 
+wealth are better of with the default strategy. 
+Interestingly, previous work shows this may not be the case if 
+we model the game and incentives for miners in a different way, for example under a setting in which 
 miners are rewarded for the fraction of blocks they own against the total number of blocks, and no financial discount is assumed \cite{mininggames:2016}. 
 This suggests that miner's behaviour can really deviate depending on what are their short and long term goals, and we believe this is an interesting direction for future work. 
 
