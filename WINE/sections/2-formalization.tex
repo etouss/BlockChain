@@ -9,7 +9,7 @@ In this game, each player gains some reward depending on the number of blocks sh
 
 The key question for each player is, then, where do I put my next block? The general rule in cryptocurrencies is that miners are only allowed to spend their reward if their blocks belongs to the \emph{blockchain}, which is simply the longest chain of blocks in the current state. Thus, players face essentially two possibilities: put their blocks right after the end of the blockchain, or try to \emph{fork}, betting that a smaller chain will eventually become the blockchain. As the likelihood of mining the next block is directly related to the comparative hash power of a player, we model mining as an infinite stochastic game, in which the probability of executing the action of a player $p$ is given by her comparative hash power.
 
-In what follows we define the components of the game considered in this paper. Our formalisation is similar to others in the literature \cite{mininggames:2016,koutsoupias2018blockchain}, except for the way in which miners are rewarded and the way in which these rewards are accumulated in the utility function. These elements are fundamental in our formalisation, and  hence we provide a detailed analysis in Appendix \ref{sec-pay-uti}. 
+In what follows we define the components of the game considered in this paper. Our formalisation is similar to others in the literature \cite{mininggames:2016,koutsoupias2018blockchain}, except for the way in which miners are rewarded and the way in which these rewards are accumulated in the utility function. These elements are fundamental in our formalisation. A detailed analysis of our reward can be found in Appendix \ref{sec-pay-uti}. 
 %Hence, we analyse them in more detail in Section \ref{sec-pay-uti}, emphasizing the properties of these two elements that are fundamental for our formalization.
 
 % Let us now turn to the formal definition of the game.
@@ -173,7 +173,7 @@ Moreover, we assume that $h_p > 0$ for every player $p \in \bP$, as if this not 
 
 \smallskip
 \noindent
-\textbf{The mining game: definition, strategy, utility and equilibrium.}
+\textbf{The mining game: definition, strategy and utility.}
 Putting together all the components,  
 %the components defined in the previous sections, 
 %Summing up, from now on we consider 
@@ -205,7 +205,7 @@ In this definition, if for a player $p$ we have that $s_p(q') = a$ and $a(q') = 
 (this is well defined since there can be at most one player $p$ whose action in the state $q'$ leads us to the state $q$). 
 %. Notice that this is well defined, since there can be at most one player $p$ whose action in the state $q'$ leads us to the state $q$. 
 For readability we write $\pr^{\bs}(q)$ instead of $\pr^{\bs}(q \mid \{\varepsilon\})$ to denote the probability of reaching state $q$ from the intial state $\{\varepsilon\}$ that contains 
-only the genesis block. 
+only the genesis block  $\varepsilon$. 
 %(consisting only of the genesis block $\varepsilon$).
 %For the sake of presentation, the probability of reaching a state $q$ from the initial state $\{\varepsilon\}$ (consisting only of the genesis block $\varepsilon$) is denoted by $\pr^{\bs}(q)$, instead of $\pr^{\bs}(q \mid \{\varepsilon\})$. 
 %Hence, consistently with the simplification described before, we can replace the transition probability function $\pr$ by the hash power distribution $\bH$ when computing $\pr^{\bs}(q \mid q_0)$.
