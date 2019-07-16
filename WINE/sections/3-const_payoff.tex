@@ -109,19 +109,19 @@ $$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \c
 %$$u_p(\bs \mid q_0) = c\cdot h_p \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \text{,}\ \ \ \ \text{ which evaluates to }\frac{c\cdot h_p}{(1-\beta)^2}.$$ %(recall that $q_0$ is the genesis block). 
 
 The question then is: can any player do better? As we show in the following theorem, the answer is no, as the default strategy maximizes the utility. 
-\begin{mythm}\label{thm-conts_dom_str}
+\begin{theorem}\label{thm-conts_dom_str}
 Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$: \ \ $u_p(\bs) \leq u_p(\cdf)$.
 %\begin{eqnarray*}
 %u_p(\bs) & \leq & u_p(\cdf)
 %\end{eqnarray*}
-\end{mythm} 
+\end{theorem} 
 
 A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from a state $q_0$ in the %infinite
 mining game for $m$ players if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that $u_p(\bs \mid q_0)  \geq  u_p ((\bs_{-p},s) \mid q_0)$ (here 
 as usual we use $(\bs_{-p}, s)$ to denote the strategy $(s_0, s_1, \ldots s_{p-1},s,s_{p+1}, \ldots, s_{m-1})$). As a corollary of Theorem \ref{thm-conts_dom_str}, we obtain
-\begin{mycor}\label{cor-conts_equlibria}
+\begin{corollary}\label{cor-conts_equlibria}
 For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted stationary equilibrium.
-\end{mycor} 
+\end{corollary} 
 %While constant-block reward does not faithfully model the reality of most cryptocurrencies,  
 %we would like to argue why Theorem \ref{thm-conts_dom_str} could serve as a recommendation on how to enforce good behaviour of miners when the block reward consists only of transaction fees. If a cryptocurrency protocol imposes a transaction fee proportional to the size of the transaction and a maximal size of a block, then the blocks would regularly achieve the maximal reward assuming that the volume of transactions is high. This would make the block reward constant, so Theorem \ref{thm-conts_dom_str} tells miners that the best strategy is to mine on top of the existing blockchain, as this will maximize their utility in the long run. Thus, such constraint on transaction fees would ensure the neutrality of the %blockchain,
 %protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 

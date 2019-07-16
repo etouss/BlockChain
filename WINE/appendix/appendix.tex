@@ -104,13 +104,9 @@ u_p(\bs \mid \{\varepsilon\}) & \leq & \sum_{b \in \bB} \beta^{|b|} \cdot M_p(b)
 \end{eqnarray*}
 \end{mycor}
 \fi
-
 \end{comment}
-
-
-\subsection{Convergence of the utility function}
+\subsection*{Proof of Proposition \ref{prop-ub-block}}
 \label{sec-conver}
-
 To ensure that the utility function $u_p(\bs \mid q_0)$ is well defined, we impose the restriction that for every payoff function $\bR = (r_0, \ldots, r_{m-1})$, there exists a polynomial $P$ such that $|r_p(q)| \leq P(|q|)$ for every player $p \in \bP$ and state $q \in \bQ$. In this section, we prove that this is indeed a sufficient condition for $u_p(\bs \mid q_0)$ to be a real number, for which we first need a technical lemma. 
 
 \begin{mylem}\label{lem-prop-k}
@@ -206,11 +202,11 @@ Given that every term in the series $\sum_{n=0}^\infty |\beta^n \cdot f(n)|$ is 
 \ = \ \beta,
 \end{eqnarray*}
 since $\lim_{n \to \infty} \frac{P(n+1)}{P(n)} = 1$ as $P$ is a nonzero polynomial.
-This concludes the proof of the proposition.
+This concludes the proof of the proposition \ref{prop-conv}.
 \end{proof}
 
-\subsection{Proof of Proposition \ref{prop-ub-block}}
-We have that:
+
+We can finally prove proposition \ref{prop-ub-block}:
 \begin{eqnarray*}
 u_p(\bs ) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  r_p(b,q) \cdot \pr^{\bs}(q )\\
 & \leq & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in q} \beta^{|q|-1} \cdot  M_p(b) \cdot \pr^{\bs}(q )\\
@@ -230,7 +226,10 @@ u_p(\bs ) & \leq & (1 - \beta) \cdot  M_p(b) \cdot \sum_{i=|b|+1}^\infty \bigg(\
 \end{eqnarray*}
 which was to be shown. 
 
-\subsection*{Proof of Theorem \ref{thm-conts_dom_str}}
+\subsection{Proof of Theorem \ref{thm-conts_dom_str}}
+
+
+Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ we want to show that, in the case of constant reward,  for every combined strategy $\bs$, the utility of the default strategy $\cdf$ is higher or equal to the utility of $\bs$ ie. $u_p(\bs) \leq u_p(\cdf)$.
 
 Let $\bs= (s_0, \ldots, s_{m-1})$ be an arbitrary combined strategy, and define $Q_\bs = \{q \in \bQ \mid \pr^\bs(q) > 0\}$. Thus, $Q_\bs$ is the set of all states that can be reached from the genesis block using the combined strategy $\bs$. For example, we have that $Q_\cdf$ is the set of states $q$ such that $q$ consists of a single path from the genesis block to the final block in $\bchain(q)$.
 Moreover, define a mapping $\sigma: Q_{\bs} \rightarrow 2^{Q_\bdf}$ as follows. Given two states $q_1, q_2$, we say that $q_2$ can be reached from $q_1$ in one step according to the strategy $\bs$ if $q_2 = a(q_1)$, where $a = s_{p'}(q_1)$ for some $p' \in \bP$;
@@ -321,7 +320,11 @@ $q_i = a_{p_1}(q_{i-1})$ and $q'_i = a_{p_2}(q_{i-1})$, where $a_{p_1} = s_{p_1}
 %the word generated from $\pi$ and $\pi'$ is not the same. 
 
 
-\subsection*{Proof of Lemma \ref{lem:default_utility}}
+\subsection{Proof of Lemma \ref{lem:default_utility}}
+In the case of decreasing reward and If $h$ is the hash power of player 1,  and the strategy deployed by the two players is $\cdf$, then we want to show that the utility of player 1 is given by the expression:
+\begin{eqnarray*}
+u_1(\cdf) & = & h\cdot c\cdot\frac{\alpha\cdot\beta}{(1-\alpha\cdot\beta)}.
+\end{eqnarray*}
 By the definition of utility we have:
 \begin{eqnarray*}
 u_1(\bdf) & = & (1-\beta) \cdot \sum_{q\in \bQ}\beta^{|q|-1}\cdot r(q)\cdot \pr^{\bdf}(q).
@@ -358,6 +361,19 @@ u_1(\cdf) & = & h\cdot c\cdot\frac{\alpha\cdot\beta}{(1-\alpha\cdot\beta)}.
 
 
 \subsection{Proof of Theorem \ref{thm:always_fork}}
+Let $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ denote the generating function of Catalan numbers.  If $h$ is the hash power of player 1, then $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. we want to show that the utility of player $1$ is given by:
+\begin{eqnarray*}
+u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where}
+\end{eqnarray*}
+\vspace{-14pt}
+{\small
+\begin{align*}
+\Phi & \ = \ \frac{\alpha \cdot \beta \cdot h \cdot c}{(1-\alpha)} \cdot \big[\cat(\beta^2 \cdot h \cdot (1-h)) - \alpha\cdot \cat(\alpha \cdot \beta^2 \cdot h \cdot (1-h))\big],\\
+%& \hspace{100pt} \alpha\cdot \cat(\alpha \cdot \beta^2 \cdot h \cdot (1-h))\big),\\
+\Gamma & \ = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h)),
+\end{align*}
+}
+
 Let $Q_\baf = \{q \in \bQ \mid \pr^\baf(q) > 0\}$ be the set of all states that can be reached from the genesis block using the strategy $\baf$, and from the proof of Theorem \ref{thm-conts_dom_str} recall the definition of sequence $\rho$ for a state $q$, and recall the construction of string $b_\rho$ from such a sequence $\rho$.
 %the mapping $\sigma: Q_\baf \rightarrow 2^{\bQ_\bdf}$ introduced  in the proof of Theorem \ref{thm-conts_dom_str}, now in the context of strategy $\baf$. From the function $\sigma$, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
 By using these elements, we define $\tau:Q_\baf \mapsto 2^{\{0,1\}^*}$ as follows:
