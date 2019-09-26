@@ -738,7 +738,7 @@ By adding a little more flexibility to the strategy of always forking, we can id
 	
 
 \end{tikzpicture} 
-\vspace*{-25pt}
+%\vspace*{-25pt}
 \caption{Difference between $\af$ and $\gup^2_3$ in terms of actions in two states. 
 %In (a), the value $k = 2$ indicates that $\gup^2_4$ will not 
 %fork on $\varepsilon$ but instead in $0$. In (b), the value $\ell = 4$ indicates that in this state player $1$ should give up the fork and continue mining upon the blockchain (block $0000$).
@@ -761,13 +761,16 @@ $0000$ was the genesis block. Note also that $\af=\gup_\infty^\infty$.
 \end{example}
 
 \begin{figure*}
-	\begin{subfigure}[t]{0.6\textwidth}
+	\begin{subfigure}[t]{0.55\linewidth}
+	\centering
 	 \input{../plots/forking_strategies_chart.tex}
       \label{fig-plot-gup-fixwindow}
     \caption{Utilities for player 1 of combined strategies, $\bdf$, $\bgup^1_4$, $\bgup^1_5$ and $\baf$}
     \end{subfigure}
-   % \hfill
-    \begin{subfigure}[t]{0.85\textwidth}
+    \hfill
+    %\quad
+    \begin{subfigure}[t]{.37\textwidth}
+   \centering
     \input{../plots/forking_strategies_zoom_chart.tex}
      \label{fig-af-df-fo}
     \caption{Zoom in around the intersection}%around the values of the hash power where $\bdf$ intersects with $\bgup^1_4$ and $\bgup^1_5$.}
