@@ -94,7 +94,7 @@ Notice that this function is well defined since $\meet(q)$ always exists. Moreov
 Let us start with analysing the %most obvious 
 simplest strategy, which we call the \emph{default} strategy: regardless of what everyone else does, keep mining on the blockchain. 
 %, which is called the .
-More precisely, a player following the default strategy tries to mine upon the final block that appears in the blockchain of a state $q$. If the blockchain in $q$ does not exist, meaning that there are al least two longest paths from the genesis block, then the player tries to mine on the final block of the path that maximizes her reward, which in the case of constant 
+More precisely, a player following the default strategy tries to mine upon the final block that appears in the blockchain of a state $q$. If the blockchain in $q$ does not exist, meaning that there are at least two longest paths from the genesis block, then the player tries to mine on the final block of the path that maximizes her reward, which in the case of constant 
 reward corresponds to the path containing the largest number of blocks belonging to her  
 %one of these paths according to her rewards in them; she chooses the one that maximizes her reward, which in the case of constant reward means the path that contains the largest number of blocks belonging to her 
 (if there is more than one of these paths, then between the final blocks of these paths she chooses the first according to a lexicographic order on the strings in $\{0, \ldots, m-1\}^*$). 
@@ -127,11 +127,11 @@ For every $\beta \in (0,1)$, the strategy $\cdf$ is a $\beta$-discounted station
 %protocol. Note however that if the market value of the cryptocurrency is too volatile, we could reach a point where the incentive to mine is really low, or transaction fees are too expensive. 
 
 Hence, miners looking to maximise their %crypto-wealth 
-wealth are better of with the default strategy. 
+wealth are better off with the default strategy. 
 Interestingly, previous work shows this may not be the case if 
 we model the game and incentives for miners in a different way, for example under a setting in which 
 miners are rewarded for the fraction of blocks they own against the total number of blocks, and no financial discount is assumed \cite{mininggames:2016}. 
-This suggests that miner's behaviour can really deviate depending on what are their short and long term goals, and we believe this is an interesting direction for future work. 
+This suggests that miner's behaviour can really deviate depending on what are their short and long term goals, and we believe this is an interesting direction for future work. Moreover the results obtained in previously mentioned previous work arguably represent more accurately the bitcoin's mining but rely on the assumption that long fork do not happen, our result prove the validity of such assumption in the case of constant rewards. 
 
 % \subsection{The default strategy is an equilibrium}
 %

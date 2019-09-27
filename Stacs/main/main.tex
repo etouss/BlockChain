@@ -1,4 +1,4 @@
-\documentclass[a4paper,english,cleveref, autoref,numberwithinsect,subcaption]{lipics-v2019}
+\documentclass[a4paper,english,cleveref, autoref,numberwithinsect]{lipics-v2019}
 
 
 \input{../extras/packages}
@@ -6,7 +6,7 @@
 
 %\allowdisplaybreaks
 
-\begin{document}
+
 \title{Cryptocurrency Mining Games with Deflation and Discount}
 
 \iffalse
@@ -25,17 +25,34 @@ Domagoj Vrgo\v{c}\inst{1}\\
 University of Edinburgh
 \email{lncs@springer.com}}
 \fi
-\author{Submission 337}{}{}{}{}
+
+\author{Marcelo Arenas}{PUC \& IMFD Chile}{marenas@ing.puc.cl}{}{}
+\author{Juan Reutter}{PUC \& IMFD Chile}{jreutter@ing.puc.cl}{}{}
+\author{Etienne Toussaint}{University of Edinburgh}{etienne.toussaint@ed.ac.uk}{}{}
+\author{Mart\'in Ugarte}{PUC \& IMFD Chile}{martin@martinugarte.com}{}{}
+\author{Francisco Vial}{PUC \& IMFD Chile}{fvial@grupolvt.cl}{}{}
+\author{Domagoj Vrgo}{PUC \& IMFD Chile}{dvrgoc@ing.puc.cl}{}{}
+
+\keywords{cryptocurrency, game theory, cryptomining, discounted utility, deflation}
+\Copyright{Marcelo Arenas, Juan Reutter, Etienne Toussaint, Mart\'in Ugarte, Francisco Vial and Domagoj Vrgo}
+
+\authorrunning{M. Arenas et al.}
+
+\ccsdesc[100]{algorithms and data structures}
+
+\begin{document}
+
 
 \maketitle
 
 \input{../sections/abstract}
-
+\clearpage
 \input{../sections/1-intro}
 \input{../sections/2-formalization}
 \input{../sections/3-const_payoff}
 \input{../sections/4-dec_payoff}
 \input{../sections/5-conclusions}
+\clearpage
 
 \bibliographystyle{splncs04}
 \bibliography{../extras/bibliography}

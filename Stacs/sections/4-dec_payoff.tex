@@ -21,7 +21,7 @@ we use the following reward function $\rpa$ for all players $p \in \bP$, denoted
 \rpa(q) & = & 
 c \cdot \sum_{b \in \meet(q)} \alpha^{|b|} \cdot \chi_p(b).
 \end{eqnarray*}
-In this section, we show that forking can be a good strategy then miner's fees decrease over time. 
+In this section, we show that forking can be a good strategy when miner's fees decrease over time. 
 %when miners' fees decrease over time, forking can be a good strategy. %We explore %in Sections~\ref{sec-forkingstrategies} and \ref{sec-giving-up} 
 %several strategies based on the maximum length of the fight the miner is willing to carry out when doing a fork, and how far back the miner is willing to do a fork. %Interestingly, for such strategies 
 Not only we confirm the folklore fact that it is profitable to fork with more than half of the hash power, but our exploration %in Section \ref{sec-giving-up} 
@@ -764,16 +764,16 @@ $0000$ was the genesis block. Note also that $\af=\gup_\infty^\infty$.
 	\begin{subfigure}[t]{0.55\linewidth}
 	\centering
 	 \input{../plots/forking_strategies_chart.tex}
-      \label{fig-plot-gup-fixwindow}
     \caption{Utilities for player 1 of combined strategies, $\bdf$, $\bgup^1_4$, $\bgup^1_5$ and $\baf$}
+    \label{fig-plot-gup-fixwindow}
     \end{subfigure}
     \hfill
     %\quad
     \begin{subfigure}[t]{.37\textwidth}
    \centering
     \input{../plots/forking_strategies_zoom_chart.tex}
-     \label{fig-af-df-fo}
     \caption{Zoom in around the intersection}%around the values of the hash power where $\bdf$ intersects with $\bgup^1_4$ and $\bgup^1_5$.}
+     \label{fig-af-df-fo}
     \end{subfigure}
 %\vspace*{-10pt}
     \caption{Comparing the utilities of three forking strategies against the default strategy}
