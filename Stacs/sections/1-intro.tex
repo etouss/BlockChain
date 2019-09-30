@@ -114,7 +114,7 @@ On the other hand, the way a miner is rewarded for a block in our model
 %We remark that this framework 
 takes us on a different path from most of current literature, wherein agents typically mine 
 %looks to mine 
-with the objective of cashing-out as soon as possible or after an amount of time chosen a priori   \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to confirm some of the assumptions and results obtained in these articles with miners who have stronger motives to mine and keep their blocks in the blockchain.
+with the objective of cashing-out as soon as possible or after an amount of time chosen a priori   \cite{mininggames:2016,biais2018blockchain}. Far from being orthogonal, our framework is complementary with these studies, as it allows to validate some of the assumptions and results obtained in these articles with miners who have stronger motives to mine and keep their blocks in the blockchain.
 %the assumptions upon which their models are based. 
 
 
@@ -128,7 +128,7 @@ benefit of our model is that using few basic design parameters we can
 accommodate different cryptocurrencies, and not focus solely on Bitcoin,
 % These parameters also 
 while also allowing us to account for fundamental factors such as deflation, or discount in the block reward. 
-Moreover as our model offers a fair reward to each miner if a mining race occurs, it allow us to study the validity of the assumption that long fork are not an optimal strategy.
+Moreover as our model gives a fair payoff to each miner when a mining race occurs, it allow us to study the validity of the commonly accepted assumption that long fork are not a viable strategy.
 %  Besides,
 %  we can reason about all possible branching strategies in our proposal, 
 %  without the need to focus on a specific subclass. 
@@ -136,7 +136,7 @@ The second contribution of our work is a set of results about optimal strategies
 we study mining under the assumption that block rewards are constant (as it will eventually be in cryptocurrencies with tail-emission such as Monero or Ethereum), and secondly, assuming that per-block reward decreases over time (a continuous approximation to Bitcoin rewards). 
 
 In the first scenario of constant rewards, we show that the default strategy of always mining on the latest block of the blockchain is indeed a Nash equilibrium and, in fact, 
-provides the highest possible utility for all players. Therefore with constant reward, the commonly accepted assumption that long forks should not happen is true. 
+provides the highest possible utility for all players. Therefore with constant reward, we prove that long forks should not happen, as it is not an optimal strategy. 
 %This means that, if miners want to accumulate wealth in terms of the same currency  or if it is important for them to be able to cash-out at any time, they should not fork. Moreover, this result shows that, with constant reward, the commonly accepted assumption that long forks should not happen is true. 
 On the other hand, if block reward decreases over time, we prove that strategies that involve forking the blockchain
 can be a better option than the default strategy, and thus we study what is the best strategy for miners when assuming everyone else 
@@ -146,7 +146,7 @@ block rewards decrease over time, and the usual financial discount rate. We conf
 players should start deviating from the default strategy 
 when they approach 50\% of the network's hash power (also known as 51\% attack), but we go further: there are more complex strategies that 
 prove better than default even with less than 50\% of the hash power. 
-Further investigation is needed but these results complement and improve our current understanding of mining strategies and tend to show that even with decreasing reward long forks should not happen if no miner is holding close to 50\% of the hash power, therefore confirming the assumption used in most previous works (see e.g. \cite{mininggames:2016,biais2018blockchain}).
+Further investigation is needed but these results complement and improve our current understanding of mining strategies and tend to show that even with decreasing reward long forks should not happen if no miner is holding close to 50\% of the hash power, therefore validate the assumption used in most previous works (see e.g. \cite{mininggames:2016,biais2018blockchain}).
 
 %We study what is the best strategy for miners when assuming everyone else is playing the default strategy. As we see, the 
 %choice of a better strategy here depends on the hash power, the rate at which 
