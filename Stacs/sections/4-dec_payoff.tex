@@ -186,12 +186,14 @@ Let us give some intuition on this result.
 %Before presenting the proof of Theorem \ref{thm:always_fork}, let us give some intuition about it. 
 Player 1, adopting the AF strategy, will always start the game mining on $\varepsilon$, regardless of how many blocks player 0 manages to append, and continues until her branch is the longest. Therefore, the only states that contribute to player 1's utility are those in where she made at least one successful fork (all others states give zero reward to her). Having player 1 achieved the longest branch once, say, at block $b$, both players will now mine on $b$ and the situation repeats as if $b$ were $\varepsilon$, with proper shifting in the reward and $\beta$-discount. In other words, we have
 $u_1(\baf) = \Phi + \Gamma\cdot u_1(\baf),$
-where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor, from which we obtain the expression for $u_1(\baf)$ given above. 
+where $\Phi$ is the contribution of a single successful fork, and $\Gamma$ is the shifting factor, from which we obtain the expression for $u_1(\baf)$ given before. 
 
-Now, order to quantify the contribution $\Phi$ on successful forks, we need to sum over all possible moments of time in which this fork was finally made, weighted by the possibility 
-that such work was actually made. However, this is not direct because there may be different paths leading to the same state, and therefore the probability of forking at a certain stage  
+Now, in order to quantify the contribution of $\Phi$ on successful forks, we need to sum over all possible moments of time in which this fork was finally made, weighted by the possibility 
+that such a fork was actually made. However, this is not direct because there may be different paths leading to the same state, and therefore the probability of forking at a certain stage  
 depends on the length and the form of the state. We quantify these by bringing out an analogy between Dyck words~\cite{stanley2015catalan} and paths leading to states in which 
-payer $1$ forks successfully for the first time. The analytic function uses the fact that the number of Dyck words of length $2m$ is the $m$-th Catalan number. 
+player~$1$ forks successfully for the first time. Then the theorem 
+%analytic function 
+uses the fact that the number of Dyck words of length $2m$ is the $m$-th Catalan number. 
 
 %in Theorem \ref{thm:always_fork}.
 
