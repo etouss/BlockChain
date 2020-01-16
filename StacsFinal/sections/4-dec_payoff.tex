@@ -11,7 +11,7 @@ Miner's fees in many cryptocurrencies, including Bitcoin and Monero, are not con
 %~\cite{Bitcoin,Monero,Litecoin,Bcash}. 
 We model such 
 %diminishing 
-fees as a constant factor that is lowered after every new block in the blockchain. That is, 
+fees as a constant factor $\alpha \in [0,1]$ that is lowered after every new block in the blockchain. That is, 
 %in this section 
 we use the following reward function $\rpa$ for all players $p \in \bP$, denoted as the \textbf{$\alpha$-discounted reward}: 
 %\begin{eqnarray*}
@@ -167,14 +167,14 @@ Answering both questions requires us to compute the utility for the strategy $\b
 Let $\cat(x) = \frac{1-\sqrt{1-4x}}{2x}$ denote the generating function of Catalan numbers.  If $h$ is the hash power of player 1, then
 %%, $\baf=(\df_0,\af)$ be the strategy deployed in the mining game, and let $Cat$ be the generating function of Catalan numbers. Then:
 \begin{eqnarray*}
-u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where}
+u_1(\baf) &=& \frac{\Phi}{1-\Gamma}, \mbox{ where $\Phi$ and $\Gamma$ are defined as:} 
 \end{eqnarray*}
 \vspace{-14pt}
 {\small
 \begin{align*}
 \Phi & \ = \ \frac{\alpha \cdot \beta \cdot h \cdot c}{(1-\alpha)} \cdot \big[\cat(\beta^2 \cdot h \cdot (1-h)) - \alpha\cdot \cat(\alpha \cdot \beta^2 \cdot h \cdot (1-h))\big],\\
 %& \hspace{100pt} \alpha\cdot \cat(\alpha \cdot \beta^2 \cdot h \cdot (1-h))\big),\\
-\Gamma & \ = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h)),
+\Gamma & \ = \ \alpha \cdot \beta \cdot h \cdot \cat(\alpha\cdot \beta^2 \cdot h \cdot (1-h))
 \end{align*}
 }
 \end{theorem}

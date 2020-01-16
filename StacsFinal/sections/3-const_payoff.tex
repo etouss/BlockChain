@@ -6,7 +6,7 @@ with constant reward}
 \label{sec-const_rew}
 
 The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. This is important for understanding what happens 
-when currencies such as Ethereum or Monero switch to tail-emission, and it also helps us to establish the main techniques we use. 
+when currencies such as Ethereum or Monero switch to tail-emission, changing from a decreased reward scheme to a constant reward scheme. Further, it also helps us to establish the main techniques we use. 
 %While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. 
 %Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
 
@@ -55,7 +55,7 @@ $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$ when considered as
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
 \meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}.
 \end{eqnarray*}
-Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing for the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
+Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing to be the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
 
 The reward function we consider in this section, which is called \textbf{constant reward}, is then defined for a player $p$ as follows : 
 %
@@ -115,6 +115,8 @@ Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the ut
 %u_p(\bs) & \leq & u_p(\cdf)
 %\end{eqnarray*}
 \end{theorem} 
+
+The proof of this theorem relies on the fact that, under constant rewards, forking becomes less profitable because all blocks are worth the same amount of money, regardless of their position. This fact, combined with the economic discount, provides little incentives for players to sacrifice some time in order to fight for a longer blockchain: their reward is higher if instead of fighting they just keep mining on the blockchain. 
 
 A strategy $\bs$ is a $\beta$--discounted stationary equilibrium from a state $q_0$ in the %infinite
 mining game for $m$ players if for every player $p \in \bP$ and every strategy $s$ for player $p$ $(s \in\bS_p)$, it holds that $u_p(\bs \mid q_0)  \geq  u_p ((\bs_{-p},s) \mid q_0)$ (here 
