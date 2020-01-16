@@ -1,0 +1,207 @@
+%% Macros Juan
+
+\newcommand{\paths}{\text{PATHS}}
+
+%% Macros comments
+\newcommand{\tover}[1]{\textcolor{red}{#1}}
+\newcommand{\td}[1]{\textcolor{blue}{[TODO: #1]}}
+
+
+%% Hyphenation
+
+\hyphenation{par-ti-ci-pants}
+
+%% Macros logics
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\MM}{\mathbb{M}}
+\newcommand{\SE}{\mathbb{S}}
+\newcommand{\BB}{\mathbb{B}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\QFBILIA}{\textsf{QFBILIA}}
+\newcommand{\nnf}{\textsf{f}}
+
+\newcommand{\ite}{\textsf{ite}}
+\newcommand{\limp}{\Rightarrow}
+\newcommand{\flc}{\rightarrow}
+
+\newcommand{\bagone}[1]{\llbracket #1 \rrbracket}
+\newcommand{\bsingle}{\textsf{bag}}
+\newcommand{\bplus}{\oplus}
+\newcommand{\bminus}{\ominus}
+
+%% Macros tools
+\newcommand{\spen}{\textsc{spen}}
+\newcommand{\zzz}{\textsc{Z3}}
+
+%% Environments
+\newtheorem{mythm}{Theorem}[section]
+\newtheorem{mydef}[mythm]{Definition}
+\newtheorem{myprop}[mythm]{Proposition}
+\newtheorem{mylem}[mythm]{Lemma}
+\newtheorem{myex}[mythm]{Example}
+\newtheorem{mycor}[mythm]{Corollary}
+\newtheorem{myclaim}{Claim}
+
+%\newtheorem*{myrem}{Remark} %% based on amsthm
+%\newtheorem*{mynota}{Notation}
+%\newtheorem*{mylem*}{Lemma}
+%\newtheorem{myclaim}{Claim}
+%\newtheorem*{myclaim*}{Claim}
+%\newtheorem*{myprop*}{Proposition}
+%\newtheorem*{comp}{Efficiency Study}
+
+
+\newenvironment{point}[1]
+{\subsection*{#1}}%
+{}
+
+\newcommand{\flist}{\text{\sc FList}}
+\newcommand{\set}{\text{\sc Set}}
+\newcommand{\fset}{\text{\sc FSet}}
+\newcommand{\B}{\text{\bf B}}
+%\newcommand{\G}{\mathcal{G}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\LOG}{\text{\sc Log}}
+\newcommand{\length}{\text{\rm length}}
+\newcommand{\BK}{\text{\sc BK}}
+%\newcommand{\cP}{\mathcal{P}}
+%\newcommand{\cV}{\mathcal{V}}
+%\newcommand{\cC}{\mathcal{C}}
+%\newcommand{\cS}{\mathcal{S}}
+%\newcommand{\cA}{\mathcal{A}}
+%\newcommand{\cR}{\mathcal{R}}
+%\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\pr}{\mathbf{Pr}}
+\newcommand{\Dyck}{\mathcal{D}}
+\newcommand{\Pent}{\mathcal{E}}
+\newcommand{\expected}{\mathbf{E}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bV}{\mathbf{V}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bsigma}{\mathbf{\sigma}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+
+\newcommand{\bstring}{\{0,1\}^\ast}
+
+\newcommand{\marcelo}[1]{{\color{red} {\bf Marcelo: #1}}}
+\newcommand{\etienne}[1]{{\color{blue} {\bf Etienne: #1}}}
+\newcommand{\juan}[1]{{\textcolor{violet} {\bf Juan: #1}}}
+\newcommand{\domagoj}[1]{{\color{green} {\bf Domagoj: #1}}}
+\newcommand{\francisco}[1]{{\color{magenta} {\bf Francisco: #1}}}
+\newcommand{\martin}[1]{{\color{orange} {\bf Martin: #1}}}
+
+\newcommand{\quot}[1]{#1/\!\equiv}
+
+\newcommand{\then}{\,|\,}
+\newcommand{\body}{q}
+\newcommand{\bchain}{\text{bc}}
+\newcommand{\epath}{\text{path}}
+
+\newcommand{\owner}{\text{\rm owner}}
+\newcommand{\pred}{\text{\rm pred}}
+\newcommand{\mine}{\text{\rm mine}}
+\newcommand{\suc}{\text{\rm succ}}
+
+
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bR}{\mathbf{R}}
+\newcommand{\bS}{\mathbf{S}}
+\newcommand{\bH}{\mathbf{H}}
+\newcommand{\bQ}{\mathbf{Q}}
+
+\newcommand{\forkm}[1]{F^{#1}}
+\newcommand{\mfork}{F_m}
+\newcommand{\mgfork}{F_{m,g}}
+\newcommand{\last}{\text{\rm last}}
+\newcommand{\best}{\text{\rm best}}
+\newcommand{\cho}{\text{\rm choose}}
+
+\newcommand{\ie}{i.e.$\!$ }
+
+\newcommand{\longest}{{\text{\rm longest}}}
+
+
+\newcommand{\subbody}{{\text{\rm sub-state}}}
+
+\newcommand{\cdf}{\text{\rm {\bf DF}}}
+\newcommand{\df}{\text{\rm DF}}
+\newcommand{\fg}{\text{\rm FG}}
+\newcommand{\fr}{\text{\rm FR}}
+\newcommand{\bdf}{\text{\rm {\bf DF}}}
+\newcommand{\bfg}{\text{\rm {\bf FG}}}
+\newcommand{\bfr}{\text{\rm {\bf FR}}}
+
+
+%\newcommand{\af}{{\rm {F_\infty}}}
+%\newcommand{\baf}{{\rm {\bf F_\infty}}}
+
+\newcommand{\af}{\text{\rm AF}}
+\newcommand{\baf}{\text{\rm {\bf AF}}}
+
+\newcommand{\pf}[1]{\text{\rm F[{#1}]}}
+\newcommand{\bpf}[1]{\text{\rm {\bf F}[{$#1$}]}}
+
+%\newcommand{\cat}{\text{\rm Catalan}}
+\newcommand{\cat}{\mathbf{C}}
+
+
+\newcommand{\gup}{{\rm {G}}}
+\newcommand{\bgup}{{\rm {\bf G}}}
+
+
+
+\newcommand{\meet}{\text{\rm meet}}
+
+\DeclareMathOperator*{\argmax}{argmax}
+
+
+%\newcommand{\rpa}{r_p^\alpha}
+\newcommand{\rpa}{r_p}
+
+\newcommand{\ameet}{\text{\rm all-meet}}
+\newcommand{\base}{\text{\rm base}}
+
+\newcommand{\ucl}{\text{\rm up-cl}}
+\newcommand{\dcl}{\text{\rm down-cl}}
+
+\newcommand{\pol}{\text{\it P}}
+
+%% MARTIN
+
+\newcommand{\plotfilezoom}[1]{
+    \pgfplotstableread{#1}{\table}
+    \pgfplotstablegetcolsof{#1}
+    \pgfmathtruncatemacro\numberofcols{\pgfplotsretval-1}
+    \pgfplotsinvokeforeach{1,...,\numberofcols}{
+        \pgfplotstablegetcolumnnamebyindex{##1}\of{\table}\to{\colname}
+        \addlegendentryexpanded{\colname}
+    }
+    \addplot[thick, solid] table [y index=1] {#1};
+    \addplot[thick, dashed] table [y index=2] {#1};
+    \addplot[solid] table [y index=3] {#1};
+}
+
+\newcommand{\plotfile}[1]{
+    \pgfplotstableread{#1}{\table}
+    \pgfplotstablegetcolsof{#1}
+    \pgfmathtruncatemacro\numberofcols{\pgfplotsretval-1}
+    \pgfplotsinvokeforeach{1,...,\numberofcols}{
+        \pgfplotstablegetcolumnnamebyindex{##1}\of{\table}\to{\colname}
+        \addlegendentryexpanded{\colname}
+    }
+    \addplot[thick, solid] table [y index=1] {#1};
+    \addplot[thick, dashed] table [y index=2] {#1};
+    \addplot[solid] table [y index=3] {#1};
+    \addplot[thick, dash dot] table [y index=4] {#1};
+}

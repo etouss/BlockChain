@@ -1,0 +1,4 @@
+3-const_payoff.tex:%While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. 
+4-dec_payoff.tex:Miner's fees in many cryptocurrencies, including Bitcoin, are not constant, but diminish over time~\cite{Bitcoin,Monero,Litecoin,Bcash}. We model such 
+introduction.tex:The popularity of the protocol goes beyond Bitcoin. Some of them are simple replicas of Bitcoin with slight modifications on the protocol parameters (e.g. Litecoin~\cite{Litecoin} or Bitcoin Cash~\cite{Bcash}), while some of them introduce interesting new modifications on top of the protocol to provide further functionalities (e.g. Ethereum~\cite{Ethereum,E17} or Monero~\cite{Monero}). 
+
