@@ -127,6 +127,8 @@ $RECYCLE.BIN/
 *.fdb_latexmk
 
 !authorAgreement.pdf
+!cc-by.pdf
+!lipics-logo-bw.pdf
 
 #############
 ### Scala ###
