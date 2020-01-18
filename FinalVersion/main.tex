@@ -269,20 +269,20 @@
 
 \begin{abstract}
 
-    In the consensus protocols used in most cryptocurrencies, participants called \emph{miners} must find \emph{valid blocks} of transactions, appending them to a shared tree-like data structure. Ideally, the rules of the protocol should ensure that miners maximize their gains if they follow a default strategy, which consists on appending blocks only to the longest branch of the tree, called the \emph{blockchain}. 
-Our goal is to understand under which circumstances are miners encouraged to follow the default strategy. However, most of the existing models work with simplified payoff functions, without considering the possibility that rewards decrease over time because of the game rules (like in Bitcoin),  
+    In the consensus protocols used in most cryptocurrencies, participants called \emph{miners} must find \emph{valid blocks} of transactions and append them to a shared tree-like data structure. Ideally, the rules of the protocol should ensure that miners maximize their gains if they follow a default strategy, which consists on appending blocks only to the longest branch of the tree, called the \emph{blockchain}. 
+Our goal is to understand under which circumstances are miners encouraged to follow the default strategy. Unfortunately, most of the existing models work with simplified payoff functions, without considering the possibility that rewards decrease over time because of the game rules (like in Bitcoin),  
 %said 
 %rewards decrease over time,
  nor integrating the fact that a miner naturally prefers to be %rewarded 
  paid earlier than later (the economic concept of discount). In order to integrate these factors, we consider a more general model where issues such as economic discount and decreasing rewards 
 %and deflation 
-can be set as parameters of an infinite stochastic game in which players always try to produce valid blocks. In this model, we study the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain. 
+can be set as parameters of an infinite stochastic game. In this model, we study the limit situation in which a miner does not receive a full reward for a block if it stops being in the blockchain. 
 %Miners then look to maximise their utility in the long run, and their best strategy depends on their hash power and the discount applied to the reward of each new block being mined. 
 We show that  if rewards are not decreasing,
 % is applied, 
-then miners do not have incentives to create new branches, no matter how high their hash power is. On the other hand, when working with decreasing rewards
+then miners do not have incentives to create new branches, no matter how high their computational power is. On the other hand, when working with decreasing rewards
 %discounts 
-similar to those in Bitcoin, we show that miners have an incentive to create such branches; however, the minimal proportion of hash power for which it happens is close to half. 
+similar to those in Bitcoin, we show that miners have an incentive to create such branches. Nevertheless, this incentive only occurs when a  miner controls a proportion of the computational power which is close to half of the computational power of the entire network. 
 
 
 
@@ -331,12 +331,12 @@ are marked as valid. The incentive to generate valid new blocks is an amount of 
 In order to give value to the currencies, the 
 %But then this means that generating 
 %new blocks must be hard. Under the 
-proof-of-work framework mandates that participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of problems per second that a miner can solve is referred to as her \emph{hash power}. Agents who participate in the generation of blocks are called \emph{miners}. In Bitcoin, for example, the hard problem corresponds to finding blocks with a hash value that, when interpreted as a number, is less than a certain threshold. Since hash functions are pseudo-random, the only way to generate a valid block is to try with several different blocks, until one of them has a hash value below the established threshold. 
+proof-of-work framework mandates that participants generating new blocks are required to solve some computationally hard problem per each new block.  This is known as \emph{mining}, and the number of potential solutions that a miner can generate per second is referred to as her \emph{hash power} (or \emph{computational power}). Agents who participate in the generation of blocks are called \emph{miners}. In Bitcoin, for example, the hard problem corresponds to finding blocks with a \emph{header} whose hash value, when interpreted as a number, is less than a certain threshold. Since hash functions are pseudo-random, the only way to generate a valid block is to try with several different blocks, until one of them has a header with a hash value below the established threshold. 
 
 Miners are not told where to append the new blocks they produce. The only requirement is that new blocks must include a pointer to a previous block in the data structure, 
-which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a 
+which then naturally forms a tree of blocks. The consensus data structure is generally defined as the longest branch of such a tree, also known as the \emph{blockchain}. In terms of cryptocurrencies, this means that the only valid currency should be the one that originates from a transaction contained in a 
 %transaction or a block reward in a 
-block in the blockchain. 
+block of the blockchain. 
 %
 %The data structure used in these protocols is an append-only record of transactions, and one of its most important components is the way new transactions 
 %are  verified and appended to the record. Typically, transactions are assembled into \emph{blocks}, which become candidates to be appended to the record once they are 
@@ -414,7 +414,7 @@ The last two rules mentioned above
 %The first two rules 
 are the standard way of 
 %simulating 
-formalizing mining in a cryptocurrency 
+formalizing mining in a cryptocurrency. 
 %game 
 %when assuming that each player controls a fixed amount of hash power. 
 On the other hand, the way a miner is rewarded for a block in our model
@@ -429,14 +429,14 @@ with the objective of cashing-out as soon as possible or after an amount of time
 
 \subparagraph*{\bf Contributions.}  Our first contribution 
 %is to provide a
-is a model for blockchain mining, given as an infinite stochastic game in which maximising the utility corresponds to both 
+is a model for mining, given as an infinite stochastic game in which maximising the utility corresponds to both 
 putting blocks in the blockchain and maintaining them there for as long as possible. A
 %One of the 
 benefit of our model is that using few basic design parameters we can 
 %in fact 
 accommodate different cryptocurrencies, and not focus solely on Bitcoin,
 % These parameters also 
-while also allowing us to account for fundamental factors such as deflation, or discount in the block reward. 
+while also allowing us to account for fundamental factors such as so-called \emph{deflation}, or discount in the block reward. 
 %Moreover as our model gives a fair payoff to each miner when a mining race occurs, it allow us to study the validity of the commonly accepted assumption that long fork are not a viable strategy.
 %  Besides,
 %  we can reason about all possible branching strategies in our proposal, 
@@ -447,7 +447,7 @@ we study mining under the assumption that block rewards are constant (as it will
 In the first scenario of constant rewards, we show that the default strategy of always mining on the latest block of the blockchain is indeed a Nash equilibrium and, in fact, 
 provides the highest possible utility for all players. Therefore with constant reward, we prove that long forks should not happen, as it is not an optimal strategy. 
 %This means that, if miners want to accumulate wealth in terms of the same currency  or if it is important for them to be able to cash-out at any time, they should not fork. Moreover, this result shows that, with constant reward, the commonly accepted assumption that long forks should not happen is true. 
-On the other hand, if block reward decreases over time, we prove that strategies that involve forking the blockchain
+On the other hand, if block reward decreases over time, we prove that strategies that involve \emph{forking} the blockchain
 can be a better option than the default strategy, and thus we study what is the best strategy for miners when assuming everyone else 
 is playing the default strategy. We provide different strategies that involve branching at certain points of the blockchain, and show how to compute their 
 utility. When we analyse which one of these strategies is the best, we see that the choice depends on the hash power, the rate at which 
@@ -466,7 +466,7 @@ Further investigation is needed but these results complement and improve our cur
 %These results tend to show that, with decreasing reward, the assumption that long forks should not happen holds upon reasonable hash power repartition.
 
 
-\subparagraph*{Related work.} Our framework takes us on a different path that most of current literature offering a game-theoretic characterisation for blockchain mining \cite{mininggames:2016,biais2018blockchain,koutsoupias2018blockchain}, which typically model the reward of players as the proportion of their blocks with respect to the total number of blocks (we pay for each block). Each choice has its own benefits; our choice allows us to analyse different forms of rewards and also introduce a discount factor on the utility, which we view as one of the main advantages of our model. It is also common to introduce assumptions that limit the set of strategies. For instance, Kiayias et.al. \cite{mininggames:2016} assume that only one block per depth generates reward, which is natural in their framework but limits the set of valid strategies they consider. Moreover, Biais et.al.\cite{biais2018blockchain}  assume that the reward of a block depends on the proportion of hash-power dedicated to blockchains containing it at a time chosen a priori. These assumptions do not take into account every potential forking strategies, or the fact that a miner may want to adapt his cash-out strategy based on the situation. 
+\subparagraph*{Related work.} Our framework takes us on a different path that most of current literature offering a game-theoretic characterisation for mining \cite{mininggames:2016,biais2018blockchain,koutsoupias2018blockchain}, which typically model the reward of players as the proportion of their blocks with respect to the total number of blocks (we pay for each block). Each choice has its own benefits; our choice allows us to analyse different forms of rewards and also introduce a discount factor on the utility, which we view as one of the main advantages of our model. It is also common to introduce assumptions that limit the set of strategies. For instance, Kiayias et.al. \cite{mininggames:2016} assume that only one block per depth generates reward, which is natural in their framework but limits the set of valid strategies they consider. Moreover, Biais et.al.\cite{biais2018blockchain}  assume that the reward of a block depends on the proportion of hash-power dedicated to blockchains containing it at a time chosen a priori. These assumptions do not take into account every potential forking strategies, or the fact that a miner may want to adapt his cash-out strategy based on the situation. 
 % One thing we are not considering in this paper, and are considered in these previous works, is strategies that feature a strategic release of blocks, in which miners opt not to release new blocks in hope that these will give them a future advantage.
 Lastly, our framework cannot deal with strategies that feature a tactical release of blocks often referred as selfish mining, in which miners opt not to release new blocks in hope that these will give them a future advantage \cite{optimalselfishmining2017,selfishmining2014,stop_selfish_mining2014,stubborn_mining:2016,stubborn_mining:2015}. 
 Our model can be extended to account for most of those strategies, for example by defining states as a tuple of trees, one for each player. 
@@ -521,7 +521,7 @@ In what follows we define the components of the game considered in this paper. O
 %\smallskip
 %\noindent
 \subparagraph*{Blocks, states and the notion of blockchain.}%\label{sub:states}
-In a game played by $m$ players, a block is defined as a string $b$ over the alphabet $\{0,1,\ldots$, $m-1\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{0,1,\ldots , m-1\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \smallsetminus \{\varepsilon\}) \rightarrow \{0,1, \ldots ,m-1\}$ such that $\owner(b)$ is equal to the last symbol of $b$. As in~\cite{mininggames:2016}, a state of the game is defined as a tree of blocks. More precisely, a state of the game, or just state, is a finite and nonempty set of blocks $q \subseteq \bB$ that is prefix closed. That is, $q$ is a set of strings over the alphabet $\{0,1,\ldots, m-1\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with $\varepsilon$ as the root.
+In a game played by $m$ players, a block is defined as a string $b$ over the alphabet $\{0,1,\ldots$, $m-1\}$. We denote by $\bB$ the set of all blocks, that is, $\bB = \{0,1,\ldots , m-1\}^*$. Each block apart from $\varepsilon$ has a unique owner, defined by the function $\owner: (\bB \smallsetminus \{\varepsilon\}) \rightarrow \{0,1, \ldots ,m-1\}$ such that $\owner(b)$ is equal to the last symbol of $b$. As in~\cite{mininggames:2016}, a state of the game is defined as a tree of blocks. More precisely, a state of the game, or just state, is a finite and nonempty set of blocks $q \subseteq \bB$ that is prefix-closed. That is, $q$ is a set of strings over the alphabet $\{0,1,\ldots, m-1\}$ such that if $b\in q$, then every prefix of $b$ (including the empty word $\varepsilon$) also belongs to $q$. Note that a prefix closed subset of $\bB$ uniquely defines a tree with $\varepsilon$ as the root.
 %
 The intuition here is that each element of $q$ corresponds to a block that was put into the state $q$ by some player. The genesis block corresponds to $\varepsilon$. When a player $p$ decides to mine on top of a block $b$, she puts another block into the state defined by the string $b\cdot p$, where we use notation $b_1 \cdot b_2$ for the concatenation of two strings $b_1$ and $b_2$.
 %
@@ -609,10 +609,10 @@ We have that $\bchain(q')$ is not defined since the paths $\pi_1 = \{\varepsilon
 \subparagraph*{Actions of a miner.} %\label{sub:actions}
 On each step, each miner
 % looking to maximize their rewards 
-chooses a block in the current state, and attempts to mine on top of this block. Thus, in each turn, each of the players race to place the next block in the state, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the more likely it is that she will mine the next block. %before the rest of the players. 
+chooses a block in the current state, and attempts to mine on top of this block. Thus, in each step, each of the players race to place the next block in the state, and only one of them succeeds. The probability of succeeding is directly related to the comparative amount of hash power available to this player, the more hash power the more likely it is that she will mine the next block. %before the rest of the players. 
 Once a player places a block, this block is added to the current state, obtaining a different state from which the game continues.
 
-Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by $\mine(p,b,q)$ an action in the mining game in which player $p$ mines on top of block $b$. Such an action $\mine(p,b,q)$ is considered to be valid if $b \in q$ and $b\cdot p \not\in q$. The set of valid actions for player $p$ is collected in the~set:
+Let $p \in \bP$. Given a block $b \in \bB$ and a state $q \in \bQ$, we denote by $\mine(p,b,q)$ an action in the mining game in which player $p$ decides to mine on top of block $b$. Such an action $\mine(p,b,q)$ is considered to be valid if $b \in q$ and $b\cdot p \not\in q$. The set of valid actions for player $p$ is collected in the~set:
 \begin{eqnarray*}
 \bA_p & = & \{ \mine(p,b,q) \mid b \in \bB, q \in \bQ \text{ and } \mine(p,b,q) \text{ is a valid action}\}.
 \end{eqnarray*}
@@ -633,7 +633,7 @@ Most cryptocurrencies follow these rules for miner's payment:
 %%%%%MARCELO: remove the next sentence to avoid mentioning Bitcoin
 %To prevent drastic changes on what are valid blocks, the Bitcoin protocol enforces that a block reward can only be spent when there are more than one hundred blocks on top of it. 
 
-The second rule enforces that we cannot just give miners the full block reward when they put a block at the top of the current blockchain or after a delay, because blocks out of the blockchain may eventually give the same reward as valid ones. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two paths ($\pi_1$ and $\pi_2$) competing to be the blockchain, and consider $\pi_2$ to be the latest path to be mined upon to reach $q'$. If player $0$ had already been fully paid for any blocks $110^i$, where $i \leq n$, then if $\pi_2$ win the race and becomes the blockchain, such block $110^i$ would not be part of the blockchain anymore but still has given full reward to player $0$. To the best of our knowledge other attempts to formalize mining, especially bitcoin's mining partially emancipate from this rule, as only the first block to be confirmed will be paid, and artificially nullify the incentive to engage in long races.
+The second rule enforces that we cannot just give miners the full block reward when they put a block at the top of the current blockchain or after a delay, because blocks out of the blockchain may eventually give the same reward as valid ones. To illustrate this, consider the state $q'$ in Example \ref{ex-mining}, where we have two paths ($\pi_1$ and $\pi_2$) competing to be the blockchain, and consider $\pi_2$ to be the latest path to be mined upon to reach $q'$. If player $0$ had already been fully paid for any blocks $110^i$, where $i \leq n$, then if $\pi_2$ wins the race and becomes the blockchain, such block $110^i$ would not be part of the blockchain anymore, but still would have given the full reward to player $0$. To the best of our knowledge other attempts to formalize mining, especially bitcoin's mining, partially emancipate from this rule: only the first block to be confirmed will be paid, artificially nullifying the incentive to engage in long races.
 
 %In Section \ref{sec-pay-uti}, we explain how our pay-off model can be used to pay for blocks and at the same time to ensure that players try to maintain their blocks in the blockchain. 
 In the following sections we will show how different reward functions can be used to understand different mining scenarios that arise in different cryptocurrencies. 
@@ -659,7 +659,7 @@ As a last component of the game, we assume that $\pr : \bQ \times \bA \times \bQ
 %\begin{eqnarray*}\label{eq-prop}
 %\sum_{p=0}^{m-1} \pr(q, \ba, a_p(q)) & = & 1.
 %\end{eqnarray*}
-Notice that if $p_1$ and $p_2$ are two different players, then for every action $a_1 \in \bA_{p_1}$, every action $a_2 \in \bA_{p_2}$ and every state $q \in \bQ$, it holds that $a_1(q) \neq a_2(q)$. Thus, we can think of $\pr(q, \ba, a_p(q))$ as the probability that player $p$ places the next block, which will generate the state $a_p(q)$. As we have mentioned, such a probability is directly related with the hash power of player $p$, the more hash power the likely it is that action $a_p$ is executed and $p$ mines the next block before the rest of the players. In what follows, we assume that the hash power of each player does not change during the mining game, which is captured by the following condition:
+Notice that if $p_1$ and $p_2$ are two different players, then for every action $a_1 \in \bA_{p_1}$, every action $a_2 \in \bA_{p_2}$ and every state $q \in \bQ$, it holds that $a_1(q) \neq a_2(q)$. Thus, we can think of $\pr(q, \ba, a_p(q))$ as the probability that player $p$ places the next block, which will generate the state $a_p(q)$. As we have mentioned, such a probability is directly related to the hash power of player $p$, the more hash power the more likely it is that action $a_p$ is executed and $p$ mines the next block before the rest of the players. In what follows, we assume that the hash power of each player does not change during the mining game, which is captured by the following condition:
 %\begin{itemize}
 %\item Given $q, q' \in \bQ$ and $\ba, \ba' \in \bA$ with $\ba = (a_0, a_1$, $\ldots$, $a_{m-1})$ and $\ba' = (a'_0, a'_1, \ldots, a'_{m-1})$, for every player $p \in \bP$ it holds that $\pr(q, \ba, a_p(q)) = \pr(q', \ba', a'_p(q'))$.
 %\end{itemize}
@@ -696,8 +696,8 @@ that $\bP = \{0, \ldots, m-1\}$ is the set of players).
 To define the notions of utility and equilibrium, we need some additional notation.
 Let $\bs = (s_0, \ldots, s_{m-1})$ be a combined strategy.
 % in $\bS$. 
-Then given $q \in \bQ$, define $\bs(q)$ as the combined action $(s_0(q), \ldots, s_{m-1}(q))$. Moreover, given an initial state $q_0 \in \bQ$,
-the probability of reaching state $q \in \bQ$, denoted by $\pr^{\bs}(q \mid q_0)$, is defined as 0 if $q_0 \not\subseteq q$ (that is, if $q$ is not reachable from $q_0$), and otherwise it is recursively defined as follows: if $q = q_0$, then $\pr^{\bs}(q \mid q_0) = 1$; otherwise, we have that $|q| - |q_0| = k$, with $k \geq 1$, and
+Given $q \in \bQ$, define $\bs(q)$ as the combined action $(s_0(q), \ldots, s_{m-1}(q))$. Moreover, given an initial state $q_0 \in \bQ$,
+define the probability of reaching state $q \in \bQ$, denoted by $\pr^{\bs}(q \mid q_0)$, as 0 if $q_0 \not\subseteq q$ (that is, if $q$ is not reachable from $q_0$), and otherwise it is recursively defined following Bayes' rule: if $q = q_0$, then $\pr^{\bs}(q \mid q_0) = 1$; otherwise, we have that $|q| - |q_0| = k$, with $k \geq 1$, and
 $$
 \pr^{\bs}(q \mid q_0) =
 \sum_{\substack{q' \in \bQ \,:\\ q_0 \subseteq q' \text{ and } |q'| - |q_0| = k-1}}
@@ -751,7 +751,7 @@ diverges. To avoid this problem, from now on we assume that for every pay-off fu
 
 %Hence we 
 As mentioned earlier, 
-we design our pay-off model with the goal of incentivising players to mine in the blockchain, and to keep their blocks in the blockchain. In this sense, the payment of a miner for a block $b$ should be proportional to the amount of time $b$ has been in the blockchain; in particular, the miner should be penalised if $b$ ceases to be in the blockchain, and this penalty should decrease with time. In what follows, we explain how our pay-off model meets this goal. 
+we design our pay-off model with the goal of incentivising players to mine on the blockchain, and to keep their blocks in the blockchain. In this sense, the payment of a miner for a block $b$ should be proportional to the amount of time $b$ has been in the blockchain; in particular, the miner should be penalised if $b$ ceases to be in the blockchain, and this penalty should decrease with time. In what follows, we explain how our pay-off model meets this goal. 
 
 %makemimic the incentives of the payment system of Bitcoin and other cryptocurrencies. More precisely, 
 Given a player $p$ and a state $q$, for every block $b \in q$ assume that the reward obtained by $p$ for the block $b$ in $q$ is given by $r_p(b,q)$, so that $r_p(q) = \sum_{b \in q} r_p(b,q)$. This decomposition can be done in a natural and straightforward way for the pay-off functions considered in this paper and in other game-theoretical formalisations of cryptomining \cite{mininggames:2016,koutsoupias2018blockchain}. 
@@ -768,14 +768,14 @@ a portion of $r_p(b,q)$ is paid in each state $q$ where $b$ is in.
 In other words, if a miner owns a block, then she will be rewarded for this block in every state where this block is part of the blockchain, in which case $r_p(b,q) > 0$. 
 %In this way, there is a clear incentive for players to mine and keep blocks in the blockchain, and there is a penalty when a block $b$ ceases to be in the blockchain, which is reduced with time.
 
-Hence, in our model, a miner is payed a portion of a block's reward each time it is included in the blockchain, and even though  she gets payed infinitely many times for each block, the 
+Hence, in our model, a miner is payed a portion of a block's reward each time it is included in the blockchain, and even though she gets payed infinitely many times for each block, the 
 discount factor in the definition of utility ensures that there is no overpay.
 %In our model, 
 %we might pay the miner infinitely many times for a single block. A natural question is then whether we are overpaying for the blocks. This is where the discount factors in our definition of utility come into play, as we pay a portion of block $b$'s reward each time it is included in the %current 
 %blockchain. 
 In other words, 
-when a player mines a new block, she will receive the full amount for this block only if she manages to maintain the block in the blockchain up to infinity. Otherwise, if this block 
-ceases to be in the blockchain, the miner receives only a fraction of the full amount and, thus, is penalised. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
+when a player mines a new block, she will receive the full amount for this block only if she manages to maintain the block in the blockchain up to infinity. Otherwise, if the block 
+ceases to be in the blockchain even for a short period, the miner receives only a fraction of the full amount. Formally, given a combined strategy $\bs$, we can define the utility of a block $b$ for a player $p$, denoted by $u_p^b(\bs)$,  as follows:
 \begin{eqnarray*}
 u_p^b(\bs) & =  & (1 - \beta) \cdot  \sum_{q \in \bQ \,:\, b \in \bchain(q)} \beta^{|q|-1} \cdot  r_p(q,b) \cdot \pr^{\bs}(q).
 \end{eqnarray*}
@@ -790,7 +790,7 @@ For every player $p \in \bP$, block $b \in \bB$ and combined strategy $\bs \in \
 %\end{eqnarray*}
 \end{myprop}
 Thus, the utility obtained by player $p$ for a block $b$ is at most $\beta^{|b|} \cdot M_p(b)$, that is, the maximum reward that she can obtained for the block $b$ in a state multiplied by the discount factor $\beta^{|b|}$, where $|b|$ is the minimum number of steps that has to be performed to reach a state containing $b$ from the initial state $\{\varepsilon\}$. 
-Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This tell us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
+Moreover, a miner can only aspire to get the maximum utility for a block $b$ if once $b$ is included in the blockchain, it stays in the blockchain in every future state. This tells us that our framework puts a strong incentive for each player in maintaining her blocks in the blockchain.
 
 %Of course, one could ask why not simply reward a portion of the block's reward until it is buried hundred blocks deep into the blockchain? One can think of the Bitcoin's protocol working in this way, and it is also studied in other game theoretic formalizations of the protocol \cite{??}. Apart from being able to reason about games in a more elegant way, the main motivation for this approach is that it allows us to prove assumptions such as that arbitrarily long forks are virtually impossible.  
 
@@ -803,7 +803,7 @@ with constant reward}
 \label{sec-const_rew}
 
 The first version of the game we analyse is when the reward function $r_p(q)$ pays each block in the blockchain the same amount $c$. This is important for understanding what happens 
-when currencies such as Ethereum or Monero switch to tail-emission, changing from a decreased reward scheme to a constant reward scheme. Further, it also helps us to establish the main techniques we use. 
+when currencies such as Ethereum or Monero switch to tail-emission, changing from a decreased reward scheme to a constant reward scheme. Further, it also helps to establish the main techniques used in this paper. 
 %While this may not reflect many cryptocurrencies' protocols, where the reward diminishes over time \cite{Bitcoin,DBLP:books/daglib/0040621,NC17,Monero,Litecoin,Bcash}, this simpler case serves as a good baseline for future results, and it establishes the main techniques we will use. 
 %Furthermore, as argued in this section, the results obtained here could serve as a good recommendation for cryptocurrencies' protocols to enforce fair behaviour of the miners when their income consist only of transaction fees.
 
@@ -852,7 +852,7 @@ $b_1 \preceq b_2$ to indicate that $b_1$ is a prefix of $b_2$ when considered as
 \longest(q) & = & \{ b \in q \mid \text{for every } b' \in q: |b'| \leq |b|\}\\
 \meet(q) & = & \{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}.
 \end{eqnarray*}
-Intuitively, $\longest(q)$ contains the leaves of all paths in the state $q$ that are currently competing to be the blockchain, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
+Intuitively, $\longest(q)$ contains the leaves of all longest paths in the state $q$, and $\meet(q)$ is the path from the genesis block to the last block for which all these paths agree on. For instance, if $q$ is the state from Figure~\ref{fig-simple-fork}, then we have that $\longest(q)=\{10011,10010\}$, and $\meet(q)=\{\varepsilon, 1, 10, 100, 1001\}$. Notice that $\meet(q)$ is well defined as $\preceq$ is a linear order on the finite and non-empty set $\{b \in q \mid \text{for every } b' \in \longest(q): b \preceq b'\}$. Also notice that $\meet(q)=\bchain(q)$, whenever $\bchain(q)$ is defined.
 
 The reward function we consider in this section, which is called \textbf{constant reward}, is then defined for a player $p$ as follows : 
 %
@@ -905,7 +905,7 @@ $$u_p(\cdf) \ \ = \ \ (1 - \beta) \cdot h_p \cdot c\cdot \sum_{i=0}^{\infty}i \c
 %% Juan: I think it is way too nahive to put the analytical form of this
 %$$u_p(\bs \mid q_0) = c\cdot h_p \cdot \sum_{i=0}^{\infty}i \cdot \beta^{i} \text{,}\ \ \ \ \text{ which evaluates to }\frac{c\cdot h_p}{(1-\beta)^2}.$$ %(recall that $q_0$ is the genesis block). 
 
-The question then is: can any player do better? As we show in the following theorem, the answer is no, as the default strategy maximizes the utility. 
+The question then is: can any player do better? As we show in the following theorem, the answer is no. 
 \begin{theorem}\label{thm-conts_dom_str}
 Let $p$ be a player, $\beta$ be a discount factor in $(0,1)$ and $u_p$ be the utility function defined in terms of $\beta$. Then for every combined strategy $\bs$: \ \ $u_p(\bs) \leq u_p(\cdf)$.
 %\begin{eqnarray*}
@@ -927,7 +927,7 @@ For every $\beta \in (0,1)$, the strategy $\cdf$ is a Nash equilibrium.
 
 Hence, miners looking to maximise their %crypto-wealth 
 wealth are better off with the default strategy. 
-Especially this results prove that long fork should not happen and therefore validate the underlying assumption of other models \cite{mininggames:2016}. 
+Especially this results prove that long forks should not happen and therefore validate the underlying assumption of other models \cite{mininggames:2016}. 
 Interestingly,  previous work shows that under a setting in which 
 miners are rewarded for the fraction of blocks they own against the total number of blocks, and no financial discount is assumed, then default strategy may not be an optimal strategy  \cite{mininggames:2016}.
 This suggests that miner's behaviour can really deviate depending on what are their short and long term goals, and we believe this is an interesting direction for future work. 
@@ -1164,7 +1164,7 @@ beats the default with less than half of the hash power.
 \subsection{When is forking a good strategy?}
 \label{sec-forkingstrategies}
 
-To calculate when forking is a viable option, we consider a scenario when one of our $m$ players decides to deviate from the default strategy, while the remaining players all follow the default strategy. 
+To understand when forking is a viable option, we consider a scenario when one of our $m$ players decides to deviate from the default strategy, while the remaining players all follow the default strategy. 
 %This is similar the question a miner with a lot of hash power is likely to ask, since she would like to determine whether it suites her to try and force a fork in order to own more blocks in the new blockchain. 
 %The first observation is that 
 In this case we can reduce the $m$ player game to a two player game, where all the players following the default strategy are represented by a single player %behaving as the protocol dictates, 
@@ -1944,7 +1944,7 @@ where $\Phi_{\ell,k}$ and $\Gamma_{\ell,k}$ are rational functions of $\alpha$, 
 In the proof of this theorem, available in the full version of this article, we develop precise expressions for $\Phi_{\ell, k},\Gamma_{\ell,k}$.  %(appendix \ref{sec-evaluation-G}),
 The proof extends the techniques used to show Theorem \ref{thm:always_fork}, where we again look to compute the 
 weighted sum of all states where player 1 manages to fork. This weighted sum, however, requires much more involved computation; 
-we use a new combinatorial result that involve two sets
+we use a new combinatorial result that involves two sets
 of polynomials related to Dyck words. 
 %In what follows we give a sketch of the proof of this theorem, the complete proof is in the appendix. 
 %The complete proof is given in appendix \ref{sec-evaluation-G}.
@@ -2165,7 +2165,7 @@ One of the advantages of our model is its generality: it can be adapted to speci
 actions, study other forms of reward and include cooperation between miners. For example, 
 we are currently looking at strategies that involve withholding 
 a mined block to the rest of the network, for which we need a slight extension of the notions of action and state. 
-It would be very interesting how this model and previous work combine into a model where miner's behavior can deviate depending on both their short-and long-term 
+An interesting venue for future work is to study how this model and previous work combine into a model where miner's behavior can deviate depending on both their short-and long-term 
 goals. We would also like to study incentives under different models of cooperation between miners, and 
 also other forms of equilibria in a dynamic setting. 
 
