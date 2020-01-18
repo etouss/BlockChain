@@ -126,6 +126,8 @@ $RECYCLE.BIN/
 *.synctex.gz
 *.fdb_latexmk
 
+!authorAgreement.pdf
+
 #############
 ### Scala ###
 #############
